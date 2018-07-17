@@ -21,7 +21,7 @@ $G_ID_SUB_MENU_SELECTED = 'USERS';
 
   $_DBArray['user'] = $rows;
   $_SESSION['_DBArray'] = $_DBArray;
-  G::LoadClass( 'ArrayPeer');
+
     $c = new Criteria ('dbarray');
     $c->setDBArrayTable('user');
 

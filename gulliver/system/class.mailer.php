@@ -24,7 +24,7 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  *
  */
-G::LoadThirdParty( 'phpmailer', 'class.phpmailer' );
+
 /* Send emails using the class "PHPMailer"
  *  Email server configuration constants:
  *    MAIL_MAILER     mail/smtp

@@ -61,19 +61,19 @@ abstract class BaseListMyInbox extends BaseObject implements Persistent
      * The value for the app_title field.
      * @var        string
      */
-    protected $app_title = '';
+    protected $app_title;
 
     /**
      * The value for the app_pro_title field.
      * @var        string
      */
-    protected $app_pro_title = '';
+    protected $app_pro_title;
 
     /**
      * The value for the app_tas_title field.
      * @var        string
      */
-    protected $app_tas_title = '';
+    protected $app_tas_title;
 
     /**
      * The value for the app_create_date field.
@@ -785,7 +785,7 @@ abstract class BaseListMyInbox extends BaseObject implements Persistent
             $v = (string) $v;
         }
 
-        if ($this->app_title !== $v || $v === '') {
+        if ($this->app_title !== $v) {
             $this->app_title = $v;
             $this->modifiedColumns[] = ListMyInboxPeer::APP_TITLE;
         }
@@ -807,7 +807,7 @@ abstract class BaseListMyInbox extends BaseObject implements Persistent
             $v = (string) $v;
         }
 
-        if ($this->app_pro_title !== $v || $v === '') {
+        if ($this->app_pro_title !== $v) {
             $this->app_pro_title = $v;
             $this->modifiedColumns[] = ListMyInboxPeer::APP_PRO_TITLE;
         }
@@ -829,7 +829,7 @@ abstract class BaseListMyInbox extends BaseObject implements Persistent
             $v = (string) $v;
         }
 
-        if ($this->app_tas_title !== $v || $v === '') {
+        if ($this->app_tas_title !== $v) {
             $this->app_tas_title = $v;
             $this->modifiedColumns[] = ListMyInboxPeer::APP_TAS_TITLE;
         }

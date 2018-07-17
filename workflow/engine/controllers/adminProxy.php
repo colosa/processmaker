@@ -1,4 +1,8 @@
 <?php
+
+use ProcessMaker\Core\System;
+use ProcessMaker\Plugins\PluginRegistry;
+
 /**
  * adminProxy.php
  *
@@ -27,28 +31,17 @@ class adminProxy extends HttpProxyController
 {
     const hashunlink = 'unlink';
 
+    /**
+     * Save configurations of systemConf
+     * @param $httpData
+     * @throws Exception
+     */
     public function saveSystemConf($httpData)
     {
-        G::loadClass('system');
         $envFile = PATH_CONFIG . 'env.ini';
         $updateRedirector = false;
         $restart = false;
-
-        if (!file_exists($envFile) ) {
-            if (!is_writable(PATH_CONFIG)) {
-                throw new Exception('The enviroment config directory is not writable. <br/>Please give write permission to directory: /workflow/engine/config');
-            }
-            $content  = ";\r\n";
-            $content .= "; ProcessMaker System Bootstrap Configuration\r\n";
-            $content .= ";\r\n";
-            file_put_contents($envFile, $content);
-            //@chmod($envFile, 0777);
-        } else {
-            if (!is_writable($envFile)) {
-                throw new Exception('The enviroment ini file file is not writable. <br/>Please give write permission to file: /workflow/engine/config/env.ini');
-            }
-        }
-
+        self::validateDataSystemConf($httpData, $envFile);
         $sysConf = System::getSystemConfiguration($envFile);
         $updatedConf = array();
 
@@ -221,7 +214,6 @@ class adminProxy extends HttpProxyController
 
     public function uxGroupUpdate($httpData)
     {
-        G::LoadClass('groups');
         $groups = new Groups();
         $users = $groups->getUsersOfGroup($httpData->GRP_UID);
         $success = true;
@@ -305,8 +297,7 @@ class adminProxy extends HttpProxyController
         //]
 
         $form = $_POST;
-        G::LoadClass('calendar');
-        $calendarObj=new calendar();
+        $calendarObj=new Calendar();
         $calendarObj->saveCalendarInfo($form);
         echo "{success: true}";
     }
@@ -378,9 +369,6 @@ class adminProxy extends HttpProxyController
     */
     public function testConnection($params)
     {
-        G::LoadClass('net');
-        G::LoadThirdParty('phpmailer', 'class.smtp');
-
         if ($_POST['typeTest'] == 'MAIL') {
             $eregMail = "/^[0-9a-zA-Z]+(?:[._][0-9a-zA-Z]+)*@[0-9a-zA-Z]+(?:[._-][0-9a-zA-Z]+)*\.[0-9a-zA-Z]{2,3}$/";
 
@@ -446,7 +434,7 @@ class adminProxy extends HttpProxyController
         $Mailto = $_POST['eMailto'];
         $SMTPSecure  = $_POST['UseSecureCon'];
 
-        $Server = new NET($server);
+        $Server = new Net($server);
         $smtp = new SMTP;
 
         $timeout = 10;
@@ -593,8 +581,6 @@ class adminProxy extends HttpProxyController
     public function sendTestMail()
     {
         global $G_PUBLISH;
-        G::LoadClass("system");
-        G::LoadClass('spool');
 
         $aConfiguration = array(
             'MESS_ENGINE'    => $_POST['MESS_ENGINE'],
@@ -634,7 +620,7 @@ class adminProxy extends HttpProxyController
         $sBodyPre->assign('msg', $msg);
         $sBody = $sBodyPre->getOutputContent();
 
-        $oSpool = new spoolRun();
+        $oSpool = new SpoolRun();
 
         $oSpool->setConfig($aConfiguration);
 
@@ -776,8 +762,6 @@ class adminProxy extends HttpProxyController
      */
     public function loadFields()
     {
-        G::loadClass('configuration');
-
         $oConfiguration = new Configurations();
         $oConfiguration->loadConfig($x, 'Emails','','','','');
         $fields = $oConfiguration->aConfig;
@@ -805,10 +789,9 @@ class adminProxy extends HttpProxyController
      */
     public function getListImage($httpData)
     {
-        G::LoadClass('replacementLogo');
         $uplogo       = PATH_TPL . 'setup' . PATH_SEP . 'uplogo.html';
         $width        = "100%";
-        $upload       = new replacementLogo();
+        $upload       = new ReplacementLogo();
         $aPhotoSelect = $upload->getNameLogo($_SESSION['USER_LOGGED']);
         $sPhotoSelect = trim($aPhotoSelect['DEFAULT_LOGO_NAME']);
         $check        = '';
@@ -858,21 +841,22 @@ class adminProxy extends HttpProxyController
     */
     public function changeNamelogo($snameLogo)
     {
-        $snameLogo = preg_replace("/[áàâãª]/", "a", $snameLogo);
-        $snameLogo = preg_replace("/[ÁÀÂÃ]/",  "A", $snameLogo);
-        $snameLogo = preg_replace("/[ÍÌÎ]/",   "I", $snameLogo);
-        $snameLogo = preg_replace("/[íìî]/",   "i", $snameLogo);
-        $snameLogo = preg_replace("/[éèê]/",   "e", $snameLogo);
-        $snameLogo = preg_replace("/[ÉÈÊ]/",   "E", $snameLogo);
-        $snameLogo = preg_replace("/[óòôõº]/", "o", $snameLogo);
-        $snameLogo = preg_replace("/[ÓÒÔÕ]/",  "O", $snameLogo);
-        $snameLogo = preg_replace("/[úùû]/",   "u", $snameLogo);
-        $snameLogo = preg_replace("/[ÚÙÛ]/",   "U", $snameLogo);
-        $snameLogo = str_replace( "ç",         "c", $snameLogo);
-        $snameLogo = str_replace( "Ç",         "C", $snameLogo);
-        $snameLogo = str_replace( "[ñ]",       "n", $snameLogo);
-        $snameLogo = str_replace( "[Ñ]",       "N", $snameLogo);
-        return ($snameLogo);
+        $result = $snameLogo;
+        $result = mb_ereg_replace("[áàâãª]", "a", $result);
+        $result = mb_ereg_replace("[ÁÀÂÃ]", "A", $result);
+        $result = mb_ereg_replace("[ÍÌÎ]", "I", $result);
+        $result = mb_ereg_replace("[íìî]", "i", $result);
+        $result = mb_ereg_replace("[éèê]", "e", $result);
+        $result = mb_ereg_replace("[ÉÈÊ]", "E", $result);
+        $result = mb_ereg_replace("[óòôõº]", "o", $result);
+        $result = mb_ereg_replace("[ÓÒÔÕ]", "O", $result);
+        $result = mb_ereg_replace("[úùû]", "u", $result);
+        $result = mb_ereg_replace("[ÚÙÛ]", "U", $result);
+        $result = mb_ereg_replace("[ç]", "c", $result);
+        $result = mb_ereg_replace("[Ç]", "C", $result);
+        $result = mb_ereg_replace("[ñ]", "n", $result);
+        $result = mb_ereg_replace("[Ñ]", "N", $result);
+        return ($result);
     }
 
     /**
@@ -1015,7 +999,7 @@ class adminProxy extends HttpProxyController
     public function uploadImage()
     {
         //!dataSystem
-        G::LoadSystem('inputfilter');
+
         $filter = new InputFilter();
         $_SERVER["REQUEST_URI"] = $filter->xssFilterHard($_SERVER["REQUEST_URI"]);
         $_FILES = $filter->xssFilterHard($_FILES);
@@ -1111,8 +1095,7 @@ class adminProxy extends HttpProxyController
      */
     public function getNameCurrentLogo()
     {
-        G::LoadClass('replacementLogo');
-        $upload       = new replacementLogo();
+        $upload       = new ReplacementLogo();
         $aPhotoSelect = $upload->getNameLogo($_SESSION['USER_LOGGED']);
         $sPhotoSelect = trim($aPhotoSelect['DEFAULT_LOGO_NAME']);
         return $sPhotoSelect;
@@ -1207,7 +1190,6 @@ class adminProxy extends HttpProxyController
                     $snameLogo = urldecode($_GET['NAMELOGO']);
                     $snameLogo = trim($snameLogo);
                     $snameLogo = self::changeNamelogo($snameLogo);
-                    G::loadClass('configuration');
                     $oConf = new Configurations;
                     $aConf = Array(
                         'WORKSPACE_LOGO_NAME' => SYS_SYS,
@@ -1223,7 +1205,6 @@ class adminProxy extends HttpProxyController
                     break;
                 case 'restoreLogo':
                     $snameLogo = $_GET['NAMELOGO'];
-                    G::loadClass('configuration');
                     $oConf = new Configurations;
                     $aConf = Array(
                       'WORKSPACE_LOGO_NAME' => '',
@@ -1253,7 +1234,7 @@ class adminProxy extends HttpProxyController
     {
         $info = @getimagesize($imagen);
         
-        G::LoadSystem('inputfilter');
+
         $filter = new InputFilter();
         $imagen = $filter->validateInput($imagen, "path");
             
@@ -1317,7 +1298,7 @@ class adminProxy extends HttpProxyController
             $newDir .= PATH_SEP.$base64Id;
             $dir    .= PATH_SEP.$base64Id;
             
-            G::LoadSystem('inputfilter');
+
             $filter = new InputFilter();
             $dir = $filter->validateInput($dir, "path");
         
@@ -1402,12 +1383,12 @@ class adminProxy extends HttpProxyController
 
     public function generateInfoSupport ()
     {
-        require_once (PATH_CONTROLLERS . "installer.php");
+        require_once (PATH_CONTROLLERS . "InstallerModule.php");
         $params = array ();
 
-        $oServerConf = &serverConf::getSingleton();
-        $pluginRegistry = &PMPluginRegistry::getSingleton();
-        $licenseManager = &pmLicenseManager::getSingleton();
+        $oServerConf = &ServerConf::getSingleton();
+        $pluginRegistry = PluginRegistry::loadSingleton();
+        $licenseManager = &PmLicenseManager::getSingleton();
 
         //License Information:
         $activeLicense = $licenseManager->getActiveLicense();
@@ -1447,7 +1428,7 @@ class adminProxy extends HttpProxyController
         }
 
         //Database server Version (MySQL version)
-        $installer = new Installer();
+        $installer = new InstallerModule();
         $systemInfo = $installer->getSystemInfo();
         try {
             $params['mysql'] = mysql_get_server_info();
@@ -1458,12 +1439,9 @@ class adminProxy extends HttpProxyController
         //PHP Version
         $params['php'] = $systemInfo->php->version;
 
-        //Apache - IIS Version
-        try {
-            $params['apache'] = apache_get_version();
-        } catch (Exception $e) {
-            $params['apache'] = '';
-        }
+        //Apache - nginx - IIS Version
+
+        $params['serverSoftwareVersion'] = System::getServerVersion();
 
         //Installed Plugins (license info?)
         $arrayAddon = array ();
@@ -1479,10 +1457,10 @@ class adminProxy extends HttpProxyController
             if (file_exists( PATH_PLUGINS . $sFileName . ".php" )) {
                 $plugin = array();
                 $addonDetails = $pluginRegistry->getPluginDetails( $sFileName . ".php" );
-                $plugin['name'] = $addonDetails->sNamespace;
-                $plugin['description'] = $addonDetails->sDescription;
-                $plugin['version'] = $addonDetails->iVersion;
-                $plugin['enable'] = $addonDetails->enabled;
+                $plugin['name'] = $addonDetails->getNamespace();
+                $plugin['description'] = $addonDetails->getDescription();
+                $plugin['version'] = $addonDetails->getVersion();
+                $plugin['enable'] = $addonDetails->isEnabled();
                 $plugins[] = $plugin;
             }
         }
@@ -1536,5 +1514,46 @@ class adminProxy extends HttpProxyController
         G::streamFile($support, true);
         G::rm_dir($support);
     }
-}
 
+    /**
+     * Validate data before saving
+     * @param $httpData
+     * @param $envFile
+     * @throws Exception
+     */
+    public static function validateDataSystemConf($httpData, $envFile)
+    {
+        if (!((is_numeric($httpData->memory_limit)) && ((int)$httpData->memory_limit == $httpData->memory_limit) &&
+            ((int)$httpData->memory_limit >= -1))
+        ) {
+            throw new Exception(G::LoadTranslation('ID_MEMORY_LIMIT_VALIDATE'));
+        }
+
+        if (!((is_numeric($httpData->max_life_time)) && ((int)$httpData->max_life_time == $httpData->max_life_time) &&
+            ((int)$httpData->max_life_time > 0))
+        ) {
+            throw new Exception(G::LoadTranslation('ID_LIFETIME_VALIDATE'));
+        }
+
+        if (!((is_numeric($httpData->expiration_year)) && ((int)$httpData->expiration_year == $httpData->expiration_year) &&
+            ((int)$httpData->expiration_year > 0))
+        ) {
+            throw new Exception(G::LoadTranslation('ID_DEFAULT_EXPIRATION_YEAR_VALIDATE'));
+        }
+
+        if (!file_exists($envFile)) {
+            if (!is_writable(PATH_CONFIG)) {
+                throw new Exception('The enviroment config directory is not writable. <br/>Please give write permission to directory: /workflow/engine/config');
+            }
+            $content = ";\r\n";
+            $content .= "; ProcessMaker System Bootstrap Configuration\r\n";
+            $content .= ";\r\n";
+            file_put_contents($envFile, $content);
+            //@chmod($envFile, 0777);
+        } else {
+            if (!is_writable($envFile)) {
+                throw new Exception('The enviroment ini file is not writable. <br/>Please give write permission to file: /workflow/engine/config/env.ini');
+            }
+        }
+    }
+}

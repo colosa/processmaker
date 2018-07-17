@@ -58,7 +58,6 @@ $G_ID_SUB_MENU_SELECTED = 'GROUPS';
 
 $G_PUBLISH = new Publisher();
 
-G::LoadClass('configuration');
 $c = new Configurations();
 $configPage = $c->getConfiguration('groupList', 'pageSize', '', $_SESSION['USER_LOGGED']);
 $configEnv = $c->getConfiguration('ENVIRONMENT_SETTINGS', '');

@@ -4,6 +4,7 @@ namespace Maveriks\Extension;
 use Luracast\Restler\Defaults;
 use Luracast\Restler\Format\JsonFormat;
 use Luracast\Restler\Format\UrlEncodedFormat;
+use ProcessMaker\Plugins\PluginRegistry;
 use ProcessMaker\Services\Api;
 use Luracast\Restler\RestException;
 
@@ -170,17 +171,25 @@ class Restler extends \Luracast\Restler\Restler
         $this->responseData = $result;
     }
 
+    /**
+     * Review the API extensions, if the extension exists a new instance is 
+     * returned.
+     * 
+     * @param object $object
+     * @param string $className
+     * @return \Maveriks\Extension\classExtName
+     */
     public function reviewApiExtensions($object, $className)
     {
         $classReflection = new \ReflectionClass($object);
         $classShortName = $classReflection->getShortName();
-        $registry = &\PMPluginRegistry::getSingleton();
+        $registry = PluginRegistry::loadSingleton();
         $pluginsApiExtend = $registry->getExtendsRestService($classShortName);
         if ($pluginsApiExtend) {
-            $classFilePath = $pluginsApiExtend['filePath'];
+            $classFilePath = $pluginsApiExtend->filePath;
             if (file_exists($classFilePath)) {
                 require_once($classFilePath);
-                $classExtName = $pluginsApiExtend['classExtend'];
+                $classExtName = $pluginsApiExtend->classExtend;
                 $newObjectExt = new $classExtName();
                 if (is_subclass_of($newObjectExt, $className)) {
                     $object = $newObjectExt;

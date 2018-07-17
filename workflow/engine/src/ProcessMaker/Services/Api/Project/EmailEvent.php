@@ -64,9 +64,18 @@ class EmailEvent extends Api
     }
     
     /**
+     * Save Data for email event.
+     * 
      * @url POST /:prj_uid/email-event
-     *
+     * 
      * @param string $prj_uid {@min 1} {@max 32}
+     * @param array $request_data
+     * 
+     * @return array
+     * @throws RestException 
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPostEmailEvent($prj_uid, array $request_data)
     {
@@ -79,11 +88,18 @@ class EmailEvent extends Api
     }
     
     /**
+     * Update email event.
+     *
      * @url PUT /:prj_uid/email-event/:email_event_uid
      *
      * @param string $prj_uid      {@min 32}{@max 32}
      * @param string $email_event_uid    {@min 32}{@max 32}
      * @param array  $request_data
+     *
+     * @throws RestException
+     *
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPutEmailEvent($prj_uid, $email_event_uid, array $request_data)
     {
@@ -96,6 +112,8 @@ class EmailEvent extends Api
     
     /**
      * @url DELETE /:prj_uid/email-event/:email_event_uid
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      *
      * @param string $prj_uid   {@min 32}{@max 32}
      * @param string $email_event_uid {@min 32}{@max 32}
@@ -111,6 +129,8 @@ class EmailEvent extends Api
     
     /**
      * @url DELETE /:prj_uid/email-event/by-event/:act_uid
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      *
      * @param string $prj_uid   {@min 32}{@max 32}
      * @param string $act_uid {@min 32}{@max 32}

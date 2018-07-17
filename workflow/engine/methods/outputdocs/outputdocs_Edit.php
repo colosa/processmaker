@@ -55,8 +55,7 @@ try {
     }
     
     $type = isset( $aFields['OUT_DOC_TYPE'] ) ? $aFields['OUT_DOC_TYPE'] : 'HTML';
-    
-    G::LoadClass( 'xmlfield_InputPM' );
+
     $G_PUBLISH = new Publisher();
     
     switch ($type) {

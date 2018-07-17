@@ -3,8 +3,7 @@
 switch ($_GET['action']) {
     case 'saveOption':
         try {
-            G::LoadClass( 'serverConfiguration' );
-            $oServerConf = & serverConf::getSingleton();
+            $oServerConf = & ServerConf::getSingleton();
             $response = new stdclass();
             /*you can use SYS_TEMP or SYS_SYS ON HEAR_BEAT_CONF to save for each workspace*/
             $oServerConf->unsetHeartbeatProperty( 'HB_BEAT_TYPE', 'HEART_BEAT_CONF' );

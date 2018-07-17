@@ -4,7 +4,7 @@
  *
  */
 
-	require_once ( PATH_RBAC . "model/PermissionsPeer.php");
+
 	$oCriteria = $RBAC->listAllPermissions( '{rbacProjectName}');
   $G_MAIN_MENU            = '{projectName}';
   $G_SUB_MENU             = 'users';

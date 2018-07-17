@@ -255,7 +255,7 @@ class Xml_Node
  * @package gulliver.system
  * @access public
  */
-class Xml_document extends Xml_Node
+class Xml_Document extends Xml_Node
 {
     public $currentNode;
 
@@ -266,7 +266,7 @@ class Xml_document extends Xml_Node
      * @access public
      * @return string
      */
-    public function Xml_document ()
+    public function Xml_Document ()
     {
         $this->currentNode = &$this;
     }

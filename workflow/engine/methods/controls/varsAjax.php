@@ -23,7 +23,7 @@
  *
  */
  
-G::LoadSystem('inputfilter');
+
 $filter = new InputFilter();
 $_POST = $filter->xssFilterHard($_POST);
 $_REQUEST = $filter->xssFilterHard($_REQUEST);
@@ -108,7 +108,6 @@ $html .= '<tr>';
 
 $html .= '<td colspan="3">';
 
-G::LoadClass( 'xmlfield_InputPM' );
 $aFields = getDynaformsVars( $_REQUEST['sProcess'], true, isset( $_POST['bIncMulSelFields'] ) ? $_POST['bIncMulSelFields'] : 0 );
 
 $displayOption = '';

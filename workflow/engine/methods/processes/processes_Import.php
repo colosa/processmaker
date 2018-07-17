@@ -44,9 +44,6 @@ if ($access != 1) {
 
 try {
 
-    /* Includes */
-    G::LoadClass( 'processes' );
-
     /* Render page */
     $G_MAIN_MENU = 'processmaker';
     $G_ID_MENU_SELECTED = 'PROCESSES';

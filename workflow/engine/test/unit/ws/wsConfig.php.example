@@ -1,9 +1,0 @@
-<?php
-
-  define ( 'WS_WSDL_URL' ,  'http://live.processmaker.com/sys_________/en/green/services/wsdl2');
-  define ( 'WS_USER_ID'  ,  'admin');
-  define ( 'WS_USER_PASS',  '');
-
-  define ( 'PML_USER_ID'  ,  'user');
-  define ( 'PML_USER_PASS',  'password');
-

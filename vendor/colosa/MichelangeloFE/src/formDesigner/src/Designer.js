@@ -571,6 +571,7 @@
             return false;
         };
         this.form1.onSelect = function (properties) {
+            listProperties.body.find('input').focus();
             listProperties.clear();
             listProperties.load(properties);
             that.areaToolBox.accordion.accordion("option", "active", (window.distribution === "1") ? 2 : 1);
@@ -793,6 +794,9 @@
                     listProperties.clear();
                     listProperties.load(target.properties);
                 }
+            }
+            if (prop === "required" && target.properties["requiredFieldErrorMessage"].node) {
+                target.properties.requiredFieldErrorMessage.node.disabled = !value;
             }
         };
         this.form1.onSynchronizeVariables = function (variables) {

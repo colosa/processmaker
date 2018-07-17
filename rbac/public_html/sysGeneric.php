@@ -26,7 +26,7 @@
 
   define( 'PATH_GULLIVER',   PATH_GULLIVER_HOME . 'system' . PATH_SEP );   //gulliver system classes
   define( 'PATH_TEMPLATE',   PATH_GULLIVER_HOME . 'templates' . PATH_SEP );
-  define( 'PATH_THIRDPARTY', PATH_GULLIVER_HOME . 'thirdparty' . PATH_SEP );
+  define( 'PATH_THIRDPARTY', $pathTrunk . 'thirdparty' . PATH_SEP );
   define( 'PATH_RBAC',      PATH_RBAC_HOME . 'engine/classes' . PATH_SEP );  //to enable rbac version 2
   define( 'PATH_DATA',          '/shared/rbac/');
   define( 'PATH_HTML',      PATH_HOME . 'public_html' . PATH_SEP );

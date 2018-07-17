@@ -8,8 +8,6 @@
  * @param POST
  */
 
-G::LoadClass( 'toolBar' );
-
 global $G_PUBLISH;
 $script = '';
 $G_PUBLISH = new Publisher();

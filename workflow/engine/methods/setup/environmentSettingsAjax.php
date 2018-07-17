@@ -5,7 +5,6 @@
  * @date Sept 13th, 2010
  *
  */
-G::LoadClass( "configuration" );
 
 $request = isset( $_POST["request"] ) ? $_POST["request"] : (isset( $_GET["request"] ) ? $_GET["request"] : null);
 $result = new stdclass();

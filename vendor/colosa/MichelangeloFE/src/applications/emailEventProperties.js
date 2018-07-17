@@ -45,7 +45,7 @@
                         (new PMRestClient({
                             endpoint: 'file-manager',
                             typeRequest: 'post',
-                            messageError: ''.translate(),
+                            messageError: '',
                             data: {
                                 prf_filename: "emailEvent_" + new Date().getTime() + ".html",
                                 prf_path: "templates",
@@ -88,7 +88,7 @@
                         (new PMRestClient({
                             endpoint: 'file-manager/' + dataForm.prf_uid,
                             typeRequest: 'update',
-                            messageError: ''.translate(),
+                            messageError: '',
                             data: {
                                 prf_content: tinyMCE.activeEditor.getContent()
                             },
@@ -258,7 +258,7 @@
             width: '900px',
             height: "300px",
             name: "formEmailEvent",
-            title: "".translate(),
+            title: '',
             items: [
                 {
                     id: "panelDetailsCustom",
@@ -346,6 +346,8 @@
                 skin: 'o2k7',
                 theme: 'advanced',
                 skin_variant: 'silver',
+                relative_urls : false,
+                remove_script_host : false,
                 plugins: 'advhr,advimage,advlink,advlist,autolink,autoresize,contextmenu,directionality,emotions,example,example_dependency,fullpage,fullscreen,iespell,inlinepopups,insertdatetime,layer,legacyoutput,lists,media,nonbreaking,noneditable,pagebreak,paste,preview,print,save,searchreplace,style,tabfocus,table,template,visualblocks,visualchars,wordcount,xhtmlxtras,pmSimpleUploader,pmVariablePicker,style',
                 theme_advanced_buttons1: 'pmSimpleUploader,|,pmVariablePicker,|,bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontselect,fontsizeselect,|,cut,copy,paste',
                 theme_advanced_buttons2: 'bullist,numlist,|,outdent,indent,blockquote,|,tablecontrols,|,undo,redo,|,link,unlink,image,|,forecolor,backcolor,styleprops',
@@ -400,7 +402,7 @@
                             (new PMRestClient({
                                 endpoint: 'file-manager',
                                 typeRequest: 'get',
-                                messageError: ''.translate(),
+                                messageError: '',
                                 data: {
                                     path: "templates"
                                 },
@@ -437,7 +439,7 @@
             (new PMRestClient({
                 endpoint: 'email-event/by-event/' + activityId,
                 typeRequest: 'remove',
-                messageError: ''.translate(),
+                messageError: '',
                 functionSuccess: function (xhr, response) {
                 },
                 functionFailure: function (xhr, response) {

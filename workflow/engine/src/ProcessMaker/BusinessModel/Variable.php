@@ -1,7 +1,10 @@
 <?php
 namespace ProcessMaker\BusinessModel;
 
-use \G;
+use G;
+use Exception;
+use AdditionalTables;
+use PmDynaform;
 
 class Variable
 {
@@ -13,25 +16,22 @@ class Variable
      * @param string $processUid Unique id of Process
      * @param array  $arrayData  Data
      *
-     * return array Return data of the new Variable created
+     * @return array, return data of the new Variable created
+     * @throws Exception
      */
     public function create($processUid, array $arrayData)
     {
         try {
             //Verify data
             Validator::proUid($processUid, '$prj_uid');
-
             $arrayData = array_change_key_case($arrayData, CASE_UPPER);
-
             $this->existsName($processUid, $arrayData["VAR_NAME"], "");
-
             $this->throwExceptionFieldDefinition($arrayData);
 
             //Create
             $cnn = \Propel::getConnection("workflow");
             try {
                 $variable = new \ProcessVariables();
-
                 $sPkProcessVariables = \ProcessMaker\Util\Common::generateUID();
 
                 $variable->setVarUid($sPkProcessVariables);
@@ -43,13 +43,13 @@ class Variable
                     if (isset($arrayData["VAR_NAME"])) {
                         $variable->setVarName($arrayData["VAR_NAME"]);
                     } else {
-                        throw new \Exception(\G::LoadTranslation("ID_CAN_NOT_BE_NULL", array('$var_name' )));
+                        throw new Exception(G::LoadTranslation("ID_CAN_NOT_BE_NULL", array('$var_name' )));
                     }
                     if (isset($arrayData["VAR_FIELD_TYPE"])) {
                         $arrayData["VAR_FIELD_TYPE"] = $this->validateVarFieldType($arrayData["VAR_FIELD_TYPE"]);
                         $variable->setVarFieldType($arrayData["VAR_FIELD_TYPE"]);
                     } else {
-                        throw new \Exception(\G::LoadTranslation("ID_CAN_NOT_BE_NULL", array('$var_field_type' )));
+                        throw new Exception(G::LoadTranslation("ID_CAN_NOT_BE_NULL", array('$var_field_type' )));
                     }
                     if (isset($arrayData["VAR_FIELD_SIZE"])) {
                         $variable->setVarFieldSize($arrayData["VAR_FIELD_SIZE"]);
@@ -57,7 +57,7 @@ class Variable
                     if (isset($arrayData["VAR_LABEL"])) {
                         $variable->setVarLabel($arrayData["VAR_LABEL"]);
                     } else {
-                        throw new \Exception(\G::LoadTranslation("ID_CAN_NOT_BE_NULL", array('$var_label' )));
+                        throw new Exception(G::LoadTranslation("ID_CAN_NOT_BE_NULL", array('$var_label' )));
                     }
                     if (isset($arrayData["VAR_DBCONNECTION"])) {
                         $variable->setVarDbconnection($arrayData["VAR_DBCONNECTION"]);
@@ -78,7 +78,7 @@ class Variable
                         $variable->setVarDefault($arrayData["VAR_DEFAULT"]);
                     }
                     if (isset($arrayData["VAR_ACCEPTED_VALUES"])) {
-                        $encodeAcceptedValues = \G::json_encode($arrayData["VAR_ACCEPTED_VALUES"]);
+                        $encodeAcceptedValues = G::json_encode($arrayData["VAR_ACCEPTED_VALUES"]);
                         $variable->setVarAcceptedValues($encodeAcceptedValues);
                     }
                     if (isset($arrayData["INP_DOC_UID"])) {
@@ -94,10 +94,10 @@ class Variable
                         $msg = $msg . (($msg != "")? "\n" : "") . $validationFailure->getMessage();
                     }
 
-                    throw new \Exception(\G::LoadTranslation("ID_RECORD_CANNOT_BE_CREATED") . "\n" . $msg);
+                    throw new Exception(G::LoadTranslation("ID_RECORD_CANNOT_BE_CREATED") . "\n" . $msg);
                 }
 
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $cnn->rollback();
 
                 throw $e;
@@ -108,7 +108,7 @@ class Variable
 
             return $variable;
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -120,7 +120,8 @@ class Variable
      * @param string $variableUid Unique id of Variable
      * @param array  $arrayData   Data
      *
-     * return array Return data of the Variable updated
+     * @return array,return data of the Variable updated
+     * @throws Exception
      */
     public function update($processUid, $variableUid, $arrayData)
     {
@@ -128,7 +129,6 @@ class Variable
             //Verify data
             Validator::proUid($processUid, '$prj_uid');
             $arrayData = array_change_key_case($arrayData, CASE_UPPER);
-
             $this->throwExceptionFieldDefinition($arrayData);
 
             //Update
@@ -150,7 +150,6 @@ class Variable
                     $cnn->begin();
                     if (isset($arrayData["VAR_NAME"])) {
                         $this->existsName($processUid, $arrayData["VAR_NAME"], $variableUid);
-
                         $variable->setVarName($arrayData["VAR_NAME"]);
                     }
                     if (isset($arrayData["VAR_FIELD_TYPE"])) {
@@ -176,7 +175,7 @@ class Variable
                         $variable->setVarDefault($arrayData["VAR_DEFAULT"]);
                     }
                     if (isset($arrayData["VAR_ACCEPTED_VALUES"])) {
-                        $encodeAcceptedValues = \G::json_encode($arrayData["VAR_ACCEPTED_VALUES"]);
+                        $encodeAcceptedValues = G::json_encode($arrayData["VAR_ACCEPTED_VALUES"]);
                         $variable->setVarAcceptedValues($encodeAcceptedValues);
                     }
                     if (isset($arrayData["INP_DOC_UID"])) {
@@ -195,8 +194,8 @@ class Variable
                         "VAR_SQL" => $variable->getVarSql(),
                         "VAR_ACCEPTED_VALUES" => $variable->getVarAcceptedValues()
                     );
-                    \G::LoadClass('pmDynaform');
-                    $pmDynaform = new \pmDynaform();
+
+                    $pmDynaform = new PmDynaform();
                     $pmDynaform->synchronizeVariable($processUid, $newVariable, $oldVariable);
                 } else {
 
@@ -206,15 +205,15 @@ class Variable
                         $msg = $msg . (($msg != "")? "\n" : "") . $validationFailure->getMessage();
                     }
 
-                    throw new \Exception(\G::LoadTranslation("ID_RECORD_CANNOT_BE_CREATED") . "\n" . $msg);
+                    throw new Exception(G::LoadTranslation("ID_RECORD_CANNOT_BE_CREATED") . "\n" . $msg);
                 }
 
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $cnn->rollback();
 
                 throw $e;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -225,35 +224,31 @@ class Variable
      * @param string $processUid Unique id of Process
      * @param string $variableUid Unique id of Variable
      *
-     * return void
+     * @return void
+     * @throws Exception
      */
     public function delete($processUid, $variableUid)
     {
         try {
             //Verify data
             Validator::proUid($processUid, '$prj_uid');
-
             $this->throwExceptionIfNotExistsVariable($variableUid);
-
             //Verify variable
             $this->throwExceptionIfVariableIsAssociatedAditionalTable($variableUid);
-
             $variable = $this->getVariable($processUid, $variableUid);
-            \G::LoadClass('pmDynaform');
-            $pmDynaform = new \pmDynaform();
+
+            $pmDynaform = new PmDynaform();
             $isUsed = $pmDynaform->isUsed($processUid, $variable);
             if ($isUsed !== false) {
                 $titleDynaform=$pmDynaform->getDynaformTitle($isUsed);
-                throw new \Exception(\G::LoadTranslation("ID_VARIABLE_IN_USE", array($titleDynaform)));
+                throw new Exception(G::LoadTranslation("ID_VARIABLE_IN_USE", array($titleDynaform)));
             }
             //Delete
             $criteria = new \Criteria("workflow");
-
             $criteria->add(\ProcessVariablesPeer::VAR_UID, $variableUid);
-
             \ProcessVariablesPeer::doDelete($criteria);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -263,19 +258,18 @@ class Variable
      * @param string $processUid Unique id of Process
      * @param string $variableUid Unique id of Variable
      *
-     * return array Return an array with data of a Variable
+     * @return array, return an array with data of a Variable
+     * @throws Exception
      */
     public function getVariable($processUid, $variableUid)
     {
         try {
             //Verify data
             Validator::proUid($processUid, '$prj_uid');
-
             $this->throwExceptionIfNotExistsVariable($variableUid);
 
             //Get data
             $criteria = new \Criteria("workflow");
-
             $criteria->addSelectColumn(\ProcessVariablesPeer::VAR_UID);
             $criteria->addSelectColumn(\ProcessVariablesPeer::PRJ_UID);
             $criteria->addSelectColumn(\ProcessVariablesPeer::VAR_NAME);
@@ -292,23 +286,18 @@ class Variable
             $criteria->addSelectColumn(\DbSourcePeer::DBS_PORT);
             $criteria->addSelectColumn(\DbSourcePeer::DBS_DATABASE_NAME);
             $criteria->addSelectColumn(\DbSourcePeer::DBS_TYPE);
-
             $criteria->add(\ProcessVariablesPeer::PRJ_UID, $processUid, \Criteria::EQUAL);
             $criteria->add(\ProcessVariablesPeer::VAR_UID, $variableUid, \Criteria::EQUAL);
             $criteria->addJoin(\ProcessVariablesPeer::VAR_DBCONNECTION, \DbSourcePeer::DBS_UID, \Criteria::LEFT_JOIN);
-
             $rsCriteria = \ProcessVariablesPeer::doSelectRS($criteria);
-
             $rsCriteria->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
-
             $rsCriteria->next();
             $arrayVariables = array();
-
             while ($aRow = $rsCriteria->getRow()) {
 
-                $VAR_ACCEPTED_VALUES = \G::json_decode($aRow['VAR_ACCEPTED_VALUES'], true);
+                $VAR_ACCEPTED_VALUES = G::json_decode($aRow['VAR_ACCEPTED_VALUES'], true);
                 if(sizeof($VAR_ACCEPTED_VALUES)) {
-                    $encodeAcceptedValues = preg_replace("/\\\\u([a-f0-9]{4})/e", "iconv('UCS-4LE','UTF-8',pack('V', hexdec('U$1')))", \G::json_encode($VAR_ACCEPTED_VALUES));
+                    $encodeAcceptedValues = preg_replace("/\\\\u([a-f0-9]{4})/e", "iconv('UCS-4LE','UTF-8',pack('V', hexdec('U$1')))", G::json_encode($VAR_ACCEPTED_VALUES));
                 } else {
                     $encodeAcceptedValues = $aRow['VAR_ACCEPTED_VALUES'];
                 }
@@ -331,7 +320,7 @@ class Variable
             //Return
             return $arrayVariables;
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
              throw $e;
         }
     }
@@ -342,7 +331,8 @@ class Variable
      *
      * @param string $processUid Unique id of Process
      *
-     * return array Return an array with data of a DynaForm
+     * @return array, return an array with data of a DynaForm
+     * @throws Exception
      */
     public function getVariables($processUid)
     {
@@ -352,7 +342,6 @@ class Variable
 
             //Get data
             $criteria = new \Criteria("workflow");
-
             $criteria->addSelectColumn(\ProcessVariablesPeer::VAR_UID);
             $criteria->addSelectColumn(\ProcessVariablesPeer::PRJ_UID);
             $criteria->addSelectColumn(\ProcessVariablesPeer::VAR_NAME);
@@ -369,22 +358,17 @@ class Variable
             $criteria->addSelectColumn(\DbSourcePeer::DBS_PORT);
             $criteria->addSelectColumn(\DbSourcePeer::DBS_DATABASE_NAME);
             $criteria->addSelectColumn(\DbSourcePeer::DBS_TYPE);
-
             $criteria->add(\ProcessVariablesPeer::PRJ_UID, $processUid, \Criteria::EQUAL);
             $criteria->addJoin(\ProcessVariablesPeer::VAR_DBCONNECTION, \DbSourcePeer::DBS_UID . " AND " . \DbSourcePeer::PRO_UID . " = '" . $processUid . "'", \Criteria::LEFT_JOIN);
-
             $rsCriteria = \ProcessVariablesPeer::doSelectRS($criteria);
-
             $rsCriteria->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
-
             $rsCriteria->next();
             $arrayVariables = array();
-
             while ($aRow = $rsCriteria->getRow()) {
 
-                $VAR_ACCEPTED_VALUES = \G::json_decode($aRow['VAR_ACCEPTED_VALUES'], true);
+                $VAR_ACCEPTED_VALUES = G::json_decode($aRow['VAR_ACCEPTED_VALUES'], true);
                 if(sizeof($VAR_ACCEPTED_VALUES)) {
-                    $encodeAcceptedValues = preg_replace("/\\\\u([a-f0-9]{4})/e", "iconv('UCS-4LE','UTF-8',pack('V', hexdec('U$1')))", \G::json_encode($VAR_ACCEPTED_VALUES));
+                    $encodeAcceptedValues = preg_replace("/\\\\u([a-f0-9]{4})/e", "iconv('UCS-4LE','UTF-8',pack('V', hexdec('U$1')))", G::json_encode($VAR_ACCEPTED_VALUES));
                 } else {
                     $encodeAcceptedValues = $aRow['VAR_ACCEPTED_VALUES'];
                 }
@@ -407,7 +391,7 @@ class Variable
             //Return
             return $arrayVariables;
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -416,7 +400,8 @@ class Variable
      * Verify field definition
      *
      * @param array $aData Unique id of Variable to exclude
-     *
+     * @return void
+     * @throws Exception
      */
     public function throwExceptionFieldDefinition($aData)
     {
@@ -428,10 +413,6 @@ class Variable
             if (isset($aData["VAR_FIELD_TYPE"])) {
                 Validator::isString($aData['VAR_FIELD_TYPE'], '$var_field_type');
                 Validator::isNotEmpty($aData['VAR_FIELD_TYPE'], '$var_field_type');
-                /*if ($aData["VAR_FIELD_TYPE"] != 'string' && $aData["VAR_FIELD_TYPE"] != 'integer' && $aData["VAR_FIELD_TYPE"] != 'boolean' && $aData["VAR_FIELD_TYPE"] != 'float' &&
-                    $aData["VAR_FIELD_TYPE"] != 'datetime' && $aData["VAR_FIELD_TYPE"] != 'date_of_birth' && $aData["VAR_FIELD_TYPE"] != 'date') {
-                    throw new \Exception(\G::LoadTranslation("ID_INVALID_VALUE_FOR", array('$var_field_type')));
-                }*/
             }
             if (isset($aData["VAR_FIELD_SIZE"])) {
                 Validator::isInteger($aData["VAR_FIELD_SIZE"], '$var_field_size');
@@ -449,10 +430,10 @@ class Variable
             if (isset($aData["VAR_NULL"])) {
                 Validator::isInteger($aData['VAR_NULL'], '$var_null');
                 if ($aData["VAR_NULL"] != 0 && $aData["VAR_NULL"] !=1 ) {
-                    throw new \Exception(\G::LoadTranslation("ID_INVALID_VALUE_ONLY_ACCEPTS_VALUES", array('$var_null','0, 1' )));
+                    throw new Exception(G::LoadTranslation("ID_INVALID_VALUE_ONLY_ACCEPTS_VALUES", array('$var_null','0, 1' )));
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -460,8 +441,10 @@ class Variable
     /**
      * Verify if exists the name of a variable
      *
-     * @param string $processUid         Unique id of Process
-     * @param string $variableName       Name
+     * @param string $processUid, unique id of Process
+     * @param string $variableName, name of variable
+     * @param string $variableUidToExclude
+     * @throws Exception
      *
      */
     public function existsName($processUid, $variableName, $variableUidToExclude = "")
@@ -471,25 +454,23 @@ class Variable
 
             $criteria->addSelectColumn(\ProcessVariablesPeer::VAR_UID);
             $criteria->addSelectColumn(\ProcessVariablesPeer::VAR_NAME);
-
             if ($variableUidToExclude != "") {
                 $criteria->add(\ProcessVariablesPeer::VAR_UID, $variableUidToExclude, \Criteria::NOT_EQUAL);
             }
-
-            $criteria->add(\ProcessVariablesPeer::VAR_NAME, $variableName, \Criteria::EQUAL);
             $criteria->add(\ProcessVariablesPeer::PRJ_UID, $processUid, \Criteria::EQUAL);
             $rsCriteria = \ProcessVariablesPeer::doSelectRS($criteria);
-
             $rsCriteria->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
 
             while ($rsCriteria->next()) {
                 $row = $rsCriteria->getRow();
-
-                if ($variableName == $row["VAR_NAME"]) {
-                    throw new \Exception(\G::LoadTranslation("DYNAFIELD_ALREADY_EXIST"));
+                if ($variableName === $row["VAR_NAME"]) {
+                    throw new Exception(G::LoadTranslation("DYNAFIELD_ALREADY_EXIST"));
+                }
+                if (AdditionalTables::getPHPName($variableName) === AdditionalTables::getPHPName($row["VAR_NAME"])) {
+                    throw new Exception(G::LoadTranslation("DYNAFIELD_PHPNAME_ALREADY_EXIST", array($row["VAR_NAME"])));
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -499,21 +480,20 @@ class Variable
      *
      * @param string $sql SQL
      *
-     * return array Return an array with required variables in the SQL
+     * @return array, return an array with required variables in the SQL
+     * @throws Exception
      */
     public function sqlGetRequiredVariables($sql)
     {
         try {
             $arrayVariableRequired = array();
-
             preg_match_all("/@[@%#\?\x24\=]([A-Za-z_]\w*)/", $sql, $arrayMatch, PREG_SET_ORDER);
-
             foreach ($arrayMatch as $value) {
                 $arrayVariableRequired[] = $value[1];
             }
 
             return $arrayVariableRequired;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -525,17 +505,17 @@ class Variable
      * @param string $variableSql   SQL
      * @param array  $arrayVariable The variables
      *
-     * return void Throw exception if some required variable in the SQL is missing in the variables
+     * @return void Throw exception if some required variable in the SQL is missing in the variables
+     * @throws Exception
      */
     public function throwExceptionIfSomeRequiredVariableSqlIsMissingInVariables($variableName, $variableSql, array $arrayVariable)
     {
         try {
             $arrayResult = array_diff(array_unique($this->sqlGetRequiredVariables($variableSql)), array_keys($arrayVariable));
-
             if (count($arrayResult) > 0) {
-                throw new \Exception(\G::LoadTranslation("ID_PROCESS_VARIABLE_REQUIRED_VARIABLES_FOR_QUERY", array($variableName, implode(", ", $arrayResult))));
+                throw new Exception(G::LoadTranslation("ID_PROCESS_VARIABLE_REQUIRED_VARIABLES_FOR_QUERY", array($variableName, implode(", ", $arrayResult))));
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -547,13 +527,14 @@ class Variable
      * @param string $variableName  Variable name
      * @param array  $arrayVariable The variables
      *
-     * return array Return an array with all records
+     * @return array, return an array with all records
+     * @throws Exception
      */
     public function executeSql($processUid, $variableName, array $arrayVariable = array())
     {
         try {
             return $this->executeSqlControl($processUid, $arrayVariable);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -563,7 +544,8 @@ class Variable
      *
      * @param string $variableUid           Unique id of variable
      *
-     * return void Throw exception if does not exist the variable in table PROCESS_VARIABLES
+     * @return void
+     * @throws Exception, throw exception if does not exist the variable in table PROCESS_VARIABLES
      */
     public function throwExceptionIfNotExistsVariable($variableUid)
     {
@@ -571,9 +553,9 @@ class Variable
             $obj = \ProcessVariablesPeer::retrieveByPK($variableUid);
 
             if (is_null($obj)) {
-                throw new \Exception('var_uid: '.$variableUid. ' '.\G::LoadTranslation("ID_DOES_NOT_EXIST"));
+                throw new Exception('var_uid: '.$variableUid. ' '.G::LoadTranslation("ID_DOES_NOT_EXIST"));
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -584,30 +566,25 @@ class Variable
      * @param string $variableUid Unique id of variable
      *
      * @return void Throw exception
+     * @throws Exception
      */
     public function throwExceptionIfVariableIsAssociatedAditionalTable($variableUid)
     {
         try {
             $criteria = new \Criteria('workflow');
-
             $criteria->addSelectColumn(\ProcessVariablesPeer::VAR_UID);
-
             $criteria->addJoin(\ProcessVariablesPeer::PRJ_UID, \AdditionalTablesPeer::PRO_UID, \Criteria::INNER_JOIN);
-
             $arrayCondition = [];
             $arrayCondition[] = array(\AdditionalTablesPeer::ADD_TAB_UID, \FieldsPeer::ADD_TAB_UID, \Criteria::EQUAL);
             $arrayCondition[] = array(\ProcessVariablesPeer::VAR_NAME, \FieldsPeer::FLD_NAME, \Criteria::EQUAL);
             $criteria->addJoinMC($arrayCondition, \Criteria::INNER_JOIN);
-
             $criteria->add(\ProcessVariablesPeer::VAR_UID, $variableUid, \Criteria::EQUAL);
-
             $rsCriteria = \ProcessVariablesPeer::doSelectRS($criteria);
             $rsCriteria->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
-
             if ($rsCriteria->next()) {
-                throw new \Exception(\G::LoadTranslation('ID_VARIABLE_ASSOCIATED_WITH_REPORT_TABLE', array($variableUid)));
+                throw new Exception(G::LoadTranslation('ID_VARIABLE_ASSOCIATED_WITH_REPORT_TABLE', array($variableUid)));
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -615,8 +592,10 @@ class Variable
     /**
      * Verify if the variable is being used in a Dynaform
      *
-     * @param string $processUid       Unique id of Process
-     * @param string $variableUid       Unique id of Variable
+     * @param string $processUid, Unique id of Process
+     * @param string $variableUid, Unique id of Variable
+     * @return void
+     * @throws Exception
      *
      */
     public function verifyUse($processUid, $variableUid)
@@ -631,10 +610,8 @@ class Variable
             $rsCriteria->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
 
             while ($rsCriteria->next()) {
-
                 $row = $rsCriteria->getRow();
-
-                $contentDecode = \G::json_decode($row["DYN_CONTENT"], true);
+                $contentDecode = G::json_decode($row["DYN_CONTENT"], true);
                 $content = $contentDecode['items'][0]['items'];
                 if (is_array($content)) {
                     foreach ($content as $key => $value) {
@@ -649,14 +626,14 @@ class Variable
                             $rsCriteria->next();
 
                             if ($rsCriteria->getRow()) {
-                                throw new \Exception(\G::LoadTranslation("ID_VARIABLE_IN_USE", array($variableUid, $row["DYN_UID"])));
+                                throw new Exception(G::LoadTranslation("ID_VARIABLE_IN_USE", array($variableUid, $row["DYN_UID"])));
                             }
                         }
                     }
                 }
             }
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -668,13 +645,14 @@ class Variable
      * @param string $variableName  Variable name
      * @param array  $arrayVariable The variables
      *
-     * return array Return an array with all records
+     * @return array, return an array with all records
+     * @throws Exception
      */
     public function executeSqlSuggest($processUid, $variableName, array $arrayVariable = array())
     {
         try {
             return $this->executeSqlControl($processUid, $arrayVariable);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -698,7 +676,7 @@ class Variable
                 return sizeof($row) ? $row : false;
             }
             return false;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -712,7 +690,8 @@ class Variable
      * @param bool   $throwException Flag to throw the exception if the main parameters are invalid or do not exist
      *                               (TRUE: throw the exception; FALSE: returns FALSE)
      *
-     * @return array Returns an array with Variable record, ThrowTheException/FALSE otherwise
+     * @return array, returns an array with Variable record
+     * @throws Exception, ThrowTheException/FALSE otherwise
      */
     public function getVariableRecordByName(
         $projectUid,
@@ -722,20 +701,17 @@ class Variable
     ) {
         try {
             $criteria = new \Criteria('workflow');
-
             $criteria->add(\ProcessVariablesPeer::PRJ_UID, $projectUid, \Criteria::EQUAL);
             $criteria->add(\ProcessVariablesPeer::VAR_NAME, $variableName, \Criteria::EQUAL);
-
             $rsCriteria = \ProcessVariablesPeer::doSelectRS($criteria);
             $rsCriteria->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
-
             if ($rsCriteria->next()) {
                 $arrayVariableData = $rsCriteria->getRow();
             } else {
                 if ($throwException) {
-                    throw new \Exception(
+                    throw new Exception(
                         $arrayVariableNameForException['$variableName'] . ': ' . $variableName. ' ' .
-                        \G::LoadTranslation('ID_DOES_NOT_EXIST')
+                        G::LoadTranslation('ID_DOES_NOT_EXIST')
                     );
                 } else {
                     return false;
@@ -744,7 +720,7 @@ class Variable
 
             //Return
             return $arrayVariableData;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -753,7 +729,7 @@ class Variable
     {
         $vType = strtolower($type);
         if(!in_array($vType, $this->variableTypes)) {
-            throw new \Exception(\G::LoadTranslation("ID_RECORD_CANNOT_BE_CREATED"));
+            throw new Exception(G::LoadTranslation("ID_RECORD_CANNOT_BE_CREATED"));
         }
         return $vType;
     }
@@ -774,7 +750,7 @@ class Variable
      * @param type $proUid
      * @param array $params
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public function executeSqlControl($proUid, array $params = array())
     {
@@ -808,8 +784,7 @@ class Variable
             //This value is required to be able to query the database.
             $_SESSION["PROCESS"] = $proUid;
             //The pmdynaform class is instantiated
-            \G::LoadClass("pmDynaform");
-            $pmDynaform = new \pmDynaform(array("APP_DATA" => $params));
+            $pmDynaform = new PmDynaform(array("APP_DATA" => $params));
 
             //Get control from dynaform.
             //The parameters: queryFilter, queryStart, queryLimit, are only necessary 
@@ -830,7 +805,7 @@ class Variable
                 }
             }
             return $result;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }

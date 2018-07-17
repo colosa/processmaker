@@ -9,9 +9,6 @@ try {
 
     $form = $_POST['form'];
     $CategoryUid = $form['CATEGORY_UID'];
-    require_once ("classes/model/ProcessCategory.php");
-
-    require_once 'classes/model/Process.php';
 
     //we'are looking for data into process with this CategoryUid
     $oCriteria = new Criteria( 'workflow' );

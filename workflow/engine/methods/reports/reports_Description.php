@@ -36,14 +36,11 @@ switch ($RBAC->userCanAccess( 'PM_REPORTS' )) {
         break;
 }
 
-G::LoadClass( 'xmlfield_InputPM' );
-
 $G_MAIN_MENU = 'processmaker';
 $G_ID_MENU_SELECTED = 'REPORTS';
 
 $PRO_UID = $_POST['PRO_UID'];
 
-G::LoadClass( 'report' );
 $oReport = new Report();
 
 /*

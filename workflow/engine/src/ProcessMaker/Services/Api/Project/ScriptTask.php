@@ -80,12 +80,19 @@ class ScriptTask extends Api
     }
 
     /**
+     * Create script task for a project.
+     * 
      * @url POST /:prj_uid/script-task
-     *
+     * @status 201
+     * 
      * @param string $prj_uid      {@min 32}{@max 32}
      * @param array  $request_data
-     *
-     * @status 201
+     * 
+     * @return array
+     * @throws RestException
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPostScriptTask($prj_uid, array $request_data)
     {
@@ -101,11 +108,18 @@ class ScriptTask extends Api
     }
 
     /**
+     * Update script task.
+     *
      * @url PUT /:prj_uid/script-task/:scrtas_uid
      *
      * @param string $prj_uid      {@min 32}{@max 32}
      * @param string $scrtas_uid   {@min 32}{@max 32}
      * @param array  $request_data
+     *
+     * @throws RestException
+     *
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPutScriptTask($prj_uid, $scrtas_uid, array $request_data)
     {
@@ -118,6 +132,8 @@ class ScriptTask extends Api
 
     /**
      * @url DELETE /:prj_uid/script-task/:scrtas_uid
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      *
      * @param string $prj_uid    {@min 32}{@max 32}
      * @param string $scrtas_uid {@min 32}{@max 32}

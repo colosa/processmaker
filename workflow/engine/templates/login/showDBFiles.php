@@ -30,7 +30,7 @@
     die;
   }
 
-  G::LoadSystem('inputfilter');
+
   $filter = new InputFilter();
   
   echo "<table class='basicTable' cellpadding='5' cellspacing='0' border='0'>";

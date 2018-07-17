@@ -494,10 +494,16 @@ class AppDocument extends BaseAppDocument
         return $documents;
     }
 
-    public function exists ($sAppDocUid, $iVersion)
+    /**
+     * This function check if exist a document
+     * @param string $appDocUid, Uid of the document
+     * @param integer $version,
+     * @return object
+    */
+    public function exists ($appDocUid, $version = 1)
     {
-        $oAppDocument = AppDocumentPeer::retrieveByPK( $sAppDocUid, $iVersion );
-        return (is_object( $oAppDocument ) && get_class( $oAppDocument ) == 'AppDocument');
+        $oAppDocument = AppDocumentPeer::retrieveByPK($appDocUid, $version);
+        return (is_object($oAppDocument) && get_class($oAppDocument) == 'AppDocument');
     }
 
     /**
@@ -511,6 +517,7 @@ class AppDocument extends BaseAppDocument
      */
     public function canDownloadInput($user, $appDocUid, $version)
     {
+        //Check if the the requester is the owner in the file
         $oCriteria = new Criteria('workflow');
         $oCriteria->addSelectColumn(AppDocumentPeer::APP_UID);
         $oCriteria->addJoin(AppDocumentPeer::DOC_UID, InputDocumentPeer::INP_DOC_UID, Criteria::LEFT_JOIN);
@@ -524,11 +531,11 @@ class AppDocument extends BaseAppDocument
         if ($dataset->getRow()) {
             return true;
         } else {
+            //Review if is a INPUT or ATTACHED
             $oCriteria = new Criteria("workflow");
             $oCriteria->addSelectColumn(AppDocumentPeer::APP_UID);
             $oCriteria->addSelectColumn(AppDocumentPeer::DOC_UID);
-            $oCriteria->addSelectColumn(InputDocumentPeer::PRO_UID);
-            $oCriteria->addJoin(AppDocumentPeer::DOC_UID, InputDocumentPeer::INP_DOC_UID, Criteria::LEFT_JOIN);
+            $oCriteria->addSelectColumn(AppDocumentPeer::APP_DOC_TYPE);
             $oCriteria->add(AppDocumentPeer::APP_DOC_UID, $appDocUid);
             $oCriteria->add(AppDocumentPeer::DOC_VERSION, $version);
             $oCriteria->setLimit(1);
@@ -536,27 +543,55 @@ class AppDocument extends BaseAppDocument
             $dataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
             $dataset->next();
             $row = $dataset->getRow();
-            $cases = new \ProcessMaker\BusinessModel\Cases();
-            $userAuthorization = $cases->userAuthorization(
-                $user,
-                $row['PRO_UID'],
-                $row['APP_UID'],
-                array(),
-                array('INPUT_DOCUMENTS' => 'VIEW')
-            );
-
-            if (in_array($appDocUid, $userAuthorization['objectPermissions']['INPUT_DOCUMENTS'])) {
-                return true;
-            }
-
-            if ($userAuthorization['supervisor']) {
-                $criteria = new Criteria("workflow");
-                $criteria->addSelectColumn(StepSupervisorPeer::STEP_UID);
-                $criteria->add(StepSupervisorPeer::STEP_TYPE_OBJ, "INPUT_DOCUMENT", \Criteria::EQUAL);
-                $criteria->add(StepSupervisorPeer::STEP_UID_OBJ, $row['DOC_UID'], \Criteria::EQUAL);
-                $rsCriteria = StepSupervisorPeer::doSelectRS($criteria);
-                if ($rsCriteria->next()) {
+            if ($row['DOC_UID'] == '-1') {
+                //If is an attached we only verify if is a supervisor in the process
+                $appUid = $row['APP_UID'];
+                $oApplication = new Application();
+                $aColumns = $oApplication->Load($appUid);
+                $cases = new \ProcessMaker\BusinessModel\Cases();
+                $userAuthorization = $cases->userAuthorization(
+                    $user,
+                    $aColumns['PRO_UID'],
+                    $appUid,
+                    array(),
+                    array('ATTACHMENTS' => 'VIEW')
+                );
+                //Has permissions?
+                if (in_array($appDocUid, $userAuthorization['objectPermissions']['ATTACHMENTS'])) {
                     return true;
+                }
+                //Is supervisor?
+                if ($userAuthorization['supervisor']) {
+                    return true;
+                }
+            } else {
+                //If is an file related an input document, we will check if the user is a supervisor or has permissions
+                $appUid = $row['APP_UID'];
+                $oInputDoc = new InputDocument();
+                $aColumns = $oInputDoc->Load($row['DOC_UID']);
+                $cases = new \ProcessMaker\BusinessModel\Cases();
+                $userAuthorization = $cases->userAuthorization(
+                    $user,
+                    $aColumns['PRO_UID'],
+                    $appUid,
+                    array(),
+                    array('INPUT_DOCUMENTS' => 'VIEW')
+                );
+                //Has permissions?
+                if (in_array($appDocUid, $userAuthorization['objectPermissions']['INPUT_DOCUMENTS'])) {
+                    return true;
+                }
+                //Is supervisor?
+                if ($userAuthorization['supervisor']) {
+                    //Review if the supervisor has assigned the object input document
+                    $criteria = new Criteria("workflow");
+                    $criteria->addSelectColumn(StepSupervisorPeer::STEP_UID);
+                    $criteria->add(StepSupervisorPeer::STEP_TYPE_OBJ, "INPUT_DOCUMENT", \Criteria::EQUAL);
+                    $criteria->add(StepSupervisorPeer::STEP_UID_OBJ, $row['DOC_UID'], \Criteria::EQUAL);
+                    $rsCriteria = StepSupervisorPeer::doSelectRS($criteria);
+                    if ($rsCriteria->next()) {
+                        return true;
+                    }
                 }
             }
         }

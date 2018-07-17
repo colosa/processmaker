@@ -52,7 +52,7 @@
 
     function {className}Report_1() {
       global $G_PUBLISH;
-      require_once 'classes/model/Users.php';
+
       $sDelimiter = DBAdapter::getStringDelimiter();
       $aUsers   = array();
       $aUsers[] = array('USR_UID'       => 'char',
@@ -83,7 +83,6 @@
       $_DBArray['users']  = $aUsers;
       $_SESSION['_DBArray'] = $_DBArray;
       
-      G::LoadClass('ArrayPeer');
       $oCriteria = new Criteria('dbarray');
       $oCriteria->setDBArrayTable('users');
       $oCriteria->addDescendingOrderByColumn('USR_USERNAME');

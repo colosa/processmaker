@@ -32,10 +32,6 @@ if (! isset( $_SESSION['PROCESS'] )) {
     G::header( 'location: login' );
 }
 $G_MAIN_MENU = 'caseTracker';
-//$G_ID_MENU_SELECTED     = 'DYNADOC';
-
-
-G::LoadClass( 'processMap' );
 
 $G_PUBLISH = new Publisher();
 $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'tracker/tracker_No', '', '' );

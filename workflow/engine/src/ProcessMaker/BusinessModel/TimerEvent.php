@@ -765,8 +765,18 @@ class TimerEvent
                 if (isset($arrayData["TMREVN_CONFIGURATION_DATA"])) {
                     $arrayData["TMREVN_CONFIGURATION_DATA"] = serialize($arrayData["TMREVN_CONFIGURATION_DATA"]);
                 }
+                
+                $oldValues = $timerEvent->toArray();
 
                 $timerEvent->fromArray($arrayData, \BasePeer::TYPE_FIELDNAME);
+
+                $nowValues = $timerEvent->toArray();
+                //If the timer event undergoes any editing, the value of the 'TMREVN_STATUS' 
+                //field must be changed to 'ACTIVE', otherwise the 'ONE-DATE-TIME' 
+                //option will prevent execution.
+                if (!($oldValues == $nowValues)) {
+                    $timerEvent->setTmrevnStatus("ACTIVE");
+                }
 
                 if ($bpmnEvent->getEvnType() == "START") {
                     switch ($arrayFinalData["TMREVN_OPTION"]) {
@@ -1199,10 +1209,9 @@ class TimerEvent
     public function startContinueCaseByTimerEvent($datetime, $frontEnd = false)
     {
         try {
-            \G::LoadClass("wsBase");
 
             //Set variables
-            $ws = new \wsBase();
+            $ws = new \WsBase();
             $case = new \Cases();
             $common = new \ProcessMaker\Util\Common();
             $sysSys = (defined("SYS_SYS"))? SYS_SYS : "Undefined";
@@ -1471,11 +1480,11 @@ class TimerEvent
                     $flagRecord = true;
                 }
             }
-
+            
             if (!$flagRecord) {
                 $common->frontEndShow("TEXT", "Not exists any record to start a new case, on date \"$datetime (UTC +00:00)\"");
-
-                $this->log("NO-RECORDS", "Not exists any record to start a new case");
+                $action = "NO-RECORDS";
+                $this->log($action, "Not exists any record to start a new case");
                 $aInfo = array(
                     'ip'        => \G::getIpAddress()
                     ,'action'   => $action
@@ -1493,7 +1502,8 @@ class TimerEvent
             $common->frontEndShow("END");
 
             //Intermediate Catch Timer-Event (continue the case) ///////////////////////////////////////////////////////
-            $this->log("START-CONTINUE-CASES", "Date \"$datetime (UTC +00:00)\": Start continue the cases");
+            $action = "START-CONTINUE-CASES";
+            $this->log($action, "Date \"$datetime (UTC +00:00)\": Start continue the cases");
             $aInfo = array(
                 'ip'        => \G::getIpAddress()
                 ,'action'   => $action
@@ -1756,9 +1766,9 @@ class TimerEvent
             } while ($flagNextRecord);
 
             if (!$flagRecord) {
-                $common->frontEndShow("TEXT", "Not exists any record to continue a case, on date \"$datetime (UTC +00:00)\"");
+                $common->frontEndShow("TEXT", "No existing records to continue a case, on date \"$datetime (UTC +00:00)\"");
 
-                $this->log("NO-RECORDS", "Not exists any record to continue a case");
+                $this->log("NO-RECORDS", "No existing records to continue a case");
                 $aInfo = array(
                     'ip'        => \G::getIpAddress()
                     ,'action'   => $action
@@ -1767,7 +1777,7 @@ class TimerEvent
                 );
                 $this->syslog(
                     200
-                    ,'Not exists any record to continue a case'
+                    ,'No existing records to continue a case'
                     ,'NO-RECORDS'
                     ,$aInfo
                 );

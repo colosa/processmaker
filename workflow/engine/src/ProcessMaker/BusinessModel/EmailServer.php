@@ -1,5 +1,10 @@
 <?php
 namespace ProcessMaker\BusinessModel;
+use G;
+use Exception;
+use Bootstrap;
+use SpoolRun;
+use ProcessMaker\Core\System;
 
 class EmailServer
 {
@@ -19,6 +24,8 @@ class EmailServer
         "MESS_DEFAULT"             => array("type" => "int",    "required" => false, "empty" => false, "defaultValues" => array(0, 1),                "fieldNameAux" => "emailServerDefault")
     );
 
+    private $contextLog = array();
+
     private $formatFieldNameInUppercase = true;
 
     private $arrayFieldNameForException = array(
@@ -37,9 +44,51 @@ class EmailServer
             foreach ($this->arrayFieldDefinition as $key => $value) {
                 $this->arrayFieldNameForException[$value["fieldNameAux"]] = $key;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
+    }
+    
+    /**
+     * Get the default information from the context.
+     * 
+     * @global type $RBAC
+     * @return void
+     */
+    public function getDefaultContextLog()
+    {
+        //Define the variables for the logging
+        global $RBAC;
+        if ($RBAC !== null) {
+            $currentUser = $RBAC->aUserInfo['USER_INFO'];
+            $info = array(
+                'ip' => G::getIpAddress(),
+                'workspace' => (defined("SYS_SYS")) ? SYS_SYS : "Workspace undefined",
+                'usrUid' => $currentUser['USR_UID']
+            );
+            $this->setContextLog($info);
+        }
+    }
+
+    /**
+     * Get the $contextLog value.
+     *
+     * @return string
+     */
+    public function getContextLog()
+    {
+        return $this->contextLog;
+    }
+
+    /**
+     * Set the value of $contextLog.
+     *
+     * @param array $k
+     * @return void
+     */
+    public function setContextLog($k)
+    {
+        $this->contextLog = array_merge($this->contextLog, $k);
     }
 
     /**
@@ -47,7 +96,8 @@ class EmailServer
      *
      * @param bool $flag Value that set the format
      *
-     * return void
+     * @return void
+     * @throws Exception
      */
     public function setFormatFieldNameInUppercase($flag)
     {
@@ -55,7 +105,7 @@ class EmailServer
             $this->formatFieldNameInUppercase = $flag;
 
             $this->setArrayFieldNameForException($this->arrayFieldNameForException);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -65,7 +115,8 @@ class EmailServer
      *
      * @param array $arrayData Data with the fields
      *
-     * return void
+     * @return void
+     * @throws Exception
      */
     public function setArrayFieldNameForException(array $arrayData)
     {
@@ -73,7 +124,7 @@ class EmailServer
             foreach ($arrayData as $key => $value) {
                 $this->arrayFieldNameForException[$key] = $this->getFieldNameByFormatFieldName($value);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -83,13 +134,14 @@ class EmailServer
      *
      * @param string $fieldName Field name
      *
-     * return string Return the field name according the format
+     * @return string, return the field name according the format
+     * @throws Exception
      */
     public function getFieldNameByFormatFieldName($fieldName)
     {
         try {
             return ($this->formatFieldNameInUppercase)? strtoupper($fieldName) : strtolower($fieldName);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -99,13 +151,12 @@ class EmailServer
      *
      * @param array $arrayData Data
      *
-     * return array Return array with result of send test mail
+     * @return array, return array with result of send test mail
+     * @throws Exception
      */
     public function sendTestMail(array $arrayData)
     {
         try {
-            \G::LoadClass("system");
-            \G::LoadClass("spool");
 
             $aConfiguration = array(
                 "MESS_ENGINE"    => $arrayData["MESS_ENGINE"],
@@ -119,20 +170,20 @@ class EmailServer
                 "SMTPSecure"     => (isset($arrayData["SMTPSecure"]))? $arrayData["SMTPSecure"] : "none"
             );
 
-            $sFrom = \G::buildFrom($aConfiguration);
+            $sFrom = G::buildFrom($aConfiguration);
 
-            $sSubject = \G::LoadTranslation("ID_MESS_TEST_SUBJECT");
-            $msg = \G::LoadTranslation("ID_MESS_TEST_BODY");
+            $sSubject = G::LoadTranslation("ID_MESS_TEST_SUBJECT");
+            $msg = G::LoadTranslation("ID_MESS_TEST_BODY");
 
             switch ($arrayData["MESS_ENGINE"]) {
                 case "MAIL":
-                    $engine = \G::LoadTranslation("ID_MESS_ENGINE_TYPE_1");
+                    $engine = G::LoadTranslation("ID_MESS_ENGINE_TYPE_1");
                     break;
                 case "PHPMAILER":
-                    $engine = \G::LoadTranslation("ID_MESS_ENGINE_TYPE_2");
+                    $engine = G::LoadTranslation("ID_MESS_ENGINE_TYPE_2");
                     break;
                 case "OPENMAIL":
-                    $engine = \G::LoadTranslation("ID_MESS_ENGINE_TYPE_3");
+                    $engine = G::LoadTranslation("ID_MESS_ENGINE_TYPE_3");
                     break;
             }
 
@@ -141,12 +192,12 @@ class EmailServer
             $sBodyPre->prepare();
             $sBodyPre->assign("server", $_SERVER["SERVER_NAME"]);
             $sBodyPre->assign("date", date("H:i:s"));
-            $sBodyPre->assign("ver", \System::getVersion());
+            $sBodyPre->assign("ver", System::getVersion());
             $sBodyPre->assign("engine", $engine);
             $sBodyPre->assign("msg", $msg);
             $sBody = $sBodyPre->getOutputContent();
 
-            $oSpool = new \spoolRun();
+            $oSpool = new SpoolRun();
 
             $oSpool->setConfig($aConfiguration);
 
@@ -177,7 +228,7 @@ class EmailServer
             if ($oSpool->status == "sent") {
                 $arrayTestMailResult["status"]  = true;
                 $arrayTestMailResult["success"] = true;
-                $arrayTestMailResult["msg"]     = \G::LoadTranslation("ID_MAIL_TEST_SUCCESS");
+                $arrayTestMailResult["msg"]     = G::LoadTranslation("ID_MAIL_TEST_SUCCESS");
             } else {
                 $arrayTestMailResult["status"]  = false;
                 $arrayTestMailResult["success"] = false;
@@ -185,7 +236,7 @@ class EmailServer
             }
 
             return $arrayTestMailResult;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -196,13 +247,12 @@ class EmailServer
      * @param array $arrayData Data
      * @param int   $step      Step
      *
-     * return array Return array with result of test connection by step
+     * @return array, return array with result of test connection by step
+     * @throws Exception
      */
     public function testConnectionByStep(array $arrayData, $step = 0)
     {
         try {
-            \G::LoadClass("net");
-            \G::LoadThirdParty("phpmailer", "class.smtp");
 
             //MAIL
             if ($arrayData["MESS_ENGINE"] == "MAIL") {
@@ -212,7 +262,7 @@ class EmailServer
                 $eregMail = "/^[0-9a-zA-Z]+(?:[._][0-9a-zA-Z]+)*@[0-9a-zA-Z]+(?:[._-][0-9a-zA-Z]+)*\.[0-9a-zA-Z]{2,3}$/";
 
                 $arrayDataMail["FROM_EMAIL"]    = ($arrayData["MESS_FROM_MAIL"] != "" && preg_match($eregMail, $arrayData["MESS_FROM_MAIL"]))? $arrayData["MESS_FROM_MAIL"] : "";
-                $arrayDataMail["FROM_NAME"]     = ($arrayData["MESS_FROM_NAME"] != "")? $arrayData["MESS_FROM_NAME"] : \G::LoadTranslation("ID_MESS_TEST_BODY");
+                $arrayDataMail["FROM_NAME"]     = ($arrayData["MESS_FROM_NAME"] != "")? $arrayData["MESS_FROM_NAME"] : G::LoadTranslation("ID_MESS_TEST_BODY");
                 $arrayDataMail["MESS_ENGINE"]   = "MAIL";
                 $arrayDataMail["MESS_SERVER"]   = "localhost";
                 $arrayDataMail["MESS_PORT"]     = 25;
@@ -237,7 +287,7 @@ class EmailServer
                 );
 
                 if ($arrayTestMailResult["status"] == false) {
-                    $arrayResult["message"] = \G::LoadTranslation("ID_SENDMAIL_NOT_INSTALLED");
+                    $arrayResult["message"] = G::LoadTranslation("ID_SENDMAIL_NOT_INSTALLED");
                 }
 
                 //Return
@@ -256,7 +306,7 @@ class EmailServer
                 $passwdHide = "";
             }
 
-            $passwdDec = \G::decrypt($passwd,"EMAILENCRYPT");
+            $passwdDec = G::decrypt($passwd,"EMAILENCRYPT");
             $auxPass = explode("hash:", $passwdDec);
 
             if (count($auxPass) > 1) {
@@ -277,7 +327,7 @@ class EmailServer
             $mailTo = $arrayData["MAIL_TO"];
             $smtpSecure = $arrayData["SMTPSECURE"];
 
-            $serverNet = new \NET($server);
+            $serverNet = new \Net($server);
             $smtp = new \SMTP();
 
             $timeout = 10;
@@ -382,7 +432,7 @@ class EmailServer
                             $eregMail = "/^[0-9a-zA-Z]+(?:[._][0-9a-zA-Z]+)*@[0-9a-zA-Z]+(?:[._-][0-9a-zA-Z]+)*\.[0-9a-zA-Z]{2,3}$/";
 
                             $arrayDataPhpMailer["FROM_EMAIL"]    = ($fromMail != "" && preg_match($eregMail, $fromMail))? $fromMail : "";
-                            $arrayDataPhpMailer["FROM_NAME"]     = $arrayData["MESS_FROM_NAME"] != "" ? $arrayData["MESS_FROM_NAME"] : \G::LoadTranslation("ID_MESS_TEST_BODY");
+                            $arrayDataPhpMailer["FROM_NAME"]     = $arrayData["MESS_FROM_NAME"] != "" ? $arrayData["MESS_FROM_NAME"] : G::LoadTranslation("ID_MESS_TEST_BODY");
                             $arrayDataPhpMailer["MESS_ENGINE"]   = "PHPMAILER";
                             $arrayDataPhpMailer["MESS_SERVER"]   = $server;
                             $arrayDataPhpMailer["MESS_PORT"]     = $port;
@@ -425,7 +475,7 @@ class EmailServer
 
             //Return
             return $arrayResult;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $arrayResult = array();
 
             $arrayResult["result"] = false;
@@ -441,7 +491,8 @@ class EmailServer
      *
      * @param array $arrayData Data
      *
-     * return array Return array with result of test connection
+     * @return array, return array with result of test connection
+     * @throws Exception
      */
     public function testConnection(array $arrayData)
     {
@@ -471,11 +522,11 @@ class EmailServer
                     $arrayDataAux["MAIL_TO"] = "admin@processmaker.com";
 
                     $arrayResult[$arrayMailTestName[1]] = $this->testConnectionByStep($arrayDataAux);
-                    $arrayResult[$arrayMailTestName[1]]["title"] = \G::LoadTranslation("ID_EMAIL_SERVER_TEST_CONNECTION_VERIFYING_MAIL");
+                    $arrayResult[$arrayMailTestName[1]]["title"] = G::LoadTranslation("ID_EMAIL_SERVER_TEST_CONNECTION_VERIFYING_MAIL");
 
                     if ((int)($arrayData["MESS_TRY_SEND_INMEDIATLY"]) == 1 && $arrayData['MAIL_TO'] != '') {
                         $arrayResult[$arrayMailTestName[2]] = $this->testConnectionByStep($arrayData);
-                        $arrayResult[$arrayMailTestName[2]]["title"] = \G::LoadTranslation("ID_EMAIL_SERVER_TEST_CONNECTION_SENDING_EMAIL", array($arrayData["MAIL_TO"]));
+                        $arrayResult[$arrayMailTestName[2]]["title"] = G::LoadTranslation("ID_EMAIL_SERVER_TEST_CONNECTION_SENDING_EMAIL", array($arrayData["MAIL_TO"]));
                     }
                     break;
                 case "PHPMAILER":
@@ -486,19 +537,19 @@ class EmailServer
 
                         switch ($step) {
                             case 1:
-                                $arrayResult[$arrayPhpMailerTestName[$step]]["title"] = \G::LoadTranslation("ID_EMAIL_SERVER_TEST_CONNECTION_RESOLVING_NAME", array($arrayData["MESS_SERVER"]));
+                                $arrayResult[$arrayPhpMailerTestName[$step]]["title"] = G::LoadTranslation("ID_EMAIL_SERVER_TEST_CONNECTION_RESOLVING_NAME", array($arrayData["MESS_SERVER"]));
                                 break;
                             case 2:
-                                $arrayResult[$arrayPhpMailerTestName[$step]]["title"] = \G::LoadTranslation("ID_EMAIL_SERVER_TEST_CONNECTION_CHECK_PORT", array($arrayData["MESS_PORT"]));
+                                $arrayResult[$arrayPhpMailerTestName[$step]]["title"] = G::LoadTranslation("ID_EMAIL_SERVER_TEST_CONNECTION_CHECK_PORT", array($arrayData["MESS_PORT"]));
                                 break;
                             case 3:
-                                $arrayResult[$arrayPhpMailerTestName[$step]]["title"] = \G::LoadTranslation("ID_EMAIL_SERVER_TEST_CONNECTION_ESTABLISHING_CON_HOST", array($arrayData["MESS_SERVER"] . ":" . $arrayData["MESS_PORT"]));
+                                $arrayResult[$arrayPhpMailerTestName[$step]]["title"] = G::LoadTranslation("ID_EMAIL_SERVER_TEST_CONNECTION_ESTABLISHING_CON_HOST", array($arrayData["MESS_SERVER"] . ":" . $arrayData["MESS_PORT"]));
                                 break;
                             case 4:
-                                $arrayResult[$arrayPhpMailerTestName[$step]]["title"] = \G::LoadTranslation("ID_EMAIL_SERVER_TEST_CONNECTION_LOGIN", array($arrayData["MESS_ACCOUNT"], $arrayData["MESS_SERVER"]));
+                                $arrayResult[$arrayPhpMailerTestName[$step]]["title"] = G::LoadTranslation("ID_EMAIL_SERVER_TEST_CONNECTION_LOGIN", array($arrayData["MESS_ACCOUNT"], $arrayData["MESS_SERVER"]));
                                 break;
                             case 5:
-                                $arrayResult[$arrayPhpMailerTestName[$step]]["title"] = \G::LoadTranslation("ID_EMAIL_SERVER_TEST_CONNECTION_SENDING_EMAIL", array($arrayData["MAIL_TO"]));
+                                $arrayResult[$arrayPhpMailerTestName[$step]]["title"] = G::LoadTranslation("ID_EMAIL_SERVER_TEST_CONNECTION_SENDING_EMAIL", array($arrayData["MAIL_TO"]));
                                 break;
                         }
                     }
@@ -507,7 +558,7 @@ class EmailServer
 
             //Result
             return $arrayResult;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -517,7 +568,8 @@ class EmailServer
      *
      * @param string $emailServerUid Unique id of Email Server
      *
-     * return bool Return true if is default Email Server, false otherwise
+     * @return bool, return true if is default Email Server, false otherwise
+     * @throws Exception
      */
     public function checkIfIsDefault($emailServerUid)
     {
@@ -534,7 +586,7 @@ class EmailServer
             } else {
                 return false;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -545,7 +597,8 @@ class EmailServer
      * @param string $emailServerUid Unique id of Email Server
      * @param array  $arrayData      Data
      *
-     * return void Throw exception if data has an invalid value
+     * @return void Throw exception if data has an invalid value
+     * @throws Exception
      */
     public function throwExceptionIfDataIsInvalid($emailServerUid, array $arrayData)
     {
@@ -613,10 +666,10 @@ class EmailServer
                 }
 
                 if ($msg != "") {
-                    throw new \Exception($msg);
+                    throw new Exception($msg);
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -627,7 +680,8 @@ class EmailServer
      * @param string $emailServerUid        Unique id of Email Server
      * @param string $fieldNameForException Field name for the exception
      *
-     * return void Throw exception if does not exist the Email Server in table EMAIL_SERVER
+     * @return void Throw exception if does not exist the Email Server in table EMAIL_SERVER
+     * @throws Exception
      */
     public function throwExceptionIfNotExistsEmailServer($emailServerUid, $fieldNameForException)
     {
@@ -635,9 +689,9 @@ class EmailServer
             $obj = \EmailServerPeer::retrieveByPK($emailServerUid);
 
             if (is_null($obj)) {
-                throw new \Exception(\G::LoadTranslation("ID_EMAIL_SERVER_DOES_NOT_EXIST", array($fieldNameForException, $emailServerUid)));
+                throw new Exception(G::LoadTranslation("ID_EMAIL_SERVER_DOES_NOT_EXIST", array($fieldNameForException, $emailServerUid)));
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -648,15 +702,16 @@ class EmailServer
      * @param string $emailServerUid        Unique id of Email Server
      * @param string $fieldNameForException Field name for the exception
      *
-     * return void Throw exception if is default Email Server
+     * @return void Throw exception if is default Email Server
+     * @throws Exception
      */
     public function throwExceptionIfIsDefault($emailServerUid, $fieldNameForException)
     {
         try {
             if ($this->checkIfIsDefault($emailServerUid)) {
-                throw new \Exception(\G::LoadTranslation("ID_EMAIL_SERVER_IS_DEFAULT", array($fieldNameForException, $emailServerUid)));
+                throw new Exception(G::LoadTranslation("ID_EMAIL_SERVER_IS_DEFAULT", array($fieldNameForException, $emailServerUid)));
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -666,7 +721,8 @@ class EmailServer
      *
      * @param string $emailServerUid Unique id of Email Server
      *
-     * return void
+     * @return void
+     * @throws Exception
      */
     public function setEmailServerDefaultByUid($emailServerUid)
     {
@@ -707,7 +763,8 @@ class EmailServer
      *
      * @param array $arrayData Data
      *
-     * return array Return data of the new Email Server created
+     * @return array, data of the new Email Server created
+     * @throws Exception
      */
     public function create(array $arrayData)
     {
@@ -733,7 +790,7 @@ class EmailServer
                 $emailServer = new \EmailServer();
 
                 $passwd = $arrayData["MESS_PASSWORD"];
-                $passwdDec = \G::decrypt($passwd, "EMAILENCRYPT");
+                $passwdDec = G::decrypt($passwd, "EMAILENCRYPT");
                 $auxPass = explode("hash:", $passwdDec);
 
                 if (count($auxPass) > 1) {
@@ -749,7 +806,7 @@ class EmailServer
 
                 if ($arrayData["MESS_PASSWORD"] != "") {
                     $arrayData["MESS_PASSWORD"] = "hash:" . $arrayData["MESS_PASSWORD"];
-                    $arrayData["MESS_PASSWORD"] = \G::encrypt($arrayData["MESS_PASSWORD"], "EMAILENCRYPT");
+                    $arrayData["MESS_PASSWORD"] = G::encrypt($arrayData["MESS_PASSWORD"], "EMAILENCRYPT");
                 }
 
                 $emailServer->fromArray($arrayData, \BasePeer::TYPE_FIELDNAME);
@@ -769,7 +826,29 @@ class EmailServer
                         $this->setEmailServerDefaultByUid($emailServerUid);
                     }
 
-                    //Return
+                    //Logging the create action
+                    $this->getDefaultContextLog();
+                    $info = array(
+                        'action' => 'Create email server',
+                        'messUid'=> $emailServerUid,
+                        'engine'=> $arrayData["MESS_ENGINE"],
+                        'server' => $arrayData["MESS_SERVER"],
+                        'port' => $arrayData["MESS_PORT"],
+                        'requireAuthentication' => $arrayData["MESS_RAUTH"],
+                        'account' => $arrayData["MESS_ACCOUNT"],
+                        'senderEmail' => $arrayData["MESS_FROM_MAIL"],
+                        'senderName' => $arrayData["MESS_FROM_NAME"],
+                        'useSecureConnection' => $arrayData["SMTPSECURE"],
+                        'sendTestEmail' => $arrayData["MESS_TRY_SEND_INMEDIATLY"],
+                        'setAsDefaultConfiguration' => $arrayData["MESS_DEFAULT"]
+                    );
+                    $this->setContextLog($info);
+                    $this->syslog(
+                        'CreateEmailServer',
+                        200,
+                        'New email server was created',
+                        $this->getContextLog()
+                    );
                     return $this->getEmailServer($emailServerUid);
                 } else {
                     $msg = "";
@@ -778,14 +857,14 @@ class EmailServer
                         $msg = $msg . (($msg != "")? "\n" : "") . $validationFailure->getMessage();
                     }
 
-                    throw new \Exception(\G::LoadTranslation("ID_RECORD_CANNOT_BE_CREATED") . (($msg != "")? "\n" . $msg : ""));
+                    throw new Exception(G::LoadTranslation("ID_RECORD_CANNOT_BE_CREATED") . (($msg != "")? "\n" . $msg : ""));
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $cnn->rollback();
 
                 throw $e;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -795,7 +874,8 @@ class EmailServer
      *
      * @param array $arrayData Data
      *
-     * return array Return data of the new Email Server created
+     * @return array, return data of the new Email Server created
+     * @throws Exception
      */
     public function create2(array $arrayData)
     {
@@ -832,14 +912,14 @@ class EmailServer
                         $msg = $msg . (($msg != "")? "\n" : "") . $validationFailure->getMessage();
                     }
 
-                    throw new \Exception(\G::LoadTranslation("ID_RECORD_CANNOT_BE_CREATED") . (($msg != "")? "\n" . $msg : ""));
+                    throw new Exception(G::LoadTranslation("ID_RECORD_CANNOT_BE_CREATED") . (($msg != "")? "\n" . $msg : ""));
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $cnn->rollback();
 
                 throw $e;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -850,7 +930,8 @@ class EmailServer
      * @param string $emailServerUid Unique id of Group
      * @param array  $arrayData      Data
      *
-     * return array Return data of the Email Server updated
+     * @return array Return data of the Email Server updated
+     * @throws Exception
      */
     public function update($emailServerUid, $arrayData)
     {
@@ -878,7 +959,7 @@ class EmailServer
 
                 if (isset($arrayData['MESS_PASSWORD'])) {
                     $passwd = $arrayData['MESS_PASSWORD'];
-                    $passwdDec = \G::decrypt($passwd, 'EMAILENCRYPT');
+                    $passwdDec = G::decrypt($passwd, 'EMAILENCRYPT');
                     $auxPass = explode('hash:', $passwdDec);
 
                     if (count($auxPass) > 1) {
@@ -894,7 +975,7 @@ class EmailServer
 
                     if ($arrayData['MESS_PASSWORD'] != '') {
                         $arrayData['MESS_PASSWORD'] = 'hash:' . $arrayData['MESS_PASSWORD'];
-                        $arrayData['MESS_PASSWORD'] = \G::encrypt($arrayData['MESS_PASSWORD'], 'EMAILENCRYPT');
+                        $arrayData['MESS_PASSWORD'] = G::encrypt($arrayData['MESS_PASSWORD'], 'EMAILENCRYPT');
                     }
                 }
 
@@ -916,6 +997,30 @@ class EmailServer
                         $arrayData = array_change_key_case($arrayData, CASE_LOWER);
                     }
 
+                    //Logging the update action
+                    $this->getDefaultContextLog();
+                    $info = array(
+                        'action' => 'Update email server',
+                        'messUid' => $emailServerUid,
+                        'engine' => $arrayData["MESS_ENGINE"],
+                        'server' => $arrayData["MESS_SERVER"],
+                        'port' => $arrayData["MESS_PORT"],
+                        'requireAuthentication' => $arrayData["MESS_RAUTH"],
+                        'account' => $arrayData["MESS_ACCOUNT"],
+                        'senderEmail' => $arrayData["MESS_FROM_MAIL"],
+                        'senderName' => $arrayData["MESS_FROM_NAME"],
+                        'useSecureConnection' => $arrayData["SMTPSECURE"],
+                        'sendTestEmail' => $arrayData["MESS_TRY_SEND_INMEDIATLY"],
+                        'setAsDefaultConfiguration' => $arrayData["MESS_DEFAULT"]
+                    );
+                    $this->setContextLog($info);
+                    $this->syslog(
+                        'UpdateEmailServer',
+                        200,
+                        'The email server was updated',
+                        $this->getContextLog()
+                    );
+
                     return $arrayData;
                 } else {
                     $msg = "";
@@ -924,14 +1029,14 @@ class EmailServer
                         $msg = $msg . (($msg != "")? "\n" : "") . $validationFailure->getMessage();
                     }
 
-                    throw new \Exception(\G::LoadTranslation("ID_RECORD_CANNOT_BE_CREATED") . (($msg != "")? "\n" . $msg : ""));
+                    throw new Exception(G::LoadTranslation("ID_RECORD_CANNOT_BE_CREATED") . (($msg != "")? "\n" . $msg : ""));
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $cnn->rollback();
 
                 throw $e;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -941,22 +1046,33 @@ class EmailServer
      *
      * @param string $emailServerUid Unique id of Email Server
      *
-     * return void
+     * @return void
+     * @throws Exception
      */
     public function delete($emailServerUid)
     {
         try {
             //Verify data
             $this->throwExceptionIfNotExistsEmailServer($emailServerUid, $this->arrayFieldNameForException["emailServerUid"]);
-
             $this->throwExceptionIfIsDefault($emailServerUid, $this->arrayFieldNameForException["emailServerUid"]);
-
             $criteria = $this->getEmailServerCriteria();
-
             $criteria->add(\EmailServerPeer::MESS_UID, $emailServerUid, \Criteria::EQUAL);
-
             \EmailServerPeer::doDelete($criteria);
-        } catch (\Exception $e) {
+
+            //Logging the delete action
+            $this->getDefaultContextLog();
+            $info = array(
+                'action' => 'Delete email server',
+                'messUid' => $emailServerUid
+            );
+            $this->setContextLog($info);
+            $this->syslog(
+                'DeleteEmailServer',
+                200,
+                'The email server was deleted',
+                $this->getContextLog()
+            );
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -986,7 +1102,7 @@ class EmailServer
             $criteria->addSelectColumn(\EmailServerPeer::MESS_DEFAULT);
 
             return $criteria;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -996,7 +1112,8 @@ class EmailServer
      *
      * @param array $record Record
      *
-     * return array Return an array with data Email Server
+     * @return array, return an array with data Email Server
+     * @throws Exception
      */
     public function getEmailServerDataFromRecord(array $record)
     {
@@ -1020,7 +1137,7 @@ class EmailServer
                 $this->getFieldNameByFormatFieldName("MESS_EXECUTE_EVERY")       => '',
                 $this->getFieldNameByFormatFieldName("MESS_SEND_MAX")            => ''
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -1068,7 +1185,7 @@ class EmailServer
 
             //Return
             return $arrayData;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -1082,7 +1199,8 @@ class EmailServer
      * @param int    $start           Start
      * @param int    $limit           Limit
      *
-     * return array Return an array with all Email Servers
+     * @return array, return an array with all Email Servers
+     * @throws Exception
      */
     public function getEmailServers($arrayFilterData = null, $sortField = null, $sortDir = null, $start = null, $limit = null)
     {
@@ -1105,10 +1223,10 @@ class EmailServer
             if (!is_null($arrayFilterData) && is_array($arrayFilterData) && isset($arrayFilterData["filter"]) && trim($arrayFilterData["filter"]) != "") {
                 $criteria->add(
                     $criteria->getNewCriterion(\EmailServerPeer::MESS_ENGINE,    "%" . $arrayFilterData["filter"] . "%", \Criteria::LIKE)->addOr(
-                    $criteria->getNewCriterion(\EmailServerPeer::MESS_SERVER,    "%" . $arrayFilterData["filter"] . "%", \Criteria::LIKE))->addOr(
-                    $criteria->getNewCriterion(\EmailServerPeer::MESS_ACCOUNT,   "%" . $arrayFilterData["filter"] . "%", \Criteria::LIKE))->addOr(
-                    $criteria->getNewCriterion(\EmailServerPeer::MESS_FROM_NAME, "%" . $arrayFilterData["filter"] . "%", \Criteria::LIKE))->addOr(
-                    $criteria->getNewCriterion(\EmailServerPeer::SMTPSECURE,     "%" . $arrayFilterData["filter"] . "%", \Criteria::LIKE))
+                        $criteria->getNewCriterion(\EmailServerPeer::MESS_SERVER,    "%" . $arrayFilterData["filter"] . "%", \Criteria::LIKE))->addOr(
+                        $criteria->getNewCriterion(\EmailServerPeer::MESS_ACCOUNT,   "%" . $arrayFilterData["filter"] . "%", \Criteria::LIKE))->addOr(
+                        $criteria->getNewCriterion(\EmailServerPeer::MESS_FROM_NAME, "%" . $arrayFilterData["filter"] . "%", \Criteria::LIKE))->addOr(
+                        $criteria->getNewCriterion(\EmailServerPeer::SMTPSECURE,     "%" . $arrayFilterData["filter"] . "%", \Criteria::LIKE))
                 );
             }
 
@@ -1160,7 +1278,7 @@ class EmailServer
                 $row = $rsCriteria->getRow();
 
                 $passwd = $row["MESS_PASSWORD"];
-                $passwdDec = \G::decrypt($passwd, "EMAILENCRYPT");
+                $passwdDec = G::decrypt($passwd, "EMAILENCRYPT");
                 $auxPass = explode("hash:", $passwdDec);
 
                 if (count($auxPass) > 1) {
@@ -1185,7 +1303,7 @@ class EmailServer
                 "filter" => (!is_null($arrayFilterData) && is_array($arrayFilterData) && isset($arrayFilterData["filter"]))? $arrayFilterData["filter"] : "",
                 "data"   => $arrayEmailServer
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -1196,7 +1314,8 @@ class EmailServer
      * @param string $emailServerUid Unique id of Email Server
      * @param bool   $flagGetRecord  Value that set the getting
      *
-     * return array Return an array with data of a Email Server
+     * @return array, return an array with data of a Email Server
+     * @throws Exception
      */
     public function getEmailServer($emailServerUid, $flagGetRecord = false)
     {
@@ -1228,7 +1347,7 @@ class EmailServer
 
             //Return
             return (!$flagGetRecord)? $this->getEmailServerDataFromRecord($row) : $row;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -1249,6 +1368,32 @@ class EmailServer
         $rsCriteria->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
         $rsCriteria->next();
         return $rsCriteria->getRow();
+    }
+
+    /**
+     * Logging information related to the email server
+     * When the user create, update, delete the email server
+     *
+     * @param string $channel
+     * @param string $level
+     * @param string $message
+     * @param array $context
+     *
+     * @return void
+     * @throws Exception
+     */
+    private function syslog(
+        $channel,
+        $level,
+        $message,
+        $context = array()
+    )
+    {
+        try {
+            Bootstrap::registerMonolog($channel, $level, $message, $context, $context['workspace'], 'processmaker.log');
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 }
 

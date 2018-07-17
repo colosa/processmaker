@@ -718,7 +718,6 @@ class Task extends BaseTask
     public function setTasCalendar($taskUid, $calendarUid)
     {
         //Save Calendar ID for this process
-        G::LoadClass("calendar");
         $calendarObj = new Calendar();
         $calendarObj->assignCalendarTo($taskUid, $calendarUid, 'TASK');
     }

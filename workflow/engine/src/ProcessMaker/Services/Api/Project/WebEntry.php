@@ -71,12 +71,19 @@ class WebEntry extends Api
     }
 
     /**
+     * Creates a new Web Entry using the method "PHP pages with Web Services".
+     * 
      * @url POST /:prj_uid/web-entry
-     *
+     * @status 201
+     * 
      * @param string $prj_uid      {@min 32}{@max 32}
      * @param array  $request_data
-     *
-     * @status 201
+     * 
+     * @return array
+     * @throws RestException
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPostWebEntry($prj_uid, array $request_data)
     {
@@ -93,11 +100,18 @@ class WebEntry extends Api
     }
 
     /**
+     * Update web-entry.
+     *
      * @url PUT /:prj_uid/web-entry/:we_uid
      *
      * @param string $prj_uid      {@min 32}{@max 32}
      * @param string $we_uid       {@min 32}{@max 32}
      * @param array  $request_data
+     *
+     * @throws RestException
+     *
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPutWebEntry($prj_uid, $we_uid, array $request_data)
     {
@@ -111,6 +125,8 @@ class WebEntry extends Api
 
     /**
      * @url DELETE /:prj_uid/web-entry/:we_uid
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      *
      * @param string $prj_uid {@min 32}{@max 32}
      * @param string $we_uid  {@min 32}{@max 32}

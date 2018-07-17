@@ -35,12 +35,7 @@ try {
             die();
             break;
     }
-    // deprecated the class XmlForm_Field_Image is currently part of the class.xmlform.php package
-    // the use of the external xmlfield_Image is highly discouraged
-    if (! class_exists( 'XmlForm_Field_Image' )) {
-        G::LoadClass( 'xmlfield_Image' );
-    }
-    require_once 'classes/model/Users.php';
+
     $_SESSION['CURRENT_USER'] = $_GET['USR_UID'];
     $oUser = new Users();
     $aFields = $oUser->load( $_GET['USR_UID'] );

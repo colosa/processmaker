@@ -1,5 +1,5 @@
 <?php
-G::LoadSystem('inputfilter');
+
 $filter = new InputFilter();
 $_REQUEST = $filter->xssFilterHard($_REQUEST);
 

@@ -34,7 +34,6 @@ if (! isset( $_SESSION['PROCESS'] )) {
 $G_MAIN_MENU = 'caseTracker';
 $G_ID_MENU_SELECTED = 'MESSAGES';
 
-G::LoadClass( "case" );
 $Fields = Cases::getHistoryMessagesTrackerView( $_GET['APP_UID'], $_GET['APP_MSG_UID'] );
 
 $G_PUBLISH = new Publisher();

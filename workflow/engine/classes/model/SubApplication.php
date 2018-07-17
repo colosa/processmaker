@@ -90,5 +90,26 @@ class SubApplication extends BaseSubApplication
             throw($oError);
         }
     }
+
+    /**
+     * This function is relate to subprocess, verify is parent case had create a case
+     * This is relevant for SYNCHRONOUS subprocess
+     * @param string $appUid
+     * @param integer $delIndex
+     * @return boolean
+     */
+    public function isSubProcessWithCasePending($appUid, $delIndex){
+        $oCriteria = new Criteria('workflow');
+        $oCriteria->add(SubApplicationPeer::APP_PARENT, $appUid);
+        $oCriteria->add(SubApplicationPeer::DEL_INDEX_PARENT, $delIndex);
+        $oCriteria->add(SubApplicationPeer::SA_STATUS, 'ACTIVE');
+        $oDataset = SubApplicationPeer::doSelectRS($oCriteria);
+        $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+        if ($oDataset->next()) {
+            return true;
+        }
+        return false;
+    }
 }
 

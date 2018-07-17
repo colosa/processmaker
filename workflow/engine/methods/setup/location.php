@@ -31,8 +31,6 @@ $uid = $_SESSION['USER_LOGGED'];
 $dbc = new DBConnection();
 $ses = new DBSession( $dbc );
 
-G::LoadClass( 'templateTable' );
-
 $query = $ses->execute( 'select USR_COUNTRY ,USR_CITY ,USR_LOCATION from USER where UID = "' . $uid . '"' );
 $param = $query->read();
 

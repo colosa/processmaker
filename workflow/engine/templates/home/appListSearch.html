@@ -101,11 +101,11 @@
             src = src.split("?");
 
             var params = '?';
-            params += 'process='+$("#comboProcess option:selected").val();
+            params += 'process='+$("#comboProcess").val();
             params += '&status='+$("#comboStatus option:selected").val();
             params += '&search='+$("#searchText").val();
             params += '&category='+$("#comboCategory option:selected").val();
-            params += '&user='+$("#comboUsers option:selected").val();
+            params += '&user='+$("#comboUsers").val();
             params += '&dateFrom='+$("#dateFrom").val();
             params += '&dateTo='+$("#dateTo").val();
 
@@ -261,7 +261,22 @@
             $("#comboUsers").val(user);
             $("#dateFrom").val(dateFrom);
             $("#dateTo").val(dateTo);
-
+            $("#comboProcessAuto" ).autocomplete({
+                source: "getProcesses?t="+listType,
+                minLength: 1,
+                select: function( event, ui ) {
+                    $("#comboProcess").val(ui.item.id);
+                    $("#comboProcess").trigger("change");
+                }
+            });
+            $("#comboUsersAuto" ).autocomplete({
+                source: "getUsers?t="+listType,
+                minLength: 1,
+                select: function( event, ui ) {
+                    $("#comboUsers").val(ui.item.id);
+                    $("#comboUsers").trigger("change");
+                }
+            });
         });
         {/literal}
 
@@ -294,11 +309,8 @@
                 </select>
             </div>
             <div style = "float: right;"> <b>{$processTitle}:</b>
-                <select id="comboProcess" onchange="redirect();" style="width: 220px">
-                    {foreach from=$processValues key=k item=VALUE}
-                    <option value="{$VALUE[0]}">{$VALUE[1]}</option>
-                    {/foreach}
-                </select>
+                <input id="comboProcessAuto" style="width: 220px" placeholder="{$allProcessLabel}" value="{$processCurrentTitle|htmlentities:2:"UTF-8"}">
+                <input id="comboProcess" onchange="redirect();" type="hidden">
             </div>
             <div style = "float: left;"> <b>{$statusTitle}:&nbsp;&nbsp;&nbsp;&nbsp;</b>
                 <select id="comboStatus" onchange="redirect();" style="width: 200px">
@@ -319,11 +331,8 @@
 
         <div id='panelDown' style = "display: none; width: 95%;">
             <div style = "float: left;"> <b>{$userTitle}:&nbsp;&nbsp;&nbsp;&nbsp;</b>
-                <select id="comboUsers" onchange="redirect();" style="width: 400px">
-                    {foreach from=$userValues key=k item=VALUE}
-                    <option value="{$VALUE[0]}">{$VALUE[1]}</option>
-                    {/foreach}
-                </select>
+                <input id="comboUsersAuto" style="width: 400px" placeholder="{$currentUserLabel|htmlentities:2:'UTF-8'}" value="{$userCurrentName|htmlentities:2:'UTF-8'}">
+                <input id="comboUsers" onchange="redirect();" type="hidden">
             </div>
             <div style = "float: left;"><b>{$fromTitle} &nbsp;&nbsp;</b>
                 <input id="dateFrom" type="text" size="10">
@@ -347,7 +356,7 @@
 
   <center>
     <div class="content-header" style="text-align:left">
-      <h1 style="padding: 10px">{$title} ({$cases_count})</h1>
+      <h1 style="padding: 10px">{$title}</h1>
       <ul id="commentlist">
         {include file='home/applications.html'}
       </ul>

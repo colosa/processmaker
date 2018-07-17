@@ -5,8 +5,7 @@
  * @package workflow.engine.classes.model
  */
 
-//require_once 'classes/model/om/BaseAppFolder.php';
-//require_once 'classes/model/Application.php';
+use ProcessMaker\Plugins\PluginRegistry;
 
 /**
  * Skeleton subclass for representing a row from the 'APP_FOLDER' table.
@@ -293,9 +292,7 @@ class AppFolder extends BaseAppFolder
         //require_once ("classes/model/OutputDocument.php");
         //require_once ("classes/model/Users.php");
 
-        G::LoadClass( 'case' );
         $oCase = new Cases();
-        G::LoadClass( 'process' );
         $oProcess = new Process();
 
         $oAppDocument = new AppDocument();
@@ -447,9 +444,7 @@ class AppFolder extends BaseAppFolder
 
     public function getDirectoryContentSortedBy ($folderID, $docIdFilter = array(), $keyword = null, $searchType = null, $limit = 0, $start = 0, $user = '', $onlyActive = false, $direction = 'ASC', $ColumnSort = 'appDocCreateDate', $search = null)
     {
-        G::LoadClass( 'case' );
         $oCase = new Cases();
-        G::LoadClass( 'process' );
         $oProcess = new Process();
 
         $oAppDocument = new AppDocument();
@@ -606,9 +601,7 @@ class AppFolder extends BaseAppFolder
         //**** start get Doc Info
         $oApp = new Application();
         $oAppDocument = new AppDocument();
-        G::LoadClass( 'case' );
         $oCase = new Cases();
-        G::LoadClass( 'process' );
         $oProcess = new Process();
         if (($oApp->exists( $appUid )) || ($appUid == "00000000000000000000000000000000")) {
             if ($appUid == "00000000000000000000000000000000") {
@@ -730,7 +723,7 @@ class AppFolder extends BaseAppFolder
                     }
 
                     if (! empty( $row1["APP_DOC_PLUGIN"] )) {
-                        $pluginRegistry = &PMPluginRegistry::getSingleton();
+                        $pluginRegistry = PluginRegistry::loadSingleton();
                         $pluginName = $row1["APP_DOC_PLUGIN"];
                         $fieldValue = "";
 
@@ -738,7 +731,7 @@ class AppFolder extends BaseAppFolder
                             $pluginDetail = $pluginRegistry->getPluginDetails( $pluginName . ".php" );
 
                             if ($pluginDetail) {
-                                if ($pluginDetail->enabled) {
+                                if ($pluginDetail->isEnabled()) {
                                     require_once (PATH_PLUGINS . $pluginName . ".php");
                                     $pluginNameClass = $pluginName . "Plugin";
                                     $objPluginClass = new $pluginNameClass( $pluginName );

@@ -24,7 +24,7 @@
  */
 
 try {
-  G::LoadClass('replacementLogo');
+
   $uplogo = PATH_TPL . 'setup' . PATH_SEP . 'uplogo.html' ;
   $template = new TemplatePower( $uplogo );
   $template->prepare();
@@ -33,7 +33,7 @@ try {
   $template->assign ('WIDTH_PANEL'              ,$width);
   $template->assign ('WIDTH_PANEL_20'              ,$width-20);
   
-  $upload = new replacementLogo();
+  $upload = new ReplacementLogo();
   $aFotoSelect = $upload->getNameLogo($_SESSION['USER_LOGGED']);
   $sFotoSelect = trim($aFotoSelect['DEFAULT_LOGO_NAME']);
   $check ='';

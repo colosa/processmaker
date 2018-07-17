@@ -29,7 +29,7 @@
  * @Date 16/05/2008
  * @LastModification none
  */
-//G::LoadThirdParty( 'pear/json', 'class.json' );
+
 try {
     //$oJSON = new Services_JSON();
     $stdObj = Bootstrap::json_decode( stripslashes( $_POST['data'] ) );
@@ -38,7 +38,6 @@ try {
     else
         throw (new Exception( 'the process uid is not defined!.' ));
 
-    G::LoadClass( 'processMap' );
     $oProcessMap = new ProcessMap();
     $c = $oProcessMap->listProcessesUser( $sProUid );
 

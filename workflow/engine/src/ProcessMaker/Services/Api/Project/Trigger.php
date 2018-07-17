@@ -55,6 +55,11 @@ class Trigger extends Api
     }
 
     /**
+     * Create a new trigger in a project.
+     * 
+     * @url POST /:projectUid/trigger
+     * @status 201
+     * 
      * @param string $projectUid {@min 1} {@max 32}
      * @param array $request_data
      * @param string $tri_title {@from body} {@min 1}
@@ -62,13 +67,12 @@ class Trigger extends Api
      * @param string $tri_type {@from body}
      * @param string $tri_webbot {@from body}
      * @param string $tri_param {@from body}
+     * 
      * @return array
-     *
-     * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
-     * @copyright Colosa - Bolivia
-     *
-     * @url POST /:projectUid/trigger
-     * @status 201
+     * @throws RestException
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPostTrigger($projectUid, $request_data, $tri_title, $tri_description = '', $tri_type = 'SCRIPT', $tri_webbot = '', $tri_param = '')
     {
@@ -82,6 +86,10 @@ class Trigger extends Api
     }
 
     /**
+     * Update trigger.
+     *
+     * @url PUT /:projectUid/trigger/:triggerUid
+     *
      * @param string $projectUid {@min 1} {@max 32}
      * @param string $triggerUid {@min 1} {@max 32}
      * @param array $request_data
@@ -90,12 +98,12 @@ class Trigger extends Api
      * @param string $tri_type {@from body}
      * @param string $tri_webbot {@from body}
      * @param string $tri_param {@from body}
+     *
      * @return void
+     * @throws RestException
      *
-     * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
-     * @copyright Colosa - Bolivia
-     *
-     * @url PUT /:projectUid/trigger/:triggerUid
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPutTrigger($projectUid, $triggerUid, $request_data, $tri_title = '', $tri_description = '', $tri_type = 'SCRIPT', $tri_webbot = '', $tri_param = '')
     {
@@ -109,14 +117,14 @@ class Trigger extends Api
     }
 
     /**
+     * @url DELETE /:projectUid/trigger/:triggerUid
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
+     *
      * @param string $projectUid {@min 1} {@max 32}
      * @param string $triggerUid {@min 1} {@max 32}
      * @return void
      *
-     * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
-     * @copyright Colosa - Bolivia
-     *
-     * @url DELETE /:projectUid/trigger/:triggerUid
      */
     public function doDeleteTrigger($projectUid, $triggerUid)
     {

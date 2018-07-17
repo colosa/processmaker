@@ -65,7 +65,6 @@ try {
 
     $G_PUBLISH = new Publisher();
 
-    G::LoadClass( 'case' );
     $aFields['PHP_START_DATE'] = date( 'Y-m-d' );
     $aFields['PRO_UID'] = isset( $_GET['PRO_UID'] ) ? $_GET['PRO_UID'] : $_SESSION['PROCESS'];
     $aFields['PHP_CURRENT_DATE'] = $aFields['PHP_START_DATE'];

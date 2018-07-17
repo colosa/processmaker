@@ -1,12 +1,8 @@
 <?php
-//$oUserId = '2963666854afbb1cea372c4011254883';
+
 $oUserId = $_POST['USR_UID'];
 $process = isset( $_POST['PRO_UID'] ) ? $_POST['PRO_UID'] : $_SESSION['PROCESS'];
-//echo '<select style="width: 300px;" readOnly name="form[PRO_UID]" id="form[PRO_UID]" class="module_app_input___gray" required="1" onChange="loadTasksDropdown(this.value,\''.$oUserId.'\');">';
-require_once ("classes/model/TaskPeer.php");
-require_once ("classes/model/ProcessPeer.php");
-require_once ("classes/model/TaskUserPeer.php");
-G::LoadClass( 'Content' );
+
 
 $oCriteria = new Criteria( 'workflow' );
 $oCriteria->addSelectColumn( ProcessPeer::PRO_UID );

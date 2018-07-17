@@ -3,7 +3,7 @@ node {
     /**
     * Branch should be in gitflow format.  If not, then we'll abort.
     */
-    if(!env.BRANCH_NAME.matches(/(feature|hotfix|bugfix|release)\/.+/) && !env.BRANCH_NAME.matches(/^PR-.*$/)) {
+    if(!env.BRANCH_NAME.matches(/(feature|hotfix|bugfix|release|master|develop)\/.+/) && !env.BRANCH_NAME.matches(/^PR-.*$/)) {
       hipchatSend message: "${env.BRANCH_NAME} Build: Does not match gitflow naming. Aborted", room: 'engineering'
       error "Job does not follow gitflow naming format."
     }

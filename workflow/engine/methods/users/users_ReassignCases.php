@@ -48,7 +48,7 @@ try {
           */
                     $sDataBase = 'database_' . strtolower( DB_ADAPTER );
                     if (G::LoadSystemExist( $sDataBase )) {
-                        G::LoadSystem( $sDataBase );
+
                         $oDataBase = new database();
                         $usr_completename_col = $oDataBase->concatString( "USR_LASTNAME", "' '", "USR_FIRSTNAME", " '('", "USR_USERNAME", "')'" );
                     }
@@ -96,7 +96,7 @@ try {
                     global $_DBArray;
                     $_DBArray['processesToReassign'] = $aProcesses;
                     $_SESSION['_DBArray'] = $_DBArray;
-                    G::LoadClass( 'ArrayPeer' );
+
                     $oCriteria = new Criteria( 'dbarray' );
                     $oCriteria->setDBArrayTable( 'processesToReassign' );
                     $G_PUBLISH->AddContent( 'propeltable', 'cases/paged-table-reassign', 'users/users_ReassignCases', $oCriteria, $_POST );

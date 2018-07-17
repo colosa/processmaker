@@ -46,7 +46,7 @@ if ($access != 1) {
 if (($RBAC_Response = $RBAC->userCanAccess( "PM_USERS" )) != 1) {
     return $RBAC_Response;
 }
-G::LoadClass( 'groups' );
+
 $oGroups = new Groups();
 $oGroup = new Groupwf();
 $aFields = $oGroup->load( $_GET['UID'] );

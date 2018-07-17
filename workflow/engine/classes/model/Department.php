@@ -550,7 +550,6 @@ class Department extends BaseDepartment
                 $row = $rs->getRow();
             }
 
-            G::LoadClass( 'ArrayPeer' );
             global $_DBArray;
             $_DBArray['DepartmentUserList'] = $aUsers;
             $_SESSION['_DBArray'] = $_DBArray;

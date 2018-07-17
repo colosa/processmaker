@@ -59,8 +59,6 @@ if ((isset( $_FILES['form'] )) && ($_FILES['form']['error']['APP_DOC_FILENAME'] 
     die();
 }
 
-G::LoadClass("case");
-
 $inputDocumentUid = $_GET["UID"]; //$_POST["form"]["DOC_UID"]
 $appDocUid = (isset($_POST["form"]["APP_DOC_UID"]))? $_POST["form"]["APP_DOC_UID"] : "";
 $docVersion = (isset($_POST["form"]["docVersion"]))? intval($_POST["form"]["docVersion"]) : "";

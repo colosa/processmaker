@@ -21,8 +21,7 @@ class Tracker extends Api
     public function Authentication($case, $pin)
     {
         try {
-            $oMobile = new \ProcessMaker\BusinessModel\Light\Tracker();
-            $response = $oMobile->authentication($case, $pin);
+            $response = \ProcessMaker\BusinessModel\Light\Tracker::authentication($case, $pin);
         } catch (\Exception $e) {
             throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
         }

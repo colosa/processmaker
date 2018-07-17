@@ -35,7 +35,6 @@ try {
             die();
             break;
     }
-    G::LoadClass( 'processMap' );
     $oProcessMap = new ProcessMap();
     $G_PUBLISH = new Publisher();
 

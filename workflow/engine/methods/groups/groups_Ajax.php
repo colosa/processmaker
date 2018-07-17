@@ -24,12 +24,11 @@
 if (($RBAC_Response = $RBAC->userCanAccess( "PM_USERS" )) != 1) {
     return $RBAC_Response;
 }
-G::LoadInclude( 'ajax' );
 $_POST['action'] = get_ajax_value( 'action' );
 
 switch ($_POST['action']) {
     case 'showUsers':
-        G::LoadClass( 'groups' );
+
         $oGroups = new Groups();
         $oGroup = new Groupwf();
         $aFields = $oGroup->load( $_POST['sGroupUID'] );
@@ -42,12 +41,10 @@ switch ($_POST['action']) {
         G::RenderPage( 'publish', 'raw' );
         break;
     case 'assignUser':
-        G::LoadClass( 'groups' );
         $oGroup = new Groups();
         $oGroup->addUserToGroup( $_POST['GRP_UID'], $_POST['USR_UID'] );
         break;
     case 'assignAllUsers':
-        G::LoadClass( 'groups' );
         $oGroup = new Groups();
         $aUsers = explode( ',', $_POST['aUsers'] );
         for ($i = 0; $i < count( $aUsers ); $i ++) {
@@ -55,7 +52,6 @@ switch ($_POST['action']) {
         }
         break;
     case 'ofToAssignUser':
-        G::LoadClass( 'groups' );
         $oGroup = new Groups();
         $oGroup->removeUserOfGroup( $_POST['GRP_UID'], $_POST['USR_UID'] );
         break;
@@ -65,8 +61,6 @@ switch ($_POST['action']) {
         if ($_POST['sOriginalGroupname'] == $_POST['sGroupname']) {
             echo '0';
         } else {
-            require_once 'classes/model/Groupwf.php';
-            G::LoadClass( 'Groupswf' );
             $oGroup = new Groupwf();
             $oCriteria = $oGroup->loadByGroupname( $_POST['sGroupname'] );
             $oDataset = GroupwfPeer::doSelectRS( $oCriteria );
@@ -81,9 +75,6 @@ switch ($_POST['action']) {
         }
         break;
     case 'groupsList':
-        require_once 'classes/model/Groupwf.php';
-        require_once 'classes/model/TaskUser.php';
-        G::LoadClass( 'configuration' );
         $co = new Configurations();
         $config = $co->getConfiguration( 'groupList', 'pageSize', '', $_SESSION['USER_LOGGED'] );
         $env = $co->getConfiguration( 'ENVIRONMENT_SETTINGS', '' );
@@ -125,12 +116,10 @@ switch ($_POST['action']) {
         $result->success = true;
         $result->groups = $arrData;
         $result->total_groups = $data['totalCount'];
-
+        G::header('Content-Type: application/json');
         echo G::json_encode( $result );
         break;
     case 'exitsGroupName':
-        require_once 'classes/model/Groupwf.php';
-        G::LoadClass( 'Groupswf' );
         $oGroup = new Groupwf();
         $oCriteria = $oGroup->loadByGroupname( $_POST['GRP_NAME'] );
         $oDataset = GroupwfPeer::doSelectRS( $oCriteria );
@@ -141,7 +130,6 @@ switch ($_POST['action']) {
         echo $response;
         break;
     case 'saveNewGroup':
-        G::LoadClass( 'groups' );
         $newGroup['GRP_UID'] = '';
         $newGroup['GRP_STATUS'] = ($_POST['status'] == '1') ? 'ACTIVE' : 'INACTIVE';
         $newGroup['GRP_TITLE'] = trim( $_POST['name'] );
@@ -154,7 +142,6 @@ switch ($_POST['action']) {
 
         break;
     case 'saveEditGroup':
-        G::LoadClass( 'groups' );
         $editGroup['GRP_UID'] = $_POST['grp_uid'];
         $editGroup['GRP_STATUS'] = ($_POST['status'] == '1') ? 'ACTIVE' : 'INACTIVE';
         $editGroup['GRP_TITLE'] = trim( $_POST['name'] );
@@ -164,7 +151,6 @@ switch ($_POST['action']) {
         echo '{success: true}';
         break;
     case 'deleteGroup':
-        G::LoadClass( 'groups' );
         $group = new Groupwf();
         if (! isset( $_POST['GRP_UID'] )) {
             return;
@@ -199,10 +185,7 @@ switch ($_POST['action']) {
         echo '{success: true}';
         break;
     case 'assignedMembers':
-        require_once 'classes/model/Users.php';
-        require_once 'classes/model/GroupUser.php';
 
-        G::LoadClass( 'configuration' );
         $co = new Configurations();
         $config = $co->getConfiguration( 'groupList', 'pageSize', '', $_SESSION['USER_LOGGED'] );
         $env = $co->getConfiguration( 'ENVIRONMENT_SETTINGS', '' );
@@ -253,13 +236,10 @@ switch ($_POST['action']) {
         while ($oDataset->next()) {
             $arrData[] = $oDataset->getRow();
         }
+        G::header('Content-Type: application/json');
         echo '{success: true, members: ' . G::json_encode( $arrData ) . ', total_users: ' . $totalRows . '}';
         break;
     case 'availableMembers':
-        require_once 'classes/model/Users.php';
-        require_once 'classes/model/GroupUser.php';
-
-        G::LoadClass( 'configuration' );
         $co = new Configurations();
         $config = $co->getConfiguration( 'groupList', 'pageSize', '', $_SESSION['USER_LOGGED'] );
         $env = $co->getConfiguration( 'ENVIRONMENT_SETTINGS', '' );
@@ -268,27 +248,18 @@ switch ($_POST['action']) {
         $limit = isset( $_REQUEST['limit'] ) ? $_REQUEST['limit'] : $limit_size;
         $filter = isset( $_REQUEST['textFilter'] ) ? $_REQUEST['textFilter'] : '';
 
-        $sGroupUID = $_REQUEST['gUID'];
-        $oCriteria = new Criteria( 'workflow' );
-        $oCriteria->addSelectColumn( GroupUserPeer::GRP_UID );
-        $oCriteria->addSelectColumn( UsersPeer::USR_UID );
-        $oCriteria->addJoin( GroupUserPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN );
-        $oCriteria->add( GroupUserPeer::GRP_UID, $sGroupUID );
-        $oCriteria->add( UsersPeer::USR_STATUS, 'CLOSED', Criteria::NOT_EQUAL );
-        $oDataset = UsersPeer::doSelectRS( $oCriteria );
-        $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
-        $oDataset->next();
-        $uUIDs = array ();
-        while ($aRow = $oDataset->getRow()) {
-            $uUIDs[] = $aRow['USR_UID'];
-            $oDataset->next();
-        }
+        $inputFilter = new InputFilter();
+        $subQuery = "SELECT " . GroupUserPeer::USR_UID .
+                    " FROM " . GroupUserPeer::TABLE_NAME .
+                    " WHERE " . GroupUserPeer::GRP_UID . " = '" .
+                    $inputFilter->quoteSmart($_REQUEST['gUID'], Propel::getConnection("workflow")) . "'\n" .
+                    "UNION SELECT '" . RBAC::GUEST_USER_UID . "'";
 
         $aUsers = Array ();
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->addSelectColumn( 'COUNT(*) AS CNT' );
         $oCriteria->add( UsersPeer::USR_STATUS, 'CLOSED', Criteria::NOT_EQUAL );
-        $oCriteria->add( UsersPeer::USR_UID, $uUIDs, Criteria::NOT_IN );
+        $oCriteria->add( UsersPeer::USR_UID, UsersPeer::USR_UID . " NOT IN ($subQuery)", Criteria::CUSTOM );
         $filter = (isset( $_POST['textFilter'] )) ? $_POST['textFilter'] : '';
         if ($filter != '') {
             $oCriteria->add( $oCriteria->getNewCriterion( UsersPeer::USR_USERNAME, '%' . $filter . '%', Criteria::LIKE )->addOr( $oCriteria->getNewCriterion( UsersPeer::USR_FIRSTNAME, '%' . $filter . '%', Criteria::LIKE )->addOr( $oCriteria->getNewCriterion( UsersPeer::USR_LASTNAME, '%' . $filter . '%', Criteria::LIKE ) ) ) );
@@ -307,7 +278,7 @@ switch ($_POST['action']) {
         $oCriteria->addSelectColumn( UsersPeer::USR_EMAIL );
         $oCriteria->addSelectColumn( UsersPeer::USR_STATUS );
         $oCriteria->add( UsersPeer::USR_STATUS, 'CLOSED', Criteria::NOT_EQUAL );
-        $oCriteria->add( UsersPeer::USR_UID, $uUIDs, Criteria::NOT_IN );
+        $oCriteria->add( UsersPeer::USR_UID, UsersPeer::USR_UID . " NOT IN ($subQuery)", Criteria::CUSTOM );
         $filter = (isset( $_POST['textFilter'] )) ? $_POST['textFilter'] : '';
         if ($filter != '') {
             $oCriteria->add( $oCriteria->getNewCriterion( UsersPeer::USR_USERNAME, '%' . $filter . '%', Criteria::LIKE )->addOr( $oCriteria->getNewCriterion( UsersPeer::USR_FIRSTNAME, '%' . $filter . '%', Criteria::LIKE )->addOr( $oCriteria->getNewCriterion( UsersPeer::USR_LASTNAME, '%' . $filter . '%', Criteria::LIKE ) ) ) );
@@ -321,12 +292,12 @@ switch ($_POST['action']) {
         while ($oDataset->next()) {
             $arrData[] = $oDataset->getRow();
         }
+        G::header('Content-Type: application/json');
         echo '{success: true, members: ' . G::json_encode( $arrData ) . ', total_users: ' . $totalRows . '}';
         break;
     case 'assignUsersToGroupsMultiple':
         $GRP_UID = $_POST['GRP_UID'];
         $uUIDs = explode( ',', $_POST['USR_UID'] );
-        G::LoadClass( 'groups' );
         $oGroup = new Groups();
         foreach ($uUIDs as $USR_UID) {
             $oGroup->addUserToGroup( $GRP_UID, $USR_UID );
@@ -335,14 +306,12 @@ switch ($_POST['action']) {
     case 'deleteUsersToGroupsMultiple':
         $GRP_UID = $_POST['GRP_UID'];
         $uUIDs = explode( ',', $_POST['USR_UID'] );
-        G::LoadClass( 'groups' );
         $oGroup = new Groups();
         foreach ($uUIDs as $USR_UID) {
             $oGroup->removeUserOfGroup( $GRP_UID, $USR_UID );
         }
         break;
     case 'updatePageSize':
-        G::LoadClass( 'configuration' );
         $c = new Configurations();
         $arr['pageSize'] = $_REQUEST['size'];
         $arr['dateSave'] = date( 'Y-m-d H:i:s' );

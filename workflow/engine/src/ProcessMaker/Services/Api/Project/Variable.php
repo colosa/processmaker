@@ -48,12 +48,19 @@ class Variable extends Api
     }
 
     /**
+     * Create a process variable.
+     * 
      * @url POST /:prj_uid/process-variable
-     *
+     * @status 201
+     * 
      * @param string $prj_uid      {@min 32}{@max 32}
      * @param array  $request_data
-     *
-     * @status 201
+     * 
+     * @return array
+     * @throws RestException
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPostVariable($prj_uid, $request_data)
     {
@@ -72,11 +79,18 @@ class Variable extends Api
     }
 
     /**
+     * Update variable.
+     *
      * @url PUT /:prj_uid/process-variable/:var_uid
      *
      * @param string $prj_uid      {@min 32}{@max 32}
      * @param string $var_uid      {@min 32}{@max 32}
      * @param array  $request_data
+     *
+     * @throws RestException
+     *
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPutVariable($prj_uid, $var_uid, array $request_data)
     {
@@ -93,6 +107,8 @@ class Variable extends Api
 
     /**
      * @url DELETE /:prj_uid/process-variable/:var_uid
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      *
      * @param string $prj_uid {@min 32}{@max 32}
      * @param string $var_uid {@min 32}{@max 32}
@@ -109,11 +125,21 @@ class Variable extends Api
     }
 
     /**
+     * Executes an SQL query of a dependent field, such as a dropdown box, checkgroup 
+     * or radiogroup, that uses an SQL query with one or more dynamic variables 
+     * to populate its list of options.
+     * 
      * @url POST /:prj_uid/process-variable/:var_name/execute-query
-     *
+     * 
      * @param string $prj_uid      {@min 32}{@max 32}
      * @param string $var_name
      * @param array  $request_data
+     * 
+     * @return array
+     * @throws RestException
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY, PM_CASES}
      */
     public function doPostVariableExecuteSql($prj_uid, $var_name = '', $request_data = array())
     {
@@ -131,11 +157,21 @@ class Variable extends Api
     }
 
     /**
+     * Gets the options in a suggest box, dropdown box, checkgroup or radiogroup, 
+     * which uses an SQL query to populate its list of options (or uses a datasource 
+     * which is "array variable" in version 3.0.1.8 or later).
+     * 
      * @url POST /:prj_uid/process-variable/:var_name/execute-query-suggest
-     *
+     * 
      * @param string $prj_uid      {@min 32}{@max 32}
      * @param string $var_name
      * @param array  $request_data
+     * 
+     * @return array
+     * @throws RestException
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY, PM_CASES}
      */
     public function doPostVariableExecuteSqlSuggest($prj_uid, $var_name, $request_data)
     {

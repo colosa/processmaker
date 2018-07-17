@@ -36,7 +36,6 @@ if (! isset( $_SESSION['PROCESS'] ) || ! isset( $_SESSION['APPLICATION'] ) ) {
 $G_MAIN_MENU = 'caseTracker';
 $G_ID_MENU_SELECTED = 'HISTORY';
 
-G::LoadClass( 'case' );
 $oCase = new Cases();
 $aFields = $oCase->loadCase( $_SESSION['APPLICATION'] );
 

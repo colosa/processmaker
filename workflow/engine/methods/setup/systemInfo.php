@@ -24,9 +24,9 @@ switch ($option) {
         G::RenderPage("publish", "extJs");
         break;
     default:
-        require_once (PATH_CONTROLLERS . "installer.php");
+        require_once (PATH_CONTROLLERS . "InstallerModule.php");
 
-        $installer = new Installer();
+        $installer = new InstallerModule();
 
         $systemInfo = $installer->getSystemInfo();
 

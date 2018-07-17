@@ -15,7 +15,7 @@ var importBpmnDiagram = function (definitions) {
     this.participants = [];
     this.lanes = [];
     this.laneRelPosition = 0;
-    this.flowsArray = [];
+    this.flowsArray = new PMUI.util.ArrayList();
     this.headerHeight = 0;
     this.eventMarkerMap = {
         'CATCH': {
@@ -73,8 +73,6 @@ var importBpmnDiagram = function (definitions) {
         error = e;
         PMDesigner.project.setXMLSupported(false);
     }
-    //eventBus.fire(error ? 'import.error' : 'import.success', { error: error, warnings: warnings });
-    //done(error, warnings);
 };
 importBpmnDiagram.prototype.parse = function (definitions) {
     var self =  this, sidebarCanvas = [], i, visitor;
@@ -82,9 +80,10 @@ importBpmnDiagram.prototype.parse = function (definitions) {
     visitor = {
 
         root: function(element) {
-            var businessObject = {};
-            //var canvas = PMUI.getActiveCanvas();
-            //
+            var businessObject = {},
+                canvas,
+                project;
+
             if (element.$type === 'bpmn:Collaboration') {
                 // TODO IF THERE IS COLLABORATIONS
                 return self.addParticipant(element);
@@ -96,6 +95,8 @@ importBpmnDiagram.prototype.parse = function (definitions) {
                     jQuery(".bpmn_shapes").append(PMDesigner.sidebar[i].getHTML());
                 }
                 sidebarCanvas.splice(15, 1);  //to remove lane selector
+                //Remove Lasso and Validator
+                sidebarCanvas.splice(17, 2);
                 // sidebarCanvas = sidebarCanvas + ',.mafe-event-start';
                 sidebarCanvas = sidebarCanvas.concat('.pmui-pmevent');
                 sidebarCanvas = sidebarCanvas.concat('.pmui-pmactivity');
@@ -104,8 +105,12 @@ importBpmnDiagram.prototype.parse = function (definitions) {
                 sidebarCanvas = sidebarCanvas.concat('.mafe-artifact-annotation');
 
 
-                var canvas =  PMDesigner.project.buildCanvas(sidebarCanvas, {name: element.$parent.name});
+                canvas =  PMDesigner.project.buildCanvas(sidebarCanvas, {name: element.$parent.name});
                 PMUI.setActiveCanvas(canvas);
+                project = PMUI.getActiveCanvas().project;
+                project && project.userSettings && project.userSettings.enabled_grid
+                    ? canvas.enableGridLine() : canvas.disableGridLine();
+
                 jQuery("#p-center-layout").scroll(canvas.onScroll(canvas, jQuery("#p-center-layout")));
                 PMDesigner.canvasList.setValue(canvas.getID());
                 element.id = canvas.getID();
@@ -113,9 +118,6 @@ importBpmnDiagram.prototype.parse = function (definitions) {
                 canvas.businessObject = businessObject;
 
             }
-
-            //return  importer.add(element);
-
         },
 
         element: function(element, parentShape) {
@@ -158,7 +160,7 @@ importBpmnDiagram.prototype.checkXML = function (definitions) {
 };
 
 /**
- *  import bpmn participants
+ *  Adds bpmn participants, that arrives from a .bpmn file as a collaboration node
  * @param element
  * @returns {importBpmnDiagram}
  */
@@ -168,7 +170,12 @@ importBpmnDiagram.prototype.addParticipant = function (collaboration) {
         participants,
         participant,
         sidebarCanvas = [],
-        canvas;
+        canvas,
+        rootElements,
+        element,
+        tempIndex = -1,
+        isParticipant,
+        project;
 
     participants = collaboration.participants;
     for (j = 0; j < PMDesigner.sidebar.length; j += 1) {
@@ -177,7 +184,8 @@ importBpmnDiagram.prototype.addParticipant = function (collaboration) {
     }
 
     sidebarCanvas.splice(15, 1);  //to remove lane selector
-    // sidebarCanvas = sidebarCanvas + ',.mafe-event-start';
+    //Remove Lasso and Validator
+    sidebarCanvas.splice(17, 2);
     sidebarCanvas = sidebarCanvas.concat('.pmui-pmevent');
     sidebarCanvas = sidebarCanvas.concat('.pmui-pmactivity');
     sidebarCanvas = sidebarCanvas.concat('.pmui-pmgateway');
@@ -185,23 +193,38 @@ importBpmnDiagram.prototype.addParticipant = function (collaboration) {
     sidebarCanvas = sidebarCanvas.concat('.mafe-artifact-annotation');
     canvas =  PMDesigner.project.buildCanvas(sidebarCanvas, {name:  collaboration.$parent.name});
     PMUI.setActiveCanvas(canvas);
+    project = PMUI.getActiveCanvas().project;
+    project && project.userSettings && project.userSettings.enabled_grid
+        ? canvas.enableGridLine() : canvas.disableGridLine();
     PMDesigner.canvasList.setValue(canvas.getID());
 
     jQuery("#p-center-layout").scroll(canvas.onScroll(canvas, jQuery("#p-center-layout")));
 
-
+    rootElements = PMDesigner.definitions.rootElements;
     for (i = 0; i < participants.length; i += 1) {
         participant = participants[i];
+        isParticipant = true;
+        for (j = 0; j < rootElements.length; j += 1) {
+            element = rootElements[j];
+
+            if (element.$type === 'bpmn:Process' && participant.processRef && participant.processRef.id !== element.id) {
+                tempIndex = j;
+                isParticipant = false;
+                break;
+            }
+        }
         if( typeof participant.processRef !== 'undefined') {
             this.participants.push(participant);
-            canvas.businessObject = participant.processRef;
+            canvas.businessObject.elem = participant.processRef;
         }
         if (canvas.businessObject && participant.$parent.di) {
             canvas.businessObject.di = participant.$parent.di;
         }
         canvas.buildingDiagram = true;
     }
-
+    if (tempIndex > 0 ) {
+        canvas.businessObject.elem = rootElements[tempIndex];
+    }
     return this;
 };
 
@@ -761,32 +784,26 @@ importBpmnDiagram.prototype.addElement = function (element) {
 
         };
         $.extend(true, shape, ownProp.properties);
-        canvas.loadShape(ownProp.type, shape, false);
-
-        canvas.updatedElement = {
-            id : (canvas.updatedElement && canvas.updatedElement.id) || null,
-            type : (canvas.updatedElement && canvas.updatedElement.type) || null,
-            relatedObject : canvas.updatedElement,
-            relatedElements: []
-        };
-        canvas.items.insert(canvas.updatedElement);
-        element.id = canvas.updatedElement.id;
-
-        canvas.updatedElement.relatedObject.businessObject = businessObject;
 
         if (element.$type === 'bpmn:Participant') {
             if (typeof element.processRef !== 'undefined') {
                 this.laneRelPosition = 0;
                 element.processRef.id = 'pmui-' + PMUI.generateUniqueId();
-                canvas.updatedElement.relatedObject.businessObject.elem = element.processRef;
+                businessObject.elem = element.processRef;
             }
-
-            canvas.updatedElement.relatedObject.participantObject = element;
         }
+
+        canvas.loadShape(ownProp.type, shape, false, businessObject);
+
+        if (element.$type === 'bpmn:Participant') {
+            canvas.updatedElement.participantObject = element;
+        }
+        element.id = canvas.updatedElement.id;
+
     }
-    if (conectionMap[element.$type]) {
+    if (conectionMap[element.$type] &&  !this.flowsArray.find('id', element.id)) {
         //here save a connection element because some elements not has ascending order
-        this.flowsArray.push(element);
+        this.flowsArray.insert(element);
     }
 };
 
@@ -807,9 +824,11 @@ importBpmnDiagram.prototype.completeImportFlows = function () {
             'bpmn:DataInputAssociation': 'DATAASSOCIATION',
             'bpmn:MessageFlow': 'MESSAGE'
         },
-        element;
-    for (i = 0; i < this.flowsArray.length; i += 1) {
-        element = this.flowsArray[i];
+        element,
+       flowArraySize = this.flowsArray.getSize();
+
+    for (i = 0; i < flowArraySize; i += 1) {
+        element = this.flowsArray.get(i);
         if (element.$type === 'bpmn:DataInputAssociation') {
             //dest = element.targetRef ? element.targetRef.id : element.$parent.id;
             dest = element.$parent.id;

@@ -41,7 +41,6 @@ class ExtJsTreeNode extends TreeNode
     }
 }
 
-G::LoadClass( 'case' );
 $o = new Cases();
 $PRO_UID = $_SESSION['PROCESS'];
 

@@ -27,9 +27,6 @@ if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1) {
 
     //G::genericForceLogin( 'WF_MYINFO' , 'login/noViewPage', $urlLogin = 'login/login' );
 
-
-G::LoadClass( 'dynaFormField' );
-
 $G_MAIN_MENU = 'processmaker';
 $G_SUB_MENU = 'processes';
 $G_ID_MENU_SELECTED = 'PROCESSES';

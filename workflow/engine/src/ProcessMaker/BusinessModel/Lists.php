@@ -94,25 +94,22 @@ class Lists {
         }
 
         $userUid = $dataList["userId"];
-        $filters["paged"]    = isset( $dataList["paged"] ) ? $dataList["paged"] : true;
-        $filters['count']    = isset( $dataList['count'] ) ? $dataList['count'] : true;
-        $filters["category"] = isset( $dataList["category"] ) ? $dataList["category"] : "";
-        $filters["process"]  = isset( $dataList["process"] ) ? $dataList["process"] : "";
-        $filters["search"]   = isset( $dataList["search"] ) ? $dataList["search"] : "";
-        $filters["filter"]   = isset( $dataList["filter"] ) ? $dataList["filter"] : "";
-        $filters["dateFrom"] = (!empty( $dataList["dateFrom"] )) ? substr( $dataList["dateFrom"], 0, 10 ) : "";
-        $filters["dateTo"]   = (!empty( $dataList["dateTo"] )) ? substr( $dataList["dateTo"], 0, 10 ) : "";
-
-        $filters["start"]    = isset( $dataList["start"] ) ? $dataList["start"] : "0";
-        $filters["limit"]    = isset( $dataList["limit"] ) ? $dataList["limit"] : "25";
-        $filters["sort"]     = isset( $dataList["sort"] ) ? $dataList["sort"] : "";
-        $filters["dir"]      = isset( $dataList["dir"] ) ? $dataList["dir"] : "ASC";
-
-        $filters["action"]   = isset( $dataList["action"] ) ? $dataList["action"] : "";
-
-        $filters['newestthan'] = isset( $dataList['newerThan'] ) ? $dataList['newerThan'] : '';
-
-        $filters['oldestthan'] = isset( $dataList['oldestthan'] ) ? $dataList['oldestthan'] : '';
+        $filters["paged"] = isset($dataList["paged"]) ? $dataList["paged"] : true;
+        $filters['count'] = isset($dataList['count']) ? $dataList['count'] : true;
+        $filters["category"] = isset($dataList["category"]) ? $dataList["category"] : "";
+        $filters["process"] = isset($dataList["process"]) ? $dataList["process"] : "";
+        $filters["search"] = isset($dataList["search"]) ? $dataList["search"] : "";
+        $filters["filter"] = isset($dataList["filter"]) ? $dataList["filter"] : "";
+        $filters["dateFrom"] = (!empty($dataList["dateFrom"])) ? substr($dataList["dateFrom"], 0, 10) : "";
+        $filters["dateTo"] = (!empty($dataList["dateTo"])) ? substr($dataList["dateTo"], 0, 10) : "";
+        $filters["start"] = isset($dataList["start"]) ? $dataList["start"] : "0";
+        $filters["limit"] = isset($dataList["limit"]) ? $dataList["limit"] : "25";
+        $filters["sort"] = isset($dataList["sort"]) ? $dataList["sort"] : "";
+        $filters["dir"] = isset($dataList["dir"]) ? $dataList["dir"] : "ASC";
+        $filters["action"] = isset($dataList["action"]) ? $dataList["action"] : "";
+        $filters['newestthan'] = isset($dataList['newerThan']) ? $dataList['newerThan'] : '';
+        $filters['oldestthan'] = isset($dataList['oldestthan']) ? $dataList['oldestthan'] : '';
+        $filters['appUidCheck'] = isset($dataList['appUidCheck']) ? $dataList['appUidCheck'] : array();
 
         // Select list
         switch ($listName) {
@@ -161,7 +158,6 @@ class Lists {
         $filters["limit"] = (int)$filters["limit"];
         $filters["limit"] = abs($filters["limit"]);
         if ($filters["limit"] == 0) {
-            G::LoadClass("configuration");
             $conf = new \Configurations();
             $generalConfCasesList = $conf->getConfiguration('ENVIRONMENT_SETTINGS', '');
             if (isset($generalConfCasesList['casesListRowNumber'])) {

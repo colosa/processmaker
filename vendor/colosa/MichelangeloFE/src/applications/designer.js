@@ -182,7 +182,8 @@ PMDesigner.hideAllTinyEditorControls = function () {
 
 
 jQuery(document).ready(function ($) {
-    var setSaveButtonDisabled, s, sidebarCanvas, project, d, downloadLink, handlerExportNormal, handlerExportGranular, handler, validatosr, help, option, menu, elem;
+    var setSaveButtonDisabled, s, sidebarCanvas, project, d, downloadLink, handlerExportNormal, handlerExportGranular,
+        handler, validatosr, help, option, menu, elem;
     /***************************************************
      * Defines the Process
      ***************************************************/
@@ -444,7 +445,7 @@ jQuery(document).ready(function ($) {
                 name: 'numrow',
                 "title": "#",
                 width: '5%',
-                render: function(data, type, row, conf){
+                render: function (data, type, row, conf) {
                     return conf.row + 1;
                 }
             },
@@ -477,12 +478,12 @@ jQuery(document).ready(function ($) {
             shape;
         if ($(this).hasClass('selected')) {
             $(this).removeClass('selected');
-            PMUI.getActiveCanvas().emptyCurrentSelection();
+            PMUI.getActiveCanvas().hideAllCoronas().emptyCurrentSelection();
         }
         else {
             PMDesigner.validTable.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
-            PMUI.getActiveCanvas().emptyCurrentSelection();
+            PMUI.getActiveCanvas().hideAllCoronas().emptyCurrentSelection();
             shape = PMUI.getActiveCanvas().items.find('id', id);
             PMUI.getActiveCanvas().addToSelection(shape.relatedObject);
         }
@@ -749,19 +750,19 @@ jQuery(document).ready(function ($) {
 
             {
                 element: '.bpmn_shapes',
-                intro: 'Drag and Drop the process elements that you want include in the process design.'.translate() +
-                '<br /><img src="../../../lib/img/corona-task.png">' + ' Task: Add to include action in your process.'.translate() +
-                '<br /><img src="../../../lib/img/corona-gateway-exclusive.png"> <img src="../../../lib/img/corona-gateway-parallel.png"> <img src="../../../lib/img/corona-gateway-inclusive.png">' + ' Gateway: Used to control the execution flow. '.translate() +
-                '<br /><img src="../../../lib/img/corona-start.png"> <img src="../../../lib/img/corona-start-message.png">' + ' Start Event: The process begins with a start event.'.translate() +
-                '<br /><img src="../../../lib/img/corona-intermediate-receive-message.png"> <img src="../../../lib/img/corona-intermediate-send-message.png">' + ' Intermediate Event: Used to define an event that could happen in the middle of the process.'.translate() +
+                intro: 'Drag and drop the process elements that you want to include in the process design.'.translate() +
+                '<br /><img src="../../../lib/img/corona-task.png">' + ' Task: Add to include an action in your process.'.translate() +
+                '<br /><img src="../../../lib/img/corona-gateway-exclusive.png"> <img src="../../../lib/img/corona-gateway-parallel.png"> <img src="../../../lib/img/corona-gateway-inclusive.png">' + ' Gateway: Selects a path or divides the process into multiple paths and joins them together.'.translate() +
+                '<br /><img src="../../../lib/img/corona-start.png"> <img src="../../../lib/img/corona-start-message.png">' + ' Start Event: The process always begins with a start event.'.translate() +
+                '<br /><img src="../../../lib/img/corona-intermediate-receive-message.png"> <img src="../../../lib/img/corona-intermediate-send-message.png">' + ' Intermediate Event: Used to define an event that happens in the middle of the process.'.translate() +
                 '<br /><img src="../../../lib/img/corona-end.png"> <img src="../../../lib/img/corona-end-message.png">' + ' End Event: End the execution of the process.'.translate() +
-                '<br /><img src="../../../lib/img/corona-pool.png"> <img src="../../../lib/img/corona-lane.png">' + ' Pool & Lanes: Separate Multiple processes into different pools.'.translate()
+                '<br /><img src="../../../lib/img/corona-pool.png">' + ' Pool: Place each process in a separate pool.'.translate() +
+                '<br /><img src="../../../lib/img/corona-lane.png">' + ' Lane: Used to divide a process into different sections.'.translate()
             },
             {
                 element: '#div-layout-canvas',
                 intro: "In the design area you can drop the process elements and order or arrange them to design your process.".translate()
             },
-
             {
                 element: '.content_controls',
                 intro: '<p>' +
@@ -777,7 +778,13 @@ jQuery(document).ready(function ($) {
             {
                 intro: '<div class="startcoronahelp"></div><div>' + 'Select an element in the designer to display the quick toolbar with the list of the most used options available for that element.'.translate() + '</div>'
             }
-        ]
+        ],
+        onExit: function () {
+            var canvas = PMUI.getActiveCanvas();
+            if (canvas && canvas.getGridLine() && canvas.getHTML()) {
+                canvas.getHTML().classList.add("pmui-pmcanvas");
+            }
+        }
     });
 
     jQuery('.mafe-toolbar-validation').click(function (e) {

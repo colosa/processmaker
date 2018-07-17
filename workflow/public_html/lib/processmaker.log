@@ -1,30 +1,30 @@
-[2 days ago] 8116c62  (origin/feature/HOR-3114-A) HOR-3114 Change text on help screen that shows up after install <dheeyi william>
-[2 days ago] ae08ccf  (origin/bugfix/HOR-3103) fix in post and remove OutputDocumentStructure of put <qronald>
-[2 days ago] 22b69c2  HOR-3114 Change text on help screen that shows up after install <dheeyi william>
-[2 days ago] 7225db2  HOR-3103 <qronald>
-[3 days ago] d932e77  (origin/bugfix/HOR-3096) HOR-3096 Community>Home Lists>The list participated is reflected in the other lists <dheeyi william>
-[4 days ago] c37dc04  (origin/bugfix/HOR-3098) HOR-3098 <Roly Rudy Gutierrez Pinto>
-[11 days ago] 6789acc  (origin/bugfix/HOR-3037, bugfix/HOR-3037) HOR-3037 <Roly Rudy Gutierrez Pinto>
-[11 days ago] 4056bbd  Improving the timezone management <Dante>
-[11 days ago] 73f1ee9  (origin/bugfix/HOR-3041) HOR-3041 <Roly Rudy Gutierrez Pinto>
-[11 days ago] 0eec4ae  (origin/bugfix/HOR-3021) HOR-3021 <Paula Quispe>
-[11 days ago] 51ce719  HOR-3042 <Dante>
-[11 days ago] b2b0749  (origin/bugfix/HOR-2944) HOR-2944 [3.2] Email setup success results show incorrect email test result <dheeyi william>
-[11 days ago] 46d4eb0  FBI-1605: Update composer lock for release/3.2 branch <Rodrigo Quelca>
-[11 days ago] 8ff269a  (origin/bugfix/HOR-2981) HOR-2981 <Paula Quispe>
-[11 days ago] 0371c03  (origin/bugfix/HOR-2980) HOR-2980 <Paula Quispe>
-[11 days ago] 085dd55  (origin/bugfix/HOR-3024) PR observations <Paula Quispe>
-[11 days ago] f2c81af  HOR-3024 <Paula Quispe>
-[2 weeks ago] d6190d8  HOR-3037 <Roly Rudy Gutierrez Pinto>
-[2 weeks ago] 1f2cf9e  (origin/bugfix/HOR-3030) HOR-3030 [Designer] does not works export function when is in RTL. <dheeyi william>
-[2 weeks ago] a57179d  (origin/bugfix/HOR-3019) HOR-3019 <Paula Quispe>
-[2 weeks ago] 6357ec8  (origin/bugfix/HOR-3020, bugfix/HOR-3020) HOR-3020 (Cases) We can not execute created cases because an error is displayed in an upgrade 3018 to 32 <dheeyi william>
-[2 weeks ago] 2ceedd7  (origin/bugfix/HOR-2957) HOR-3006 (Debug) The triggers are not displaying the description in the correct order of execution <dheeyi william>
-[2 weeks ago] 48c681d  (origin/bugfix/HOR-3015) HOR-3015 <Julio Cesar Laura Avendaño>
-[3 weeks ago] 0eb7e47  (origin/bugfix/HOR-3005) HOR-3005 <Roly Rudy Gutierrez Pinto>
-[3 weeks ago] 8fa0574  (origin/bugfix/HOR-3009) HOR-3009 <Roly Rudy Gutierrez Pinto>
-[3 weeks ago] 568fd40  HOR-2957 [Debug Panel] Orden Incorrecto en la panel de detalle de los triggers <dheeyi william>
-[3 weeks ago] c9ed345  (origin/bugfix/HOR-3003) HOR-3003 <Paula Quispe>
-[3 weeks ago] fe4d507  (origin/bugfix/HOR-2998) HOR-2998 <Julio Cesar Laura Avendaño>
-[3 weeks ago] 43d59a1  (origin/bugfix/HOR-2988) reopen <qronald>
-[3 weeks ago] ab4369b  (origin/bugfix/HOR-2983) HOR-2983 <Roly Rudy Gutierrez Pinto>
+[10 days ago] af26e44  (HEAD -> release/3.2.2.patch1) HOR-4446 <Roly Rudy Gutierrez Pinto>
+[6 weeks ago] 3212c0f  (origin/bugfix/HOR-4378) HOR-4378 <Julio Cesar Laura Avendaño>
+[6 weeks ago] ef2e571  (origin/bugfix/HOR-4372) HOR-4372 <Paula Quispe>
+[6 weeks ago] a7de8d4  HOR-4369 When importing a custom plugin, it is imported with the status enabled. <Marco Antonio Nina Mena>
+[7 weeks ago] a86f0b0  (origin/bugfix/HOR-4348) HOR-4348 <Julio Cesar Laura Avendaño>
+[7 weeks ago] a844275  (origin/bugfix/HOR-4353) HOR-4353 <Julio Cesar Laura Avendaño>
+[8 weeks ago] 2dcdd91  (origin/feature/FBI-2317) FBI-2317 Update composer in the branch release/3.2.2 <dheeyi william>
+[9 weeks ago] 32ce817  (origin/bugfix/HOR-4328) HOR-4328 <Paula Quispe>
+[9 weeks ago] 9ee4f0c  HOR-4323 <Roly Rudy Gutierrez Pinto>
+[9 weeks ago] eeb01f5  (origin/bugfix/HOR-4283) HOR-4283 <Paula Quispe>
+[9 weeks ago] 06d6684  (origin/bugfix/HOR-4317) HOR-4317 <Paula Quispe>
+[10 weeks ago] 5725255  HOR-4300 It is not possible to import plugin <Marco Antonio Nina Mena>
+[2 months ago] 1136af0  HOR-4284 <Roly Rudy Gutierrez Pinto>
+[2 months ago] 3ef4ebe  HOR-4284 <Roly Rudy Gutierrez Pinto>
+[2 months ago] 74e3647  HOR-4284 <Roly Rudy Gutierrez Pinto>
+[2 months ago] 87215e3  HOR-4280 <dante>
+[2 months ago] 9b995f1  FBI-2251:(Admin > Settings > Case List Cache Builder) We can not expand the option Setup MySql Root Password in Safari <Rodrigo Quelca>
+[2 months ago] 12f25d8  HOR-4278 Unable to init session by "sid" option <Marco Antonio Nina Mena>
+[2 months ago] 5963498  (origin/bugfix/HOR-4252) HOR-4273 <Paula Quispe>
+[3 months ago] 5190aa2  Fix CR <Marco Antonio Nina Mena>
+[3 months ago] 0a8b98f  HOR-4273 It is not possible to download the Support information in 'enterprise manager' <Marco Antonio Nina Mena>
+[3 months ago] 993017e  HOR-4266 <dante>
+[3 months ago] 1981226  Delete line <Marco Antonio Nina Mena>
+[3 months ago] f76c586  HOR-4265 Self-service value based assignment is not working using an array for the value of the variable <Marco Antonio Nina Mena>
+[3 months ago] ba7cfee  (origin/bugfix/HOR-4268) HOR-4212 <Roly Rudy Gutierrez Pinto>
+[3 months ago] 6900dc6  Fix CR <Marco Antonio Nina Mena>
+[3 months ago] 62666b8  (origin/bugfix/HOR-4236) HOR-4236 <Roly Rudy Gutierrez Pinto>
+[3 months ago] 32d18b6  HOR-4232 After the upgrade to version 3.2.2 the login is seen with the classic skin <Marco Antonio Nina Mena>
+[3 months ago] 788ed60  (origin/bugfix/HOR-4233) HOR-4233 <Paula Quispe>
+[3 months ago] f20eb0d  (origin/bugfix/HOR-4229) HOR-4229 <Paula Quispe>

@@ -1,5 +1,7 @@
 <?php
 
+use ProcessMaker\Plugins\PluginRegistry;
+
 require_once 'classes/model/om/BaseUsersProperties.php';
 
 /**
@@ -171,8 +173,7 @@ class UsersProperties extends BaseUsersProperties
             }
         }
         if (PPP_EXPIRATION_IN > 0) {
-            G::LoadClass( 'calendar' );
-            $oCalendar = new calendar();
+            $oCalendar = new Calendar();
 
             if ($oCalendar->pmCalendarUid == '') {
             	$oCalendar->pmCalendarUid = '00000000000000000000000000000001';
@@ -263,7 +264,6 @@ class UsersProperties extends BaseUsersProperties
                 $url = '/sys' . SYS_SYS . '/' . $this->lang . '/' . SYS_SKIN . '/main';
             }
             global $RBAC;
-            G::loadClass( 'configuration' );
             $oConf = new Configurations();
             $oConf->loadConfig( $x, 'USER_PREFERENCES', '', '', $_SESSION['USER_LOGGED'], '' );
             if (sizeof( $oConf->aConfig ) > 0) {
@@ -322,15 +322,17 @@ class UsersProperties extends BaseUsersProperties
                 $userRole = $RBAC->aUserInfo['PROCESSMAKER']['ROLE']['ROL_CODE'];
             }
 
-            $oPluginRegistry = &PMPluginRegistry::getSingleton();
+            $oPluginRegistry = PluginRegistry::loadSingleton();
             $aRedirectLogin = $oPluginRegistry->getRedirectLogins();
-            if (isset( $aRedirectLogin ) && is_array( $aRedirectLogin )) {
-                foreach ($aRedirectLogin as $key => $detail) {
-                    if (isset( $detail->sPathMethod ) && $detail->sRoleCode == $userRole) {
+            if (isset($aRedirectLogin) && is_array($aRedirectLogin)) {
+                /** @var \ProcessMaker\Plugins\Interfaces\RedirectDetail $detail */
+                foreach ($aRedirectLogin as $detail) {
+                    $pathMethod = $detail->getPathMethod();
+                    if (isset($pathMethod) && $detail->equalRoleCodeTo($userRole)) {
                         if (isset($_COOKIE['workspaceSkin'])) {
-                            $url = '/sys' . SYS_SYS . '/' . $this->lang . '/' . $_COOKIE['workspaceSkin'] . '/' . $detail->sPathMethod;
+                            $url = '/sys' . SYS_SYS . '/' . $this->lang . '/' . $_COOKIE['workspaceSkin'] . '/' . $pathMethod;
                         } else {
-                            $url = '/sys' . SYS_SYS . '/' . $this->lang . '/' . SYS_SKIN . '/' . $detail->sPathMethod;
+                            $url = '/sys' . SYS_SYS . '/' . $this->lang . '/' . SYS_SKIN . '/' . $pathMethod;
                         }
                     }
                 }
@@ -388,7 +390,6 @@ class UsersProperties extends BaseUsersProperties
     public function _getDefaultLocation ()
     {
         global $RBAC;
-        G::loadClass( 'configuration' );
         $oConf = new Configurations();
         $oConf->loadConfig( $x, 'USER_PREFERENCES', '', '', $_SESSION['USER_LOGGED'], '' );
 

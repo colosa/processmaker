@@ -31,10 +31,7 @@
  * @Updated Nov 6th, 2009 bye Eriknyk
  */
 
-	
-    G::LoadSystem('inputfilter');
-    G::LoadClass('net');
-    $host = new net($_POST['srv']);
+    $host = new Net($_POST['srv']);
     $host = $filter->xssFilterHard($host);
     $width_content = '550px';
     $filter = new InputFilter();

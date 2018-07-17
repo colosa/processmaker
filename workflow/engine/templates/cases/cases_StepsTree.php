@@ -23,26 +23,17 @@
  *
  */
 
-  require_once ( "classes/model/Step.php" );
-  require_once ( "classes/model/Content.php" );
-  require_once ( "classes/model/AppDocumentPeer.php" );
-  require_once ( "classes/model/InputDocumentPeer.php" );
-  require_once ( "classes/model/OutputDocumentPeer.php" );
-  require_once ( "classes/model/DynaformPeer.php" );
+use ProcessMaker\Plugins\PluginRegistry;
+
   $c = new Criteria();
   $c->add ( StepPeer::PRO_UID, $_SESSION['PROCESS'] );
   $c->add ( StepPeer::TAS_UID, $_SESSION['TASK'] );
   $c->addAscendingOrderByColumn ( StepPeer::STEP_POSITION );
 
-  // classes
-  G::LoadClass('tree');
-  G::LoadClass('pmScript');
-  G::LoadClass('case');
-
-  $oPluginRegistry = &PMPluginRegistry::getSingleton();
+  $oPluginRegistry = PluginRegistry::loadSingleton();
   $externalSteps   = $oPluginRegistry->getSteps();
 
-  $oTree           = new Tree();
+  $oTree           = new PmTree();
   $oTree->nodeType = "blank";
   $oTree->name     = 'Steps';
   $oTree->showSign = false;
@@ -81,11 +72,12 @@
         $sType     = $oDocument->getInpDocFormNeeded(); break;
       case 'EXTERNAL':
         $stepTitle          = 'unknown ' . $aRow->getStepUidObj();
-        $oPluginRegistry = &PMPluginRegistry::getSingleton ();
-        foreach ( $externalSteps as $key=>$val ) {
-          if ( $val->sStepId == $aRow->getStepUidObj() ) {
-            $stepTitle = $val->sStepTitle; //default title
-            $sNamespace = $val->sNamespace;
+        $oPluginRegistry = PluginRegistry::loadSingleton();
+        /** @var \ProcessMaker\Plugins\Interfaces\StepDetail $val */
+          foreach ( $externalSteps as $val ) {
+            if ($val->equalStepIdTo($aRow->getStepUidObj())) {
+            $stepTitle = $val->getStepTitle(); //default title
+            $sNamespace = $val->getNamespace();
             $oPlugin =& $oPluginRegistry->getPlugin($sNamespace);
             $classFile = PATH_PLUGINS . $oPlugin->sNamespace . PATH_SEP . 'class.' . $oPlugin->sNamespace .'.php';
             if ( file_exists ( $classFile ) ) {
@@ -195,11 +187,12 @@
       break;
       case 'EXTERNAL':
         $aActions = array ('action' => 'label' );
-        $oPluginRegistry = &PMPluginRegistry::getSingleton ();
+        $oPluginRegistry = PluginRegistry::loadSingleton();
+        /** @var \ProcessMaker\Plugins\Interfaces\StepDetail $val */
         foreach ( $externalSteps as $key=>$val ) {
-          if ( $val->sStepId == $aRow->getStepUidObj() ) {
-            $stepTitle = $val->sStepTitle; //default title
-            $sNamespace = $val->sNamespace;
+          if ($val->equalStepIdTo($aRow->getStepUidObj())) {
+            $stepTitle = $val->getStepTitle(); //default title
+            $sNamespace = $val->getNamespace();
             $oPlugin =& $oPluginRegistry->getPlugin($sNamespace);
             $classFile = PATH_PLUGINS . $oPlugin->sNamespace . PATH_SEP . 'class.' . $oPlugin->sNamespace .'.php';
             if ( file_exists ( $classFile ) ) {

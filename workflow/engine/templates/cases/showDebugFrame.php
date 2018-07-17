@@ -30,8 +30,6 @@
  * @Date Wed Mar 17th. 2010
  */
 
-G::LoadClass('case');
-G::LoadSystem('inputfilter');
 $filter = new InputFilter();
 $_SESSION = $filter->xssFilterHard($_SESSION, "url");
 $nextStep = $filter->xssFilterHard($_POST['NextStep'], "url");

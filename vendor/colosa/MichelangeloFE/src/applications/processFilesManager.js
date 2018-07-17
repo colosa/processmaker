@@ -41,7 +41,7 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
                 (new PMRestClient({
                     endpoint: 'file-manager/' + rowselectedFile.getData().prf_uid,
                     typeRequest: 'remove',
-                    messageError: ''.translate(),
+                    messageError: '',
                     functionSuccess: function (xhr, response) {
                         PMDesigner.msgFlash('File deleted successfully'.translate(), gridTemplate);
                         loadTemplate();
@@ -169,7 +169,7 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
                 (new PMRestClient({
                     endpoint: 'file-manager/' + rowselectedFile.getData().prf_uid,
                     typeRequest: 'remove',
-                    messageError: ''.translate(),
+                    messageError: '',
                     functionSuccess: function (xhr, response) {
                         loadPublic();
                     },
@@ -452,7 +452,7 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
     function createWindowTinyMCE() {
         windowEdit = new PMUI.ui.Window({
             id: 'windowEdit',
-            title: ''.translate(),
+            title: '',
             height: DEFAULT_WINDOW_HEIGHT - 80,
             width: DEFAULT_WINDOW_WIDTH,
             onBeforeClose: function () {
@@ -474,7 +474,12 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
                             required: true,
                             valueType: 'string',
                             labelWidth: "15%",
-                            controlsWidth: 300
+                            controlsWidth: 300,
+                            validators: [{
+                                pmType: "regexp",
+                                criteria: /^[a-zA-Z0-9-_ ]*$/,
+                                errorMessage: "File name is invalid".translate()
+                            }]
                         }),
                         new PMUI.field.TextAreaField({
                             id: 'filecontent',
@@ -507,9 +512,11 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
                 text: "Save".translate(),
                 buttonType: 'success',
                 handler: function () {
-                    PMDesigner.hideAllTinyEditorControls();
-                    $(".mceSplitButtonMenu").hide();
-                    save();
+                    if (formEdit.isValid()) {
+                        PMDesigner.hideAllTinyEditorControls();
+                        $(".mceSplitButtonMenu").hide();
+                        save();
+                    }
                 }
             }
             ]
@@ -527,6 +534,8 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
             skin: 'o2k7',
             theme: 'advanced',
             skin_variant: 'silver',
+            relative_urls : false,
+            remove_script_host : false,
             theme_advanced_source_editor_width: DEFAULT_WINDOW_WIDTH - 50,
             theme_advanced_source_editor_height: DEFAULT_WINDOW_HEIGHT - 100,
             plugins: "advhr,advimage,advlink,advlist,autolink,autoresize,contextmenu,directionality,emotions,example,example_dependency,fullpage,fullscreen,iespell,inlinepopups,insertdatetime,layer,legacyoutput,lists,media,nonbreaking,noneditable,pagebreak,paste,preview,print,save,searchreplace,style,tabfocus,table,template,visualblocks,visualchars,wordcount,xhtmlxtras,pmSimpleUploader,pmVariablePicker,style",
@@ -619,6 +628,7 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
             "margin": "5px 5px 5px 20px"
         }));
         $(".pmui-window-body").css("overflow", "hidden");
+        editorHTML.cm.refresh();
     }
 
     function newfile() {
@@ -705,7 +715,7 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
             (new PMRestClient({
                 endpoint: 'file-manager',
                 typeRequest: 'post',
-                messageError: ''.translate(),
+                messageError: '',
                 data: {
                     prf_filename: data.filename + ".html",
                     prf_path: processFileManagerOptionPath,
@@ -734,7 +744,7 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
             (new PMRestClient({
                 endpoint: 'file-manager/' + rowselectedFile.getData().prf_uid,
                 typeRequest: 'update',
-                messageError: ''.translate(),
+                messageError: '',
                 data: {
                     prf_content: tinyMCE.activeEditor.getContent()
                 },
@@ -800,7 +810,7 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
         (new PMRestClient({
             endpoint: 'file-manager',
             typeRequest: 'get',
-            messageError: ''.translate(),
+            messageError: '',
             functionSuccess: function (xhr, response) {
                 gridFilesManager.clearItems();
                 for (var i = 0; i < response.length; i++) {
@@ -821,7 +831,7 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
         (new PMRestClient({
             endpoint: 'file-manager',
             typeRequest: 'get',
-            messageError: ''.translate(),
+            messageError: '',
             data: {
                 path: processFileManagerOptionPath,
                 get_content: true
@@ -850,7 +860,7 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
         (new PMRestClient({
             endpoint: 'file-manager',
             typeRequest: 'get',
-            messageError: ''.translate(),
+            messageError: '',
             data: {
                 path: processFileManagerOptionPath,
                 get_content: false
@@ -921,7 +931,7 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
         (new PMRestClient({
             endpoint: 'file-manager',
             typeRequest: 'post',
-            messageError: ''.translate(),
+            messageError: '',
             data: {
                 prf_filename: fileSelector.files[0].name,
                 prf_path: processFileManagerOptionPath,

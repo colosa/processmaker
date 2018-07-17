@@ -37,7 +37,6 @@ $G_ID_MENU_SELECTED = 'MESSAGES';
 
 $oHeadPublisher->addScriptFile( '/jscore/tracker/tracker.js' );
 
-G::LoadClass( 'case' );
 $oCase = new Cases();
 $aFields = $oCase->loadCase( $_SESSION['APPLICATION'] );
 

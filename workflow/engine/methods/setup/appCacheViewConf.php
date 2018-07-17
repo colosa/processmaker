@@ -12,9 +12,6 @@ $oHeadPublisher = & headPublisher::getSingleton();
 $oHeadPublisher->addExtJsScript( 'setup/appCacheViewConf', false ); //adding a javascript file .js
 $oHeadPublisher->addContent( 'setup/appCacheViewConf' ); //adding a html file  .html.
 
-
-require_once ('classes/model/AppCacheView.php');
-G::loadClass( 'configuration' );
 $oConf = new Configurations();
 $oConf->loadConfig( $x, 'APP_CACHE_VIEW_ENGINE', '', '', '', '' );
 

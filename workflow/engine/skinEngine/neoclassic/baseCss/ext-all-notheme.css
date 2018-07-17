@@ -1121,7 +1121,7 @@ textarea {
   position: relative;
   left: 0;
   top: 0;
-  text-align: left;
+  text-align: inherit;
   zoom: 1;
   white-space: nowrap;
 }

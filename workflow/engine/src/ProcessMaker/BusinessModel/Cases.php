@@ -1,14 +1,18 @@
 <?php
 namespace ProcessMaker\BusinessModel;
 
-use \G;
-use \UsersPeer;
-use \CasesPeer;
+use G;
+use UsersPeer;
+use CasesPeer;
+use AppDelegation;
+use ProcessMaker\Core\System;
+use ProcessMaker\Plugins\PluginRegistry;
+use Exception;
+use WsBase;
+use RBAC;
+use Applications;
+use PmDynaform;
 
-/**
- * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
- * @copyright Colosa - Bolivia
- */
 class Cases
 {
     private $formatFieldNameInUppercase = true;
@@ -25,7 +29,7 @@ class Cases
     {
         try {
             $this->formatFieldNameInUppercase = $flag;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -41,7 +45,7 @@ class Cases
     {
         try {
             return ($this->formatFieldNameInUppercase)? strtoupper($fieldName) : strtolower($fieldName);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -56,7 +60,7 @@ class Cases
      */
     private function throwExceptionCaseDoesNotExist($applicationUid, $fieldNameForException)
     {
-        throw new \Exception(\G::LoadTranslation(
+        throw new Exception(\G::LoadTranslation(
             'ID_CASE_DOES_NOT_EXIST2', [$fieldNameForException, $applicationUid]
         ));
     }
@@ -86,7 +90,7 @@ class Cases
             if ($flag) {
                 $this->throwExceptionCaseDoesNotExist($applicationUid, $fieldNameForException);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -121,7 +125,7 @@ class Cases
 
             //Return
             return $obj->toArray(\BasePeer::TYPE_FIELDNAME);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -148,7 +152,7 @@ class Cases
 
             if (is_null($obj)) {
                 if ($throwException) {
-                    throw new \Exception(\G::LoadTranslation(
+                    throw new Exception(\G::LoadTranslation(
                         'ID_CASE_DEL_INDEX_DOES_NOT_EXIST',
                         [
                             $arrayVariableNameForException['$applicationUid'],
@@ -164,7 +168,7 @@ class Cases
 
             //Return
             return $obj->toArray(\BasePeer::TYPE_FIELDNAME);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -181,7 +185,7 @@ class Cases
     {
         try {
             $solrEnabled = false;
-            $solrConf = \System::solrEnv();
+            $solrConf = System::solrEnv();
 
             if ($solrConf !== false) {
                 $ApplicationSolrIndex = new \AppSolr(
@@ -208,42 +212,45 @@ class Cases
 
             //Return
             return $arrayListCounter;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
 
     /**
-     * Get list for Cases
+     * Get list of cases from: todo, draft, unassigned
+     * Get list of cases for the following REST endpoints:
+     * /light/todo
+     * /light/draft
+     * /light/participated
+     * /light/paused
+     * /light/unassigned
      *
      * @access public
      * @param array $dataList, Data for list
-     * @return array
-     *
-     * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
-     * @copyright Colosa - Bolivia
+     * @return array $response
      */
     public function getList($dataList = array())
     {
         Validator::isArray($dataList, '$dataList');
         if (!isset($dataList["userId"])) {
-            throw (new \Exception(\G::LoadTranslation("ID_USER_NOT_EXIST", array('userId',''))));
-        } else {
-            Validator::usrUid($dataList["userId"], "userId");
+            $dataList["userId"] = null;
         }
 
-        G::LoadClass("applications");
-        $userUid = $dataList["userId"];
+        //We need to use the USR_UID for the cases in the list
+        $userUid = isset($dataList["userUid"]) ? $dataList["userUid"] : $dataList["userId"];
         $callback = isset( $dataList["callback"] ) ? $dataList["callback"] : "stcCallback1001";
         $dir = isset( $dataList["dir"] ) ? $dataList["dir"] : "DESC";
-        $sort = isset( $dataList["sort"] ) ? $dataList["sort"] : "APP_CACHE_VIEW.APP_NUMBER";
+        $sort = isset( $dataList["sort"] ) ? $dataList["sort"] : "APPLICATION.APP_NUMBER";
+        if ($sort === 'APP_CACHE_VIEW.APP_NUMBER') {
+            $sort = "APPLICATION.APP_NUMBER";
+        }
         $start = isset( $dataList["start"] ) ? $dataList["start"] : "0";
         $limit = isset( $dataList["limit"] ) ? $dataList["limit"] : "";
         $filter = isset( $dataList["filter"] ) ? $dataList["filter"] : "";
         $process = isset( $dataList["process"] ) ? $dataList["process"] : "";
         $category = isset( $dataList["category"] ) ? $dataList["category"] : "";
         $status = isset( $dataList["status"] ) ? strtoupper( $dataList["status"] ) : "";
-        $user = isset( $dataList["user"] ) ? $dataList["user"] : "";
         $search = isset( $dataList["search"] ) ? $dataList["search"] : "";
         $action = isset( $dataList["action"] ) ? $dataList["action"] : "todo";
         $paged = isset( $dataList["paged"] ) ? $dataList["paged"] : true;
@@ -252,128 +259,109 @@ class Cases
         $dateTo = (!empty( $dataList["dateTo"] )) ? substr( $dataList["dateTo"], 0, 10 ) : "";
         $newerThan = (!empty($dataList['newerThan']))? $dataList['newerThan'] : '';
         $oldestThan = (!empty($dataList['oldestthan']))? $dataList['oldestthan'] : '';
-        $first = isset( $dataList["first"] ) ? true :false;
 
-        $u = new \ProcessMaker\BusinessModel\User();
-
-        if ($action == "search" && !$u->checkPermission($dataList["userId"], "PM_ALLCASES")) {
-            throw new \Exception(\G::LoadTranslation("ID_CASE_USER_NOT_HAVE_PERMISSION", array($dataList["userId"])));
-        }
-
-        $valuesCorrect = array('todo', 'draft', 'paused', 'sent', 'selfservice', 'unassigned', 'search');
-        if (!in_array($action, $valuesCorrect)) {
-            throw (new \Exception(\G::LoadTranslation("ID_INCORRECT_VALUE_ACTION")));
-        }
-
-        $start = (int)$start;
-        $start = abs($start);
-        if ($start != 0) {
-            $start--;
-        }
-        $limit = (int)$limit;
-        $limit = abs($limit);
-        if ($limit == 0) {
-            G::LoadClass("configuration");
-            $conf = new \Configurations();
-            $generalConfCasesList = $conf->getConfiguration('ENVIRONMENT_SETTINGS', '');
-            if (isset($generalConfCasesList['casesListRowNumber'])) {
-                $limit = (int)$generalConfCasesList['casesListRowNumber'];
-            } else {
-                $limit = 25;
-            }
-        } else {
-            $limit = (int)$limit;
-        }
-        if ($sort != 'APP_CACHE_VIEW.APP_NUMBER') {
-            $sort = G::toUpper($sort);
-            $columnsAppCacheView = \AppCacheViewPeer::getFieldNames(\BasePeer::TYPE_FIELDNAME);
-            if (!(in_array($sort, $columnsAppCacheView))) {
-                $sort = 'APP_CACHE_VIEW.APP_NUMBER';
-            }
-        }
-        $dir = G::toUpper($dir);
-        if (!($dir == 'DESC' || $dir == 'ASC')) {
-            $dir = 'ASC';
-        }
-        if ($process != '') {
-            Validator::proUid($process, '$pro_uid');
-        }
-        if ($category != '') {
-            Validator::catUid($category, '$cat_uid');
-        }
-        $status = G::toUpper($status);
-        $listStatus = array('TO_DO', 'DRAFT', 'COMPLETED', 'CANCELLED', 'OPEN', 'CLOSE');
-        if (!(in_array($status, $listStatus))) {
-            $status = '';
-        }
-        if ($user != '') {
-            Validator::usrUid($user, '$usr_uid');
-        }
-        if ($dateFrom != '') {
-            Validator::isDate($dateFrom, 'Y-m-d', '$date_from');
-        }
-        if ($dateTo != '') {
-            Validator::isDate($dateTo, 'Y-m-d', '$date_to');
-        }
-
-        if ($action == 'search' || $action == 'to_reassign') {
-            $userUid = ($user == "CURRENT_USER") ? $userUid : $user;
-            if ($first) {
-                $result = array();
-                $result['totalCount'] = 0;
-                $result['data'] = array();
-                return $result;
-            }
-        }
-
-        G::LoadClass("applications");
-        $apps = new \Applications();
-        $result = $apps->getAll(
-            $userUid,
-            $start,
-            $limit,
-            $action,
-            $filter,
-            $search,
-            $process,
-            $status,
-            $type,
-            $dateFrom,
-            $dateTo,
-            $callback,
-            $dir,
-            (strpos($sort, ".") !== false) ? $sort : "APP_CACHE_VIEW." . $sort,
-            $category,
-            true,
-            $paged,
-            $newerThan,
-            $oldestThan
+        $apps = new Applications();
+        $response = $apps->getAll(
+                $userUid,
+                $start,
+                $limit,
+                $action,
+                $filter,
+                $search,
+                $process,
+                $status,
+                $type,
+                $dateFrom,
+                $dateTo,
+                $callback,
+                $dir,
+                (strpos($sort, ".") !== false)? $sort : "APP_CACHE_VIEW." . $sort,
+                $category,
+                true,
+                $paged,
+                $newerThan,
+                $oldestThan
         );
-
-        if (!empty($result['data'])) {
-            foreach ($result['data'] as &$value) {
+        if (!empty($response['data'])) {
+            foreach ($response['data'] as &$value) {
                 $value = array_change_key_case($value, CASE_LOWER);
             }
         }
-        if ($paged == false) {
-            $response = $result['data'];
-        } else {
-            $response['total'] = $result['totalCount'];
+
+        if ($paged) {
+            $response['total'] = $response['totalCount'];
             $response['start'] = $start+1;
             $response['limit'] = $limit;
-            $response['sort']  = G::toLower($sort);
-            $response['dir']   = G::toLower($dir);
-            $response['cat_uid']  = $category;
-            $response['pro_uid']  = $process;
-            $response['search']   = $search;
-            if ($action == 'search') {
-                $response['app_status'] = G::toLower($status);
-                $response['usr_uid'] = $user;
-                $response['date_from'] = $dateFrom;
-                $response['date_to'] = $dateTo;
-            }
-            $response['data'] = $result['data'];
+            $response['sort'] = G::toLower($sort);
+            $response['dir'] = G::toLower($dir);
+            $response['cat_uid'] = $category;
+            $response['pro_uid'] = $process;
+            $response['search'] = $search;
+        } else {
+            $response = $response['data'];
         }
+        return $response;
+    }
+    /**
+     * Search cases and get list of cases
+     *
+     * @access public
+     * @param array $dataList, Data for list
+     * @return array $response
+     */
+    public function getCasesSearch($dataList = array())
+    {
+        Validator::isArray($dataList, '$dataList');
+        if (!isset($dataList["userId"])) {
+            $dataList["userId"] = null;
+        }
+
+        //We need to user the USR_ID for performance
+        $userId = $dataList["userId"];
+        $dir = isset( $dataList["dir"] ) ? $dataList["dir"] : "DESC";
+        $sort = isset( $dataList["sort"] ) ? $dataList["sort"] : "APPLICATION.APP_NUMBER";
+        if ($sort === 'APP_CACHE_VIEW.APP_NUMBER') {
+            $sort = "APPLICATION.APP_NUMBER";
+        }
+        $start = isset( $dataList["start"] ) ? $dataList["start"] : "0";
+        $limit = isset( $dataList["limit"] ) ? $dataList["limit"] : "";
+        $process = isset( $dataList["process"] ) ? $dataList["process"] : "";
+        $category = isset( $dataList["category"] ) ? $dataList["category"] : "";
+        $status = isset( $dataList["status"] ) ? strtoupper( $dataList["status"] ) : "";
+        $user = isset( $dataList["user"] ) ? $dataList["user"] : "";
+        $search = isset( $dataList["search"] ) ? $dataList["search"] : "";
+        $dateFrom = (!empty( $dataList["dateFrom"] )) ? substr( $dataList["dateFrom"], 0, 10 ) : "";
+        $dateTo = (!empty( $dataList["dateTo"] )) ? substr( $dataList["dateTo"], 0, 10 ) : "";
+        $filterStatus = isset( $dataList["filterStatus"] ) ? strtoupper( $dataList["filterStatus"] ) : "";
+
+        $apps = new Applications();
+        $response = $apps->searchAll(
+            $userId,
+            $start,
+            $limit,
+            $search,
+            $process,
+            $filterStatus,
+            $dir,
+            $sort,
+            $category,
+            $dateFrom,
+            $dateTo
+        );
+
+        $response['total'] = 0;
+        $response['start'] = $start+1;
+        $response['limit'] = $limit;
+        $response['sort'] = G::toLower($sort);
+        $response['dir'] = G::toLower($dir);
+        $response['cat_uid'] = $category;
+        $response['pro_uid'] = $process;
+        $response['search'] = $search;
+        $response['app_status'] = G::toLower($status);
+        $response['usr_uid'] = $user;
+        $response['date_from'] = $dateFrom;
+        $response['date_to'] = $dateTo;
+
         return $response;
     }
 
@@ -389,8 +377,7 @@ class Cases
     {
         try {
             $solrEnabled = 0;
-            if (($solrEnv = \System::solrEnv()) !== false) {
-                \G::LoadClass("AppSolr");
+            if (($solrEnv = System::solrEnv()) !== false) {
                 $appSolr = new \AppSolr(
                     $solrEnv["solr_enabled"],
                     $solrEnv["solr_host"],
@@ -404,7 +391,6 @@ class Cases
             }
             if ($solrEnabled == 1) {
                 try {
-                    \G::LoadClass("searchIndex");
                     $arrayData = array();
                     $delegationIndexes = array();
                     $columsToInclude = array("APP_UID");
@@ -418,7 +404,7 @@ class Cases
                     $solrSearchText = "($solrSearchText)";
                     //Add del_index dynamic fields to list of resulting columns
                     $columsToIncludeFinal = array_merge($columsToInclude, $delegationIndexes);
-                    $solrRequestData = \Entity_SolrRequestData::createForRequestPagination(
+                    $solrRequestData = \EntitySolrRequestData::createForRequestPagination(
                         array(
                             "workspace"  => $solrEnv["solr_instance"],
                             "startAfter" => 0,
@@ -432,7 +418,7 @@ class Cases
                         )
                     );
                     //Use search index to return list of cases
-                    $searchIndex = new \BpmnEngine_Services_SearchIndex($appSolr->isSolrEnabled(), $solrEnv["solr_host"]);
+                    $searchIndex = new \BpmnEngineServicesSearchIndex($appSolr->isSolrEnabled(), $solrEnv["solr_host"]);
                     //Execute query
                     $solrQueryResult = $searchIndex->getDataTablePaginatedList($solrRequestData);
                     //Get the missing data from database
@@ -479,12 +465,11 @@ class Cases
                             if (!isset($row)) {
                                 continue;
                             }
-                            \G::LoadClass('wsBase');
-                            $ws = new \wsBase();
+                            $ws = new WsBase();
                             $fields = $ws->getCaseInfo($applicationUid, $row["DEL_INDEX"]);
                             $array = json_decode(json_encode($fields), true);
                             if ($array ["status_code"] != 0) {
-                                throw (new \Exception($array ["message"]));
+                                throw (new Exception($array ["message"]));
                             } else {
                                 $array['app_uid'] = $array['caseId'];
                                 $array['app_number'] = $array['caseNumber'];
@@ -544,34 +529,15 @@ class Cases
                                           "app_name" => $e->getMessage(),
                                           "del_index" => $e->getMessage(),
                                           "pro_uid" => $e->getMessage());
-                    throw (new \Exception($arrayData));
+                    throw (new Exception($arrayData));
                 }
             } else {
-                \G::LoadClass("wsBase");
-
-                //Verify data
-                $this->throwExceptionIfNotExistsCase($applicationUid, 0, $this->getFieldNameByFormatFieldName("APP_UID"));
-
-                $criteria = new \Criteria("workflow");
-
-                $criteria->addSelectColumn(\AppDelegationPeer::APP_UID);
-                $criteria->add(\AppDelegationPeer::APP_UID, $applicationUid);
-                $criteria->add(\AppDelegationPeer::USR_UID, $userUid);
-
-                $rsCriteria = \AppDelegationPeer::doSelectRS($criteria);
-
-                if (!$rsCriteria->next()) {
-                    throw new \Exception(\G::LoadTranslation("ID_NO_PERMISSION_NO_PARTICIPATED"));
-                }
-
-                //Get data
-                $ws = new \wsBase();
-
+                $ws = new WsBase();
                 $fields = $ws->getCaseInfo($applicationUid, 0);
                 $array = json_decode(json_encode($fields), true);
 
                 if ($array ["status_code"] != 0) {
-                    throw (new \Exception($array ["message"]));
+                    throw (new Exception($array ["message"]));
                 } else {
                     $array['app_uid'] = $array['caseId'];
                     $array['app_number'] = $array['caseNumber'];
@@ -629,7 +595,7 @@ class Cases
                 //Return
                 return $oResponse;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -658,7 +624,7 @@ class Cases
             $rsCriteria = \ApplicationPeer::doSelectRS($criteria);
 
             if ($rsCriteria->next()) {
-                throw new \Exception(\G::LoadTranslation("ID_CASE_NO_CURRENT_TASKS_BECAUSE_CASE_ITS_COMPLETED", array($this->getFieldNameByFormatFieldName("APP_UID"), $applicationUid)));
+                throw new Exception(\G::LoadTranslation("ID_CASE_NO_CURRENT_TASKS_BECAUSE_CASE_ITS_COMPLETED", array($this->getFieldNameByFormatFieldName("APP_UID"), $applicationUid)));
             }
 
             //Get data
@@ -666,8 +632,8 @@ class Cases
 
             $oCriteria = new \Criteria( 'workflow' );
             $del       = \DBAdapter::getStringDelimiter();
-            $oCriteria->addSelectColumn( \AppDelegationPeer::DEL_INDEX );
-            $oCriteria->addSelectColumn( \AppDelegationPeer::TAS_UID );
+            $oCriteria->addSelectColumn(\AppDelegationPeer::DEL_INDEX);
+            $oCriteria->addSelectColumn(\AppDelegationPeer::TAS_UID);
             $oCriteria->addSelectColumn(\AppDelegationPeer::DEL_INIT_DATE);
             $oCriteria->addSelectColumn(\AppDelegationPeer::DEL_TASK_DUE_DATE);
             $oCriteria->addSelectColumn(\TaskPeer::TAS_TITLE);
@@ -689,11 +655,11 @@ class Cases
             }
             //Return
             if (empty($result)) {
-                throw new \Exception(\G::LoadTranslation("ID_CASES_INCORRECT_INFORMATION", array($applicationUid)));
+                throw new Exception(\G::LoadTranslation("ID_CASES_INCORRECT_INFORMATION", array($applicationUid)));
             } else {
                 return $result;
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -711,20 +677,20 @@ class Cases
     public function addCase($processUid, $taskUid, $userUid, $variables)
     {
         try {
-            \G::LoadClass('wsBase');
-            $ws = new \wsBase();
+
+            $ws = new WsBase();
             if ($variables) {
                 $variables = array_shift($variables);
             }
             Validator::proUid($processUid, '$pro_uid');
             $oTask = new \Task();
             if (! $oTask->taskExists($taskUid)) {
-                throw new \Exception(\G::LoadTranslation("ID_INVALID_VALUE_FOR", array('tas_uid')));
+                throw new Exception(\G::LoadTranslation("ID_INVALID_VALUE_FOR", array('tas_uid')));
             }
             $fields = $ws->newCase($processUid, $userUid, $taskUid, $variables);
             $array = json_decode(json_encode($fields), true);
             if ($array ["status_code"] != 0) {
-                throw (new \Exception($array ["message"]));
+                throw (new Exception($array ["message"]));
             } else {
                 $array['app_uid'] = $array['caseId'];
                 $array['app_number'] = $array['caseNumber'];
@@ -737,7 +703,7 @@ class Cases
             $oResponse = json_decode(json_encode($array), false);
             //Return
             return $oResponse;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -755,8 +721,8 @@ class Cases
     public function addCaseImpersonate($processUid, $userUid, $taskUid, $variables)
     {
         try {
-            \G::LoadClass('wsBase');
-            $ws = new \wsBase();
+
+            $ws = new WsBase();
             if ($variables) {
                 $variables = array_shift($variables);
             } elseif ($variables == null) {
@@ -765,17 +731,17 @@ class Cases
             Validator::proUid($processUid, '$pro_uid');
             $user = new \Users();
             if (! $user->userExists( $userUid )) {
-                throw new \Exception(\G::LoadTranslation("ID_INVALID_VALUE_FOR", array('usr_uid')));
+                throw new Exception(\G::LoadTranslation("ID_INVALID_VALUE_FOR", array('usr_uid')));
             }
             $fields = $ws->newCaseImpersonate($processUid, $userUid, $variables, $taskUid);
             $array = json_decode(json_encode($fields), true);
             if ($array ["status_code"] != 0) {
                 if ($array ["status_code"] == 12) {
-                    throw (new \Exception(\G::loadTranslation('ID_NO_STARTING_TASK') . '. tas_uid.'));
+                    throw (new Exception(\G::loadTranslation('ID_NO_STARTING_TASK') . '. tas_uid.'));
                 } elseif ($array ["status_code"] == 13) {
-                    throw (new \Exception(\G::loadTranslation('ID_MULTIPLE_STARTING_TASKS') . '. tas_uid.'));
+                    throw (new Exception(\G::loadTranslation('ID_MULTIPLE_STARTING_TASKS') . '. tas_uid.'));
                 }
-                throw (new \Exception($array ["message"]));
+                throw (new Exception($array ["message"]));
             } else {
                 $array['app_uid'] = $array['caseId'];
                 $array['app_number'] = $array['caseNumber'];
@@ -788,7 +754,7 @@ class Cases
             $oResponse = json_decode(json_encode($array), false);
             //Return
             return $oResponse;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -808,24 +774,24 @@ class Cases
     {
         try {
             if (!$delIndex) {
-                $delIndex = \AppDelegation::getCurrentIndex($applicationUid);
+                $delIndex = AppDelegation::getCurrentIndex($applicationUid);
             }
-            \G::LoadClass('wsBase');
-            $ws = new \wsBase();
+
+            $ws = new WsBase();
             $fields = $ws->reassignCase($userUid, $applicationUid, $delIndex, $userUidSource, $userUidTarget);
             $array = json_decode(json_encode($fields), true);
             if (array_key_exists("status_code", $array)) {
                 if ($array ["status_code"] != 0) {
-                    throw (new \Exception($array ["message"]));
+                    throw (new Exception($array ["message"]));
                 } else {
                     unset($array['status_code']);
                     unset($array['message']);
                     unset($array['timestamp']);
                 }
             } else {
-                throw new \Exception(\G::LoadTranslation("ID_CASES_INCORRECT_INFORMATION", array($applicationUid)));
+                throw new Exception(\G::LoadTranslation("ID_CASES_INCORRECT_INFORMATION", array($applicationUid)));
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -851,14 +817,14 @@ class Cases
         Validator::usrUid($usr_uid, '$usr_uid');
 
         if ($del_index === false) {
-            $del_index = \AppDelegation::getCurrentIndex($app_uid);
+            $del_index = AppDelegation::getCurrentIndex($app_uid);
         }
         Validator::isInteger($del_index, '$del_index');
 
         $case = new \Cases();
         $fields = $case->loadCase($app_uid);
         if ($fields['APP_STATUS'] == 'CANCELLED') {
-            throw (new \Exception(\G::LoadTranslation("ID_CASE_ALREADY_CANCELED", array($app_uid))));
+            throw (new Exception(\G::LoadTranslation("ID_CASE_ALREADY_CANCELED", array($app_uid))));
         }
 
         $appCacheView = new \AppCacheView();
@@ -877,7 +843,7 @@ class Cases
         $rsCriteria = \AppDelegationPeer::doSelectRS($criteria);
 
         if (!$rsCriteria->next()) {
-            throw (new \Exception(\G::LoadTranslation("ID_CASE_USER_INVALID_CANCEL_CASE", array($usr_uid))));
+            throw (new Exception(\G::LoadTranslation("ID_CASE_USER_INVALID_CANCEL_CASE", array($usr_uid))));
         }
 
         $case->cancelCase( $app_uid, $del_index, $usr_uid );
@@ -905,7 +871,7 @@ class Cases
         Validator::usrUid($usr_uid, '$usr_uid');
 
         if ($del_index === false) {
-            $del_index = \AppDelegation::getCurrentIndex($app_uid);
+            $del_index = AppDelegation::getCurrentIndex($app_uid);
         }
 
         Validator::isInteger($del_index, '$del_index');
@@ -913,13 +879,13 @@ class Cases
         $case = new \Cases();
         $fields = $case->loadCase($app_uid);
         if ($fields['APP_STATUS'] == 'CANCELLED') {
-            throw (new \Exception(\G::LoadTranslation("ID_CASE_IS_CANCELED", array($app_uid))));
+            throw (new Exception(\G::LoadTranslation("ID_CASE_IS_CANCELED", array($app_uid))));
         }
 
         $oDelay = new \AppDelay();
 
         if ($oDelay->isPaused($app_uid, $del_index)) {
-            throw (new \Exception(\G::LoadTranslation("ID_CASE_PAUSED", array($app_uid))));
+            throw (new Exception(\G::LoadTranslation("ID_CASE_PAUSED", array($app_uid))));
         }
 
         $appCacheView = new \AppCacheView();
@@ -941,7 +907,7 @@ class Cases
         $rsCriteria = \AppDelegationPeer::doSelectRS($criteria);
 
         if (!$rsCriteria->next()) {
-            throw (new \Exception(\G::LoadTranslation("ID_CASE_USER_INVALID_PAUSED_CASE", array($usr_uid))));
+            throw (new Exception(\G::LoadTranslation("ID_CASE_USER_INVALID_PAUSED_CASE", array($usr_uid))));
         }
 
         if ($unpaused_date != null) {
@@ -971,14 +937,14 @@ class Cases
         Validator::usrUid($usr_uid, '$usr_uid');
 
         if ($del_index === false) {
-            $del_index = \AppDelegation::getCurrentIndex($app_uid);
+            $del_index = AppDelegation::getCurrentIndex($app_uid);
         }
         Validator::isInteger($del_index, '$del_index');
 
         $oDelay = new \AppDelay();
 
         if (!$oDelay->isPaused($app_uid, $del_index)) {
-            throw (new \Exception(\G::LoadTranslation("ID_CASE_NOT_PAUSED", array($app_uid))));
+            throw (new Exception(\G::LoadTranslation("ID_CASE_NOT_PAUSED", array($app_uid))));
         }
 
         $appCacheView = new \AppCacheView();
@@ -997,7 +963,7 @@ class Cases
         $rsCriteria = \AppDelegationPeer::doSelectRS($criteria);
 
         if (!$rsCriteria->next()) {
-            throw (new \Exception(\G::LoadTranslation("ID_CASE_USER_INVALID_UNPAUSE_CASE", array($usr_uid))));
+            throw (new Exception(\G::LoadTranslation("ID_CASE_USER_INVALID_UNPAUSE_CASE", array($usr_uid))));
         }
 
         $case = new \Cases();
@@ -1008,39 +974,45 @@ class Cases
      * Put execute trigger case
      *
      * @access public
-     * @param string $app_uid , Uid for case
-     * @param string $usr_uid , Uid for user
-     * @param bool|string $del_index , Index for case
+     * @param string $appUid, Uid for case
+     * @param string $triUid, Uid for trigger
+     * @param string $userUid, Uid for user
+     * @param bool|string $delIndex, Index for case
      *
-     * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
-     * @copyright Colosa - Bolivia
+     * @return array
+     * @throws Exception
      */
-    public function putExecuteTriggerCase($app_uid, $tri_uid, $usr_uid, $del_index = false)
+    public function putExecuteTriggerCase($appUid, $triUid, $userUid, $delIndex = false)
     {
-        Validator::isString($app_uid, '$app_uid');
-        Validator::isString($tri_uid, '$tri_uid');
-        Validator::isString($usr_uid, '$usr_uid');
+        Validator::isString($appUid, '$appUid');
+        Validator::isString($triUid, '$triUid');
+        Validator::isString($userUid, '$userUid');
 
-        Validator::appUid($app_uid, '$app_uid');
-        Validator::triUid($tri_uid, '$tri_uid');
-        Validator::usrUid($usr_uid, '$usr_uid');
+        Validator::appUid($appUid, '$appUid');
+        Validator::triUid($triUid, '$triUid');
+        Validator::usrUid($userUid, '$userUid');
 
-        if ($del_index === false) {
-            $del_index = \AppDelegation::getCurrentIndex($app_uid);
+        if ($delIndex === false) {
+            //We need to find the last delIndex open related to the user $usr_uid
+            $delIndex = (integer)$this->getLastParticipatedByUser($appUid, $userUid, 'OPEN');
+            //If the is assigned another user the function will be return 0
+            if ($delIndex === 0) {
+                throw new Exception(G::loadTranslation('ID_CASE_ASSIGNED_ANOTHER_USER'));
+            }
         }
-        Validator::isInteger($del_index, '$del_index');
+        Validator::isInteger($delIndex, '$del_index');
 
         global $RBAC;
         if (!method_exists($RBAC, 'initRBAC')) {
-            $RBAC = \RBAC::getSingleton( PATH_DATA, session_id() );
+            $RBAC = RBAC::getSingleton( PATH_DATA, session_id() );
             $RBAC->sSystem = 'PROCESSMAKER';
         }
 
-        $case = new \wsBase();
-        $result = $case->executeTrigger($usr_uid, $app_uid, $tri_uid, $del_index);
+        $case = new WsBase();
+        $result = $case->executeTrigger($userUid, $appUid, $triUid, $delIndex);
 
         if ($result->status_code != 0) {
-            throw new \Exception($result->message);
+            throw new Exception($result->message);
         }
     }
 
@@ -1069,11 +1041,11 @@ class Cases
         $dataset->next();
         $aRow = $dataset->getRow();
         if ($aRow['APP_STATUS'] != 'DRAFT') {
-            throw (new \Exception(\G::LoadTranslation("ID_DELETE_CASE_NO_STATUS")));
+            throw (new Exception(\G::LoadTranslation("ID_DELETE_CASE_NO_STATUS")));
         }
 
         if ($aRow['APP_INIT_USER'] != $usr_uid) {
-            throw (new \Exception(\G::LoadTranslation("ID_DELETE_CASE_NO_OWNER")));
+            throw (new Exception(\G::LoadTranslation("ID_DELETE_CASE_NO_OWNER")));
         }
 
         $case = new \Cases();
@@ -1094,20 +1066,26 @@ class Cases
     {
         try {
             if (!$delIndex) {
-                $delIndex = \AppDelegation::getCurrentIndex($applicationUid);
+                $delIndex = AppDelegation::getCurrentIndex($applicationUid);
+                //Check if the next task is a subprocess SYNCHRONOUS with a thread Open
+                $subAppData = new \SubApplication();
+                $caseSubprocessPending = $subAppData->isSubProcessWithCasePending($applicationUid, $delIndex);
+                if ($caseSubprocessPending) {
+                    throw (new Exception(\G::LoadTranslation("ID_CASE_ALREADY_DERIVATED")));
+                }
             }
-            \G::LoadClass('wsBase');
-            $ws = new \wsBase();
+
+            $ws = new WsBase();
             $fields = $ws->derivateCase($userUid, $applicationUid, $delIndex, $bExecuteTriggersBeforeAssignment = false);
             $array = json_decode(json_encode($fields), true);
             if ($array ["status_code"] != 0) {
-                throw (new \Exception($array ["message"]));
+                throw (new Exception($array ["message"]));
             } else {
                 unset($array['status_code']);
                 unset($array['message']);
                 unset($array['timestamp']);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -1123,19 +1101,18 @@ class Cases
      */
     public function getAllUploadedDocumentsCriteria($sProcessUID, $sApplicationUID, $sTasKUID, $sUserUID)
     {
-        \G::LoadClass("configuration");
+
         $conf = new \Configurations();
         $confEnvSetting = $conf->getFormats();
 
         $cases = new \cases();
 
         $listing = false;
-        $oPluginRegistry = & \PMPluginRegistry::getSingleton();
+        $oPluginRegistry = PluginRegistry::loadSingleton();
         if ($oPluginRegistry->existsTrigger(PM_CASE_DOCUMENT_LIST)) {
             $folderData = new \folderData(null, null, $sApplicationUID, null, $sUserUID);
             $folderData->PMType = "INPUT";
             $folderData->returnList = true;
-            //$oPluginRegistry      = & PMPluginRegistry::getSingleton();
             $listing = $oPluginRegistry->executeTriggers(PM_CASE_DOCUMENT_LIST, $folderData);
         }
         $aObjectPermissions = $cases->getAllObjects($sProcessUID, $sApplicationUID, $sTasKUID, $sUserUID);
@@ -1402,7 +1379,7 @@ class Cases
         // Get input documents added/modified by a supervisor - End
         global $_DBArray;
         $_DBArray['inputDocuments'] = $aInputDocuments;
-        \G::LoadClass('ArrayPeer');
+
         $oCriteria = new \Criteria('dbarray');
         $oCriteria->setDBArrayTable('inputDocuments');
         $oCriteria->addDescendingOrderByColumn('CREATE_DATE');
@@ -1421,19 +1398,18 @@ class Cases
      */
     public function getAllGeneratedDocumentsCriteria($sProcessUID, $sApplicationUID, $sTasKUID, $sUserUID)
     {
-        \G::LoadClass("configuration");
+
         $conf = new \Configurations();
         $confEnvSetting = $conf->getFormats();
-        
+
         $cases = new \cases();
 
         $listing = false;
-        $oPluginRegistry = & \PMPluginRegistry::getSingleton();
+        $oPluginRegistry = PluginRegistry::loadSingleton();
         if ($oPluginRegistry->existsTrigger(PM_CASE_DOCUMENT_LIST)) {
             $folderData = new \folderData(null, null, $sApplicationUID, null, $sUserUID);
             $folderData->PMType = "OUTPUT";
             $folderData->returnList = true;
-            //$oPluginRegistry = & PMPluginRegistry::getSingleton();
             $listing = $oPluginRegistry->executeTriggers(PM_CASE_DOCUMENT_LIST, $folderData);
         }
         $aObjectPermissions = $cases->getAllObjects($sProcessUID, $sApplicationUID, $sTasKUID, $sUserUID);
@@ -1578,7 +1554,7 @@ class Cases
                 try {
                     $aAux1 = $oUser->load($aAux['USR_UID']);
                     $sUser = $conf->usersNameFormatBySetParameters($confEnvSetting["format"], $aAux1["USR_USERNAME"], $aAux1["USR_FIRSTNAME"], $aAux1["USR_LASTNAME"]);
-                } catch (\Exception $oException) {
+                } catch (Exception $oException) {
                     $sUser = '(USER DELETED)';
                 }
                 //if both documents were generated, we choose the pdf one, only if doc was
@@ -1630,7 +1606,7 @@ class Cases
         }
         global $_DBArray;
         $_DBArray['outputDocuments'] = $aOutputDocuments;
-        \G::LoadClass('ArrayPeer');
+
         $oCriteria = new \Criteria('dbarray');
         $oCriteria->setDBArrayTable('outputDocuments');
         $oCriteria->addDescendingOrderByColumn('CREATE_DATE');
@@ -1643,42 +1619,28 @@ class Cases
      * @param array $form
      * @param array $appData
      * @param array $caseVariable
-     *
-     * return array Return array
+     * @return array
      */
     private function __getFieldsAndValuesByDynaFormAndAppData(array $form, array $appData, array $caseVariable)
     {
         try {
-            $caseVariableAux = [];
-
             foreach ($form['items'] as $value) {
-                foreach ($value as $value2) {
-                    $field = $value2;
-
+                foreach ($value as $field) {
                     if (isset($field['type'])) {
                         if ($field['type'] != 'form') {
-                            foreach ($field as &$val) {
-                                if (is_string($val) && in_array(substr($val, 0, 2), \pmDynaform::$prefixs)) {
-                                    $val = substr($val, 2);
+                            foreach ($field as $key => $val) {
+                                if (is_string($val) && in_array(substr($val, 0, 2), PmDynaform::$prefixs)) {
+                                    $field[$key] = substr($val, 2);
                                 }
                             }
-                            foreach ($appData as $key => $valueKey) {
+                            foreach ($appData as $key => $val) {
                                 if (in_array($key, $field, true) != false) {
-                                    $keyname = array_search($key, $field);
-                                    if (isset($field['dataType']) && $field['dataType'] != 'grid') {
-                                        $caseVariable[$field[$keyname]] = $appData[$field[$keyname]];
-
-                                        if (isset($appData[$field[$keyname] . '_label'])) {
-                                            $caseVariable[$field[$keyname] . '_label'] = $appData[$field[$keyname] . '_label'];
-                                        } else {
-                                            $caseVariable[$field[$keyname] . '_label'] = '';
-                                        }
-                                    } else {
-                                        $caseVariable[$field[$keyname]] = $appData[$field[$keyname]];
+                                    $caseVariable[$key] = $appData[$key];
+                                    if (isset($appData[$key . '_label'])) {
+                                        $caseVariable[$key . '_label'] = $appData[$key . '_label'];
                                     }
                                 }
                             }
-
                         } else {
                             $caseVariableAux = $this->__getFieldsAndValuesByDynaFormAndAppData($field, $appData, $caseVariable);
                             $caseVariable = array_merge($caseVariable, $caseVariableAux);
@@ -1686,10 +1648,8 @@ class Cases
                     }
                 }
             }
-
-            //Return
             return $caseVariable;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -1719,9 +1679,9 @@ class Cases
         $arrayCaseVariable = [];
 
         if (!is_null($dynaFormUid)) {
-            \G::LoadClass("pmDynaform");
+
             $data["CURRENT_DYNAFORM"] = $dynaFormUid;
-            $pmDynaForm = new \pmDynaform($data);
+            $pmDynaForm = new PmDynaform($data);
             $arrayDynaFormData = $pmDynaForm->getDynaform();
             $arrayDynContent = \G::json_decode($arrayDynaFormData['DYN_CONTENT']);
             $pmDynaForm->jsonr($arrayDynContent);
@@ -1788,11 +1748,11 @@ class Cases
         $arrayResult = $this->getStatusInfo($app_uid);
 
         if ($arrayResult["APP_STATUS"] == "CANCELLED") {
-            throw new \Exception(\G::LoadTranslation("ID_CASE_CANCELLED", array($app_uid)));
+            throw new Exception(\G::LoadTranslation("ID_CASE_CANCELLED", array($app_uid)));
         }
 
         if ($arrayResult["APP_STATUS"] == "COMPLETED") {
-            throw new \Exception(\G::LoadTranslation("ID_CASE_IS_COMPLETED", array($app_uid)));
+            throw new Exception(\G::LoadTranslation("ID_CASE_IS_COMPLETED", array($app_uid)));
         }
 
         $appCacheView = new \AppCacheView();
@@ -1808,7 +1768,7 @@ class Cases
         $rsCriteria = \AppDelegationPeer::doSelectRS($criteria);
 
         if (!$rsCriteria->next()) {
-            throw (new \Exception(\G::LoadTranslation("ID_NO_PERMISSION_NO_PARTICIPATED", array($usr_uid))));
+            throw (new Exception(\G::LoadTranslation("ID_NO_PERMISSION_NO_PARTICIPATED", array($usr_uid))));
         }
 
         $_SESSION['APPLICATION'] = $app_uid;
@@ -1889,11 +1849,11 @@ class Cases
         $case = new \Cases();
         $caseLoad = $case->loadCase($app_uid);
         $pro_uid  = $caseLoad['PRO_UID'];
-        $tas_uid  = \AppDelegation::getCurrentTask($app_uid);
+        $tas_uid  = AppDelegation::getCurrentTask($app_uid);
         $respView  = $case->getAllObjectsFrom( $pro_uid, $app_uid, $tas_uid, $usr_uid, 'VIEW' );
         $respBlock = $case->getAllObjectsFrom( $pro_uid, $app_uid, $tas_uid, $usr_uid, 'BLOCK' );
         if ($respView['CASES_NOTES'] == 0 && $respBlock['CASES_NOTES'] == 0) {
-            throw (new \Exception(\G::LoadTranslation("ID_CASES_NOTES_NO_PERMISSIONS")));
+            throw (new Exception(\G::LoadTranslation("ID_CASES_NOTES_NO_PERMISSIONS")));
         }
 
         if ($sort != 'APP_NOTE.NOTE_DATE') {
@@ -1977,7 +1937,7 @@ class Cases
 
         Validator::isString($note_content, '$note_content');
         if (strlen($note_content) > 500) {
-            throw (new \Exception(\G::LoadTranslation("ID_INVALID_MAX_PERMITTED", array($note_content,'500'))));
+            throw (new Exception(\G::LoadTranslation("ID_INVALID_MAX_PERMITTED", array($note_content,'500'))));
         }
 
         Validator::isBoolean($send_mail, '$send_mail');
@@ -1985,11 +1945,11 @@ class Cases
         $case = new \Cases();
         $caseLoad = $case->loadCase($app_uid);
         $pro_uid  = $caseLoad['PRO_UID'];
-        $tas_uid  = \AppDelegation::getCurrentTask($app_uid);
+        $tas_uid  = AppDelegation::getCurrentTask($app_uid);
         $respView  = $case->getAllObjectsFrom( $pro_uid, $app_uid, $tas_uid, $usr_uid, 'VIEW' );
         $respBlock = $case->getAllObjectsFrom( $pro_uid, $app_uid, $tas_uid, $usr_uid, 'BLOCK' );
         if ($respView['CASES_NOTES'] == 0 && $respBlock['CASES_NOTES'] == 0) {
-            throw (new \Exception(\G::LoadTranslation("ID_CASES_NOTES_NO_PERMISSIONS")));
+            throw (new Exception(\G::LoadTranslation("ID_CASES_NOTES_NO_PERMISSIONS")));
         }
 
         $note_content = addslashes($note_content);
@@ -2020,7 +1980,7 @@ class Cases
                 $this->getFieldNameByFormatFieldName("USR_FIRSTNAME")   => $record["USR_FIRSTNAME"] . "",
                 $this->getFieldNameByFormatFieldName("USR_LASTNAME")    => $record["USR_LASTNAME"] . ""
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -2288,7 +2248,7 @@ class Cases
 
             //Return
             return $arrayTask;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -2340,7 +2300,7 @@ class Cases
         $tas_uid  = $aCaseField["TAS_UID"];
         $pro_uid  = $aCaseField["PRO_UID"];
 
-        $oApplication = new \Applications();
+        $oApplication = new Applications();
         $aField = $oApplication->getSteps($app_uid, $del_index, $tas_uid, $pro_uid);
 
         return $aField;
@@ -2366,7 +2326,7 @@ class Cases
 
             //Return
             return $arrayData;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -2553,7 +2513,7 @@ class Cases
 
             //Return
             return array();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -2575,7 +2535,7 @@ class Cases
             $response = $case->getProcessListStartCase($usrUid, $typeView);
 
             return $response;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw (new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage()));
         }
     }
@@ -2657,7 +2617,7 @@ class Cases
             }
 
             return $processList;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw (new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage()));
         }
     }
@@ -2840,7 +2800,7 @@ class Cases
                 $filterName => (!is_null($arrayFilterData) && is_array($arrayFilterData) && isset($arrayFilterData['filter']))? $arrayFilterData['filter'] : '',
                 'data'      => $arrayUser
             ];
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -3199,7 +3159,7 @@ class Cases
             }
         }
 
-        //Delete simple files. 
+        //Delete simple files.
         //The observations suggested by 'pull request' approver are applied (please see pull request).
         foreach ($arrayVariableDocumentToDelete as $key => $value) {
             if (isset($value['appDocUid'])) {
@@ -3213,7 +3173,7 @@ class Cases
                             }
                         }
                         $arrayApplicationData['APP_DATA'][$key] = G::json_encode($files);
-                    } catch (\Exception $e) {
+                    } catch (Exception $e) {
                         Bootstrap::registerMonolog('DeleteFile', 400, $e->getMessage(), $value, SYS_SYS, 'processmaker.log');
                     }
                 }
@@ -3277,7 +3237,7 @@ class Cases
      * @param array $appData
      * @param array $dataVariable
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public static function getGlobalVariables($appData = array(), $dataVariable = array())
     {
@@ -3365,5 +3325,89 @@ class Cases
             $row = $dataSet->getRow();
         }
         return $delIndex;
+    }
+    /**
+     * This function will be return the criteria for the search filter
+     *
+     * We considered in the search criteria the custom cases list,
+     * the titles related to: caseTitle taskTitle processTitle and
+     * the case number
+     * @param Criteria $criteria, must be contain the initial criteria for search
+     * @param string $listPeer, name of the list class
+     * @param string $search, the parameter for search in the table
+     * @param string $additionalClassName, name of the className of pmtable
+     * @param array $additionalColumns, columns related to the custom cases list
+     * @throws PropelException
+     */
+    public function getSearchCriteriaListCases(&$criteria, $listPeer ,$search, $additionalClassName = '', $additionalColumns = array() )
+    {
+        $oTmpCriteria = '';
+        //If we have additional tables configured in the custom cases list, prepare the variables for search
+        if (count($additionalColumns) > 0) {
+            require_once(PATH_DATA_SITE . 'classes' . PATH_SEP . $additionalClassName . '.php');
+            $oNewCriteria = new \Criteria("workflow");
+            $oTmpCriteria = $oNewCriteria->getNewCriterion(current($additionalColumns), "%" . $search . "%", \Criteria::LIKE);
+
+            //We prepare the query related to the custom cases list
+            foreach (array_slice($additionalColumns, 1) as $value) {
+                $oTmpCriteria = $oNewCriteria->getNewCriterion($value, "%" . $search . "%", \Criteria::LIKE)->addOr($oTmpCriteria);
+            }
+        }
+
+        if (!empty($oTmpCriteria)) {
+            $criteria->add(
+                $criteria->getNewCriterion($listPeer::APP_TITLE, '%' . $search . '%', \Criteria::LIKE)->addOr(
+                $criteria->getNewCriterion($listPeer::APP_TAS_TITLE, '%' . $search . '%', \Criteria::LIKE)->addOr(
+                $criteria->getNewCriterion($listPeer::APP_PRO_TITLE, '%' . $search . '%', \Criteria::LIKE)->addOr(
+                $criteria->getNewCriterion($listPeer::APP_NUMBER, $search, \Criteria::EQUAL)->addOr(
+                    $oTmpCriteria
+                ))))
+            );
+        } else {
+            $criteria->add(
+                $criteria->getNewCriterion($listPeer::APP_TITLE, '%' . $search . '%', \Criteria::LIKE)->addOr(
+                $criteria->getNewCriterion($listPeer::APP_TAS_TITLE, '%' . $search . '%', \Criteria::LIKE)->addOr(
+                $criteria->getNewCriterion($listPeer::APP_PRO_TITLE, '%' . $search . '%', \Criteria::LIKE)->addOr(
+                $criteria->getNewCriterion($listPeer::APP_NUMBER, $search, \Criteria::EQUAL))))
+            );
+        }
+    }
+
+    /**
+     * This function get the table.column by order by the result
+     * We can include the additional table related to the custom cases list
+     *
+     * @param string $listPeer, name of the list class
+     * @param string $field, name of the fieldName
+     * @param string $sort, name of column by sort
+     * @param string $defaultSort, name of column by sort default
+     * @param string $additionalClassName, name of the className of pmTable
+     * @param array $additionalColumns, columns related to the custom cases list with the format TABLE_NAME.COLUMN_NAME
+     * @return string $tableName
+     */
+    public function getSortColumn($listPeer, $field, $sort, $defaultSort, $additionalClassName = '', $additionalColumns = array())
+    {
+        $columnSort = $defaultSort;
+        $tableName = '';
+
+        //We will check if the column by sort is a LIST table
+        $columnsList = $listPeer::getFieldNames($field);
+        if (in_array($sort, $columnsList)) {
+            $columnSort  = $listPeer::TABLE_NAME . '.' . $sort;
+        } else {
+            //We will sort by CUSTOM CASE LIST table
+            if (count($additionalColumns) > 0) {
+                require_once(PATH_DATA_SITE . 'classes' . PATH_SEP . $additionalClassName . '.php');
+                $aTable = explode('.', current($additionalColumns));
+                if (count($aTable) > 0) {
+                    $tableName = $aTable[0];
+                }
+            }
+            if (in_array($tableName . '.' . $sort, $additionalColumns)) {
+                $columnSort = $tableName . '.' . $sort;
+            }
+        }
+
+        return $columnSort;
     }
 }

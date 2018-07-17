@@ -21,7 +21,7 @@
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
-G::LoadClass( "webResource" );
+
 define( 'GET_PERMISSION_REG_EXP', '/(G::\\s*genericForceLogin\\s*\\(\\s*[\'"])(\\w+)([\'"]\\s*,\\s*[\'"].+[\'"],.+\\)\\s*)|(\\$RBAC->userCanAccess\\s*\\(\\s*[\'"])(\\w+)([\'"]\\s*\\))/i' );
 define( 'GET_PERMISSION_REG_EXP2', '/\\s*if\\s*\\(\\s*\\(\\s*\\$RBAC_Response\\s*=\\s*\\$RBAC->userCanAccess\\s*\\(\\s*[\'"]\\w+[\'"]\\s*\\)\\s*\\)\\s*!=1\\s*\\)\\s*return(?:.*)?;\\s*/i' );
 

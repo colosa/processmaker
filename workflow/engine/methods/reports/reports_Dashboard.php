@@ -24,7 +24,6 @@
 
 $_GET['sType'] = str_replace( '?', '', $_GET['sType'] );
 
-G::LoadClass( 'report' );
 $oReport = new Report();
 switch ($_GET['sType']) {
     case 'ID_REPORT1':

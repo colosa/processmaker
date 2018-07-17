@@ -744,6 +744,10 @@ Ext.onReady(function(){
                     id: 'adminPassword',
                     enableKeyEvents: true,
                     allowBlank: false,
+                    validator: function (v) {
+                        v = v.trim();
+                        return !/^\s+$/.test(v);
+                    },
                     listeners: {keyup: function() {
                       wizard.onClientValidation(4, false);
                     }}
@@ -755,6 +759,10 @@ Ext.onReady(function(){
                     id : 'confirmPassword',
                     enableKeyEvents: true,
                     allowBlank: false,
+                    validator: function (v) {
+                        v = v.trim();
+                        return !/^\s+$/.test(v.trim());
+                    },
                     listeners: {keyup: function() {
                       wizard.onClientValidation(4, false);
                     }}

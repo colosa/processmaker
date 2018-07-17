@@ -48,7 +48,7 @@ class ldapadvancedClassCron
             $rbac->authSourcesObj = new AuthenticationSource();
         }
 
-        $plugin = new ldapAdvanced();
+        $plugin = new LdapAdvanced();
         $plugin->sSystem = $rbac->sSystem;
 
         $plugin->setFrontEnd(true);

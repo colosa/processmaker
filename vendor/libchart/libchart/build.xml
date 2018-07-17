@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Libchart" default="package" basedir=".">
+
+	<property name="version" value="1.3"/>
+
+	<property name="build.dir" value="build"/>
+	<property name="dist.dir" value="${build.dir}/dist"/>
+	<property name="package.dir" value="${build.dir}/package"/>
+
+	<!-- =======================================================================
+		 ========================== Clean project ==============================
+		 ======================================================================= -->
+	<target name="clean">
+		<echo>
+. =======================================================
+. Clean project
+. Build dir = ${build.dir}
+. =======================================================
+		</echo>
+		
+		<delete dir="${build.dir}" />
+	</target>
+
+	<!-- =======================================================================
+		 =================== Create exploded distribution ======================
+		 ======================================================================= -->
+	<target name="dist">
+		<echo>
+. =======================================================
+. Create exploded distribution
+. Distribution dir. = ${dist.dir}
+. =======================================================
+		</echo>
+
+		<mkdir dir="${dist.dir}" />
+
+		<mkdir dir="${dist.dir}/libchart" />
+
+		<copy todir="${dist.dir}/libchart">
+			<fileset dir=".">
+				<include name="libchart/**" />
+				<include name="demo/**" />
+				<exclude name="demo/generated/**" />
+			</fileset>
+		</copy>
+		
+		<mkdir dir="${dist.dir}/libchart/demo/generated" />
+	</target>
+
+	<!-- =======================================================================
+		 ==================== Create package distribution ======================
+		 ======================================================================= -->
+	<target name="package" depends="dist">
+		<echo>
+. =======================================================
+. Create package distribution
+. Distribution dir. = ${dist.dir}
+. Packate dir. = ${package.dir}
+. =======================================================
+		</echo>
+
+		<mkdir dir="${package.dir}" />
+		
+		<tar destfile="${package.dir}/libchart-${version}.tar.gz" compression="gzip">
+			<tarfileset dir="${dist.dir}"/>
+		</tar>
+	</target>
+</project>

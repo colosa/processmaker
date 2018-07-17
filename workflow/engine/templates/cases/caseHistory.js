@@ -256,7 +256,6 @@
         enableHdMenu: true,
         frame:false,
         //plugins: expander,
-        cls : 'grid_with_checkbox',
         columnLines: true,
         viewConfig: {
           forceFit:true

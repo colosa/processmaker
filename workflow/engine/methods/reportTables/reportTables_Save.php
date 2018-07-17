@@ -24,7 +24,6 @@
 if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1) {
     return $RBAC_Response;
 }
-G::LoadClass( 'reportTables' );
 
 if (isset( $_POST['form'] )) {
     $values = $_POST['form']; //For Old processmap

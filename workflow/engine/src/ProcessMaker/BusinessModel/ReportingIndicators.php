@@ -19,7 +19,6 @@ class ReportingIndicators
      */
     public function getHistoricData($indicatorUid,  $initDate, $endDate, $periodicity, $language)
     {
-        G::loadClass('indicatorsCalculator');
 		$retval = "";
         $calculator = new \IndicatorsCalculator();
         $arr = $calculator->indicatorData($indicatorUid);
@@ -53,7 +52,6 @@ class ReportingIndicators
      */
     public function getPeiCompleteData($indicatorUid,  $compareDate, $measureDate, $language)
     {
-        G::loadClass('indicatorsCalculator');
         $calculator = new \IndicatorsCalculator();
         $processes = $calculator->peiProcesses($indicatorUid, $measureDate, $measureDate, $language);
         $arr = $calculator->indicatorData($indicatorUid);
@@ -85,7 +83,6 @@ class ReportingIndicators
      */
     public function getUeiCompleteData($indicatorUid, $compareDate, $measureDate,$language)
     {
-        G::loadClass('indicatorsCalculator');
         $calculator = new \IndicatorsCalculator();
         $groups = $calculator->ueiUserGroups($indicatorUid, $measureDate, $measureDate, $language);
 
@@ -118,7 +115,6 @@ class ReportingIndicators
      */
     public function getUeiGroupsStatistics($groupId, $initDate, $endDate, $language)
     {
-        G::loadClass('indicatorsCalculator');
         $calculator = new \IndicatorsCalculator();
         $retval = $calculator->groupEmployeesData($groupId, $initDate, $endDate, $language);
         return $retval;
@@ -136,152 +132,11 @@ class ReportingIndicators
      */
     public function getPeiTasksStatistics($processList, $initDate, $endDate, $language)
     {
-        G::loadClass('indicatorsCalculator');
         $calculator = new \IndicatorsCalculator();
         $retval = $calculator->peiTasks($processList, $initDate, $endDate, $language);
         return $retval;
     }
 
-//    /**
-//     * Lists tasks of a employee and it's statistics (efficiency, average times, etc.)
-//     *
-//     * @param array $employeeList array with the list of employeees to filter the results.
-//     * @param DateTime $initDate date from the index will be calculated
-//     * @param DateTime $endDate date until the index will be calculated
-//     *
-//     * return decimal  value
-//     */
-//    public function getEmployeeTasksInfoList($employeeList, $initDate, $endDate, $language)
-//    {
-//        G::loadClass('IndicatorsCalculator');
-//        $calculator = new \IndicatorsCalculator();
-//        $retval = $calculator->employeeTasksInfoList($employeeList, $initDate, $endDate, $language);
-//        return $retval;
-//    }
-//
-//    /**
-//     * Returns the percent of Cases with Overdue time
-//     *
-//     * @param array $processList array with the list of processes to filter the results.
-//     * @param DateTime $initDate date from the index will be calculated
-//     * @param DateTime $endDate date until the index will be calculated
-//     *
-//     * return decimal  value
-//     */
-//    public function getPercentOverdueCasesByProcess($processList, $initDate, $endDate)
-//    {
-//        G::loadClass('IndicatorsCalculator');
-//        $calculator = new \IndicatorsCalculator();
-//        $retval = $calculator->percentOverdueCasesByProcess($processList, $initDate, $endDate);
-//        return $retval;
-//    }
-//
-//    /**
-//     * Returns the percent of Cases with Overdue by period (month, semester, etc.)
-//     *
-//     * @param array $processList array with the list of processes to filter the results.
-//     * @param DateTime $initDate date from the index will be calculated
-//     * @param DateTime $endDate date until the index will be calculated
-//     *
-//     * return decimal  value
-//     */
-//    public function getPercentOverdueCasesByProcessHistory($processList, $initDate, $endDate, $periodicity)
-//    {
-//        G::loadClass('IndicatorsCalculator');
-//        $calculator = new \IndicatorsCalculator();
-//        $retval = $calculator->percentOverdueCasesByProcessList($processList, $initDate, $endDate, \ReportingPeriodicityEnum::fromValue($periodicity));
-//        return $retval;
-//    }
-//
-//    /**
-//     * Returns the number of new Cases
-//     *
-//     * @param array $processList array with the list of processes to filter the results.
-//     * @param DateTime $initDate date from the index will be calculated
-//     * @param DateTime $endDate date until the index will be calculated
-//     *
-//     * return decimal  value
-//     */
-//    public function getPercentNewCasesByProcess($processList, $initDate, $endDate)
-//    {
-//        G::loadClass('IndicatorsCalculator');
-//        $calculator = new \IndicatorsCalculator();
-//        $retval = $calculator->totalNewCasesByProcess($processList, $initDate, $endDate);
-//        return $retval;
-//    }
-//
-//    /**
-//     * Returns the total of new Cases historically
-//     *
-//     * @param array $processList array with the list of processes to filter the results.
-//     * @param DateTime $initDate date from the index will be calculated
-//     * @param DateTime $endDate date until the index will be calculated
-//     *
-//     * return decimal  value
-//     */
-//    public function getPercentNewCasesByProcessHistory($processList, $initDate, $endDate, $periodicity)
-//    {
-//        G::loadClass('IndicatorsCalculator');
-//        $calculator = new \IndicatorsCalculator();
-//        $retval = $calculator->totalNewCasesByProcessList($processList, $initDate, $endDate, \ReportingPeriodicityEnum::fromValue($periodicity));
-//        return $retval;
-//    }
-//
-//
-//
-//
-//    /**
-//     * Returns the number of completed Cases
-//     *
-//     * @param array $processList array with the list of processes to filter the results.
-//     * @param DateTime $initDate date from the index will be calculated
-//     * @param DateTime $endDate date until the index will be calculated
-//     *
-//     * return decimal  value
-//     */
-//    public function getPercentCompletedCasesByProcess($processList, $initDate, $endDate)
-//    {
-//        G::loadClass('IndicatorsCalculator');
-//        $calculator = new \IndicatorsCalculator();
-//        $retval = $calculator->totalCompletedCasesByProcess($processList, $initDate, $endDate);
-//        return $retval;
-//    }
-//
-//    /**
-//     * Returns the total of completed Cases historically
-//     *
-//     * @param array $processList array with the list of processes to filter the results.
-//     * @param DateTime $initDate date from the index will be calculated
-//     * @param DateTime $endDate date until the index will be calculated
-//     *
-//     * return decimal  value
-//     */
-//    public function getPercentCompletedCasesByProcessHistory($processList, $initDate, $endDate, $periodicity)
-//    {
-//        G::loadClass('IndicatorsCalculator');
-//        $calculator = new \IndicatorsCalculator();
-//        $retval = $calculator->totalCompletedCasesByProcessList($processList, $initDate, $endDate, \ReportingPeriodicityEnum::fromValue($periodicity));
-//        return $retval;
-//    }
-
-//    /**
-//     *
-//     *
-//     * @param array $processList array with the list of processes to filter the results.
-//     * @param DateTime $initDate date from the index will be calculated
-//     * @param DateTime $endDate date until the index will be calculated
-//     *
-//     * return decimal  value
-//     */
-//    public function getProcessEfficiencyIndexData($processId, $initDate, $endDate)
-//    {
-//        G::loadClass('IndicatorsCalculator');
-//        $calculator = new \IndicatorsCalculator();
-//		$indexValue = $calculator->processEfficiencyIndex ($processId, $initDate, $endDate);
-//		$costValue = $calculator->processEfficiencyCost ($processId, $initDate, $endDate);
-//        $retval = $calculator->totalCompletedCasesByProcessList($processId, $initDate, $endDate);
-//        return $retval;
-//    }
     /**
      * Lists tasks of a process and it's statistics (efficiency, average times, etc.)
      *
@@ -295,7 +150,6 @@ class ReportingIndicators
      */
     public function getGeneralIndicatorStatistics($indicatorId, $initDate, $endDate, $periodicity)
     {
-        G::loadClass('indicatorsCalculator');
         $calculator = new \IndicatorsCalculator();
         $arr = $calculator->generalIndicatorData($indicatorId, $initDate, $endDate, \ReportingPeriodicityEnum::NONE);
         $value = $arr[0]['value'];
@@ -340,7 +194,6 @@ class ReportingIndicators
 
         $usrUid = isset( $options["usrUid"] ) ? $options["usrUid"] : "";
 
-        G::loadClass('indicatorsCalculator');
         $calculator = new \IndicatorsCalculator();
         $result = $calculator->statusIndicator($usrUid);
         return $result;

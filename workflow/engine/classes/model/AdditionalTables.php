@@ -305,8 +305,7 @@ class AdditionalTables extends BaseAdditionalTables
         FieldsPeer::doDelete($criteria);
 
         //remove all related to pmTable
-        G::loadClass('pmTable');
-        $pmTable = new pmTable($additionalTable['ADD_TAB_NAME']);
+        $pmTable = new PmTable($additionalTable['ADD_TAB_NAME']);
         $pmTable->setDataSource($additionalTable['DBS_UID']);
         $pmTable->remove();
     }
@@ -488,7 +487,7 @@ class AdditionalTables extends BaseAdditionalTables
             $oCriteriaCount = clone $oCriteria;
             eval('$count = ' . $sClassPeerName . '::doCount($oCriteria);');
         }
-        G::LoadSystem('inputfilter');
+
         $filter = new InputFilter();        
         $sClassPeerName = $filter->validateInput($sClassPeerName);
 
@@ -585,7 +584,6 @@ class AdditionalTables extends BaseAdditionalTables
             if ($oClass->validate()) {
                 $iResult = $oClass->save();
                 if ($keysAutoIncrement == 1 && $aFields[$keyUIDAutoIncrement] == '' && isset($_SESSION['APPLICATION']) && $_SESSION['APPLICATION'] != '') {
-                    G::LoadClass('case');
                     $oCaseKeyAuto = new Cases();
                     $newId = $oClass->getId();
                     $aFields = $oCaseKeyAuto->loadCase($_SESSION['APPLICATION']);
@@ -849,7 +847,6 @@ class AdditionalTables extends BaseAdditionalTables
      */
     public function updateReportTables($proUid, $appUid, $appNumber, $caseData, $appStatus)
     {
-        G::loadClass('pmTable');
         //get all Active Report Tables
         $criteria = new Criteria('workflow');
         $criteria->add(AdditionalTablesPeer::PRO_UID, $proUid);
@@ -868,7 +865,7 @@ class AdditionalTables extends BaseAdditionalTables
             // the class exists then load it.
             require_once PATH_WORKSPACE . 'classes/' . $className . '.php';
             // create a criteria object of report table class
-            $c = new Criteria(pmTable::resolveDbSource($row['DBS_UID']));
+            $c = new Criteria(PmTable::resolveDbSource($row['DBS_UID']));
             // select all related records with this $appUid
             eval('$c->add(' . $className . 'Peer::APP_UID, \'' . $appUid . '\');');
             eval('$records = ' . $className . 'Peer::doSelect($c);');

@@ -115,6 +115,7 @@ class Roles extends BaseRoles {
             $oCriteria->addSelectColumn(RolesPeer::ROL_UPDATE_DATE);
             $oCriteria->addSelectColumn(RolesPeer::ROL_STATUS);
             $oCriteria->add(RolesPeer::ROL_UID, '', Criteria::NOT_EQUAL);
+            $oCriteria->add(RolesPeer::ROL_CODE, RBAC::PROCESSMAKER_GUEST, Criteria::NOT_EQUAL);
             $oCriteria->add(SystemsPeer::SYS_CODE, $systemCode);
             $oCriteria->add(RolesPeer::ROL_CREATE_DATE, '', Criteria::NOT_EQUAL);
             $oCriteria->add(RolesPeer::ROL_UPDATE_DATE, '', Criteria::NOT_EQUAL);
@@ -131,50 +132,60 @@ class Roles extends BaseRoles {
         }
     }
 
-    //Added by QENNIX
-	function getAllRolesFilter($start, $limit, $filter='') {
-		//echo $start.'<<<<'.$limit;
-		$systemCode = 'PROCESSMAKER';
-		$oCriteria2 = new Criteria('rbac');
-		$result = Array();
+    /**
+     * This function get all Roles filters
+     * We can apply page and filters
+     *
+     * @param integer $start
+     * @param integer $limit
+     * @param string $filter
+     *
+     * @return array
+     */
+    function getAllRolesFilter($start, $limit, $filter = '')
+    {
+        $systemCode = 'PROCESSMAKER';
+        $criteriaCount = new Criteria('rbac');
+        $result = [];
 
-		$oCriteria2->addSelectColumn('COUNT(*) AS CNT');
-		$oCriteria2->add(RolesPeer::ROL_UID, '', Criteria::NOT_EQUAL);
-        $oCriteria2->add(SystemsPeer::SYS_CODE, $systemCode);
-        $oCriteria2->add(RolesPeer::ROL_CREATE_DATE, '', Criteria::NOT_EQUAL);
-        $oCriteria2->add(RolesPeer::ROL_UPDATE_DATE, '', Criteria::NOT_EQUAL);
-        $oCriteria2->addJoin(RolesPeer::ROL_SYSTEM, SystemsPeer::SYS_UID);
-    	if ($filter != '') {
-          $oCriteria2->add(RolesPeer::ROL_CODE, '%'.$filter.'%', Criteria::LIKE);
+        $criteriaCount->addSelectColumn('COUNT(*) AS CNT');
+        $criteriaCount->add(RolesPeer::ROL_UID, '', Criteria::NOT_EQUAL);
+        $criteriaCount->add(SystemsPeer::SYS_CODE, $systemCode);
+        $criteriaCount->add(RolesPeer::ROL_CREATE_DATE, '', Criteria::NOT_EQUAL);
+        $criteriaCount->add(RolesPeer::ROL_UPDATE_DATE, '', Criteria::NOT_EQUAL);
+        $criteriaCount->add(RolesPeer::ROL_UID, ['', RBAC::PROCESSMAKER_GUEST_UID], Criteria::NOT_IN);
+        $criteriaCount->addJoin(RolesPeer::ROL_SYSTEM, SystemsPeer::SYS_UID);
+        if ($filter != '') {
+            $criteriaCount->add(RolesPeer::ROL_CODE, '%' . $filter . '%', Criteria::LIKE);
         }
-        $result['COUNTER'] = $oCriteria2;
-        $oCriteria = new Criteria('rbac');
-        $oCriteria->clear();
-        $oCriteria->addSelectColumn(RolesPeer::ROL_UID);
-        $oCriteria->addSelectColumn(RolesPeer::ROL_PARENT);
-        $oCriteria->addSelectColumn(RolesPeer::ROL_SYSTEM);
-        $oCriteria->addSelectColumn(SystemsPeer::SYS_CODE);
-        $oCriteria->addSelectColumn(RolesPeer::ROL_CODE);
-        $oCriteria->addSelectColumn(RolesPeer::ROL_CREATE_DATE);
-        $oCriteria->addSelectColumn(RolesPeer::ROL_UPDATE_DATE);
-        $oCriteria->addSelectColumn(RolesPeer::ROL_STATUS);
-        $oCriteria->add(RolesPeer::ROL_UID, '', Criteria::NOT_EQUAL);
-        $oCriteria->add(SystemsPeer::SYS_CODE, $systemCode);
-        $oCriteria->add(RolesPeer::ROL_CREATE_DATE, '', Criteria::NOT_EQUAL);
-        $oCriteria->add(RolesPeer::ROL_UPDATE_DATE, '', Criteria::NOT_EQUAL);
-        $oCriteria->addJoin(RolesPeer::ROL_SYSTEM, SystemsPeer::SYS_UID);
+        $result['COUNTER'] = $criteriaCount;
+
+        $criteria = new Criteria('rbac');
+        $criteria->clear();
+        $criteria->addSelectColumn(RolesPeer::ROL_UID);
+        $criteria->addSelectColumn(RolesPeer::ROL_PARENT);
+        $criteria->addSelectColumn(RolesPeer::ROL_SYSTEM);
+        $criteria->addSelectColumn(SystemsPeer::SYS_CODE);
+        $criteria->addSelectColumn(RolesPeer::ROL_CODE);
+        $criteria->addSelectColumn(RolesPeer::ROL_CREATE_DATE);
+        $criteria->addSelectColumn(RolesPeer::ROL_UPDATE_DATE);
+        $criteria->addSelectColumn(RolesPeer::ROL_STATUS);
+        $criteria->add(RolesPeer::ROL_UID, ['', RBAC::PROCESSMAKER_GUEST_UID], Criteria::NOT_IN);
+        $criteria->add(SystemsPeer::SYS_CODE, $systemCode);
+        $criteria->add(RolesPeer::ROL_CREATE_DATE, '', Criteria::NOT_EQUAL);
+        $criteria->add(RolesPeer::ROL_UPDATE_DATE, '', Criteria::NOT_EQUAL);
+        $criteria->addJoin(RolesPeer::ROL_SYSTEM, SystemsPeer::SYS_UID);
 
         if ($filter != '') {
-          $oCriteria->add(RolesPeer::ROL_CODE, '%'.$filter.'%', Criteria::LIKE);
+            $criteria->add(RolesPeer::ROL_CODE, '%' . $filter . '%', Criteria::LIKE);
         }
 
-        $oCriteria->setOffset($start);
-        $oCriteria->setLimit($limit);
-
-        $result['LIST'] = $oCriteria;
+        $criteria->setOffset($start);
+        $criteria->setLimit($limit);
+        $result['LIST'] = $criteria;
 
         return $result;
-	}
+    }
 
     function getAllRoles($systemCode = 'PROCESSMAKER') {
         $c = $this->listAllRoles($systemCode);
@@ -215,7 +226,6 @@ class Roles extends BaseRoles {
     function createRole($aData) {
         $con = Propel::getConnection(RolesPeer::DATABASE_NAME);
         try {
-            $con->begin();
             $sRolCode = $aData['ROL_CODE'];
             $sRolSystem = $aData['ROL_SYSTEM'];
             $status = $fields['ROL_STATUS'] = 1 ? 'ACTIVE' : 'INACTIVE';
@@ -239,6 +249,7 @@ class Roles extends BaseRoles {
             $obj = new Roles();
             $obj->fromArray($aData, BasePeer::TYPE_FIELDNAME);
             if ($obj->validate()) {
+                $con->begin();
                 $result = $obj->save();
                 $con->commit();
                 $obj->setRolName($rol_name);
@@ -572,7 +583,7 @@ class Roles extends BaseRoles {
             $result->setFetchmode(ResultSet::FETCHMODE_ASSOC);
             $result->next();
 
-            $a = Array();
+            $a = [RBAC::PM_GUEST_CASE_UID];
             while( $row = $result->getRow() ) {
                 $a[] = $row['PER_UID'];
                 $result->next();

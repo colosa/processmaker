@@ -22,22 +22,22 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
 global $RBAC;
-$access = $RBAC->userCanAccess( 'PM_FACTORY' );
+$access = $RBAC->userCanAccess('PM_FACTORY');
 if ($access != 1) {
     switch ($access) {
-        case - 1:
-            G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );
-            G::header( 'location: ../login/login' );
+        case -1:
+            G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
+            G::header('location: ../login/login');
             die();
             break;
-        case - 2:
-            G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels' );
-            G::header( 'location: ../login/login' );
+        case -2:
+            G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_SYSTEM', 'error', 'labels');
+            G::header('location: ../login/login');
             die();
             break;
         default:
-            G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );
-            G::header( 'location: ../login/login' );
+            G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
+            G::header('location: ../login/login');
             die();
             break;
     }
@@ -45,20 +45,24 @@ if ($access != 1) {
 try {
     require_once 'classes/model/ObjectPermission.php';
     $oOP = new ObjectPermission();
-    $oOP = ObjectPermissionPeer::retrieveByPK( $_GET['OP_UID'] );
+    $oOP = ObjectPermissionPeer::retrieveByPK($_GET['OP_UID']);
     $sProcessUID = $oOP->getProUid();
     $oOP->delete();
+
+    $result = new stdclass();
     $result->success = true;
-    $result->msg = G::LoadTranslation( 'ID_REPORTTABLE_REMOVED' );
-    G::LoadClass( 'processMap' );
+    $result->msg = G::LoadTranslation('ID_REPORTTABLE_REMOVED');
+
     $oProcessMap = new ProcessMap();
-    $oProcessMap->getObjectsPermissionsCriteria( $sProcessUID );
+    $oProcessMap->getObjectsPermissionsCriteria($sProcessUID);
 } catch (Exception $e) {
+    $result = new stdclass();
     $result->success = false;
     $result->msg = $e->getMessage();
 }
-print G::json_encode( $result );
+print G::json_encode($result);
 
 $infoProcess = new Processes();
 $resultProcess = $infoProcess->getProcessRow($sProcessUID);
-G::auditLog('DeletePermissions','Delete Permissions ('.$_GET['OP_UID'].') in Process "'.$resultProcess['PRO_TITLE'].'"');
+G::auditLog('DeletePermissions',
+    'Delete Permissions (' . $_GET['OP_UID'] . ') in Process "' . $resultProcess['PRO_TITLE'] . '"');

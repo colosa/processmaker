@@ -1,5 +1,4 @@
 <?php
-  G::LoadClass( "plugin");
 
  class pmosCommunityPlugin extends PMPlugin
  {

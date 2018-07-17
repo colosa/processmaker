@@ -55,7 +55,7 @@ try {
         $aFields['OUT_DOC_PDF_SECURITY_OPEN_PASSWORD'] = G::decrypt( $aFields['OUT_DOC_PDF_SECURITY_OPEN_PASSWORD'], $_GET['OUT_DOC_UID'] );
         $aFields['OUT_DOC_PDF_SECURITY_OWNER_PASSWORD'] = G::decrypt( $aFields['OUT_DOC_PDF_SECURITY_OWNER_PASSWORD'], $_GET['OUT_DOC_UID'] );
     }
-    G::LoadClass( 'xmlfield_InputPM' );
+
     $G_PUBLISH = new Publisher();
     switch ($type) {
         case 'HTML':
@@ -63,16 +63,7 @@ try {
             break;
         case 'JRXML':
             $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'outputdocs/outputdocs_Properties', '', $aFields, '../outputdocs/outputdocs_Save' );
-            /*
-            //  	     $G_PUBLISH->AddContent('xmlform', 'xmlform', 'outputdocs/outputdocsDynaformList', '', $aFields , '../outputdocs/outputdocs_Save');
-            require_once 'classes/model/Process.php';
-            G::LoadClass( 'processMap');
-            $sProcessUID = $aFields['PRO_UID'];
-            $oProcess = new Process();
-            $oProcessMap = new ProcessMap();
-            $aFields  = $oProcess->load($sProcessUID);
-            $G_PUBLISH->AddContent('propeltable', 'paged-table', 'dynaforms/dynaforms_ShortList', $oProcessMap->getDynaformsCriteria($sProcessUID), $aFields);
-            */
+
             break;
         case 'ACROFORM':
             $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'outputdocs/outputdocs_Properties', '', $aFields, '../outputdocs/outputdocs_Save' );

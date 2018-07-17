@@ -38,16 +38,7 @@ switch ($RBAC->userCanAccess('PM_FACTORY'))
 }
 
 */
-/*
-  G::LoadClass('cases_Scheduler');
-  $oCases_Scheduler= new Cases_Scheduler();
-  $oCases_Scheduler->changeStatus ( $_GET['SCH_UID'] );
-  G::header('location: ' . $_SERVER['HTTP_REFERER']);
-*/
 
-require_once 'classes/model/CaseScheduler.php';
-
-//  G::LoadClass('CaseScheduler');
 $oCaseScheduler = new CaseScheduler();
 $oCaseScheduler->changeStatus( $_GET['SCH_UID'] );
 G::header( 'location: ' . $_SERVER['HTTP_REFERER'] );

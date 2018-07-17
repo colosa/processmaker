@@ -32,7 +32,7 @@ var IncrementNameCanvas = function (pmCanvas) {
             INTERMEDIATE_RECEIVEMESSAGE: "Intermediate Receive Message Event".translate(),
             LANE: "Lane".translate(),
             GROUP: "Group".translate(),
-            BOUNDARY_EVENT: " ".translate(),
+            BOUNDARY_EVENT: ' ',
             END_EMAIL: "End Email Event".translate(),
             INTERMEDIATE_EMAIL: "Intermediate Email Event".translate()
         },

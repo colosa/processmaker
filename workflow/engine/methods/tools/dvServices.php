@@ -26,7 +26,7 @@
  *
  * @author David Callizaya <davidsantos@colosa.com>
  */
-G::LoadSystem( "webResource" );
+
 
 class dvServices extends WebResource
 {

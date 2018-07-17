@@ -35,9 +35,6 @@ switch ($RBAC->userCanAccess( 'PM_CASES' )) {
         break;
 }
 
-/* Includes */
-G::LoadClass( 'case' );
-
 /* Process the info */
 try {
     $oCase = new Cases();

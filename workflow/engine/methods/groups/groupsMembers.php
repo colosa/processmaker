@@ -62,7 +62,6 @@ $oHeadPublisher->addContent( 'groups/groupsMembers' ); //adding a html file  .ht
 
 $labels = G::getTranslations( Array ('ID_GROUPS','ID_GROUP_NAME','ID_BACK','ID_ASSIGN_ALL_MEMBERS','ID_REMOVE_ALL_MEMBERS','ID_MSG_AJAX_FAILURE','ID_PROCESSING','ID_ENTER_SEARCH_TERM','ID_FIRST_NAME','ID_LAST_NAME','ID_USER_NAME','ID_AVAILABLE_MEMBERS','ID_ASSIGNED_MEMBERS') );
 
-G::LoadClass( 'groups' );
 $oGroup = new Groupwf();
 $oGroup->load( $_REQUEST['GRP_UID'] );
 

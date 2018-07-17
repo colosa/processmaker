@@ -1,6 +1,6 @@
 <?php
-require_once PATH_CORE . 'classes' . PATH_SEP . 'class.pmLicenseManager.php';
-require_once PATH_CORE . 'classes' . PATH_SEP . 'class.enterpriseUtils.php';
+
+use ProcessMaker\Core\System;
 
 ini_set("max_execution_time", 0);
 
@@ -19,7 +19,7 @@ if (!defined("BUFSIZE")) {
 
 function install($file)
 {
-    G::LoadThirdParty("pear/Archive", "Tar");
+
 
     $result = array();
     $status = 1;
@@ -119,7 +119,7 @@ switch ($option) {
             }
 
             ///////
-            $licenseManager = &pmLicenseManager::getSingleton();
+            $licenseManager = &PmLicenseManager::getSingleton();
             $server = isset($licenseManager->server) ? $licenseManager->server : '';
             $workspace = (isset($licenseManager->workspace)) ? $licenseManager->workspace : 'pmLicenseSrv';
 
@@ -295,7 +295,7 @@ switch ($option) {
             }
 
             ///////
-            $licenseManager = &pmLicenseManager::getSingleton();
+            $licenseManager = &PmLicenseManager::getSingleton();
             $server = (isset($licenseManager->server)) ? $licenseManager->server : '';
             $workspace = (isset($licenseManager->workspace)) ? $licenseManager->workspace : 'pmLicenseSrv';
 

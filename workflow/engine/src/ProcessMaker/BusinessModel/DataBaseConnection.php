@@ -1,9 +1,9 @@
 <?php
 namespace ProcessMaker\BusinessModel;
 
-use \G;
-use \DbSource;
-use \dbConnections;
+use G;
+use DbSource;
+use DbConnections;
 
 class DataBaseConnection
 {
@@ -61,8 +61,7 @@ class DataBaseConnection
                 $dbs_uid = $this->validateDbsUid($dbs_uid, $pro_uid);
             }
 
-            G::LoadClass( 'dbConnections' );
-            $dbs = new dbConnections($pro_uid);
+            $dbs = new DbConnections($pro_uid);
             $oDBConnection = new DbSource();
             $aFields = $oDBConnection->load($dbs_uid, $pro_uid);
             if ($aFields['DBS_PORT'] == '0') {
@@ -123,7 +122,6 @@ class DataBaseConnection
             $dbs_uid = $this->validateDbsUid($dbs_uid, $pro_uid);
         }
 
-        G::LoadClass('dbConnections');
         $oDBSource = new DbSource();
         $oContent  = new \Content();
         $dataDBConnection = array_change_key_case($dataDBConnection, CASE_UPPER);
@@ -164,7 +162,7 @@ class DataBaseConnection
 
         if (isset($dataDBConnection['DBS_ENCODE'])) {
             $encodesExists = array();
-            $dbs = new dbConnections();
+            $dbs = new DbConnections();
             $dbEncodes = $dbs->getEncondeList($dataDBConnection['DBS_TYPE']);
             foreach ($dbEncodes as $value) {
                 $encodesExists[] = $value['0'];
@@ -272,10 +270,8 @@ class DataBaseConnection
 
         $flagTns = ($dataCon["DBS_TYPE"] == "oracle" && $dataCon["DBS_CONNECTION_TYPE"] == "TNS")? 1 : 0;
 
-        G::LoadClass( 'net' );
-
         if ($flagTns == 0) {
-            $Server = new \NET($dataCon['DBS_SERVER']);
+            $Server = new \Net($dataCon['DBS_SERVER']);
 
             // STEP 1 : Resolving Host Name
             $respTest['0'] = array();
@@ -360,7 +356,7 @@ class DataBaseConnection
                 }
             }
         } else {
-            $net = new \NET();
+            $net = new \Net();
 
             //STEP 0: Trying to open database type TNS
             $respTest["0"] = array();
@@ -427,10 +423,7 @@ class DataBaseConnection
      */
     public function getDbEngines ()
     {
-        if (!class_exists('dbConnections')) {
-            G::LoadClass('dbConnections');
-        }
-        $dbs = new dbConnections();
+        $dbs = new DbConnections();
         $dbServices = $dbs->getDbServicesAvailables();
         return $dbServices;
     }

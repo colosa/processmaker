@@ -109,35 +109,40 @@ Ext.onReady(function(){
     selModel:selModel,
     store: store,
 
-    tbar:[{
-        text   : _('ID_IMPORT'),
-        iconCls: 'silk-add',
-        icon   : '/images/import.gif',
-        handler: importProcess
-      },{
-        xtype: 'tbseparator'
-      },
-      {
-        id     : 'setup',
-        text   : _('ID_CONFIGURE'),
-        iconCls: 'silk-add',
-        icon   : '/images/options.png',
-        handler: configure
-      },
-      {
-        text    : _('ID_STATUS'),
-        id      : 'activator',
-        icon    : '',
-        iconCls : 'silk-add',
-        handler : activeDeactive,
-        disabled: true
-      },{
-        text   : _('ID_DELETE'),
-        iconCls: 'silk-add',
-        icon   : '/images/delete-16x16.gif',
-        handler: deletePlugin
-      }
-    ],
+      tbar: [
+          {
+              text: _('ID_IMPORT'),
+              iconCls: 'silk-add',
+              icon: '/images/import.gif',
+              handler: importProcess,
+              disabled: typeof ID_IMPORT_DISABLED === 'undefined' ? false : ID_IMPORT_DISABLED
+          },
+          {
+              xtype: 'tbseparator'
+          },
+          {
+              id: 'setup',
+              text: _('ID_CONFIGURE'),
+              iconCls: 'silk-add',
+              icon: '/images/options.png',
+              handler: configure
+          },
+          {
+              text: _('ID_STATUS'),
+              id: 'activator',
+              icon: '',
+              iconCls: 'silk-add',
+              handler: activeDeactive,
+              disabled: true
+          },
+          {
+              text: _('ID_DELETE'),
+              iconCls: 'silk-add',
+              icon: '/images/delete-16x16.gif',
+              handler: deletePlugin,
+              disabled: typeof ID_DELETE_DISABLED === 'undefined' ? false : ID_DELETE_DISABLED
+          }
+      ],
     listeners: {
       render: function(){
         this.loadMask = new Ext.LoadMask(this.body, {msg: _('ID_LOADING_GRID')});

@@ -39,7 +39,7 @@ try {
     $oStep = new Step();
     $oStep->up( $_POST['STEP_UID'], $_POST['TASK'], $_POST['STEP_POSITION'] );
     G::auditlog("StepUp","Up the Step One Level -> ".$_POST['STEP_UID'].' In Task -> '.$_POST['TASK'].' Step Position -> '.$_POST['STEP_POSITION']);
-    G::LoadClass( 'processMap' );
+
     $oProcessMap = new ProcessMap();
     $oProcessMap->getStepsCriteria( $_POST['TASK'] );
 } catch (Exception $oException) {

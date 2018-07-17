@@ -43,20 +43,25 @@ class Catalog
     }
 
     /**
-     * Update Catalog
+     * Update Catalog.
      *
      * @param string $cat_uid    Unique id of Group
      * @param string $cat_type   Unique id of Group
      * @param array  $arrayData  Data
      *
-     * return array Return data of the new Group update
-     * 
-     * @author Marco Antonio Nina <marco.antonio.nina@colosa.com>
+     * @return array Return data of the new Group update
+     *
+     * @access private
+     * @deprecated since 3.2.2
      */
     public function update($cat_uid, $cat_type, $arrayData)
     {
         $catalog = new \Catalog();
-        $response = $catalog->update($cat_uid, $cat_type, $arrayData);
+        $arrayData['CAT_UID'] = $cat_uid;
+        $arrayData['CAT_TYPE'] = !isset($arrayData['CAT_TYPE'])
+            ? $cat_type
+            : $arrayData['CAT_TYPE'];
+        $response = $catalog->createOrUpdate($arrayData);
         return $response;
     }
 

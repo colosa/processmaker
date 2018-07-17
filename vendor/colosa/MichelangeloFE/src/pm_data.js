@@ -312,9 +312,7 @@ PMData.prototype.getDataType = function () {
 };
 
 PMData.prototype.createDataIOEspecification = function (element) {
-    var ioEspecification,
-        dataInput = {};
-    ioEspecification = PMDesigner.bpmnFactory.create('bpmn:IiSpecification', {
+    var ioEspecification = PMDesigner.bpmnFactory.create('bpmn:InputOutputSpecification', {
         id: this.id + '_ioEspecification',
         name: this.getName() + '_ioEspecification'
     });
@@ -323,11 +321,7 @@ PMData.prototype.createDataIOEspecification = function (element) {
 };
 
 PMData.prototype.verifyDataIOEspecification = function () {
-    var ioEspecification,
-        dataInput = {};
-    if (this.parent.businessObject.elem && this.parent.businessObject.elem.get('ioSpecification')) {
-
-    } else {
+    if (!this.parent.businessObject.elem || !this.parent.businessObject.elem.get('ioSpecification')) {
         this.createDataIOEspecification(this.parent.businessObject);
     }
 };

@@ -77,7 +77,7 @@ function casesShowOuputDocumentExist ($url)
 if ($actionAjax == 'casesGenerateDocumentPage') {
     global $G_PUBLISH;
     $oHeadPublisher = & headPublisher::getSingleton();
-    G::loadClass( 'configuration' );
+
     $conf = new Configurations();
     $oHeadPublisher->addExtJsScript( 'cases/casesGenerateDocumentPage', true ); //adding a javascript file .js
     $oHeadPublisher->addContent( 'cases/casesGenerateDocumentPage' ); //adding a html file  .html.
@@ -86,8 +86,6 @@ if ($actionAjax == 'casesGenerateDocumentPage') {
     G::RenderPage( 'publish', 'extJs' );
 }
 if ($actionAjax == 'generateDocumentGrid_Ajax') {
-    G::LoadClass( 'case' );
-    G::LoadClass( "BasePeer" );
 
     global $G_PUBLISH;
     $oCase = new Cases();
@@ -119,7 +117,7 @@ if ($actionAjax == 'generateDocumentGrid_Ajax') {
     }
 
     //!dateFormat
-    G::LoadClass( 'configuration' );
+
     $conf = new Configurations();
     try {
         $generalConfCasesList = $conf->getConfiguration( 'ENVIRONMENT_SETTINGS', '' );

@@ -1,12 +1,12 @@
 <?php
 namespace ProcessMaker\BusinessModel;
-require_once (PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Task.php");
 
 use \G;
 use \Criteria;
 use \UsersPeer;
 use \GroupUserPeer;
 use \ResultSet;
+use ProcessMaker\Core\System;
 
 /**
  * @copyright Colosa - Bolivia
@@ -30,7 +30,7 @@ class Pmgmail {
 
         //getting the skin
         require_once (PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "class.system.php");
-        $sysConf = new \System();
+        $sysConf = new System();
         $responseSysConfig = $sysConf->getSystemConfiguration( PATH_CONFIG . 'env.ini' );
         $response['enviroment'] = $responseSysConfig['default_skin'];
 
@@ -240,8 +240,7 @@ class Pmgmail {
      */
     public function deleteLabels($mail)
     {
-        require_once(PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "class.labelsGmail.php");
-        $oLabels = new \labelsGmail();
+        $oLabels = new \LabelsGmail();
 
         $response = $oLabels->deletePMGmailLabels($mail);
 
@@ -250,15 +249,13 @@ class Pmgmail {
 
     public function modifyMailToPauseCase($appUid, $appDelIndex)
     {
-        require_once (PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "class.labelsGmail.php");
-        $oLabels = new \labelsGmail();
+        $oLabels = new \LabelsGmail();
         $oResponse = $oLabels->setLabelsToPauseCase($appUid, $appDelIndex);
     }
 
     public function modifyMailToUnpauseCase($appUid, $appDelIndex)
     {
-        require_once (PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "class.labelsGmail.php");
-        $oLabels = new \labelsGmail();
+        $oLabels = new \LabelsGmail();
         $oResponse = $oLabels->setLabelsToUnpauseCase($appUid, $appDelIndex);
     }
 
@@ -356,9 +353,8 @@ class Pmgmail {
             error_log(G::LoadTranslation('ID_EMAIL_ENGINE_IS_NOT_ENABLED'));
             return false;
         }
-        \G::LoadClass("wsBase");
 
-        $ws = new \wsBase();
+        $ws = new \WsBase();
         $resultMail = $ws->sendMessage(
             $application['APP_UID'],
             $defaultEmail, //From,

@@ -1,6 +1,5 @@
 <?php
-        
-   G::LoadClass('case');
+
    $oCase = new Cases();
    $_DBArray['NewCase'] = $oCase->getStartCasesPerType( $_SESSION['USER_LOGGED'], $_GET['change'] );
    

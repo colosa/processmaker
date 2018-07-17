@@ -22,7 +22,6 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
 try {
-    G::LoadClass( 'case' );
     $oCase = new Cases();
     foreach ($_POST['USER'] as $sProcessUID => $sUserUID) {
         if ($sUserUID != '') {

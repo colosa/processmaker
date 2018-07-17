@@ -30,8 +30,7 @@ if (!isset($_SESSION['USER_LOGGED'])) {
 if (($RBAC_Response = $RBAC->userCanAccess( "PM_CASES" )) != 1) {
     return $RBAC_Response;
 }
-    //go to the next step
-G::LoadClass( 'case' );
+
 $oCase = new Cases();
 $aNextStep = $oCase->getNextStep( $_SESSION['PROCESS'], $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['STEP_POSITION'] );
 $_SESSION['STEP_POSITION'] = $aNextStep['POSITION'];

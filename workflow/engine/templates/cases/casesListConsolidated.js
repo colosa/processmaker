@@ -1,3 +1,60 @@
+Ext.form.CheckboxCustom = Ext.extend(Ext.form.Checkbox, {
+    constructor: function (config) {
+        config = Ext.apply({
+            inputValue: 1,
+            uncheckedValue: 0
+        }, config);
+        Ext.form.CheckboxCustom.superclass.constructor.call(this, config);
+    },
+    getValue: function () {
+        if (this.rendered) {
+            if (this.el.dom.checked === true) {
+                return this.inputValue;
+            }
+            if (this.el.dom.checked === false) {
+                return this.uncheckedValue;
+            }
+            return this.el.dom.checked;
+        }
+        if (this.checked === true) {
+            return this.inputValue;
+        }
+        if (this.checked === false) {
+            return this.uncheckedValue;
+        }
+        return this.checked;
+    },
+    setValue: function (v) {
+        if (v === this.inputValue) {
+            v = true;
+        }
+        if (v === this.uncheckedValue) {
+            v = false;
+        }
+        var checked = this.checked,
+                inputVal = this.inputValue;
+
+        if (v === false) {
+            this.checked = false;
+        } else {
+            this.checked = (v === true || v === 'true' || v == '1' || (inputVal ? v == inputVal : String(v).toLowerCase() == 'on'));
+        }
+
+        if (this.rendered) {
+            this.el.dom.checked = this.checked;
+            this.el.dom.defaultChecked = this.checked;
+        }
+        if (checked != this.checked) {
+            this.fireEvent('check', this, this.checked);
+            if (this.handler) {
+                this.handler.call(this.scope || this, this, this.checked);
+            }
+        }
+        return this;
+    }
+});
+Ext.reg('checkboxCustom', Ext.form.CheckboxCustom);
+
 var grdNumRows = 0;
 var grdRowLabel = [];
 var fieldGridGral = '';
@@ -16,8 +73,8 @@ Ext.ux.grid.ComboColumn = Ext.extend(Ext.grid.Column, {
 
         //Detect if there is an editor and if it at least extends a combobox, otherwise just treat it as a normal column and render the value itself
         this.renderer = (this.editor && this.editor.triggerAction) ? Ext.ux.renderer.ComboBoxRenderer(this.editor, this.gridId) : function (value) {
-                return value;
-            };
+            return value;
+        };
     }
 });
 
@@ -57,22 +114,22 @@ Ext.ux.renderer.ComboBoxRenderer = function (combo, gridId) {
     return function (value) {
         if (combo.store.getCount() == 0 && gridId) {
             combo.store.on(
-                "load",
-                function () {
-                    var grid = Ext.getCmp(gridId);
-                    if (grid) {
-                        grid.getView().refresh();
+                    "load",
+                    function () {
+                        var grid = Ext.getCmp(gridId);
+                        if (grid) {
+                            grid.getView().refresh();
+                        }
+                    },
+                    {
+                        single: true
                     }
-                },
-                {
-                    single: true
-                }
             );
 
             if (grdNumRows > 1 || grdNumRows == 0) {
                 return value;
             } else {
-                if (typeof(grdRowLabel[comboBoxField]) == "undefined") {
+                if (typeof (grdRowLabel[comboBoxField]) == "undefined") {
                     grdRowLabel[comboBoxField] = value;
                     return grdRowLabel[comboBoxField];
                 } else {
@@ -101,11 +158,10 @@ var browserHeight = 0;
 if (typeof window.innerWidth != "undefined") {
     browserWidth = window.innerWidth;
     browserHeight = window.innerHeight;
-}
-else {
+} else {
     //IE6 in standards compliant mode (i.e. with a valid doctype as the first line in the document)
     if (typeof document.documentElement != "undefined" && typeof document.documentElement.clientWidth != "undefined" &&
-        document.documentElement.clientWidth != 0) {
+            document.documentElement.clientWidth != 0) {
         browserWidth = document.documentElement.clientWidth;
         browserHeight = document.documentElement.clientHeight;
     } else {
@@ -204,7 +260,7 @@ function jumpToCase(appNumber) {
         url: 'cases_Ajax',
         success: function (response) {
             var res = Ext.decode(response.responseText),
-                nameTab;
+                    nameTab;
             if (res.exists === true) {
                 params = 'APP_NUMBER=' + appNumber;
                 params += '&action=jump';
@@ -234,33 +290,33 @@ function pauseCase(date) {
     unpauseDate = date.format('Y-m-d');
 
     Ext.Msg.confirm(
-        _("ID_CONFIRM"),
-        _("ID_PAUSE_CASE_TO_DATE") + " " + date.format("M j, Y"),
-        function (btn, text) {
-            if (btn == 'yes') {
-                Ext.MessageBox.show({
-                    msg: _("ID_PROCESSING"),
-                    wait: true,
-                    waitConfig: {
-                        interval: 200
-                    }
-                });
-                Ext.Ajax.request({
-                    url: '../cases/cases_Ajax',
-                    success: function (response) {
-                        parent.updateCasesView();
-                        parent.updateCasesTree();
-                        Ext.MessageBox.hide();
-                    },
-                    params: {
-                        action: 'pauseCase',
-                        unpausedate: unpauseDate,
-                        APP_UID: rowModel.data.APP_UID,
-                        DEL_INDEX: rowModel.data.DEL_INDEX
-                    }
-                });
+            _("ID_CONFIRM"),
+            _("ID_PAUSE_CASE_TO_DATE") + " " + date.format("M j, Y"),
+            function (btn, text) {
+                if (btn == 'yes') {
+                    Ext.MessageBox.show({
+                        msg: _("ID_PROCESSING"),
+                        wait: true,
+                        waitConfig: {
+                            interval: 200
+                        }
+                    });
+                    Ext.Ajax.request({
+                        url: '../cases/cases_Ajax',
+                        success: function (response) {
+                            parent.updateCasesView();
+                            parent.updateCasesTree();
+                            Ext.MessageBox.hide();
+                        },
+                        params: {
+                            action: 'pauseCase',
+                            unpausedate: unpauseDate,
+                            APP_UID: rowModel.data.APP_UID,
+                            DEL_INDEX: rowModel.data.DEL_INDEX
+                        }
+                    });
+                }
             }
-        }
     );
 }
 
@@ -329,25 +385,25 @@ Ext.onReady(function () {
         text: _("ID_DERIVATED"),
         handler: function () {
             Ext.Msg.confirm(_("ID_CONFIRM_ROUTING"), _("ID_ROUTE_BATCH_ROUTING"),
-                function (btn, text) {
-                    if (btn == 'yes') {
-                        htmlMessage = "";
-                        var selectedRow = Ext.getCmp(gridId).getSelectionModel().getSelections();
-                        var maxLenght = selectedRow.length;
-                        for (var i in selectedRow) {
-                            rowGrid = selectedRow[i].data;
-                            for (fieldGrid in rowGrid) {
-                                if (fieldGrid != 'APP_UID' && fieldGrid != 'APP_NUMBER' && fieldGrid != 'APP_TITLE' && fieldGrid != 'DEL_INDEX') {
-                                    fieldGridGral = fieldGrid;
-                                    fieldGridGralVal = (rowGrid[fieldGrid] != null ) ? rowGrid[fieldGrid] : '';
+                    function (btn, text) {
+                        if (btn == 'yes') {
+                            htmlMessage = "";
+                            var selectedRow = Ext.getCmp(gridId).getSelectionModel().getSelections();
+                            var maxLenght = selectedRow.length;
+                            for (var i in selectedRow) {
+                                rowGrid = selectedRow[i].data;
+                                for (fieldGrid in rowGrid) {
+                                    if (fieldGrid != 'APP_UID' && fieldGrid != 'APP_NUMBER' && fieldGrid != 'APP_TITLE' && fieldGrid != 'DEL_INDEX') {
+                                        fieldGridGral = fieldGrid;
+                                        fieldGridGralVal = (rowGrid[fieldGrid] != null) ? rowGrid[fieldGrid] : '';
+                                    }
                                 }
-                            }
-                            if (selectedRow[i].data) {
-                                ajaxDerivationRequest(selectedRow[i].data["APP_UID"], selectedRow[i].data["DEL_INDEX"], maxLenght, selectedRow[i].data["APP_NUMBER"], fieldGridGral, fieldGridGralVal);
+                                if (selectedRow[i].data) {
+                                    ajaxDerivationRequest(selectedRow[i].data["APP_UID"], selectedRow[i].data["DEL_INDEX"], maxLenght, selectedRow[i].data["APP_NUMBER"], fieldGridGral, fieldGridGralVal);
+                                }
                             }
                         }
                     }
-                }
             );
         }
     });
@@ -541,7 +597,8 @@ Ext.onReady(function () {
 
     function inArray(arr, obj) {
         for (var i = 0; i < arr.length; i++) {
-            if (arr[i] == obj) return true;
+            if (arr[i] == obj)
+                return true;
         }
         return false;
     }
@@ -559,8 +616,7 @@ Ext.onReady(function () {
                 start.setMaxValue(date);
                 start.validate();
                 this.dateRangeMax = date;
-            }
-            else if (field.endDateField && (!this.dateRangeMin || (date.getTime() != this.dateRangeMin.getTime()))) {
+            } else if (field.endDateField && (!this.dateRangeMin || (date.getTime() != this.dateRangeMin.getTime()))) {
                 var end = Ext.getCmp(field.endDateField);
                 end.setMinValue(date);
                 end.validate();
@@ -575,7 +631,7 @@ Ext.onReady(function () {
 });
 
 function msgBox(title, msg, type) {
-    if (typeof('type') == 'undefined') {
+    if (typeof ('type') == 'undefined') {
         type = 'info';
     }
 
@@ -608,7 +664,8 @@ function renderSummary(val, p, r) {
     var summaryIcon = '<img src="/images/ext/default/s.gif" class="x-tree-node-icon ss_layout_header" unselectable="off" id="extdd-17" ';
     summaryIcon += 'onclick="openSummaryWindow(' + "'" + r.data['APP_UID'] + "'" + ', ' + r.data['DEL_INDEX'] + ')" title="' + _('ID_SUMMARY') + '" />';
     return summaryIcon;
-};
+}
+;
 
 function generateGridClassic(proUid, tasUid, dynUid) {
 
@@ -776,7 +833,7 @@ function generateGridClassic(proUid, tasUid, dynUid) {
                                                 var dataResponse = eval("(" + response.responseText + ")");
 
                                                 if (dataResponse.status && dataResponse.status == "OK") {
-                                                    if (typeof(storeConsolidated.lastOptions.params) != "undefined") {
+                                                    if (typeof (storeConsolidated.lastOptions.params) != "undefined") {
                                                         pagei = storeConsolidated.lastOptions.params.start;
                                                     }
 
@@ -1016,7 +1073,7 @@ function generateGrid(proUid, tasUid, dynUid) {
                                                 var dataResponse = eval("(" + response.responseText + ")");
 
                                                 if (dataResponse.status && dataResponse.status == "OK") {
-                                                    if (typeof(storeConsolidated.lastOptions.params) != "undefined") {
+                                                    if (typeof (storeConsolidated.lastOptions.params) != "undefined") {
                                                         pagei = storeConsolidated.lastOptions.params.start;
                                                     }
 

@@ -56,9 +56,11 @@ Corona.prototype.init = function (options) {
         this.setParent(options.parent);
         this.setParentType(options.parentType);
         config = this.getConfigItems(options.parentType);
-        this.populateItemsCrown(config);
-        this.setRows(config.rows);
-        this.setCols(config.cols);
+        if (config) {
+            this.populateItemsCrown(config);
+            this.setRows(config.rows);
+            this.setCols(config.cols);
+        }
     }
     return this;
 };
@@ -176,7 +178,7 @@ Corona.prototype.getConfigItems = function (especificType) {
  * @returns {Corona}
  */
 Corona.prototype.populateItemsCrown = function (config) {
-    var order = config.order,
+    var order = (config && config.order) || [],
         itemsDefault = PMDesigner.modelCrown.getItemsDefault(),
         itemCrownDefault,
         itemCrown,

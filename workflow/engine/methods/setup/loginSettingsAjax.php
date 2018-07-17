@@ -20,7 +20,7 @@ switch ($request) {
         break;
     case 'saveSettings':
         $memcache = & PMmemcached::getSingleton( defined( 'SYS_SYS' ) ? SYS_SYS : '' );
-        G::LoadClass( 'configuration' );
+
         $conf = new Configurations();
         $conf->loadConfig( $obj, 'ENVIRONMENT_SETTINGS', '' );
 

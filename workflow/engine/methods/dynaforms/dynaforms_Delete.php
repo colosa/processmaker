@@ -61,7 +61,7 @@ switch ($sfunction) {
         return print $result;
         break;
     case 'deleteDynaform':
-        $dynaform = new dynaform();
+        $dynaform = new Dynaform();
 
         if (! isset( $_POST['DYN_UID'] )) {
             return;
@@ -145,7 +145,7 @@ switch ($sfunction) {
             $DYN_UIDS = explode( ',', $_POST['DYN_UID'] );
 
             foreach ($DYN_UIDS as $i => $DYN_UID) {
-                $dynaform = new dynaform();
+                $dynaform = new Dynaform();
                 //in table dynaform
                 $dynaform->remove( $DYN_UID );
 

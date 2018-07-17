@@ -22,10 +22,6 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  *
  */
-require_once 'classes/model/AppThread.php';
-require_once 'classes/model/AppDelay.php';
-G::LoadClass('tree');
-G::LoadClass('case');
 
 $APP_UID = $_SESSION['APPLICATION'];
 
@@ -36,7 +32,7 @@ $c->add(AppThreadPeer::APP_UID, $APP_UID );
 $c->add(AppThreadPeer::APP_THREAD_STATUS , 'OPEN' );
 $cant = AppThreadPeer::doCount($c);
 
-$oTree = new Tree();
+$oTree = new PmTree();
 $oTree->nodeType = "blank";
 $oTree->name = 'Actions';
 $oTree->showSign = false;

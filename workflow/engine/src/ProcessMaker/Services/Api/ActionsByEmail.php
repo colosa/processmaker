@@ -63,8 +63,14 @@ class ActionsByEmail extends Api
     }
 
     /**
+     * Update template.
      *
      * @url PUT /updateTemplate
+     *
+     * @param type $params
+     *
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function updateTemplate($params)
     {
@@ -81,8 +87,16 @@ class ActionsByEmail extends Api
     }
 
     /**
+     * Update configuration.
      *
      * @url PUT /saveConfiguration
+     *
+     * @param type $params
+     *
+     * @return mixed
+     *
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function saveConfiguration($params)
     {

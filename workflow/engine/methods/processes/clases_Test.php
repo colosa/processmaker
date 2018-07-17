@@ -23,7 +23,6 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  * 
  */
-G::LoadClass("derivation");
 
 $dbc = new DBConnection;
 $obj = new Derivation;

@@ -1,6 +1,6 @@
 <?php
 
-G::LoadSystem('inputfilter');
+
 $filter = new InputFilter();
 $_POST = $filter->xssFilterHard($_POST);
 $_SESSION['USER_LOGGED'] = $filter->xssFilterHard($_SESSION['USER_LOGGED']);
@@ -15,9 +15,6 @@ $option = '';
 if (isset( $_GET['t'] ))
     $option = $_GET['t'];
 try {
-    G::LoadClass( "BasePeer" );
-    require_once ("classes/model/Process.php");
-    require_once ("classes/model/AppCacheView.php");
 
     $sUIDUserLogged = $_SESSION['USER_LOGGED'];
 

@@ -1,30 +1,30 @@
-[24 hours ago] ce576e9  FBI-1746: (pmDynaform) the setOnchange helper is not executed after its dependent field was changed <alex_santos>
-[3 weeks ago] c62a721  bugfix/FBI-1679 <jonathanquispe>
-[3 weeks ago] 648443a  bugfix/FBI-1673 <jonathanquispe>
-[3 weeks ago] eb8d4db  bugfix/FBI-1674 <jonathanquispe>
-[3 weeks ago] 6e7b0c6  bugfix/FBI-1665 <jonathanquispe>
-[3 weeks ago] 94bb8be  FBI-1622: [Mobile] The File control does not works, when required property is activate <alex_santos>
-[3 weeks ago] 33b9cca  suggest validate has been implemented in onchange method <Rodrigo Quelca>
-[3 weeks ago] ce16542  validate form <Rodrigo Quelca>
-[3 weeks ago] 4feeb7a  enable validatiens in edit mode <Rodrigo Quelca>
-[4 weeks ago] 378f90c  FBI-1624: [Mobile] The controls within a grid control has red color where does not be must <Rodrigo Quelca>
-[4 weeks ago] fd8d3a1  remove unused code <Rodrigo>
-[4 weeks ago] 522620d  FBI-1630: (Dynaforms) After routing to a subprocess a datetime value with "@=" as prefix the case does not display the form in the next taskj <Rodrigo>
-[4 weeks ago] e442b32  bugfix/FBI-1446 <jonathanquispe>
-[5 weeks ago] 8dba731  bugfix/FBI-1617 <jonathanquispe>
-[5 weeks ago] 4604afd  (origin/bugfix/FBI-1608, composer/bugfix/FBI-1608) FBI-1608 <duhnnie>
-[5 weeks ago] 227d23e  (origin/bugfix/FBI-1606, composer/bugfix/FBI-1606) bugfix/FBI-1606 <duhnnie>
-[5 weeks ago] 5bdbcd2  bugfix/FBI-1601 <jonathanquispe>
-[5 weeks ago] 01d2575  bugfix/FBI-1603 <jonathanquispe>
-[5 weeks ago] 2dc6116  FBI-1597:check box control, when delete option does not works Form.setOnchange() <Rodrigo Quelca>
-[5 weeks ago] d9a7c88  bugfix/FBI-1600 <jonathanquispe>
-[5 weeks ago] 1820d04  fix CR observations <Rodrigo Quelca>
-[5 weeks ago] 856ec20  (origin/bugfix/FBI-1581, composer/bugfix/FBI-1581) add validations for getBoundingClientRect <Rodrigo Quelca>
-[5 weeks ago] 335fa58  enable setOnchange for datetime field <Rodrigo Quelca>
-[5 weeks ago] beb2981  (origin/bugfix/FBI-1567, composer/bugfix/FBI-1567) remove calendar setOnchange <Rodrigo Quelca>
-[5 weeks ago] 59e20e9  more changes <Rodrigo Quelca>
-[5 weeks ago] f19ee04  updates for dropdown, radio, checkbox <Rodrigo Quelca>
-[5 weeks ago] 4603083  fix checkbox validation <Rodrigo Quelca>
-[5 weeks ago] 63beb34  setOnchange infinyt calls has been fixed <Rodrigo Quelca>
-[5 weeks ago] 8900115  restore set value <Rodrigo Quelca>
-[5 weeks ago] f6e4791  change variables <Rodrigo Quelca>
+[2 weeks ago] 41390d9  FBI-2353: Clone 3.2.2+Patch1 - Grid in view mode does not work if some column has formula associated <Alex Santos>
+[4 months ago] e2e542f  FBI-2256: setText() helper doesn't work on view mode <alex>
+[4 months ago] a0a3c1e  FBI-2248: Fix old file version download for IE11 <Daniel>
+[5 months ago] b573a54  FBI-2239: MultipleFileUpload include number version in its file versions list <Daniel>
+[5 months ago] 9873e2c  FBI-2240: MultipleFileUpload now includes current version in the list <Daniel>
+[5 months ago] 45a1cb5  FBI-2237: Bug: missing data in hidden input in grid. <Rodrigo Quelca>
+[5 months ago] 1ad08ab  (origin/bugfix/FBI-2232, composer/bugfix/FBI-2232) FBI-2232: Appear a console error when the formula inside grid is on view mode <alex>
+[5 months ago] 1282d94  FBI-1469: Calling setValue(), setLabel or setText() for a button or title removes its properties <alex>
+[7 months ago] 38f5765  (origin/bugfix/FBI-2119, composer/bugfix/FBI-2119) FBI-2119 <duhnnie>
+[7 months ago] 42c1e90  FBI-2118 <duhnnie>
+[7 months ago] da69aa0  FBI-2117 <duhnnie>
+[7 months ago] 8addc3c  FBI-2111 <duhnnie>
+[7 months ago] b7a60bd  FBI-2110: MultipleFileUpload versioning for Web <duhnnie>
+[7 months ago] 1cc2abd  FBI-2095 <duhnnie>
+[7 months ago] 872bdc3  FBI-2068: Adapt new design for Multiple File Uploader Control to its current View <duhnnie>
+[7 months ago] 5ce0737  FBI-2068: Adapt new design for Multiple File Uploader Control to its current View <duhnnie>
+[7 months ago] 9d9fb5d  resolve <alex>
+[7 months ago] 486f8b6  AND-305 Mobile offline cases <dheeyi william>
+[7 months ago] a4e4c3d  FBI-1787: [Mobile] Error al intentar descargar el archivo adjunto del control File mostrandose como acceso denegado <alex>
+[7 months ago] 63fd330  FBI-2104: [ExternalRegistration] Campo password no permite realizar el envio del formulario <Rodrigo Quelca>
+[8 months ago] d1b6c1e  (origin/bugfix/FBI-2096, composer/bugfix/FBI-2096) FBI-2096 Error to upload file on single file control <dheeyi william>
+[8 months ago] f46856c  (origin/bugfix/FBI-2092, composer/bugfix/FBI-2092) FBI-2092 Single File Uploader Error when uploading 0KB or 0MB file <dheeyi william>
+[8 months ago] 169f20f  FBI-2092 Single File Uploader Error when uploading 0KB or 0MB file <dheeyi william>
+[8 months ago] d1a00c4  FBI-2065: (Mobile) dateTime control does not show its value correctly that has timezone when it is inside of the grid control. <Rodrigo Quelca>
+[8 months ago] 46d5103  FBI-2059 Campos del grid se truncan en IE11 <dheeyi william>
+[8 months ago] f90f9d1  FBI-2051: Not all unit tests are running correctly <alex>
+[8 months ago] 25b05cd  FBI-1930: The multiple file control doesn't work correctly when all extensions are allowed <alex>
+[8 months ago] b83b5c7  FBI-1874: setOnChange is not working on mobile APP grids <alex>
+[8 months ago] 3a3d2bf  FBI-1826: Mobile APP is not triggering alert notification of required field when tapped Next Step <Rodrigo Quelca>
+[8 months ago] b968733  FBI-2038 Refactor the code (FBI-2033) : FBI-2033 [Zendesk-4910]Single File Uploader Error when uploading 0KB <dheeyi william>

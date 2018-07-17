@@ -1,5 +1,7 @@
 <?php
 
+use ProcessMaker\Plugins\PluginRegistry;
+
 if (! isset( $_REQUEST['action'] )) {
     $return['success'] = 'failure';
     $return['message'] = 'You may request an action';
@@ -25,7 +27,7 @@ function searchSavedJob ($schUid)
 
 function pluginsList ()
 {
-    $oPluginRegistry = & PMPluginRegistry::getSingleton();
+    $oPluginRegistry = PluginRegistry::loadSingleton();
     $activePluginsForCaseScheduler = $oPluginRegistry->getCaseSchedulerPlugins();
     $selectedPlugin = "";
     if ((isset( $_REQUEST['plg_uid'] )) && ($_REQUEST['plg_uid'] != "")) {
@@ -56,11 +58,12 @@ function pluginCaseSchedulerForm ()
     }
     $G_PUBLISH = new Publisher();
     $params = explode( "--", $_REQUEST['selectedOption'] );
-    $oPluginRegistry = & PMPluginRegistry::getSingleton();
+    $oPluginRegistry = PluginRegistry::loadSingleton();
     $activePluginsForCaseScheduler = $oPluginRegistry->getCaseSchedulerPlugins();
-
-    foreach ($activePluginsForCaseScheduler as $key => $caseSchedulerPluginDetail) {
-        if (($caseSchedulerPluginDetail->sNamespace == $params[0]) && ($caseSchedulerPluginDetail->sActionId == $params[1])) {
+    /** @var \ProcessMaker\Plugins\Interfaces\CaseSchedulerPlugin $caseSchedulerPluginDetail */
+    foreach ($activePluginsForCaseScheduler as $caseSchedulerPluginDetail) {
+        if (($caseSchedulerPluginDetail->equalNamespaceTo($params[0])) &&
+            ($caseSchedulerPluginDetail->equalActionIdTo($params[1]))) {
             $caseSchedulerSelected = $caseSchedulerPluginDetail;
         }
     }
@@ -74,7 +77,7 @@ function pluginCaseSchedulerForm ()
             $oData = array ("PRO_UID" => $_REQUEST['pro_uid']
             );
         }
-        $oPluginRegistry->executeMethod( $caseSchedulerPluginDetail->sNamespace, $caseSchedulerPluginDetail->sActionForm, $oData );
+        $oPluginRegistry->executeMethod($caseSchedulerPluginDetail->getNamespace(), $caseSchedulerPluginDetail->getActionForm(), $oData);
     }
 }
 

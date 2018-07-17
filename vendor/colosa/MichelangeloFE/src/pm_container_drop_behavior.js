@@ -54,7 +54,9 @@ PMContainerDropBehavior.prototype.onDrop = function (shape) {
         if (customShape === null) {
 
             customShape = canvas.customShapes.find('id', id);
-            if (!customShape || !shape.dropBehavior.dropHook(shape, e, ui)) {
+            if (!customShape || !shape.dropBehavior.dropHook(shape, customShape, e, ui)) {
+                PMDesigner.msgFlash('Invalid operation.'.translate(), document.body, 'error', 5000, 5);
+                customShape.setPosition(customShape.getOldX(), customShape.getOldY());
                 return false;
             }
             if (customShape.getParent().getType() === 'PMLane'
@@ -145,4 +147,23 @@ PMContainerDropBehavior.prototype.setSelectors = function (selectors, overwrite)
         .setSelectors.call(this, selectors, overwrite);
     this.selectors.push(".port");
     return this;
+};
+/**
+ * Hook if PMEvent onDrop is correct
+ * @param {PMUI.draw.Shape} shape
+ * @param {PMUI.draw.Shape} customShape
+ * @param {Object} e jQuery object that contains the properties on the
+ * drop event
+ * @param {Object} ui jQuery object that contains the properties on the
+ * drop event
+ * @returns {boolean}
+ */
+PMContainerDropBehavior.prototype.dropHook = function (shape, customShape, e, ui) {
+    var result = true,
+        shapesTypes = ['PMEvent', 'PMActivity'];
+    if ((shapesTypes.indexOf(customShape.getType()) > -1) &&
+        !PMDesigner.connectValidator.onDropMovementIsAllowed(shape, customShape)) {
+        result = false;
+    }
+    return result;
 };

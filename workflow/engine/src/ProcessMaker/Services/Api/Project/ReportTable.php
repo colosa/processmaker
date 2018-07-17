@@ -95,21 +95,24 @@ class ReportTable extends Api
     }
 
     /**
+     * Creates a new Report Table.
+     * 
+     * @url POST /:prj_uid/report-table
+     * @status 201
+     * 
      * @param string $prj_uid {@min 1} {@max 32}
      * @param array $request_data
-     *
      * @param string $rep_tab_name {@from body}
      * @param string $rep_tab_dsc {@from body}
      * @param string $rep_tab_connection {@from body}
      * @param string $rep_tab_type {@from body} {@choice NORMAL,GRID}
      * @param string $rep_tab_grid {@from body}
+     * 
      * @return array
-     *
-     * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
-     * @copyright Colosa - Bolivia
-     *
-     * @url POST /:prj_uid/report-table
-     * @status 201
+     * @throws RestException
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPostReportTable(
         $prj_uid,
@@ -133,17 +136,20 @@ class ReportTable extends Api
     }
 
     /**
+     * Update report table.
+     *
+     * @url PUT /:prj_uid/report-table/:rep_uid
+     *
      * @param string $prj_uid {@min 1} {@max 32}
      * @param string $rep_uid {@min 1} {@max 32}
      * @param array $request_data
-     *
      * @param string $rep_tab_dsc {@from body}
+     *
      * @return void
+     * @throws RestException
      *
-     * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
-     * @copyright Colosa - Bolivia
-     *
-     * @url PUT /:prj_uid/report-table/:rep_uid
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPutReportTable(
         $prj_uid,
@@ -161,14 +167,14 @@ class ReportTable extends Api
     }
 
     /**
+     * @url DELETE /:prj_uid/report-table/:rep_uid
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
+     *
      * @param string $prj_uid {@min 1} {@max 32}
      * @param string $rep_uid {@min 1} {@max 32}
      * @return void
      *
-     * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
-     * @copyright Colosa - Bolivia
-     *
-     * @url DELETE /:prj_uid/report-table/:rep_uid
      */
     public function doDeleteReportTable($prj_uid, $rep_uid)
     {

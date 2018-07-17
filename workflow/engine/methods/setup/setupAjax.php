@@ -26,7 +26,6 @@ if (($RBAC_Response = $RBAC->userCanAccess( "PM_SETUP" )) != 1)
     //$oSMTPJSON   = new Services_JSON();
     //$oSMTPData   = $oSMTPJSON->decode(stripslashes($_POST['data']));
     //$sOutput = '';
-G::LoadClass( 'setup' );
 
 $oSMTPSetup = new Setup( new DBConnection() );
 

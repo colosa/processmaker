@@ -2,8 +2,6 @@
 
 $action = isset( $_GET['action'] ) ? G::sanitizeInput($_GET['action'])  : 'default';
 
-G::LoadClass( 'case' );
-G::LoadClass( 'configuration' );
 $userId = isset( $_SESSION['USER_LOGGED'] ) ? $_SESSION['USER_LOGGED'] : '00000000000000000000000000000000';
 switch ($action) {
     case 'getAllCounters':
@@ -106,6 +104,9 @@ function getLoadTreeMenuData ()
             }
         }
 
+        //This function generates an xml, so it prevents the output of a badly formed xml 
+        //by cleaning any content prior to this function with ob_clean
+        ob_clean();
         echo $xml->asXML();
         die;
     }
@@ -167,42 +168,11 @@ function getLoadTreeMenuData ()
         }
     }
 
+    //This function generates an xml, so it prevents the output of a badly formed xml 
+    //by cleaning any content prior to this function with ob_clean
+    ob_clean();
     echo $xml->asXML();
     die;
-
-    // Build xml document for all tree nodes
-    /*$xml = '<menu_cases>';
-    $i = 0;
-    foreach ($menuCases as $menu => $aMenuBlock) {
-        if (isset( $aMenuBlock['blockItems'] ) && sizeof( $aMenuBlock['blockItems'] ) > 0) {
-            $urlProperty = "";
-            if ((isset( $aMenuBlock['link'] )) && ($aMenuBlock['link'] != "")) {
-                $urlProperty = "url='" . $aMenuBlock['link'] . "'";
-            }
-            $xml .= '<menu_block blockTitle="' . $aMenuBlock['blockTitle'] . '" id="' . $menu . '" ' . $urlProperty . '>';
-            foreach ($aMenuBlock['blockItems'] as $id => $aMenu) {
-                $i ++;
-                if (isset( $aMenu['cases_count'] ) && $aMenu['cases_count'] !== '') {
-                    $nofifier = "cases_count=\"{$aMenu['cases_count']}\" ";
-                } else {
-                    $nofifier = '';
-                }
-                $xml .= '<option title="' . $aMenu['label'] . '" id="' . $id . '" ' . $nofifier . ' url="' . $aMenu['link'] . '">';
-                $xml .= '</option>';
-            }
-            $xml .= '</menu_block>';
-        } elseif (isset( $aMenuBlock['blockType'] ) && $aMenuBlock['blockType'] == "blockNestedTree") {
-            $xml .= '<menu_block blockTitle="' . $aMenuBlock['blockTitle'] . '" blockNestedTree = "' . $aMenuBlock['loaderurl'] . '" id="' . $menu . '" folderId="0">';
-            $xml .= '</menu_block>';
-        } elseif (isset( $aMenuBlock['blockType'] ) && $aMenuBlock['blockType'] == "blockHeaderNoChild") {
-            $xml .= '<menu_block blockTitle="' . $aMenuBlock['blockTitle'] . '" blockHeaderNoChild="blockHeaderNoChild" url = "' . $aMenuBlock['link'] . '" id="' . $menu . '">';
-            //$xml .= '<option title="" id="" ></option>';
-            $xml .= '</menu_block>';
-        }
-    }
-    $xml .= '</menu_cases>';
-
-    print $xml;*/
 }
 
 /*----------------------------------********---------------------------------*/

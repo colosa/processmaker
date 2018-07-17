@@ -1,0 +1,39 @@
+language: php
+
+matrix:
+  fast_finish: true
+  include:
+    - php: 5.3
+    - php: 5.5
+    - php: 5.6
+    - php: 7
+
+sudo: false
+
+addons:
+  apt:
+    packages:
+      - parallel
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+env:
+  global:
+    secure: hL/ws+UJCh7H910RdJiT8A/TJ1DohXP1HnHbO7xhXYMA0PCgbPNDrRk8gD216IKqv+Zq1Pt7szDWlK017d7gwKhk1QJkRho96O9ZpEm795ARg7TR21sHx9jjvznD7cuL7c/nWyfIscEE3D9Bm+xn9IPxG6rYegYEBR1X9e1cGfM=
+
+before_script:
+  - if [ "$GITHUB_COMPOSER_AUTH" ]; then composer config -g github-oauth.github.com $GITHUB_COMPOSER_AUTH; fi
+  - composer install
+
+script:
+  - >
+    echo;
+    echo "Running unit tests";
+    vendor/bin/phpunit --colors tests/Unit/
+
+  - >
+    echo;
+    echo "Running php lint";
+    find . -name \*.php ! -path "./vendor/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;

@@ -23,15 +23,16 @@
  *
  */
 
+use ProcessMaker\Plugins\PluginRegistry;
+
 try {
-	G::LoadClass('tree');
-	G::LoadClass('processMap');
+
   //call plugin
-  $oPluginRegistry = &PMPluginRegistry::getSingleton();
+  $oPluginRegistry = PluginRegistry::loadSingleton();
   $externalSteps   = $oPluginRegistry->getSteps();
 
 	$oProcessMap = new ProcessMap();
-  $oTree           = new Tree();
+  $oTree           = new PmTree();
   $oTree->nodeType = 'blank';
   $oTree->name     = 'Triggers';
   $oTree->showSign = false;
@@ -65,9 +66,10 @@ try {
   		break;
    		case 'EXTERNAL':
         $aRow['STEP_NAME'] = 'unknown ' . $aRow['STEP_UID'];
-   		  foreach ( $externalSteps as $key=>$val ) {
-   		  	if ( $val->sStepId == $aRow['STEP_UID_OBJ'] )
-   		  	  $aRow['STEP_NAME'] = $val->sStepTitle;
+        /** @var \ProcessMaker\Plugins\Interfaces\StepDetail $val */
+            foreach ( $externalSteps as $val ) {
+   		  	if ( $val->equalStepIdTo($aRow['STEP_UID_OBJ']))
+   		  	  $aRow['STEP_NAME'] = $val->getStepTitle();
     		  }
     		break;
   	}

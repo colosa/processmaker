@@ -13,7 +13,7 @@ systemInfo.application = {
 
             switch (option) {
                 case "SYS":
-                    url = "../installer/getSystemInfo";
+                    url = "../InstallerModule/getSystemInfo";
                     break;
             }
 

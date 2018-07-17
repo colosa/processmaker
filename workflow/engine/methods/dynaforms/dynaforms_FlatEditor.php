@@ -27,13 +27,6 @@ if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1) {
 
     //G::genericForceLogin( 'WF_MYINFO' , 'login/noViewPage', $urlLogin = 'login/login' );
 
-
-G::LoadClass( 'toolBar' );
-G::LoadClass( 'dynaFormField' );
-G::LoadClass( 'process' );
-G::LoadClass( 'dynaform' );
-//G::LoadClass('configuration');
-G::LoadSystem('inputfilter');
 $filter = new InputFilter();
 
 
@@ -51,7 +44,7 @@ $PRO_UID = isset( $_POST['PRO_UID'] ) ? $_POST['PRO_UID'] : '746B734DC23311';
 $process = new Process( $dbc );
 $process->Load( $PRO_UID );
 
-$dynaform = new dynaform( $dbc );
+$dynaform = new Dynaform( $dbc );
 $dynaform->Fields['DYN_UID'] = (isset( $_POST['DYN_UID'] )) ? urldecode( $_POST['DYN_UID'] ) : '0';
 $dynaform->Load( $dynaform->Fields['DYN_UID'] );
 

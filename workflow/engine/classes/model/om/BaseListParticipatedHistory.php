@@ -67,19 +67,19 @@ abstract class BaseListParticipatedHistory extends BaseObject implements Persist
      * The value for the app_title field.
      * @var        string
      */
-    protected $app_title = '';
+    protected $app_title;
 
     /**
      * The value for the app_pro_title field.
      * @var        string
      */
-    protected $app_pro_title = '';
+    protected $app_pro_title;
 
     /**
      * The value for the app_tas_title field.
      * @var        string
      */
-    protected $app_tas_title = '';
+    protected $app_tas_title;
 
     /**
      * The value for the del_previous_usr_uid field.
@@ -642,7 +642,7 @@ abstract class BaseListParticipatedHistory extends BaseObject implements Persist
             $v = (string) $v;
         }
 
-        if ($this->app_title !== $v || $v === '') {
+        if ($this->app_title !== $v) {
             $this->app_title = $v;
             $this->modifiedColumns[] = ListParticipatedHistoryPeer::APP_TITLE;
         }
@@ -664,7 +664,7 @@ abstract class BaseListParticipatedHistory extends BaseObject implements Persist
             $v = (string) $v;
         }
 
-        if ($this->app_pro_title !== $v || $v === '') {
+        if ($this->app_pro_title !== $v) {
             $this->app_pro_title = $v;
             $this->modifiedColumns[] = ListParticipatedHistoryPeer::APP_PRO_TITLE;
         }
@@ -686,7 +686,7 @@ abstract class BaseListParticipatedHistory extends BaseObject implements Persist
             $v = (string) $v;
         }
 
-        if ($this->app_tas_title !== $v || $v === '') {
+        if ($this->app_tas_title !== $v) {
             $this->app_tas_title = $v;
             $this->modifiedColumns[] = ListParticipatedHistoryPeer::APP_TAS_TITLE;
         }

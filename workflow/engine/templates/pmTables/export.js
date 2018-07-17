@@ -72,7 +72,11 @@ Export.configure = function()
         e.stopEvent();
         var index = Export.targetGrid.getView().findRowIndex(t);
         var record = Export.targetGrid.store.getAt(index);
-        
+
+        if (record.data['_SCHEMA'] !== true) {
+            return false;
+        }
+
         if(record.data['PRO_UID']) {
           PMExt.info(_('ID_INFO'), _('ID_REPORT_TABLES_DATA_EXPORT_NOT_ALLOWED'));
           return false;
@@ -210,6 +214,10 @@ Ext.ux.grid.CheckColumn.prototype ={
             var index = this.grid.getView().findRowIndex(t);
             var record = this.grid.store.getAt(index);
             record.set(this.dataIndex, !record.data[this.dataIndex]);
+
+            //if schema check is selected/unselected, 
+            //the data column is always initialized to unchecked
+            record.set('_DATA', false);
         }
     },
 

@@ -7295,8 +7295,8 @@ if (typeof exports !== "undefined") {
      *
      * The wildcards can be used together in the same string.
      *
-     * @cfg {Object} [months={"january": "January", "february": "February", "march": "March", "april": "April", 
-     * "may": "May", "june": "June", "july": "July", "august": "August", "september": "September", 
+     * @cfg {Object} [months={"january": "January", "february": "February", "march": "March", "april": "April",
+     * "may": "May", "june": "June", "july": "July", "august": "August", "september": "September",
      * "october": "October", "november": "November", "december": "December"}]
      * A JSON object to set the names and shortnames for every month in year. Each property of this object can be:
      *
@@ -7335,12 +7335,12 @@ if (typeof exports !== "undefined") {
      * - an Object, in this case the object must have the following structure:
      *
      *      {
-     *          year: 2013, 
-     *          month: 5, 
+     *          year: 2013,
+     *          month: 5,
      *          day: 4,
      *          hours: 20,
      *          minutes: 15,
-     *          seconds: 3, 
+     *          seconds: 3,
      *          millisenconds
      *      }
      *
@@ -7364,12 +7364,12 @@ if (typeof exports !== "undefined") {
      * - an Object, in this case the object must have the following structure:
      *
      *      {
-     *          year: 2013, 
-     *          month: 5, 
+     *          year: 2013,
+     *          month: 5,
      *          day: 4,
      *          hours: 20,
      *          minutes: 15,
-     *          seconds: 3, 
+     *          seconds: 3,
      *          millisenconds
      *      }
      *
@@ -7721,9 +7721,15 @@ if (typeof exports !== "undefined") {
         if (this.html) {
             if (this.dateObject) {
                 this.html.value = this.formatDate(this.dateObject, this.dateFormat);
+                this.dom.hoursInput.value = this.dateObject.getHours();
+                this.dom.minutesInput.value = this.dateObject.getMinutes();
+                this.dom.secondsInput.value = this.dateObject.getSeconds();
             } else {
                 this.html.value = "";
             }
+            this.fillYearSelector();
+            this.fillMonthSelector();
+            this.buildDaysTable();
         }
         this.value = this.getValue('UTC');
 
@@ -7968,12 +7974,12 @@ if (typeof exports !== "undefined") {
      * - an Object, in this case the object must have the following structure:
      *
      *      {
-     *          year: 2013, 
-     *          month: 5, 
+     *          year: 2013,
+     *          month: 5,
      *          day: 4,
      *          hours: 20,
      *          minutes: 15,
-     *          seconds: 3, 
+     *          seconds: 3,
      *          millisenconds
      *      }
      *
@@ -8020,12 +8026,12 @@ if (typeof exports !== "undefined") {
      * - an Object, in this case the object must have the following structure:
      *
      *      {
-     *          year: 2013, 
-     *          month: 5, 
+     *          year: 2013,
+     *          month: 5,
      *          day: 4,
      *          hours: 20,
      *          minutes: 15,
-     *          seconds: 3, 
+     *          seconds: 3,
      *          millisenconds
      *      }
      *
@@ -8096,9 +8102,10 @@ if (typeof exports !== "undefined") {
             i,
             j;
 
-        if (this.html) {
+        if (this.dom.monthSelector) {
             year = this.dom.yearSelector.value;
-            currentMonth = this.dom.monthSelector.value || (new Date()).getMonth().toString();
+            currentMonth = (this.dateObject && this.dateObject.getMonth()) || this.dom.monthSelector.value
+                || (new Date()).getMonth().toString();
             jQuery(this.dom.monthSelector).empty();
             i = 0;
             j = this.monthsOrder.length - 1;
@@ -8113,7 +8120,7 @@ if (typeof exports !== "undefined") {
                 option.label = this.months[this.monthsOrder[i]].name;
                 option.textContent = option.label;
                 option.value = this.months[this.monthsOrder[i]].value;
-                option.selected = currentMonth === option.value.toString();
+                option.selected = currentMonth.toString() === option.value;
                 this.dom.monthSelector.appendChild(option);
             }
         }
@@ -8182,8 +8189,8 @@ if (typeof exports !== "undefined") {
             option,
             selectedYear;
 
-        if (this.html) {
-            selectedYear = this.dom.yearSelector.value || (this.dateObject && this.dateObject.getFullYear())
+        if (this.dom.yearSelector) {
+            selectedYear = (this.dateObject && this.dateObject.getFullYear()) || this.dom.yearSelector.value
                 || (new Date()).getFullYear();
             selectedYear = selectedYear.toString();
             jQuery(this.dom.yearSelector).empty();
@@ -8320,7 +8327,7 @@ if (typeof exports !== "undefined") {
             link,
             selectableDate;
 
-        if (this.html) {
+        if (this.dom.yearSelector && this.dom.monthSelector) {
             jQuery(this.dom.tableBody).empty();
             y = parseInt(this.dom.yearSelector.value, 10);
             m = parseInt(this.dom.monthSelector.value, 10) + 1;
@@ -8350,6 +8357,8 @@ if (typeof exports !== "undefined") {
                         link.href = "#";
                         link.setAttribute("data-date", day);
                         link.textContent = day;
+                        link.className = (this.dateObject && this.dateObject.getFullYear() === y
+                            && this.dateObject.getMonth() + 1 === m && this.dateObject.getDate() === day) ? 'selected' : '';
                         cell.appendChild(link);
                     } else {
                         cell.className = 'pmui-datepicker-disabled-date';
@@ -8379,6 +8388,10 @@ if (typeof exports !== "undefined") {
             maxZIndex;
 
         if (this.html) {
+            this.fillYearSelector();
+            this.fillMonthSelector();
+            this.buildDaysTable();
+
             position = jQuery(this.html).offset();
             inputHeight = jQuery(this.html).outerHeight();
 
@@ -8640,7 +8653,6 @@ if (typeof exports !== "undefined") {
             auxDate.setMinutes(parseInt(this.dom.minutesInput.value, 10));
             auxDate.setHours(parseInt(this.dom.hoursInput.value, 10));
             this.dom.doneButton.disabled = true;
-            jQuery(this.dom.tableBody).find('.selected').removeClass('selected');
         } else {
             if (!this.dateObject) {
                 this.dateObject = new Date();
@@ -8662,11 +8674,11 @@ if (typeof exports !== "undefined") {
         if (resCallback !== false) {
             this.dateObject = auxDate;
         } else {
-            jQuery(this.dom.tableBody).find('a.selected').removeClass('selected');
             if (this.dom.monthSelector.value == this.dateObject.getMonth()
                 && this.dom.yearSelector.value == this.dateObject.getFullYear()) {
 
-                jQuery(this.dom.tableBody).find('a[data-date="' + this.dateObject.getDate() + '"]').addClass('selected');
+                jQuery(this.dom.tableBody).find('a.selected').removeClass('selected')
+                    .find('a[data-date="' + this.dateObject.getDate() + '"]').addClass('selected');
             }
         }
         newValue = this.getValueFromRawElement();
@@ -8693,8 +8705,34 @@ if (typeof exports !== "undefined") {
                         + that.id).length)) {
                     that.hideCalendar();
                 }
-            };
+            },
+            timeInputFilter;
+
         if (this.dom.todayButton) {
+            timeInputFilter = function () {
+                var num = parseInt(this.value, 10),
+                    maxValue;
+
+                switch (this) {
+                    case that.dom.hoursInput:
+                        maxValue = 23;
+                        break;
+                    case that.dom.minutesInput:
+                    case that.dom.secondsInput:
+                        maxValue = 59;
+                        break;
+                    default:
+                        throw new Error("defineEvents() at change event: No valid element.");
+                }
+
+                if (isNaN(num)) {
+                    this.value = 0;
+                } else {
+                    this.value = num < 0 ? 0 : Math.min(num, maxValue);
+                }
+               that.dom.doneButton.disabled = false;
+            };
+
             this.addEvent('change').listen(this.dom.yearSelector, function () {
                 that.fillMonthSelector();
                 that.buildDaysTable();
@@ -8705,6 +8743,9 @@ if (typeof exports !== "undefined") {
             this.addEvent('focusin click').listen(this.html, function () {
                 that.showCalendar();
             });
+            this.addEvent('change').listen(this.dom.hoursInput, timeInputFilter);
+            this.addEvent('change').listen(this.dom.minutesInput, timeInputFilter);
+            this.addEvent('change').listen(this.dom.secondsInput, timeInputFilter);
             this.addEvent('click').listen(this.dom.todayButton, function () {
                 preselectedDate = new Date();
                 that.dom.doneButton.disabled = false;
@@ -8712,7 +8753,8 @@ if (typeof exports !== "undefined") {
                 that.fillMonthSelector();
                 that.dom.monthSelector.value = preselectedDate.getMonth();
                 that.buildDaysTable();
-                jQuery(that.dom.tableBody).find('a[data-date=' + preselectedDate.getDate() + ']').addClass("selected");
+                jQuery(that.dom.tableBody).find(".selected").removeClass('selected').end()
+                    .find('a[data-date=' + preselectedDate.getDate() + ']').addClass("selected");
             });
             this.addEvent('click keyup mousedown').listen(document, specialCloseHandler)
                 .listen('.pmui-window', specialCloseHandler);
@@ -8898,6 +8940,7 @@ if (typeof exports !== "undefined") {
         module.exports = DateTimeControl;
     }
 }());
+
 (function () {
     /**
      * @class PMUI.ui.Window
@@ -13222,8 +13265,8 @@ if (typeof exports !== "undefined") {
         Field.superclass.prototype.defineEvents.call(this);
         for (i = 0; i < this.controls.length; i += 1) {
             this.controls[i].setOnChangeHandler(this.onChangeHandler())
+                .setOnBeforeChangeHandler(this.onBeforeChangeHandler())
                 .defineEvents();
-            this.controls[i].setOnBeforeChangeHandler(this.onBeforeChangeHandler()).defineEvents();
         }
         if (this.onClick) {
             this.addEvent('click').listen(this.html, function (e) {
@@ -17535,15 +17578,7 @@ if (typeof exports !== "undefined") {
      * @return {Boolean}
      */
     Form.prototype.isValid = function () {
-        var res = this.panel.isValid();
-
-        if (res) {
-            this.hideRequiredFieldNotification();
-        } else {
-            this.showRequiredFieldNotification();
-        }
-
-        return res;
+        return this.panel.isValid();
     };
     /**
      * Submits the form.
@@ -17682,7 +17717,6 @@ if (typeof exports !== "undefined") {
             text_Align: "center"
         });
         notificationArea = PMUI.createHTMLElement('div');
-        notificationArea.style.display = 'none';
         notificationArea.appendChild(notification.getHTML());
         this._requiredFieldNotification = notificationArea;
 
@@ -21311,7 +21345,7 @@ if (typeof exports !== "undefined") {
      *                     lastName: "Gonzales"
      *                 }
 
-     *             ]                       
+     *             ]
      *         });
      *         document.body.appendChild(g.getHTML());
      *         g.defineEvents();
@@ -21365,7 +21399,7 @@ if (typeof exports !== "undefined") {
      *                 subject = subject.name + " " + subject.lastName;
      *                 console.log(subject + "'s index has changed to " + index);
 
-     *             }  
+     *             }
      *          });
      *          g = new PMUI.grid.GridPanel({
      *              behavior: 'dragdropsort',
@@ -21432,7 +21466,7 @@ if (typeof exports !== "undefined") {
      *                 subject = subject.name + " " + subject.lastName;
      *                 console.log(subject + "'s index has changed to " + index);
 
-     *             }                     
+     *             }
      *          });
      *          document.body.appendChild(g.getHTML());
      *          document.body.appendChild(g2.getHTML());
@@ -22413,10 +22447,11 @@ if (typeof exports !== "undefined") {
     };
     /**
      * Shows an empty row in grid.
+     * @param sizeItems
      * @chainable
      * @private
      */
-    GridPanel.prototype.showEmptyCell = function () {
+    GridPanel.prototype.showEmptyCell = function (sizeItems) {
         var tr,
             td,
             message;
@@ -22428,24 +22463,26 @@ if (typeof exports !== "undefined") {
             td.colSpan = this.columns.getSize();
             tr.appendChild(td);
             $(this.dom.tbody).find('.pmui-gridpanel-emptyrow').remove().end().append(tr);
-            if (typeof this.emptyMessage === 'function') {
-                message = this.emptyMessage(this, !!this.filterCriteria);
-            } else if (typeof this.emptyMessage === 'string') {
-                message = this.emptyMessage;
-            } else {
-                if (this.filterCriteria) {
-                    message = 'No matches found for \"' + this.filterCriteria + '\"';
+            if (!sizeItems) {
+                if (typeof this.emptyMessage === 'function') {
+                    message = this.emptyMessage(this, !!this.filterCriteria);
+                } else if (typeof this.emptyMessage === 'string') {
+                    message = this.emptyMessage;
                 } else {
-                    message = 'No records found.';
+                    if (this.filterCriteria) {
+                        message = 'No matches found for \"' + this.filterCriteria + '\"';
+                    } else {
+                        message = 'No records found.';
+                    }
                 }
-            }
-            if (typeof message === 'string') {
-                td.appendChild(document.createTextNode(message));
-            } else if (PMUI.isHTMLElement(message)) {
-                td.appendChild(message);
-            }
-            if (this.items.getSize() === 0 && typeof this.onEmpty === 'function') {
-                this.onEmpty(this);
+                if (typeof message === 'string') {
+                    td.appendChild(document.createTextNode(message));
+                } else if (PMUI.isHTMLElement(message)) {
+                    td.appendChild(message);
+                }
+                if (this.items.getSize() === 0 && typeof this.onEmpty === 'function') {
+                    this.onEmpty(this);
+                }
             }
         }
         return this;
@@ -22466,15 +22503,14 @@ if (typeof exports !== "undefined") {
 
         if (!this.massiveAction) {
             this.updateUsableItemsList();
-            if (!this.items.getSize()) {
-                this.showEmptyCell();
-            }
+            this.filteredItems.remove(item);
+            this.showEmptyCell(this.items.getSize());
             if (currentPage >= this.getTotalPages()) {
                 currentPage -= 1;
                 this.currentPage = currentPage < 0 ? 0 : currentPage;
             }
             if (this.dom.tbody) {
-                this.goToPage(this.currentPage);
+                this.goToPage(this.currentPage, true);
             }
         }
         return this;
@@ -22486,9 +22522,7 @@ if (typeof exports !== "undefined") {
         var currentPage = this.currentPage;
         GridPanel.superclass.prototype.clearItems.call(this);
         this.updateUsableItemsList();
-        if (!this.items.getSize()) {
-            this.showEmptyCell();
-        }
+        this.showEmptyCell(this.items.getSize());
         if (currentPage >= this.getTotalPages()) {
             currentPage -= 1;
             this.currentPage = currentPage < 0 ? 0 : currentPage;
@@ -22586,7 +22620,7 @@ if (typeof exports !== "undefined") {
      * @inheritdoc
      */
     GridPanel.prototype.paintItems = function () {
-        return this.goToPage(this.currentPage);
+        return this.filterCriteria ? this.filter(this.filterCriteria) : this.goToPage(this.currentPage);
     };
     /**
      * Creates the HTML for the Grid.
@@ -22682,9 +22716,7 @@ if (typeof exports !== "undefined") {
         } else {
             this.hideHeaders();
         }
-        if (!this.items.getSize()) {
-            this.showEmptyCell();
-        }
+        this.showEmptyCell(this.items.getSize());
         if (this.eventsDefined) {
             this.defineEvents();
         }
@@ -22829,9 +22861,7 @@ if (typeof exports !== "undefined") {
                 return this;
             }
 
-            if (numDisplayedItems === 0) {
-                this.showEmptyCell();
-            }
+            this.showEmptyCell(numDisplayedItems);
             if (this.html) {
                 $(this.dom.toolbar).find(".pmui-gridpanel-searchload").addClass("load");
                 modal = document.createElement("div");
@@ -22854,7 +22884,10 @@ if (typeof exports !== "undefined") {
                     xhr.setRequestHeader("Authorization", "Bearer " + that.keys.accessToken);
                 },
                 success: function (data) {
-                    var i, newItem, numDisplayedItems, dataReceived, numDisplayedItems;
+                    var i,
+                        newItem,
+                        numDisplayedItems = 0,
+                        dataReceived;
                     if (typeof that.customDataRest === "function") {
                         dataReceived = that.customDataRest(data["data"]);
                     } else {
@@ -22880,12 +22913,8 @@ if (typeof exports !== "undefined") {
                             });
                             numDisplayedItems += 1;
                         }
-                    } else {
-                        that.showEmptyCell();
                     }
-                    if (numDisplayedItems === 0) {
-                        that.showEmptyCell();
-                    }
+                    that.showEmptyCell(numDisplayedItems);
                     that.setBehavior(that.behavior);
                     if (that.html) {
                         $(that.dom.toolbar).find(".pmui-gridpanel-searchload").removeClass("load");
@@ -23049,10 +23078,7 @@ if (typeof exports !== "undefined") {
                 return this;
             }
 
-            if (numDisplayedItems === 0) {
-                this.showEmptyCell();
-            }
-
+            this.showEmptyCell(numDisplayedItems);
             this.setBehavior(this.behavior);
             return this;
         }
@@ -23723,6 +23749,7 @@ if (typeof exports !== "undefined") {
         module.exports === GridPanel;
     }
 }());
+
 (function () {
     /**
      * @class PMUI.grid.GridPanelColumn
@@ -38582,7 +38609,9 @@ if (typeof exports !== "undefined") {
             relatedObject: shape,
             relatedElements: relatedElements
         };
-        $(this.html).trigger('createelement');
+        if (!this.items.find("id", shape.id)) { 
+            $(this.html).trigger('createelement'); 
+        }
         return this;
     };
     /**

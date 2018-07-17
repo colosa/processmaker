@@ -19,7 +19,7 @@ this program. If not, see
  *
  */
 <?php
-$frm = $HTTP_POST_VARS;
+$frm = $_POST;
 
 $dbc = new dbconnection();
 $ses = new DBSession( $dbc );

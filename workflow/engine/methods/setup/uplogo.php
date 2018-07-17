@@ -23,7 +23,6 @@
  */
 
 global $RBAC;
-G::LoadClass( 'replacementLogo' );
 
 if ($RBAC->userCanAccess( 'PM_SETUP' ) != 1 && $RBAC->userCanAccess( 'PM_SETUP_ADVANCE' ) != 1) {
     G::SendTemporalMessage( 'ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels' );

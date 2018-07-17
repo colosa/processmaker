@@ -56,7 +56,7 @@ $html = '
      }
  return 'Unknown';
  }
-G::LoadSystem('inputfilter');
+
 $filter = new InputFilter();
 $_SERVER['HTTP_USER_AGENT'] = $filter->xssFilterHard($_SERVER['HTTP_USER_AGENT']);
 if((looking_for_browser($_SERVER['HTTP_USER_AGENT'])=='Internet Explorer 8')||(looking_for_browser($_SERVER['HTTP_USER_AGENT'])=='Internet Explorer 7')||(looking_for_browser($_SERVER['HTTP_USER_AGENT'])=='Internet Explorer 6')){

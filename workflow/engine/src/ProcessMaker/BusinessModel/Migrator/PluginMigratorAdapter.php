@@ -1,6 +1,8 @@
 <?php
 namespace ProcessMaker\BusinessModel\Migrator;
 
+use ProcessMaker\Plugins\PluginRegistry;
+
 /**
  * Class PluginMigratorAdapter
  * @package ProcessMaker\BusinessModel\Migrator
@@ -15,8 +17,7 @@ class PluginMigratorAdapter implements  Exportable, Importable
      */
     public function __construct($pluginName)
     {
-        \G::LoadClass('pluginRegistry');
-        $registry = \PMPluginRegistry::getSingleton();
+        $registry = PluginRegistry::loadSingleton();
         $plugin = $registry->getPluginByCode($pluginName);
         require_once (
             PATH_PLUGINS.PATH_SEP.

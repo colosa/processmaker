@@ -28,7 +28,6 @@ $G_ENABLE_BLANK_SKIN = true;
 $dbc = new DBConnection();
 $G_PUBLISH = new Publisher();
 
-G::LoadClass( 'lexico' );
 $lex = new Lexico( $dbc );
 $Fields['SESSION_PC'] = $lex->getFluidValue( 'SESSION_PC', 'Y' );
 $Fields['SESSION_BROWSER'] = $lex->getFluidValue( 'SESSION_BROWSER', 'Y' );

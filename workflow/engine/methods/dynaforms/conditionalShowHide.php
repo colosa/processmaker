@@ -24,8 +24,6 @@
   * @Author Erik Amaru Ortiz <erik@colosa.com>
   * @Date Aug 26th, 2009
   */
-require_once "classes/model/FieldCondition.php";
-G::LoadClass( 'ArrayPeer' );
 
 $G_PUBLISH = new Publisher();
 $oHeadPublisher = & headPublisher::getSingleton();

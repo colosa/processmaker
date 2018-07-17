@@ -1,13 +1,14 @@
 <?php
 
+use ProcessMaker\Plugins\PluginRegistry;
+
 $pluginFile   = $_GET['id'];
 
-G::LoadClass('plugin');
-
-$oPluginRegistry =& PMPluginRegistry::getSingleton();
+$oPluginRegistry = PluginRegistry::loadSingleton();
 
 $details = $oPluginRegistry->getPluginDetails( $pluginFile );
-$xmlform = isset($details->sPluginFolder) ?  $details->sPluginFolder . '/' . $details->sSetupPage  : '';
+$folder = $details->getFolder();
+$xmlform = (isset($folder)) ?  $folder . '/' . $details->getSetupPage()  : '';
 
 $G_MAIN_MENU            = 'processmaker';
 $G_ID_MENU_SELECTED     = 'SETUP';
@@ -25,7 +26,7 @@ try {
         throw ( new Exception ('setup .xml file is not defined for this plugin') );
     }
 
-    $Fields = $oPluginRegistry->getFieldsForPageSetup( $details->sNamespace );
+    $Fields = $oPluginRegistry->getFieldsForPageSetup( $details->getNamespace() );
     $G_PUBLISH->AddContent( 'xmlform', 'xmlform', $xmlform, '',$Fields ,'pluginsSetupSave?id='.$pluginFile );
 } catch (Exception $e) {
     $aMessage['MESSAGE'] = $e->getMessage();

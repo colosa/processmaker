@@ -41,7 +41,6 @@ if (file_exists( PATH_XMLFORM . 'ldapAdvanced/' . $fields['AUTH_SOURCE_PROVIDER'
     $pluginEnabled = 1;
     if ($pluginEnabled == 1) {
         //The attributes the users
-        G::LoadClass("pmFunctions");
 
         $data = executeQuery("DESCRIBE USERS");
         $fieldSet = array("USR_UID", "USR_USERNAME", "USR_PASSWORD", "USR_CREATE_DATE", "USR_UPDATE_DATE", "USR_COUNTRY", "USR_CITY", "USR_LOCATION", "DEP_UID", "USR_RESUME", "USR_ROLE", "USR_REPORTS_TO", "USR_REPLACED_BY", "USR_UX");

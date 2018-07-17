@@ -37,9 +37,8 @@ class TriggerWizard
             }
 
             //Library
-            \G::LoadClass("triggerLibrary");
 
-            $this->library = \triggerLibrary::getSingleton();
+            $this->library = \TriggerLibrary::getSingleton();
         } catch (\Exception $e) {
             throw $e;
         }

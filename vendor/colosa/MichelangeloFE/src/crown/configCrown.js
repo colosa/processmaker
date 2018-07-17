@@ -147,6 +147,16 @@ var configCrown = {
             rows: 2,
             cols: 1
         },
+        'DATAINPUT': {
+            order: ["flow", "delete"],
+            rows: 2,
+            cols: 1
+        },
+        'DATAOUTPUT': {
+            order: ["flow", "delete"],
+            rows: 2,
+            cols: 1
+        },
         'DATASTORE': {
             order: ["flow", "delete"],
             rows: 2,

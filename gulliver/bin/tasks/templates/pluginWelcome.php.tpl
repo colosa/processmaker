@@ -23,7 +23,6 @@ $_DBArray['user'] = $rows;
 $_SESSION['_DBArray'] = $_DBArray;
 //krumo ( $_DBArray );
 
-  G::LoadClass( 'ArrayPeer');
     $c = new Criteria ('dbarray');
     $c->setDBArrayTable('user');
     //$c->add ( 'user.age', 122 , Criteria::GREATER_EQUAL );

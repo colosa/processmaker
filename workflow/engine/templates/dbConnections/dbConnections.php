@@ -30,9 +30,6 @@
  * @LastModification 30/05/2008
  */
 
-G::LoadClass('tree');
-G::LoadClass('net');
-
 $width_content = '430px';
 
 $html = '
@@ -50,7 +47,7 @@ $html = '
 $flagTns = ($_POST["type"] == "oracle" && $_POST["connectionType"] == "TNS")? 1 : 0;
 
 if ($flagTns == 0) {
-    $host = new NET($_POST["server"]);
+    $host = new Net($_POST["server"]);
 
     $port = $_POST["port"];
 

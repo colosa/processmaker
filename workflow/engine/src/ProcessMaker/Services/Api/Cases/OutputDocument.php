@@ -117,6 +117,8 @@ class OutputDocument extends Api
 
     /**
      * @url DELETE /:app_uid/output-document/:app_doc_uid
+     * @access protected
+     * @class AccessControl {@permission PM_CASES}
      *
      * @param string $app_uid     {@min 32}{@max 32}
      * @param string $app_doc_uid     {@min 32}{@max 32}
@@ -133,11 +135,26 @@ class OutputDocument extends Api
     }
 
     /**
+     * Generate a specified Output Document for a given case, meaning that a PDF, 
+     * a DOC or both files (depending on options selected in the definition of the 
+     * Output Document) will be created, inserting any variables in the template. 
+     * If the Output Document already exists, then it will be regenerated. 
+     * If versioning is enabled, then the regenerated files will be given a new 
+     * version number and document index number, but if versioning is NOT enabled, 
+     * then the existing files will be overwritten with the same version number 
+     * and document index number.
+     * 
      * @url POST /:app_uid/:del_index/output-document/:out_doc_uid
-     *
+     * 
      * @param string $app_uid     {@min 32}{@max 32}
      * @param int    $del_index   {@min 1}
      * @param string $out_doc_uid {@min 32}{@max 32}
+     * 
+     * @return object
+     * @throws RestException 
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_CASES}
      */
     public function doPostOutputDocument($app_uid, $del_index, $out_doc_uid)
     {

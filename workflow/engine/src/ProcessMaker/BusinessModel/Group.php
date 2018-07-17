@@ -799,7 +799,7 @@ class Group
             $rsCriteria->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
 
             if (isset($flagPermission) && $flagPermission) {
-                \G::LoadSystem('rbac');
+
                 while ($rsCriteria->next()) {
                     $row = $rsCriteria->getRow();
 

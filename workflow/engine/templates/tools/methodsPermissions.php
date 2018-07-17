@@ -22,11 +22,11 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  *
  */
-G::LoadClass('tree');
+
 /*
  * Esto no deberias borrarlo
  */
-$tree = new Tree();
+$tree = new PmTree();
 
 reView(PATH_TRUNK, $tree);
 print( $tree->render());

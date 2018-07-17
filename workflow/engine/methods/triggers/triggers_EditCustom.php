@@ -36,7 +36,6 @@ if (isset( $_GET['TRI_UID'] ) && ($_GET['TRI_UID'] != "")) {
 }
 $xmlform = 'triggers/triggersCustom';
 
-G::LoadClass( 'xmlfield_InputPM' );
 $G_PUBLISH = new Publisher();
 $G_PUBLISH->AddContent( 'xmlform', 'xmlform', $xmlform, '', $aFields, '../triggers/triggers_Save' );
 $oHeadPublisher =& headPublisher::getSingleton();

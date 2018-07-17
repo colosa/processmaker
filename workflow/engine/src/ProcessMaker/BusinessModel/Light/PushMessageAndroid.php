@@ -13,6 +13,8 @@
 
 namespace ProcessMaker\BusinessModel\Light;
 
+use ProcessMaker\Core\System;
+
 class PushMessageAndroid
 {
     private $url = 'https://android.googleapis.com/gcm/send';
@@ -54,7 +56,7 @@ class PushMessageAndroid
      */
     public function setSettingNotification()
     {
-        $conf = \System::getSystemConfiguration(PATH_CONFIG . 'mobile.ini');
+        $conf = System::getSystemConfiguration(PATH_CONFIG . 'mobile.ini');
         $this->setUrl($conf['android']['url']);
         $this->setKey($conf['android']['serverApiKey']);
     }

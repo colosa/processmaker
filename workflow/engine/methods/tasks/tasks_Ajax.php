@@ -59,7 +59,6 @@ try {
 
             //Additional configuration
             if (isset( $aData['TAS_DEF_MESSAGE_TYPE'] ) && isset( $aData['TAS_DEF_MESSAGE_TEMPLATE'] )) {
-                G::LoadClass( 'configuration' );
 
                 $oConf = new Configurations();
                 $oConf->aConfig = array ('TAS_DEF_MESSAGE_TYPE' => $aData['TAS_DEF_MESSAGE_TYPE'],'TAS_DEF_MESSAGE_TEMPLATE' => $aData['TAS_DEF_MESSAGE_TEMPLATE']

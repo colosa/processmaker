@@ -24,7 +24,6 @@
  */
 
 global $G_TMP_MENU;
-global $HTTP_SESSION_VARS;
 
 $G_TMP_MENU->AddIdRawOption( "OP1", "rbac/roleList.html" );
 $G_TMP_MENU->AddIdRawOption( "OP2", "rbac/permList.html" );

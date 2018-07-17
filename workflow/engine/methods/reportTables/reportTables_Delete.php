@@ -24,7 +24,6 @@
 if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1) {
     return $RBAC_Response;
 }
-G::LoadClass( 'reportTables' );
 try {
     $oReportTables = new ReportTables();
     $oReportTables->deleteReportTable( $_POST['REP_TAB_UID'] );

@@ -186,7 +186,7 @@ class DBConnection
     {
         global $_SESSION;
         global $_SERVER;
-        G::LoadSystem('inputfilter');
+
         $filter = new InputFilter();
         $_SERVER = $filter->xssFilterHard($_SERVER);
         $_SESSION = $filter->xssFilterHard($_SESSION);

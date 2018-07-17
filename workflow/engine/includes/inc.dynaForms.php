@@ -169,7 +169,6 @@ function saveXml(){
   global $tree;
   global $header;
   global $filename;
-  global $HTTP_POST_VARS;
   global $curDir;
   global $onlyName;
 
@@ -181,7 +180,7 @@ function saveXml(){
 
   $aux = explode ( '/', $filename);
   $onlyName = $aux[count($aux)-1];
-  $curDir = $HTTP_POST_VARS['curDir'];
+  $curDir = $_POST['curDir'];
 
   fputs ($fp,"<dynaForm name=\"$onlyName\" basedir=\"$curDir\">$tree->value\n");
 

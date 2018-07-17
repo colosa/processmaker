@@ -93,11 +93,11 @@
 @include font-face("SourceSansProBold", font-files("SourceSansPro-Bold/SourceSansPro-Bold-webfont.ttf", "SourceSansPro-Bold/SourceSansPro-Bold-webfont.eot", "SourceSansPro-Bold/SourceSansPro-Bold-webfont.woff", "SourceSansPro-Bold/SourceSansPro-Bold-webfont.svg"),"SourceSansPro-Bold/SourceSansPro-Bold-webfont.eot");*/
 @font-face {
   font-family: "Chivo";
-  src: url('../fonts/Chivo/Chivo-Black.ttf?1493409145') format('truetype'), url('../fonts/Chivo/Chivo-BlackItalic.ttf?1493409145') format('truetype'), url('../fonts/Chivo/Chivo-Italic.ttf?1493409145') format('truetype'), url('../fonts/Chivo/Chivo-Regular.ttf?1493409145') format('truetype');
+  src: url('../fonts/Chivo/Chivo-Black.ttf?1522959684') format('truetype'), url('../fonts/Chivo/Chivo-BlackItalic.ttf?1522959684') format('truetype'), url('../fonts/Chivo/Chivo-Italic.ttf?1522959684') format('truetype'), url('../fonts/Chivo/Chivo-Regular.ttf?1522959684') format('truetype');
 }
 @font-face {
   font-family: "Montserrat";
-  src: url('../fonts/Montserrat/Montserrat-Bold.ttf?1493409145') format('truetype'), url('../fonts/Montserrat/Montserrat-Regular.ttf?1493409145') format('truetype');
+  src: url('../fonts/Montserrat/Montserrat-Bold.ttf?1522959684') format('truetype'), url('../fonts/Montserrat/Montserrat-Regular.ttf?1522959684') format('truetype');
 }
 .pmui-sprite-sprite, .pmui-sprite-arrow-down, .pmui-sprite-arrow-next, .pmui-sprite-arrow-previous, .pmui-sprite-arrow-right, .pmui-sprite-arrow-up, .pmui-sprite-delete-16, .pmui-sprite-error-64, .pmui-sprite-error, .pmui-sprite-grid-arrow-down, .pmui-sprite-grid-arrow-up, .pmui-sprite-help, .pmui-sprite-info-64, .pmui-sprite-information, .pmui-sprite-question-64, .pmui-sprite-success-64, .pmui-sprite-warning-64, .pmui-sprite-warning, .pmui-sprite-window-close, .pmui-accordion-item-closed, .pmui-accordion-item-expanded, .pmui-gridpanel-pagelink.pmui-gridpanel-nextbutton .pmui-icon, .pmui-gridpanel-pagelink.pmui-gridpanel-previousbutton .pmui-icon, .pmui-gridpanelcolumn.pmui-sortable.pmui-sort-asc .pmui-grid-sort-icon, .pmui-gridpanelcolumn.pmui-sortable.pmui-sort-desc .pmui-grid-sort-icon, .pmui-icon-help, .pmui-icon-info, .pmui-icon-error, .pmui-icon-warning, .pmui-messagewindow-icon-error, .pmui-messagewindow-icon-warning, .pmui-messagewindow-icon-info, .pmui-messagewindow-icon-success, .pmui-messagewindow-icon-confirm {
   background-image: url('../img/pmui-sprite-s947c1ade08.png');
@@ -210,6 +210,129 @@
   background-position: 0 -468px;
   height: 14px;
   width: 18px;
+}
+
+#buttonCriteriaField {
+  background: black;
+}
+
+.mafe-activity-task-red {
+  background-color: #ce0615;
+  border: 1px solid #9f0614;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+.list-suggest-item :hover {
+  background-color: #e0e0e0;
+}
+
+.list-suggest-item.single-label :hover {
+  background-color: initial;
+  color: white;
+}
+
+#ActionsByEmailPanel #customGridPanelControls {
+  border: 1px solid #c0c0c0;
+}
+
+#customGridPanel .pmui-formpanel {
+  padding: 3px !important;
+}
+
+#customGridPanelControls #firstPanel {
+  float: left;
+}
+
+#thirdPanel .pmui-button {
+  padding: 5px 10px 5px 10px;
+  width: 75px !important;
+}
+
+#thirdPanel .pmui-button {
+  padding: 5px 10px 5px 10px;
+  width: 75px !important;
+}
+
+.propertiesTask-accordionItem {
+  right: 6px;
+  position: absolute;
+  display: inline-block;
+}
+
+.propertiesTask-accordionButton {
+  padding: 0px 7px 3px 7px;
+  border: 1px solid;
+  box-sizing: border-box;
+}
+
+.propertiesTask-accordionButton:hover {
+  background: #2481c5;
+}
+
+.mafe-button-delete.propertiesTask-accordionButton,
+.mafe-button-edit.propertiesTask-accordionButton {
+  line-height: initial !important;
+  border-right: none;
+  cursor: pointer;
+}
+
+.mafe-button-edit.propertiesTask-accordionButton {
+  border: none;
+  border-right: 1px solid;
+}
+
+#stepsAssignAccordion .pmui-accordion-item-header {
+  cursor: move;
+}
+
+#idAssignment .pmui-accordion-item-header,
+#idRouting .pmui-accordion-item-header {
+  cursor: auto;
+}
+
+#stepsAssignTree .pmui-treepanel-list {
+  width: 300px;
+}
+
+#stepsAssignTree .pmui-treepanel-node-collapsed {
+  cursor: move;
+}
+
+#stepsMainContainer .pmui-field-label,
+#stepsMainContainer .pmui-textannotationfield {
+  padding: 0px 10px 0px 10px;
+}
+
+#stepsMainContainer .mafe-gridPanel {
+  margin: 0px !important;
+  padding: 0px 10px 0px 10px;
+  border: 1px solid;
+  border-color: #c0c0c0;
+}
+
+#stepsMainContainer .pmui-accordion-item-body {
+  padding: 3px;
+  box-sizing: border-box;
+}
+
+#stepsAssignAccordion .pmui-accordion-item-title {
+  width: 400px;
+  text-transform: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+}
+
+#mainContainer #collapse-button {
+  width: 160px !important;
 }
 
 .mafe-activity-task {
@@ -528,6 +651,14 @@ a.mafe-button-create {
 a.mafe-button-create:hover {
   background-color: #1ba385;
   opacity: 1;
+}
+
+.mafe-webentry-link {
+  width: 485px;
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+  text-overflow: ellipsis;
 }
 
 /*
@@ -950,129 +1081,6 @@ a.mafe-button-create:hover{
 .mafe-button-submenu-option {
   padding: 10px;
   cursor: pointer;
-}
-
-#buttonCriteriaField {
-  background: black;
-}
-
-.mafe-activity-task-red {
-  background-color: #ce0615;
-  border: 1px solid #9f0614;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
-  -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
-}
-
-.list-suggest-item :hover {
-  background-color: #e0e0e0;
-}
-
-.list-suggest-item.single-label :hover {
-  background-color: initial;
-  color: white;
-}
-
-#ActionsByEmailPanel #customGridPanelControls {
-  border: 1px solid #c0c0c0;
-}
-
-#customGridPanel .pmui-formpanel {
-  padding: 3px !important;
-}
-
-#customGridPanelControls #firstPanel {
-  float: left;
-}
-
-#thirdPanel .pmui-button {
-  padding: 5px 10px 5px 10px;
-  width: 75px !important;
-}
-
-#thirdPanel .pmui-button {
-  padding: 5px 10px 5px 10px;
-  width: 75px !important;
-}
-
-.propertiesTask-accordionItem {
-  right: 6px;
-  position: absolute;
-  display: inline-block;
-}
-
-.propertiesTask-accordionButton {
-  padding: 0px 7px 3px 7px;
-  border: 1px solid;
-  box-sizing: border-box;
-}
-
-.propertiesTask-accordionButton:hover {
-  background: #2481c5;
-}
-
-.mafe-button-delete.propertiesTask-accordionButton,
-.mafe-button-edit.propertiesTask-accordionButton {
-  line-height: initial !important;
-  border-right: none;
-  cursor: pointer;
-}
-
-.mafe-button-edit.propertiesTask-accordionButton {
-  border: none;
-  border-right: 1px solid;
-}
-
-#stepsAssignAccordion .pmui-accordion-item-header {
-  cursor: move;
-}
-
-#idAssignment .pmui-accordion-item-header,
-#idRouting .pmui-accordion-item-header {
-  cursor: auto;
-}
-
-#stepsAssignTree .pmui-treepanel-list {
-  width: 300px;
-}
-
-#stepsAssignTree .pmui-treepanel-node-collapsed {
-  cursor: move;
-}
-
-#stepsMainContainer .pmui-field-label,
-#stepsMainContainer .pmui-textannotationfield {
-  padding: 0px 10px 0px 10px;
-}
-
-#stepsMainContainer .mafe-gridPanel {
-  margin: 0px !important;
-  padding: 0px 10px 0px 10px;
-  border: 1px solid;
-  border-color: #c0c0c0;
-}
-
-#stepsMainContainer .pmui-accordion-item-body {
-  padding: 3px;
-  box-sizing: border-box;
-}
-
-#stepsAssignAccordion .pmui-accordion-item-title {
-  width: 400px;
-  text-transform: none;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  display: inline-block;
-}
-
-#mainContainer #collapse-button {
-  width: 160px !important;
 }
 
 .pmui {
@@ -2178,8 +2186,13 @@ select.pmui-dropdownlistcontrol {
   box-sizing: border-box;
 }
 
+.pmui-textannotationfield {
+  color: #2d3e50;
+}
+
 .pmui-textannotationfield .pmui-field-label {
   margin: 0px;
+  color: inherit;
 }
 
 .pmui-field-control-er {

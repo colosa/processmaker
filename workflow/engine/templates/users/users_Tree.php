@@ -41,12 +41,9 @@
 	$oDataset->next();
 	$aRow = $oDataset->getRow();
 	
-	G::LoadClass('groups');
-	G::LoadClass('tree');
-	
 	$groups = new Groups();
 	
-	$tree = new Tree();
+	$tree = new PmTree();
 	$tree->name = 'Users';
 	$tree->nodeType = "base";
 	$tree->width = "350px";

@@ -523,7 +523,7 @@
                     id: 'gridPanelObjectsButtonDelete',
                     title: '',
                     dataType: 'button',
-                    buttonLabel: "".translate(),
+                    buttonLabel: '',
                     buttonStyle: {cssClasses: ['mafe-button-delete-assign']},
                     buttonTooltip: 'Remove Object'.translate(),
                     onButtonClick: function (row, grid) {

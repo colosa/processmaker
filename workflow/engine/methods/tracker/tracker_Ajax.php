@@ -21,8 +21,10 @@
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
+
+use ProcessMaker\Plugins\PluginRegistry;
+
 try {
-    G::LoadSystem('inputfilter');
     $filter = new InputFilter();
     $_POST = $filter->xssFilterHard($_POST);
     
@@ -32,12 +34,10 @@ try {
     
     switch ($_POST['action']) {
         case 'availableCaseTrackerObjects':
-            G::LoadClass( 'processMap' );
             $oProcessMap = new ProcessMap();
             $oProcessMap->availableCaseTrackerObjects( $_POST['PRO_UID'] );
             break;
         case 'assignCaseTrackerObject':
-            G::LoadClass( 'processMap' );
             $oProcessMap = new ProcessMap();
             $cto_UID = $oProcessMap->assignCaseTrackerObject( $_POST['PRO_UID'], $_POST['OBJECT_TYPE'], $_POST['OBJECT_UID'] );
             $oProcessMap->getCaseTrackerObjectsCriteria( $_POST['PRO_UID'] );
@@ -47,7 +47,6 @@ try {
             echo $cto_UID;
             break;
         case 'removeCaseTrackerObject':
-            G::LoadClass( 'processMap' );
             $oProcessMap = new ProcessMap();
             $oProcessMap->removeCaseTrackerObject( $_POST['CTO_UID'], $_POST['PRO_UID'], $_POST['STEP_POSITION'] );
             $oProcessMap->getCaseTrackerObjectsCriteria( $_POST['PRO_UID'] );
@@ -56,7 +55,6 @@ try {
             G::auditLog('CaseTrackers','Remove Case Tracker Object ('.$_POST['CTO_UID'].') in Process "'.$resultProcess['PRO_TITLE'].'"');
             break;
         case 'upCaseTrackerObject':
-            G::LoadClass( 'processMap' );
             $oProcessMap = new ProcessMap();
             $oProcessMap->upCaseTrackerObject( $_POST['CTO_UID'], $_POST['PRO_UID'], $_POST['STEP_POSITION'] );
             $oProcessMap->getCaseTrackerObjectsCriteria( $_POST['PRO_UID'] );
@@ -65,7 +63,6 @@ try {
             G::auditLog('CaseTrackers','Move Up Case Tracker Object ('.$_POST['CTO_UID'].') in Process "'.$resultProcess['PRO_TITLE'].'"');
             break;
         case 'downCaseTrackerObject':
-            G::LoadClass( 'processMap' );
             $oProcessMap = new ProcessMap();
             $oProcessMap->downCaseTrackerObject( $_POST['CTO_UID'], $_POST['PRO_UID'], $_POST['STEP_POSITION'] );
             $oProcessMap->getCaseTrackerObjectsCriteria( $_POST['PRO_UID'] );
@@ -141,7 +138,7 @@ try {
 
             //If plugin and trigger are defined for listing
             if ($oPluginRegistry->existsTrigger( PM_CASE_DOCUMENT_LIST_ARR )) {
-                $oPluginRegistry = & PMPluginRegistry::getSingleton();
+                $oPluginRegistry = PluginRegistry::loadSingleton();
                 $filesPluginArray = $oPluginRegistry->executeTriggers( PM_CASE_DOCUMENT_LIST_ARR, $_SESSION['APPLICATION'] );
                 //Now search for the file, if exists the change the download URL
                 foreach ($filesPluginArray as $file) {
@@ -184,7 +181,7 @@ try {
 
             //If plugin and trigger are defined for listing
             if ($oPluginRegistry->existsTrigger( PM_CASE_DOCUMENT_LIST_ARR )) {
-                $oPluginRegistry = & PMPluginRegistry::getSingleton();
+                $oPluginRegistry = PluginRegistry::loadSingleton();
                 $filesPluginArray = $oPluginRegistry->executeTriggers( PM_CASE_DOCUMENT_LIST_ARR, $aFields['APP_UID'] );
                 //Now search for the file, if exists the change the download URL
                 foreach ($filesPluginArray as $file) {

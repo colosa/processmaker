@@ -85,32 +85,6 @@ Ext.onReady(function(){
 
   cmbTimeZone.setValue(sysConf.time_zone);
 
-  txtExpirationYear = new Ext.form.TextField({
-      xtype: 'numberfield',
-      id        : 'expiration_year',
-      name      : 'expiration_year',
-      fieldLabel: _('ID_DEFAULT_EXPIRATION_YEAR'),
-      allowBlank: false,
-      allowNegative: false,
-      value: 1,
-      maxlength: 15,
-      minValue: 1,
-      validator: function(value){
-       if(value > 0) {
-           return true;
-       } else {
-           PMExt.error( _('ID_ERROR'), _('ID_INVALID_VALUE_EXPECTING_POSITIVE_INTEGER', _('ID_DEFAULT_EXPIRATION_YEAR')));
-           return false;
-       }
-      },
-      listeners:{
-          change: function(){
-            changeSettings();
-          }
-      }
-  });
-  txtExpirationYear.setValue(sysConf.expiration_year);
-
   saveButton = new Ext.Action({
     text : _('ID_SAVE_SETTINGS'),
     disabled : true,
@@ -118,38 +92,56 @@ Ext.onReady(function(){
   });
 
   xfieldsUp = new Ext.form.FieldSet({
-    title: _('ID_SYSTEM_SETTINGS'),
-    items : [
-      cmbTimeZone,
-      {
-        xtype: 'numberfield',
-        id        : 'memory_limit',
-        name      : 'memory_limit',
-        fieldLabel: _('ID_MEMORY_LIMIT'),
-        allowBlank: false,
-        autoCreate: {tag: "input", type: "text", autocomplete: "off", maxlength: 15 },
-        value: sysConf.memory_limit,
-        listeners:{
-          change: function(){
-            changeSettings();
+      title: _('ID_SYSTEM_SETTINGS'),
+      items: [
+          cmbTimeZone,
+          {
+              xtype: 'numberfield',
+              id: 'memory_limit',
+              name: 'memory_limit',
+              fieldLabel: _('ID_MEMORY_LIMIT'),
+              allowBlank: false,
+              allowDecimals: false,
+              minValue: -1,
+              autoCreate: {tag: "input", type: "text", autocomplete: "off", maxlength: 15},
+              value: sysConf.memory_limit,
+              listeners: {
+                  change: function () {
+                      changeSettings();
+                  }
+              }
+          }, {
+              xtype: 'numberfield',
+              id: 'max_life_time',
+              name: 'max_life_time',
+              fieldLabel: _('ID_MAX_LIFETIME'),
+              allowNegative: false,
+              allowDecimals: false,
+              autoCreate: {tag: "input", type: "text", autocomplete: "off", maxlength: 15},
+              value: sysConf.session_gc_maxlifetime,
+              listeners: {
+                  change: function () {
+                      changeSettings();
+                  }
+              }
+          }, {
+              xtype: 'numberfield',
+              id: 'expiration_year',
+              name: 'expiration_year',
+              fieldLabel: _('ID_DEFAULT_EXPIRATION_YEAR'),
+              allowBlank: false,
+              allowNegative: false,
+              allowDecimals: false,
+              value: sysConf.expiration_year,
+              maxlength: 15,
+              minValue: 1,
+              listeners: {
+                  change: function () {
+                      changeSettings();
+                  }
+              }
           }
-        }
-      }, {
-        xtype: 'numberfield',
-        id        : 'max_life_time',
-        name      : 'max_life_time',
-        fieldLabel: _('ID_MAX_LIFETIME'),
-        // allowBlank: false,
-        autoCreate: {tag: "input", type: "text", autocomplete: "off", maxlength: 15 },
-        value: sysConf.session_gc_maxlifetime,
-        listeners:{
-          change: function(){
-            changeSettings();
-          }
-        }
-      }
-      ,txtExpirationYear
-    ]
+      ]
   });
 
   xfieldsBelow = new Ext.form.FieldSet({

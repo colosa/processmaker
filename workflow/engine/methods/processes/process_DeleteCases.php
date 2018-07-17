@@ -39,8 +39,7 @@ switch ($RBAC->userCanAccess('PM_FACTORY'))
 }
 */
 $PRO_UID = $_GET['PRO_UID'];
-require_once 'classes/model/Process.php';
-G::LoadClass( 'case' );
+
 $oProcessMap = new Cases();
 
 $process = new Process();

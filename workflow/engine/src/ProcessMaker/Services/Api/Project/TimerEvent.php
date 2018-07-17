@@ -86,12 +86,19 @@ class TimerEvent extends Api
     }
 
     /**
+     * Create timer event for a project.
+     * 
      * @url POST /:prj_uid/timer-event
-     *
+     * @status 201
+     * 
      * @param string $prj_uid      {@min 32}{@max 32}
      * @param array  $request_data
-     *
-     * @status 201
+     * 
+     * @return array
+     * @throws RestException
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPostTimerEvent($prj_uid, array $request_data)
     {
@@ -109,11 +116,18 @@ class TimerEvent extends Api
     }
 
     /**
+     * Update timer event.
+     *
      * @url PUT /:prj_uid/timer-event/:tmrevn_uid
      *
      * @param string $prj_uid      {@min 32}{@max 32}
      * @param string $tmrevn_uid   {@min 32}{@max 32}
      * @param array  $request_data
+     *
+     * @throws RestException
+     *
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPutTimerEvent($prj_uid, $tmrevn_uid, array $request_data)
     {
@@ -128,6 +142,8 @@ class TimerEvent extends Api
 
     /**
      * @url DELETE /:prj_uid/timer-event/:tmrevn_uid
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      *
      * @param string $prj_uid    {@min 32}{@max 32}
      * @param string $tmrevn_uid {@min 32}{@max 32}

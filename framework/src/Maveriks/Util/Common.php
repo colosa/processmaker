@@ -52,58 +52,43 @@ class Common
         }
 
         $files = glob("$path/$singlePattern", $flags);
-        $dirs = glob("$path/*", GLOB_MARK|GLOB_ONLYDIR|GLOB_NOSORT);
+        $dirs = glob("$path/*", GLOB_MARK | GLOB_ONLYDIR | GLOB_NOSORT);
 
-        if(is_array($dirs)){
+        if (is_array($dirs)) {
             foreach ($dirs as $dir) {
                 $files = array_merge($files, self::rglob("$dir/$singlePattern", $flags));
             }
         }
 
         if ($onlyFiles) {
-            $files = array_filter($files, function($v) { return is_dir($v) ? false : true;});
+            $files = array_filter($files, function ($v) {
+                return is_dir($v) ? false : true;
+            });
         }
 
         return $files;
     }
 
     /**
-     * Returns the last version given a pattern of file name
-     *
-     * @param string $pattern a valid pattern for glob(...) native function
-     * @param int $flag php flags for glob(...) native function
-     * @return int|string
-     *
-     * Example:
-     * - Given the following files inside a directory:
-     *       /example/path/myApplication-v1.tar
-     *       /example/path/myApplication-v2.tar
-     *       /example/path/myApplication-v3.tar
-     *       /example/path/myApplication-v5.tar
-     *       /example/path/myApplication-v7.tar
-     *
-     * $lastVer = ProcessMaker\Util\Common::getLastVersion("/example/path/myApplication-*.tar");
-     *
-     * It will returns: 7
+     * This method get the last version of file when exists a special characters
+     * @param $pattern
+     * @param $extension
+     * @param int $flag
+     * @return int
      */
-    public static function getLastVersion($pattern, $flag = 0)
+    public static function getLastVersionSpecialCharacters($dir, $pattern, $extension, $flag = 0)
     {
-        $files = glob($pattern, $flag);
+        $files = glob($dir . quotemeta($pattern) . "-*." . $extension, $flag);
         $maxVersion = 0;
-
-        $pattern = str_replace("*", '([0-9\.]+)', basename($pattern));
-
+        $pattern = preg_quote(basename($pattern)) . '-([0-9\.]+)pmx';
         foreach ($files as $file) {
             $filename = basename($file);
-
-            if (preg_match('/'.$pattern.'/', $filename, $match)) {
-
+            if (preg_match('/' . $pattern . '/', $filename, $match)) {
                 if ($maxVersion < $match[1]) {
                     $maxVersion = $match[1];
                 }
             }
         }
-
         return $maxVersion;
     }
 
@@ -128,6 +113,32 @@ class Common
         return $result;
     }
 
+    /**
+     * Maintained for compatibility reasons with the plugin DataReportingTool
+     * @deprecated 3.2.2, by backward compatibility because it is used in plugins enterprise
+     *
+    */
+    public static function getLastVersion($pattern, $flag = 0)
+    {
+        $files = glob($pattern, $flag);
+        $maxVersion = 0;
+
+        $pattern = str_replace("*", '([0-9\.]+)', basename($pattern));
+
+        foreach ($files as $file) {
+            $filename = basename($file);
+
+            if (preg_match('/'.$pattern.'/', $filename, $match)) {
+
+                if ($maxVersion < $match[1]) {
+                    $maxVersion = $match[1];
+                }
+            }
+        }
+
+        return $maxVersion;
+    }
+
     public static function mk_dir($strPath, $rights = 0777)
     {
         $folder_path = array($strPath);
@@ -141,8 +152,8 @@ class Common
         }
 
         while ($parent_folder_path = array_pop($folder_path)) {
-            if (! @is_dir($parent_folder_path)) {
-                if (! @mkdir($parent_folder_path, $rights)) {
+            if (!@is_dir($parent_folder_path)) {
+                if (!@mkdir($parent_folder_path, $rights)) {
                     umask($oldumask);
                 }
             }

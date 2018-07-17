@@ -327,7 +327,6 @@ class Process extends BaseProcess
             $uids[] = $processes[sizeof( $processes ) - 1]['PRO_UID'];
         }
 
-        G::loadClass( 'configuration' );
         $oConf = new Configurations();
         $oConf->loadConfig( $obj, 'ENVIRONMENT_SETTINGS', '' );
 
@@ -667,7 +666,6 @@ class Process extends BaseProcess
             $uids[] = $processes[sizeof( $processes ) - 1]['PRO_UID'];
         }
 
-        G::loadClass( 'configuration' );
         $oConf = new Configurations();
         $oConf->loadConfig( $obj, 'ENVIRONMENT_SETTINGS', '' );
 
@@ -1026,5 +1024,17 @@ class Process extends BaseProcess
             );
             $users->update($newData);
         }
+    }
+
+    /**
+     * Load a process object by PRO_ID
+     *
+     * @param type $id
+     * @return Process
+     */
+    public static function loadById($id) {
+        $criteria = new Criteria(ProcessPeer::DATABASE_NAME);
+        $criteria->add(ProcessPeer::PRO_ID, $id);
+        return ProcessPeer::doSelect($criteria)[0];
     }
 }

@@ -25,8 +25,6 @@ if (($RBAC_Response = $RBAC->userCanAccess( "PM_SETUP" )) != 1)
     return $RBAC_Response;
 $G_ENABLE_BLANK_SKIN = true;
 
-G::LoadClass( "workPeriod" );
-
 $dbc = new DBConnection();
 $ses = new DBSession( $dbc );
 $obj = new workPeriod( $dbc );

@@ -3,6 +3,7 @@ namespace ProcessMaker\BusinessModel;
 
 use G;
 use Criteria;
+use DynaformHandler;
 
 class Process
 {
@@ -454,7 +455,6 @@ class Process
     public function throwExceptionIfNotExistsRoutingScreenTemplate($processUid, $fileName, $fieldNameForException)
     {
         try {
-            \G::LoadClass("processes");
 
             $arrayFile = \Processes::getProcessFiles($processUid, "mail");
             $flag = 0;
@@ -707,7 +707,7 @@ class Process
     {
         //Copy of processmaker/workflow/engine/methods/processes/processes_Ajax.php //case 'saveNewPattern':
 
-        $processMap = new \processMap();
+        $processMap = new \ProcessMap();
 
         if ($type != "SEQUENTIAL" && $type != "SEC-JOIN" && $type != "DISCRIMINATOR") {
             if ($processMap->getNumberOfRoutes($processUid, $taskUid, $nextTaskUid, $type) > 0) {
@@ -719,7 +719,6 @@ class Process
         }
 
         if ($delete || $type == "SEQUENTIAL" || $type == "SEC-JOIN" || $type == "DISCRIMINATOR") {
-            //\G::LoadClass("tasks");
 
             $tasks = new \Tasks();
 
@@ -796,16 +795,6 @@ class Process
         switch ($option) {
             case "CREATE":
                 $processUid = $process->create($arrayProcessData, false);
-
-                //Call plugins
-                //$arrayData = array(
-                //    "PRO_UID"      => $processUid,
-                //    "PRO_TEMPLATE" => (isset($arrayProcessData["PRO_TEMPLATE"]) && $arrayProcessData["PRO_TEMPLATE"] != "")? $arrayProcessData["PRO_TEMPLATE"] : "",
-                //    "PROCESSMAP"   => $this //?
-                //);
-                //
-                //$oPluginRegistry = &PMPluginRegistry::getSingleton();
-                //$oPluginRegistry->executeTriggers(PM_NEW_PROCESS_SAVE, $arrayData);
                 break;
             case "UPDATE":
                 $result = $process->update($arrayProcessData);
@@ -1048,7 +1037,7 @@ class Process
         );
 
         //Load data
-        $processMap = new \processMap();
+        $processMap = new \ProcessMap();
 
         $arrayData = (array)(\Bootstrap::json_decode($processMap->load($processUid)));
 
@@ -1201,8 +1190,7 @@ class Process
     public function deleteProcess($sProcessUID)
     {
         try {
-            G::LoadClass('case');
-            G::LoadClass('reportTables');
+
             //Instance all classes necesaries
             $oProcess = new Process();
             $oDynaform = new Dynaform();
@@ -1625,14 +1613,11 @@ class Process
             //Verify data
             $this->throwExceptionIfNotExistsProcess($processUid, $this->arrayFieldNameForException["processUid"]);
 
-            //Get data
-            \G::LoadClass("triggerLibrary");
-
             $triggerWizard = new \ProcessMaker\BusinessModel\TriggerWizard();
             $triggerWizard->setFormatFieldNameInUppercase($this->formatFieldNameInUppercase);
             $triggerWizard->setArrayFieldNameForException($this->arrayFieldNameForException);
 
-            $triggerLibrary = \triggerLibrary::getSingleton();
+            $triggerLibrary = \TriggerLibrary::getSingleton();
             $library = $triggerLibrary->getRegisteredClasses();
 
             ksort($library);
@@ -1667,8 +1652,11 @@ class Process
             foreach ($aAux as $sName => $sValue) {
                 $aFields[] = array ('sName' => $sName,'sType' => 'system','sLabel' => G::LoadTranslation('ID_TINY_SYSTEM_VARIABLE'), 'sUid' => '');
             }
-            //we're adding the ping variable to the system list
+            //we're adding the pin variable to the system list
             $aFields[] = array ('sName' => 'PIN','sType' => 'system','sLabel' => G::LoadTranslation('ID_TINY_SYSTEM_VARIABLE'), 'sUid' => '');
+            
+            //we're adding the app_number variable to the system list
+            $aFields[] = array('sName' => 'APP_NUMBER', 'sType' => 'system', 'sLabel' => G::LoadTranslation('ID_TINY_SYSTEM_VARIABLE'), 'sUid' => '');
         }
 
         $aInvalidTypes = array("title", "subtitle", "file", "button", "reset", "submit", "javascript");
@@ -1689,7 +1677,7 @@ class Process
 
         while ($aRow = $oDataset->getRow()) {
             if (is_file(PATH_DYNAFORM . $aRow['DYN_FILENAME'] . ".xml")) {
-                $dyn = new \dynaFormHandler(PATH_DYNAFORM . $aRow['DYN_FILENAME'] . ".xml");
+                $dyn = new DynaformHandler(PATH_DYNAFORM . $aRow['DYN_FILENAME'] . ".xml");
 
                 if ($dyn->getHeaderAttribute("type") !== "xmlform" && $dyn->getHeaderAttribute("type") !== "") {
                     // skip it, if that is not a xmlform
@@ -1742,7 +1730,7 @@ class Process
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
             if (is_file(PATH_DYNAFORM . $aRow['DYN_FILENAME'] . ".xml")) {
-                $dyn = new \dynaFormHandler(PATH_DYNAFORM . $aRow['DYN_FILENAME'] . ".xml");
+                $dyn = new DynaformHandler(PATH_DYNAFORM . $aRow['DYN_FILENAME'] . ".xml");
 
                 if ($dyn->getHeaderAttribute("type") === "xmlform") {
                     // skip it, if that is not a xmlform
@@ -1788,7 +1776,7 @@ class Process
         $aMultipleSelectionFields = array("listbox", "checkgroup", "grid");
 
         if (is_file( PATH_DATA . '/sites/'. SYS_SYS .'/xmlForms/'. $proUid .'/'.$dynUid. '.xml' ) && filesize( PATH_DATA . '/sites/'. SYS_SYS .'/xmlForms/'. $proUid .'/'. $dynUid .'.xml' ) > 0) {
-            $dyn = new \dynaFormHandler( PATH_DATA . '/sites/'. SYS_SYS .'/xmlForms/' .$proUid. '/' . $dynUid .'.xml' );
+            $dyn = new DynaformHandler( PATH_DATA . '/sites/'. SYS_SYS .'/xmlForms/' .$proUid. '/' . $dynUid .'.xml' );
             $dynaformFields[] = $dyn->getFields();
 
             $fields = $dyn->getFields();

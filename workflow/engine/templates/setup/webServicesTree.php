@@ -23,10 +23,6 @@
  *
  */
 
-//G::genericForceLogin( 'WF_MYINFO' , 'login/noViewPage', $urlLogin = 'login/login' );
-
-G::LoadClass('tree');
-
 $wsSessionId = '';
 if (isset ( $_SESSION ['WS_SESSION_ID'] )) {
     $wsSessionId = $_SESSION ['WS_SESSION_ID'];
@@ -55,7 +51,7 @@ $defaultEndpoint = 'http://' . $_SERVER ['SERVER_NAME'] . ':' . $_SERVER ['SERVE
 
 $wsdl = isset ( $_SESSION ['END_POINT'] ) ? $_SESSION ['END_POINT'] : $defaultEndpoint;
 
-$tree = new Tree ( );
+$tree = new PmTree ( );
 $tree->name = 'WebServices';
 $tree->nodeType = "base";
 $tree->contentWidth = "310";

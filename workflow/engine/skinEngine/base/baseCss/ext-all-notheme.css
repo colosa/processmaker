@@ -979,8 +979,9 @@ textarea {
 
 .x-form-field-wrap {
     position:relative;
-    left:0;top:0;
-    text-align: left;
+    left:0;
+    top:0;
+    text-align: inherit;
     zoom:1;
     white-space: nowrap;
 }

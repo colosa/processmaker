@@ -22,6 +22,8 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
 
+use ProcessMaker\Plugins\PluginRegistry;
+
 /**
  *
  * @author Erik Amaru Ortiz <erik@colosa.com>
@@ -43,7 +45,7 @@ if (!isset($_SESSION['USER_LOGGED'])) {
     die();
 }
 
-G::LoadSystem('inputfilter');
+
 $filter = new InputFilter();
 $_REQUEST = $filter->xssFilterHard($_REQUEST);
 $_POST = $filter->xssFilterHard($_POST);
@@ -82,9 +84,6 @@ class Ajax
 
     public function getCaseMenu($params)
     {
-
-        G::LoadClass("configuration");
-        G::LoadClass("case");
         global $G_TMP_MENU;
         global $sStatus;
         $sStatus = $params['app_status'];
@@ -123,7 +122,7 @@ class Ajax
             print G::json_encode( $response );
             die();
         }
-        G::LoadClass('applications');
+
         $applications = new Applications();
 
         $proUid = isset($_SESSION['PROCESS']) ? $_SESSION['PROCESS'] : '';
@@ -268,8 +267,6 @@ class Ajax
         global $G_TABLE;
         global $RBAC;
 
-        G::LoadClass('processMap');
-
         $oTemplatePower = new TemplatePower(PATH_TPL . 'processes/processes_Map.html');
         $oTemplatePower->prepare();
         $G_PUBLISH = new Publisher();
@@ -278,7 +275,7 @@ class Ajax
 
         //$oHeadPublisher->addScriptfile('/jscore/processmap/core/processmap.js');
         $oHeadPublisher->addScriptCode('
-    var maximunX = ' . processMap::getMaximunTaskX($_SESSION['PROCESS']) . ';
+    var maximunX = ' . ProcessMap::getMaximunTaskX($_SESSION['PROCESS']) . ';
     window.onload = function(){
       var pb=leimnud.dom.capture("tag.body 0");
       Pm=new processmap();
@@ -381,7 +378,6 @@ class Ajax
             $processData['PRO_AUTHOR'] = '(USER DELETED)';
         }
 
-        G::LoadClass('configuration');
         $conf = new Configurations();
         $conf->getFormats();
         $processData['PRO_CREATE_DATE'] = $conf->getSystemDate($processData['PRO_CREATE_DATE']);
@@ -397,7 +393,7 @@ class Ajax
             print G::json_encode( $response );
             die();
         }
-        G::LoadClass('tasks');
+
         $task = new Task();
         if ($_SESSION['TASK'] == '-1') {
             $_SESSION['TASK'] = $_SESSION['CURRENT_TASK'];
@@ -412,7 +408,6 @@ class Ajax
     public function caseHistory()
     {
         global $G_PUBLISH;
-        G::loadClass('configuration');
 
         $oHeadPublisher = & headPublisher::getSingleton();
         $conf = new Configurations();
@@ -425,7 +420,6 @@ class Ajax
     public function messageHistory()
     {
         global $G_PUBLISH;
-        G::loadClass('configuration');
 
         $oHeadPublisher = & headPublisher::getSingleton();
         $conf = new Configurations();
@@ -438,7 +432,6 @@ class Ajax
     public function dynaformHistory()
     {
         global $G_PUBLISH;
-        G::loadClass('configuration');
 
         $oHeadPublisher = & headPublisher::getSingleton();
         $conf = new Configurations();
@@ -451,7 +444,7 @@ class Ajax
     public function changeLogHistory()
     {
         global $G_PUBLISH;
-        G::loadClass('configuration');
+
         $idHistory = sprintf(
             '%s_%s_%s',
             $_SESSION['PROCESS'],
@@ -477,7 +470,6 @@ class Ajax
             die();
         }
         global $G_PUBLISH;
-        G::loadClass('configuration');
 
         $oHeadPublisher = & headPublisher::getSingleton();
         $conf = new Configurations();
@@ -491,7 +483,6 @@ class Ajax
     public function uploadedDocumentsSummary()
     {
         global $G_PUBLISH;
-        G::loadClass('configuration');
 
         $oHeadPublisher = & headPublisher::getSingleton();
         $conf = new Configurations();
@@ -505,7 +496,6 @@ class Ajax
     public function generatedDocuments()
     {
         global $G_PUBLISH;
-        G::loadClass('configuration');
 
         $oHeadPublisher = & headPublisher::getSingleton();
         $conf = new Configurations();
@@ -519,7 +509,6 @@ class Ajax
     public function generatedDocumentsSummary()
     {
         global $G_PUBLISH;
-        G::loadClass('configuration');
 
         $oHeadPublisher = & headPublisher::getSingleton();
         $conf = new Configurations();
@@ -985,11 +974,11 @@ class Ajax
         $Fields["APP_DATA"]["__DYNAFORM_OPTIONS"]["NEXT_STEP_LABEL"] = "";
         $Fields["APP_DATA"]["__DYNAFORM_OPTIONS"]["NEXT_STEP"] = "#";
         $Fields["APP_DATA"]["__DYNAFORM_OPTIONS"]["NEXT_ACTION"] = "return false;";
-        G::LoadClass('pmDynaform');
+
         $FieldsPmDynaform = $Fields;
         $FieldsPmDynaform["PRO_UID"] = $_SESSION['PROCESS'];
         $FieldsPmDynaform["CURRENT_DYNAFORM"] = $_REQUEST['DYN_UID'];
-        $a = new pmDynaform($FieldsPmDynaform);
+        $a = new PmDynaform($FieldsPmDynaform);
         if ($a->isResponsive()) {
             $a->printView();
         } else {
@@ -1035,7 +1024,7 @@ class Ajax
     }
 }
 
-$pluginRegistry = & PMPluginRegistry::getSingleton();
+$pluginRegistry = PluginRegistry::loadSingleton();
 if ($pluginRegistry->existsTrigger(PM_GET_CASES_AJAX_LISTENER)) {
     $ajax = $pluginRegistry->executeTriggers(PM_GET_CASES_AJAX_LISTENER, null);
 } else {
@@ -1046,7 +1035,6 @@ if (!($ajax instanceof Ajax)) {
     $ajax = new Ajax();
 }
 
-G::LoadClass('case');
 
 $action = $_REQUEST['action'];
 

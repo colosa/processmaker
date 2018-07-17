@@ -1,11 +1,7 @@
 <?php
 
-/**
- * new Site create v1.1
- * Jan 15th, 2011
- *
- * @author krlos P.C <carlos@colosa.com>
- */
+use ProcessMaker\Core\Installer;
+
 class newSiteProxy extends HttpProxyController
 {
 
@@ -14,8 +10,6 @@ class newSiteProxy extends HttpProxyController
             $action = (isset( $_POST['action'] )) ? trim( $_POST['action'] ) : 'test';
             $ao_db_drop = (isset( $_POST['AO_DB_DROP'] )) ? true : false;
 
-            G::LoadClass( 'Installer' );
-            //G::LoadClass( 'json' );
             $name = trim( $_POST['NW_TITLE'] );
             $inst = new Installer();
             if ($inst->isset_site($name)) {
@@ -30,9 +24,9 @@ class newSiteProxy extends HttpProxyController
                     return;
                 }
             }
-            $user = (isset( $_POST['NW_USERNAME'] )) ? trim( $_POST['NW_USERNAME'] ) : 'admin';
-            $pass = (isset( $_POST['NW_PASSWORD'] )) ? $_POST['NW_PASSWORD'] : 'admin';
-            $pass1 = (isset( $_POST['NW_PASSWORD2'] )) ? $_POST['NW_PASSWORD2'] : 'admin';
+            $user = (isset($_POST['NW_USERNAME'])) ? trim($_POST['NW_USERNAME']) : 'admin';
+            $pass = (isset($_POST['NW_PASSWORD'])) ? trim($_POST['NW_PASSWORD']) : 'admin';
+            $pass1 = (isset($_POST['NW_PASSWORD2'])) ? trim($_POST['NW_PASSWORD2']) : 'admin';
 
 
             $ao_db_wf = (isset( $_POST['AO_DB_WF'] )) ? $_POST['AO_DB_WF'] : false;

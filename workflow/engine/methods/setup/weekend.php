@@ -23,8 +23,6 @@
  */
 if (($RBAC_Response = $RBAC->userCanAccess( "PM_SETUP" )) != 1)
     return $RBAC_Response;
-G::LoadInclude( 'ajax' );
-
 $G_ENABLE_BLANK_SKIN = true;
 
 $ARR_WEEKDAYS[0] = array ('SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'

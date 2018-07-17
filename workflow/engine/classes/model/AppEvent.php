@@ -180,11 +180,6 @@ class AppEvent extends BaseAppEvent
 
     public function executeEvents ($sNow, $debug = false, &$log = array(), $cron = 0)
     {
-
-        require_once 'classes/model/Configuration.php';
-        require_once 'classes/model/Triggers.php';
-        G::LoadClass( 'case' );
-
         $debug = 1;
         $oCase = new Cases();
 
@@ -288,6 +283,7 @@ class AppEvent extends BaseAppEvent
                 $aFields['APP_DATA']['APP_NUMBER'] = $aFields['APP_NUMBER'];
                 $aFields['APP_DATA']['TAS_TITLE'] = $taskFields['TAS_TITLE'];
                 $aFields['APP_DATA']['DEL_TASK_DUE_DATE'] = $aRow['DEL_TASK_DUE_DATE'];
+                $oPMScript->setDataTrigger($oTrigger->toArray(\BasePeer::TYPE_FIELDNAME));
                 $oPMScript->setFields( $aFields['APP_DATA'] );
                 $oPMScript->setScript( $oTrigger->getTriWebbot() );
 

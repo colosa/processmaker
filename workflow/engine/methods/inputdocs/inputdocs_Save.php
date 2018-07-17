@@ -45,9 +45,6 @@ try {
     // Bootstrap::mylog("post:".$_POST['function']);
     switch ($sfunction) {
         case 'lookForNameInput':
-            //require_once ('classes/model/Content.php');
-            //require_once ("classes/model/InputDocument.php");
-
             $snameInput = urldecode( $_POST['NAMEINPUT'] );
             $sPRO_UID = urldecode( $_POST['proUid'] );
 
@@ -66,8 +63,6 @@ try {
             print $flag;
             break;
         default:
-            //require_once 'classes/model/InputDocument.php';
-            G::LoadClass( 'processMap' );
 
             $oInputDocument = new InputDocument();
             if (isset( $_POST['form'] )) {
@@ -96,7 +91,7 @@ try {
             }
 
             //refresh dbarray with the last change in inputDocument
-            $oMap = new processMap();
+            $oMap = new ProcessMap();
             $oCriteria = $oMap->getInputDocumentsCriteria( $aData['PRO_UID'] );
             break;
     }

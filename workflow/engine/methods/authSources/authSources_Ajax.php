@@ -21,6 +21,9 @@
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
+
+use ProcessMaker\Plugins\PluginRegistry;
+
 try {
     global $RBAC;
     if ($RBAC->userCanAccess( 'PM_SETUP_ADVANCE' ) != 1) {
@@ -31,7 +34,6 @@ try {
 
     switch ($_REQUEST['action']) {
         case 'searchUsers':
-            require_once 'classes/model/Users.php';
             $criteria = new Criteria( 'workflow' );
             $criteria->addSelectColumn( UsersPeer::USR_USERNAME );
             $criteria->add( UsersPeer::USR_STATUS, array ('CLOSED'
@@ -46,7 +48,7 @@ try {
             }
 
             $aFields = $RBAC->getAuthSource( $_POST['sUID'] );
-            //G::LoadThirdParty( 'pear/json', 'class.json' );
+
             //$oJSON = new Services_JSON();
             $i = 0;
             $oUser = new Users();
@@ -72,7 +74,6 @@ try {
             global $_DBArray;
             $_DBArray['users'] = $aUsers;
             $_SESSION['_DBArray'] = $_DBArray;
-            G::LoadClass( 'ArrayPeer' );
             $oCriteria = new Criteria( 'dbarray' );
             $oCriteria->setDBArrayTable( 'users' );
             $aData = Array ('Checkbox' => '0','FullName' => '0'
@@ -95,9 +96,9 @@ try {
             G::RenderPage( 'publish', 'raw' );
             break;
         case 'authSourcesList':
-            require_once PATH_RBAC . 'model/AuthenticationSource.php';
+
             global $RBAC;
-            G::LoadClass( 'configuration' );
+
             $co = new Configurations();
             $config = $co->getConfiguration( 'authSourcesList', 'pageSize', '', $_SESSION['USER_LOGGED'] );
             $limit_size = isset( $config['pageSize'] ) ? $config['pageSize'] : 20;
@@ -155,7 +156,7 @@ try {
             }
             break;
         case 'authSourcesNew':
-            $pluginRegistry = &PMPluginRegistry::getSingleton();
+            $pluginRegistry = PluginRegistry::loadSingleton();
 
             $arr = Array ();
             $oDirectory = dir( PATH_RBAC . 'plugins' . PATH_SEP );

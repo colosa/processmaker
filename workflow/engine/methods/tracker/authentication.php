@@ -44,7 +44,6 @@ try {
         $pin = trim( $frm['PIN'] );
     }
 
-    G::LoadClass( 'case' );
     $cases = new Cases();
 
     $uid = $cases->verifyCaseTracker( $case, $pin );

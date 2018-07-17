@@ -9,6 +9,7 @@ var PMMessageType = function (options) {
     this.onEdit = new Function();
     this.requiredMessage = null;
     this.clickedClose = true;
+    this.previousMessageValue = null;
     this.buttonCreate = new PMUI.ui.Button({
         id: 'buttonCreate',
         text: "Create".translate(),
@@ -23,6 +24,53 @@ var PMMessageType = function (options) {
             that.showForm();
         }
     });
+
+    this.buttonFieldAdd = new PMUI.field.ButtonField({
+        id: 'buttonFieldAdd',
+        pmType: 'buttonField',
+        value: 'Create'.translate(),
+        labelVisible: false,
+        buttonAlign: 'center',
+        controlsWidth: 50,
+        proportion: 0.6,
+        handler: function (field) {
+            that.addAcceptedValue();
+        },
+        buttonType: "success",
+        style: {
+            cssProperties: {
+                'vertical-align': 'top',
+                'padding-top': '37px',
+                'padding-right': '1px',
+                'padding-bottom': '1px',
+                'padding-left': '1px'
+            }
+        }
+    });
+    this.buttonFieldAdd.getControl().button.setButtonType("success");
+
+    this.buttonFieldCancel = new PMUI.field.ButtonField({
+        id: 'buttonFieldCancel',
+        pmType: 'buttonField',
+        value: 'Cancel'.translate(),
+        labelVisible: false,
+        buttonAlign: 'center',
+        controlsWidth: 50,
+        proportion: 0.6,
+        handler: function (field) {
+            that.cancelAcceptedValue();
+        },
+        style: {
+            cssProperties: {
+                'vertical-align': 'top',
+                'padding-top': '37px',
+                'padding-right': '1px',
+                'padding-bottom': '1px',
+                'padding-left': '1px'
+            }
+        }
+    });
+    this.buttonFieldCancel.getControl().button.setButtonType("error");
 
     this.frmMessageType = new PMUI.form.Form({
         id: 'frmMessageType',
@@ -40,13 +88,36 @@ var PMMessageType = function (options) {
                 required: true,
                 valueType: 'string',
                 maxLength: 60,
-                controlsWidth: 460,
-                validators: [
+                controlsWidth: 460
+            },
+            {
+                id: "frmAcceptedValues",
+                pmType: 'panel',
+                legend: "Message Field".translate(),
+                fieldset: true,
+                layout: 'hbox',
+                items: [
                     {
-                        pmType: "regexp",
-                        criteria: /^[a-zA-Z_]+[0-9a-zA-Z_]+$/,
-                        errorMessage: "A valid variable starts with a letter or underscore, followed by any number of letters, numbers, or underscores.".translate()
-                    }
+                        pmType: "text",
+                        name: "txtMessageTypeVariableName",
+                        label: "Message Field Name".translate(),
+                        labelWidth: "100%",
+                        controlsWidth: "400px",
+                        proportion: 2.5,
+                        valueType: "string",
+                        maxLength: 255,
+                        required: true,
+                        labelPosition: "top",
+                        validators: [
+                            {
+                                pmType: "regexp",
+                                criteria: /^[a-zA-Z_]+[0-9a-zA-Z_]+$/,
+                                errorMessage: "A valid variable starts with a letter or underscore, followed by any number of letters, numbers, or underscores.".translate()
+                            }
+                        ]
+                    },
+                    that.buttonFieldCancel,
+                    that.buttonFieldAdd
                 ]
             }
         ]
@@ -113,90 +184,6 @@ var PMMessageType = function (options) {
         }
         ],
         dataItems: null
-    });
-
-    this.buttonFieldAdd = new PMUI.field.ButtonField({
-        id: 'buttonFieldAdd',
-        pmType: 'buttonField',
-        value: 'Create'.translate(),
-        labelVisible: false,
-        buttonAlign: 'center',
-        controlsWidth: 50,
-        proportion: 0.6,
-        handler: function (field) {
-            that.addAcceptedValue();
-        },
-        buttonType: "success",
-        style: {
-            cssProperties: {
-                'vertical-align': 'top',
-                'padding-top': '37px',
-                'padding-right': '1px',
-                'padding-bottom': '1px',
-                'padding-left': '1px'
-            }
-        }
-    });
-    this.buttonFieldAdd.controls[0].button.setButtonType("success");
-
-    this.buttonFieldCancel = new PMUI.field.ButtonField({
-        id: 'buttonFieldCancel',
-        pmType: 'buttonField',
-        value: 'Cancel'.translate(),
-        labelVisible: false,
-        buttonAlign: 'center',
-        controlsWidth: 50,
-        proportion: 0.6,
-        handler: function (field) {
-            that.cancelAcceptedValue();
-        },
-        style: {
-            cssProperties: {
-                'vertical-align': 'top',
-                'padding-top': '37px',
-                'padding-right': '1px',
-                'padding-bottom': '1px',
-                'padding-left': '1px'
-            }
-        }
-    });
-    this.buttonFieldCancel.controls[0].button.setButtonType("error");
-
-    this.frmAcceptedValues = new PMUI.form.Form({
-        id: 'frmAcceptedValues',
-        width: 700,
-        visibleHeader: false,
-        items: [
-            {
-                pmType: 'panel',
-                legend: "Message Field".translate(),
-                fieldset: true,
-                layout: 'hbox',
-                items: [
-                    {
-                        pmType: "text",
-                        name: "txtMessageTypeVariableName",
-                        label: "Message Field Name".translate(),
-                        labelWidth: "100%",
-                        controlsWidth: "400px",
-                        proportion: 2.5,
-                        valueType: "string",
-                        maxLength: 255,
-                        required: true,
-                        labelPosition: "top",
-                        validators: [
-                            {
-                                pmType: "regexp",
-                                criteria: /^[a-zA-Z_]+[0-9a-zA-Z_]+$/,
-                                errorMessage: "A valid variable starts with a letter or underscore, followed by any number of letters, numbers, or underscores.".translate()
-                            }
-                        ]
-                    },
-                    that.buttonFieldCancel,
-                    that.buttonFieldAdd
-                ]
-            }
-        ]
     });
 
     this.gridAcceptedValues = new PMUI.grid.GridPanel({
@@ -303,7 +290,7 @@ var PMMessageType = function (options) {
     };
     this.winMessageType = new PMUI.ui.Window({
         id: 'winMessageType',
-        title: "".translate(),
+        title: '',
         height: DEFAULT_WINDOW_HEIGHT,
         width: DEFAULT_WINDOW_WIDTH,
         buttonsPosition: 'right',
@@ -325,11 +312,17 @@ var PMMessageType = function (options) {
                 id: 'winMessageTypeSave',
                 text: "Save".translate(),
                 handler: function () {
+                    that.frmAcceptedValues.getItems("fields").forEach(function (i) {
+                        i.disable();
+                    });
                     if (that.edit) {
                         that.updateMessageType();
                     } else {
                         that.createMessageType();
                     }
+                    that.frmAcceptedValues.getItems("fields").forEach(function (i) {
+                        i.enable();
+                    });
                 },
                 buttonType: 'success'
             })
@@ -347,7 +340,7 @@ PMMessageType.prototype.init = function () {
     that.winMessageType.open();
     that.winMessageType.addItem(that.gridMessages);
     that.winMessageType.addItem(that.frmMessageType);
-    that.winMessageType.addItem(that.frmAcceptedValues);
+
     that.winMessageType.addItem(that.gridAcceptedValues);
     that.winMessageType.hideFooter();
     that.requiredMessage = $(document.getElementById("requiredMessage"));
@@ -357,17 +350,17 @@ PMMessageType.prototype.init = function () {
     that.requiredMessage.css({float: "none"});
     that.winMessageType.footer.html.style.textAlign = 'right';
 
-    $('#frmAcceptedValues .pmui-formpanel:eq(1)').css({'width': '690px'});
+    that.frmAcceptedValues = PMUI.getPMUIObject($('#frmAcceptedValues').css({'width': '690px'}).get(0));
     $('#gridMessages .pmui-textcontrol').css({'margin-top': '5px', width: '250px'});
 
-    $(that.frmAcceptedValues.getHTML()).find("#requiredMessage").empty();
+    //$(that.frmAcceptedValues.getHTML()).find("#requiredMessage").empty();
     that.requiredMessage.hide();
-    that.winMessageType.body.appendChild(that.requiredMessage[0]);
+    //that.winMessageType.body.appendChild(that.requiredMessage[0]);
     that.gridMessages.dom.toolbar.appendChild(that.buttonCreate.getHTML());
     that.showGrid();
 
     validateKeysField(that.frmMessageType.getField('txtMessageTypeName').getControls()[0].getHTML(), ['isbackspace', 'isnumber', 'isletter', 'isunderscore']);
-    that.frmAcceptedValues.reset();
+    that.resetFrmAcceptedValues();
 };
 
 PMMessageType.prototype.createMessageType = function () {
@@ -378,17 +371,18 @@ PMMessageType.prototype.createMessageType = function () {
         return;
     }
     if (that.gridAcceptedValues.getData().length == 0) {
-        if (!this.frmAcceptedValues.isValid()) {
-            return;
-        } else {
-            PMDesigner.msgFlash('Add at least one variable.'.translate(), winMessageType, 'error', 3000, 5);
-            return;
-        }
+        PMDesigner.msgFlash('Add at least one variable.'.translate(), winMessageType, 'error', 3000, 5);
+        return;
     }
 
     data = this.frmMessageType.getData();
     data.msgt_name = data.txtMessageTypeName;
     data.msgt_variables = that.getDataAcceptedValues();
+
+    // This returned data is not necessary at sendind, so it is deleted
+    delete data.txtMessageTypeVariableName;
+    delete data.buttonFieldCancel;
+    delete data.buttonFieldAdd;
 
     (new PMRestClient({
         endpoint: 'message-type',
@@ -406,7 +400,7 @@ PMMessageType.prototype.createMessageType = function () {
             PMDesigner.msgWinError(response.error.message);
         },
 
-        messageError: " ".translate(),
+        messageError: ' ',
         data: data,
         messageSuccess: "Message Type Saved successfully.".translate(),
         flashContainer: that.panel
@@ -452,7 +446,7 @@ PMMessageType.prototype.updateMessageType = function () {
             PMDesigner.msgWinError(response.error.message);
         },
 
-        messageError: " ".translate(),
+        messageError: ' ',
         messageSuccess: "Message Type edited successfully.".translate(),
         flashContainer: that.panel
     })).executeRestClient();
@@ -561,7 +555,7 @@ PMMessageType.prototype.showForm = function () {
     that.frmMessageType.reset();
     that.frmMessageType.setFocus();
     that.changeViewFieldType();
-    that.frmAcceptedValues.reset();
+    that.resetFrmAcceptedValues();
     that.gridAcceptedValues.clearItems();
     that.buttonFieldCancel.setVisible(false);
 };
@@ -593,9 +587,16 @@ PMMessageType.prototype.changeViewFieldType = function () {
 };
 
 PMMessageType.prototype.addAcceptedValue = function () {
-    var that = this, message;
+    var that = this,
+        value = $.trim(that.frmAcceptedValues.getField('txtMessageTypeVariableName').getValue()),
+        message;
+        
+    // if the form (form field's RegEx) is invalid, add a Message Field will not be allowed.
+    if (!that.frmAcceptedValues.isValid()) {
+        return;
+     }
 
-    if (that.isAcceptedValueAdded()) {
+    if (that.previousMessageValue !== value && that.isAcceptedValueAdded(value)) {
         message = new PMUI.ui.FlashMessage({
             message: "The variable Name already exists.".translate(),
             duration: 3000,
@@ -604,21 +605,25 @@ PMMessageType.prototype.addAcceptedValue = function () {
         });
         message.show();
         return;
+    } else if (!value) {
+        message = new PMUI.ui.FlashMessage({
+            message: "Please, specify a name for the Message Field.".translate(),
+            duration: 3000,
+            severity: 'error',
+            appendTo: that.winMessageType.footer
+        });
+        return message.show();
     }
-
-    if (!that.frmAcceptedValues.isValid()) {
-        return;
-    }
-
+    that.previousMessageValue = null;
     if (that.editRow === null) {
         that.gridAcceptedValues.addItem(new PMUI.grid.GridPanelRow({
             data: {
-                msgtv_name: that.frmAcceptedValues.getField('txtMessageTypeVariableName').getValue()
+                msgtv_name: value
             }
         }));
     } else {
         that.editRow.setData({
-            msgtv_name: that.frmAcceptedValues.getField('txtMessageTypeVariableName').getValue()
+            msgtv_name: value
         });
     }
 
@@ -631,6 +636,7 @@ PMMessageType.prototype.editAcceptedValue = function (row) {
     that.editRow = row;
     data = row.getData();
 
+    that.previousMessageValue = data.msgtv_name;
     that.frmAcceptedValues.getField('txtMessageTypeVariableName').setValue(data.msgtv_name);
     that.buttonFieldAdd.setValue('Save'.translate());
     that.buttonFieldCancel.setVisible(true);
@@ -713,19 +719,31 @@ PMMessageType.prototype.cancelAcceptedValue = function () {
     that.editRow = null;
     that.buttonFieldAdd.setValue("Create".translate());
     that.buttonFieldCancel.setVisible(false);
-    that.frmAcceptedValues.reset();
+    that.resetFrmAcceptedValues();
 };
-
-PMMessageType.prototype.isAcceptedValueAdded = function () {
+/**
+ * Validate if the value is present in the data collection.
+ * @param value
+ * @returns {boolean}
+ */
+PMMessageType.prototype.isAcceptedValueAdded = function (value) {
     var that = this, i,
         data = that.gridAcceptedValues.getData();
 
     for (i = 0; i < data.length; i += 1) {
-        if (data[i].msgtv_name === that.frmAcceptedValues.getField('txtMessageTypeVariableName').getValue()) {
+        if (data[i].msgtv_name === value) {
             return true;
         }
     }
     return false;
+};
+/**
+ * Resets the fields from the form's panel for accepted values.
+ */
+PMMessageType.prototype.resetFrmAcceptedValues = function () {
+    this.frmAcceptedValues.getItems('fields').forEach(function (i) {
+        i.setValue("");
+    });
 };
 
 PMDesigner.messageType = function () {

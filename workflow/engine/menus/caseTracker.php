@@ -35,7 +35,6 @@ if (file_exists ( PATH_CORE . 'menus/plugin.php')) {
   require_once (PATH_CORE . 'menus/plugin.php');
 }
 
-  G::LoadClass('case');
   $case = new Cases();
   $caseTracker = $case->caseTrackerPermissions( $_SESSION['PROCESS']);
   if ($caseTracker['CT_MAP_TYPE']) {

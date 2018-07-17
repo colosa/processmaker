@@ -1,4 +1,17 @@
 <?php
+
+use Illuminate\Foundation\Http\Kernel;
+use Maveriks\WebApplication;
+use Maveriks\Http\Response;
+use Maveriks\Pattern\Mvc\PhtmlView;
+use ProcessMaker\Exception\RBACException;
+
+// Because laravel has a __ helper function, it's important we include the class.g file to ensure our __ is used.
+require_once __DIR__ . '/../../gulliver/system/class.g.php';
+require_once __DIR__ . '/../../bootstrap/autoload.php';
+require_once __DIR__ . '/../../bootstrap/app.php';
+
+
 register_shutdown_function(
     create_function(
         "",
@@ -19,75 +32,45 @@ if (isset($_SERVER['UNENCODED_URL'])) {
 try {
     $rootDir = realpath(__DIR__ . "/../../") . DIRECTORY_SEPARATOR;
 
-    require $rootDir . "framework/src/Maveriks/Util/ClassLoader.php";
-    $loader = Maveriks\Util\ClassLoader::getInstance();
-    $loader->add($rootDir . 'framework/src/', "Maveriks");
-
-    if (! is_dir($rootDir . 'vendor')) {
-        if (file_exists($rootDir . 'composer.phar')) {
-            throw new Exception(
-                "ERROR: Vendors are missing!" . PHP_EOL .
-                "Please execute the following command to install vendors:" .PHP_EOL.PHP_EOL.
-                "$>php composer.phar install"
-            );
-        } else {
-            throw new Exception(
-                "ERROR: Vendors are missing!" . PHP_EOL .
-                "Please execute the following commands to prepare/install vendors:" .PHP_EOL.PHP_EOL.
-                "$>curl -sS https://getcomposer.org/installer | php" . PHP_EOL .
-                "$>php composer.phar install"
-            );
-        }
-    }
-    $loader->add($rootDir . 'workflow/engine/src/', "ProcessMaker");
-    $loader->add($rootDir . 'workflow/engine/src/');
-
-    // add vendors to autoloader
-    $loader->add($rootDir . 'vendor/luracast/restler/vendor', "Luracast");
-    $loader->add($rootDir . 'vendor/bshaffer/oauth2-server-php/src/', "OAuth2");
-    $loader->addClass("Bootstrap", $rootDir . 'gulliver/system/class.bootstrap.php');
-
-    $loader->addModelClassPath($rootDir . "workflow/engine/classes/model/");
-
-    $app = new Maveriks\WebApplication();
+    $app = new WebApplication();
 
     $app->setRootDir($rootDir);
     $app->setRequestUri($_SERVER['REQUEST_URI']);
     $stat = $app->route();
 
-    switch ($stat)
-    {
-        case Maveriks\WebApplication::RUNNING_WORKFLOW:
+    switch ($stat) {
+        case WebApplication::RUNNING_WORKFLOW:
             include "sysGeneric.php";
             break;
 
-        case Maveriks\WebApplication::RUNNING_API:
-            $app->run(Maveriks\WebApplication::SERVICE_API);
+        case WebApplication::RUNNING_API:
+            $app->run(WebApplication::SERVICE_API);
             break;
 
-        case Maveriks\WebApplication::RUNNING_OAUTH2:
-            $app->run(Maveriks\WebApplication::SERVICE_OAUTH2);
+        case WebApplication::RUNNING_OAUTH2:
+            $app->run(WebApplication::SERVICE_OAUTH2);
             break;
 
-        case Maveriks\WebApplication::RUNNING_INDEX:
-            $response = new Maveriks\Http\Response(file_get_contents("index.html"), 302);
+        case WebApplication::RUNNING_INDEX:
+            $response = new Response(file_get_contents("index.html"), 302);
             $response->send();
             break;
 
-        case Maveriks\WebApplication::RUNNING_DEFAULT:
-            $response = new Maveriks\Http\Response("", 302);
+        case WebApplication::RUNNING_DEFAULT:
+            $response = new Response("", 302);
             //TODO compose this def url with configuration data from env.ini
             $response->setHeader("location", "/sys/en/neoclassic/login/login");
             $response->send();
             break;
     }
-
+} catch (RBACException $e) {
+    G::header('location: ' . $e->getPath());
 } catch (Exception $e) {
-    $view = new Maveriks\Pattern\Mvc\PhtmlView($rootDir . "framework/src/templates/Exception.phtml");
+    $view = new PhtmlView($rootDir . "framework/src/templates/Exception.phtml");
     $view->set("message", $e->getMessage());
     $view->set("exception", $e);
 
-    $response = new Maveriks\Http\Response($view->getOutput(), 503);
+    $response = new Response($view->getOutput(), 503);
     $response->send();
 }
 

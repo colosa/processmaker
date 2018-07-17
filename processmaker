@@ -1,7 +1,13 @@
 #!/usr/bin/env php
 <?php
+use Illuminate\Foundation\Console\Kernel;
 
-  $scriptDir = dirname(__FILE__).'/';
+// Because laravel has a __ helper function, it's important we include the class.g file to ensure our __ is used.
+require_once __DIR__ . '/gulliver/system/class.g.php';
+require_once __DIR__ . '/bootstrap/autoload.php';
+require_once __DIR__ . '/bootstrap/app.php';
+
+$scriptDir = dirname(__FILE__).'/';
 
   define("PROCESSMAKER_PATH", $scriptDir);
   define("WORKFLOW_PATH", $scriptDir . 'workflow/');

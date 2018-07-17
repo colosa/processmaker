@@ -1,4 +1,7 @@
 <?php
+
+use ProcessMaker\Core\System;
+
 /**
  * class.bootstrap.php
  *
@@ -14,33 +17,25 @@ class Bootstrap
 
     //below here only approved methods
 
-    /* the autoloader functions */
-
+    /**
+     * @deprecated 3.2.2, We keep this function only for backwards compatibility because is used in the plugin manager
+     */
     public static function autoloadClass($class)
     {
-        $className = strtolower($class);
-
-        if (isset(BootStrap::$includeClassPaths[$className])) {
-            require_once BootStrap::$includeClassPaths[$className];
-
-            return true;
-        }
-        return false;
     }
 
+    /**
+     * @deprecated 3.2.2, We keep this function only for backwards compatibility because is used in the plugin manager
+     */
     public static function registerClass($className, $includePath)
     {
-        if (! class_exists('\Maveriks\Util\ClassLoader')) {
-            self::displayMaveriksNotLoadedError();
-        }
-
-        $loader = Maveriks\Util\ClassLoader::getInstance();
-        $loader->addClass($className, $includePath);
     }
 
+    /**
+     * @deprecated 3.2.2, We keep this function only for backwards compatibility because is used in the plugin manager
+     */
     public static function registerDir($name, $dir)
     {
-        BootStrap::$includePaths[$name] = $dir;
     }
 
     /*
@@ -49,220 +44,13 @@ class Bootstrap
 
     public static function getSystemConfiguration($globalIniFile = '', $wsIniFile = '', $wsName = '')
     {
-        // (!) Backward compatibility, the original function is in System class
-        if (! class_exists("System")) {
-            require_once PATH_CORE . "classes" . PATH_SEP . "class.system.php";
-        }
-
         return System::getSystemConfiguration($globalIniFile, $wsIniFile, $wsName);
     }
-
+    /**
+     * @deprecated 3.2.2, We keep this function only for backwards compatibility because is used in the plugin manager
+     */
     public static function registerSystemClasses()
     {
-        // Propel
-        self::registerClass("Propel", PATH_THIRDPARTY . "propel" . PATH_SEP . "Propel.php");
-        self::registerClass("Creole", PATH_THIRDPARTY . "creole" . PATH_SEP . "Creole.php");
-        self::registerClass("Criteria", PATH_THIRDPARTY . "propel" . PATH_SEP . "util" . PATH_SEP . "Criteria.php");
-        self::registerClass("BasePeer", PATH_THIRDPARTY . "propel" . PATH_SEP . "util" . PATH_SEP . "BasePeer.php");
-
-        // Gulliver
-        self::registerClass("PmSessionHandler", PATH_GULLIVER_HOME . "core/Session/PmSessionHandler.php");
-
-        self::registerClass("Bootstrap", PATH_GULLIVER . "class.bootstrap.php");
-        self::registerClass("Controller", PATH_GULLIVER . "class.controller.php");
-        self::registerClass("database_base", PATH_GULLIVER . "class.database_base.php");
-        self::registerClass("database", PATH_GULLIVER . "class.database_mssql.php");
-        self::registerClass("database", PATH_GULLIVER . "class.database_mysql.php");
-        self::registerClass("DataBaseMaintenance", PATH_GULLIVER . "class.dbMaintenance.php");
-        self::registerClass("DBConnection", PATH_GULLIVER . "class.dbconnection.php");
-        self::registerClass("DBRecordSet", PATH_GULLIVER . "class.dbrecordset.php");
-        self::registerClass("DBSession", PATH_GULLIVER . "class.dbsession.php");
-        self::registerClass("DBTable", PATH_GULLIVER . "class.dbtable.php");
-        self::registerClass("dynaFormHandler", PATH_GULLIVER . "class.dynaformhandler.php");
-        self::registerClass("G_Error", PATH_GULLIVER . "class.error.php");
-        self::registerClass("filterForm", PATH_GULLIVER . "class.filterForm.php");
-        self::registerClass("Form", PATH_GULLIVER . "class.form.php");
-        self::registerClass("G", PATH_GULLIVER . "class.g.php");
-        self::registerClass("headPublisher", PATH_GULLIVER . "class.headPublisher.php");
-        self::registerClass("Helper", PATH_GULLIVER . "class.helper.php");
-        self::registerClass("XmlForm_Field_HTML", PATH_GULLIVER . "class.htmlArea.php");
-        self::registerClass("HttpProxyController", PATH_GULLIVER . "class.httpProxyController.php");
-        self::registerClass("i18n_PO", PATH_GULLIVER . "class.i18n_po.php");
-        self::registerClass("InputFilter", PATH_GULLIVER . "class.inputfilter.php");
-        self::registerClass("Logger", PATH_GULLIVER . "class.logger.php");
-        self::registerClass("mailer", PATH_GULLIVER . "class.mailer.php");
-        self::registerClass("Menu", PATH_GULLIVER . "class.menu.php");
-        self::registerClass("objectTemplate", PATH_GULLIVER . "class.objectTemplate.php");
-        self::registerClass("pagedTable", PATH_GULLIVER . "class.pagedTable.php");
-        self::registerClass("PHPSQLParser", PATH_GULLIVER . "class.phpSqlParser.php");
-        self::registerClass("PMException", PATH_GULLIVER . "class.pmException.php");
-        self::registerClass("Publisher", PATH_GULLIVER . "class.publisher.php");
-        self::registerClass("RBAC", PATH_GULLIVER . "class.rbac.php");
-        self::registerClass("MonologProvider", PATH_GULLIVER . "class.monologProvider.php");
-        self::registerClass("RestClient", PATH_GULLIVER . "class.restClient.php");
-        self::registerClass("soapNtlm", PATH_GULLIVER . "class.soapNtlm.php");
-        self::registerClass("NTLMSoapClient", PATH_GULLIVER . "class.soapNtlm.php");
-        self::registerClass("PMServiceNTLMSoapClient", PATH_GULLIVER . "class.soapNtlm.php");
-        self::registerClass("PMServiceProviderNTLMStream", PATH_GULLIVER . "class.soapNtlm.php");
-        self::registerClass("Table", PATH_GULLIVER . "class.table.php");
-        self::registerClass("TemplatePowerParser", PATH_GULLIVER . "class.templatePower.php");
-        self::registerClass("TemplatePower", PATH_GULLIVER . "class.templatePower.php");
-        self::registerClass("Tree", PATH_GULLIVER . "class.tree.php");
-        self::registerClass("WebResource", PATH_GULLIVER . "class.webResource.php");
-        self::registerClass("XmlForm_Field_WYSIWYG_EDITOR", PATH_GULLIVER . "class.wysiwygEditor.php");
-        self::registerClass("Xml_Node", PATH_GULLIVER . "class.xmlDocument.php");
-        self::registerClass("Xml_document", PATH_GULLIVER . "class.xmlDocument.php");
-        self::registerClass("xmlMenu", PATH_GULLIVER . "class.xmlMenu.php");
-        self::registerClass("XmlForm_Field_XmlMenu", PATH_GULLIVER . "class.xmlMenu.php");
-        self::registerClass("XmlForm_Field", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Title", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Subtitle", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_SimpleText", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Text", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Suggest", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Print", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Caption", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Password", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Textarea", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Currency", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_CaptionCurrency", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Percentage", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_CaptionPercentage", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Date2", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_DateView", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_YesNo", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Link", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_File", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Dropdownpt", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Checkboxpt", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Checkbox", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Checkbox2", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Button", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Reset", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Submit", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Hidden", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Dropdown", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Listbox", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_RadioGroup", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_RadioGroupView", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_CheckGroup", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_CheckGroupView", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Grid", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_JavaScript", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Date", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Date5", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Xmlform", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("xmlformTemplate", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Image", PATH_GULLIVER . "class.xmlform.php");
-        self::registerClass("XmlForm_Field_Label", PATH_GULLIVER . "class.xmlformExtension.php");
-        self::registerClass("XmlForm_Field_cellMark", PATH_GULLIVER . "class.xmlformExtension.php");
-        self::registerClass("XmlForm_Field_DVEditor", PATH_GULLIVER . "class.xmlformExtension.php");
-        self::registerClass("XmlForm_Field_FastSearch", PATH_GULLIVER . "class.xmlformExtension.php");
-        self::registerClass("xmlformTemplate", PATH_GULLIVER . "class.xmlformTemplate.php");
-
-        // ProcessMaker classes
-        self::registerClass("InvalidIndexSearchTextException", PATH_CLASSES . "class.AppSolr.php");
-        self::registerClass("ApplicationWithoutDelegationRecordsException", PATH_CLASSES . "class.AppSolr.php");
-        self::registerClass("ApplicationWithCorruptDynaformException", PATH_CLASSES . "class.AppSolr.php");
-        self::registerClass("ApplicationAPP_DATAUnserializeException", PATH_CLASSES . "class.AppSolr.php");
-        self::registerClass("AppSolr", PATH_CLASSES . "class.AppSolr.php");
-        self::registerClass("ArrayBasePeer", PATH_CLASSES . "class.ArrayPeer.php");
-        self::registerClass("GulliverBasePeer", PATH_CLASSES . "class.BasePeer.php");
-        self::registerClass("Installer", PATH_CLASSES . "class.Installer.php");
-        self::registerClass("Applications", PATH_CLASSES . "class.applications.php");
-        self::registerClass("archive", PATH_CLASSES . "class.archive.php");
-        self::registerClass("tar_file", PATH_CLASSES . "class.archive.php");
-        self::registerClass("gzip_file", PATH_CLASSES . "class.archive.php");
-        self::registerClass("bzip_file", PATH_CLASSES . "class.archive.php");
-        self::registerClass("zip_file", PATH_CLASSES . "class.archive.php");
-        self::registerClass("calendar", PATH_CLASSES . "class.calendar.php");
-        self::registerClass("Cases", PATH_CLASSES . "class.case.php");
-        self::registerClass("CLI", PATH_CLASSES . "class.cli.php");
-        self::registerClass("Configurations", PATH_CLASSES . "class.configuration.php");
-        self::registerClass("dashletOpenVSCompleted", PATH_CLASSES . "class.dashletOpenVSCompleted.php");
-        self::registerClass("dashletProcessMakerCommunity", PATH_CLASSES . "class.dashletProcessMakerCommunity.php");
-        self::registerClass("dashletProcessMakerEnterprise", PATH_CLASSES . "class.dashletProcessMakerEnterprise.php");
-        self::registerClass("dashletRssReader", PATH_CLASSES . "class.dashletRssReader.php");
-        self::registerClass("dates", PATH_CLASSES . "class.dates.php");
-        self::registerClass("dbConnections", PATH_CLASSES . "class.dbConnections.php");
-        self::registerClass("Derivation", PATH_CLASSES . "class.derivation.php");
-        self::registerClass("DynaFormField", PATH_CLASSES . "class.dynaFormField.php");
-        self::registerClass("dynaformEditor", PATH_CLASSES . "class.dynaformEditor.php");
-        self::registerClass("dynaformEditorAjax", PATH_CLASSES . "class.dynaformEditor.php");
-        self::registerClass("FieldValidator", PATH_CLASSES . "class.fieldValidator.php");
-        self::registerClass("FileCache", PATH_CLASSES . "class.fileCache.php");
-        //self::registerClass("GroupUser", PATH_CLASSES . "class.groupUser.php");  -> this have conflicts with model/GroupUser.php
-        self::registerClass("Groups", PATH_CLASSES . "class.groups.php");
-        self::registerClass("JavaBridgePM", PATH_CLASSES . "class.javaBridgePM.php");
-        self::registerClass("PMmemcached", PATH_CLASSES . "class.memcached.php");
-        self::registerClass("multipleFilesBackup", PATH_CLASSES . "class.multipleFilesBackup.php");
-        self::registerClass("NET", PATH_CLASSES . "class.net.php");
-        self::registerClass("Stat", PATH_CLASSES . "class.net.php");
-        self::registerClass("patch", PATH_CLASSES . "class.patch.php");
-        self::registerClass("p11835", PATH_CLASSES . "class.patch.php");
-        self::registerClass("PMPlugin", PATH_CLASSES . "class.plugin.php");
-        self::registerClass("menuDetail", PATH_CLASSES . "class.plugin.php");
-        self::registerClass("toolbarDetail", PATH_CLASSES . "class.plugin.php");
-        self::registerClass("cssFile", PATH_CLASSES . "class.plugin.php");
-        self::registerClass("triggerDetail", PATH_CLASSES . "class.plugin.php");
-        self::registerClass("folderDetail", PATH_CLASSES . "class.plugin.php");
-        self::registerClass("stepDetail", PATH_CLASSES . "class.plugin.php");
-        self::registerClass("redirectDetail", PATH_CLASSES . "class.plugin.php");
-        self::registerClass("folderData", PATH_CLASSES . "class.plugin.php");
-        self::registerClass("uploadDocumentData", PATH_CLASSES . "class.plugin.php");
-        self::registerClass("loginInfo", PATH_CLASSES . "class.plugin.php");
-        self::registerClass("caseSchedulerPlugin", PATH_CLASSES . "class.plugin.php");
-        self::registerClass("taskExtendedProperty", PATH_CLASSES . "class.plugin.php");
-        self::registerClass("dashboardPage", PATH_CLASSES . "class.plugin.php");
-        self::registerClass("cronFile", PATH_CLASSES . "class.plugin.php");
-        self::registerClass("pluginDetail", PATH_CLASSES . "class.pluginRegistry.php");
-        self::registerClass("PMPluginRegistry", PATH_CLASSES . "class.pluginRegistry.php");
-        self::registerClass("featuresDetail", PATH_CLASSES . "class.licensedFeatures.php");
-        self::registerClass("PMLicensedFeatures", PATH_CLASSES . "class.licensedFeatures.php");
-        self::registerClass("PMDashlet", PATH_CLASSES . "class.pmDashlet.php");
-        self::registerClass("pmGauge", PATH_CLASSES . "class.pmGauge.php");
-        self::registerClass("pmPhing", PATH_CLASSES . "class.pmPhing.php");
-        self::registerClass("PMScript", PATH_CLASSES . "class.pmScript.php");
-        self::registerClass("PmTable", PATH_CLASSES . "class.pmTable.php");
-        self::registerClass("popupMenu", PATH_CLASSES . "class.popupMenu.php");
-        self::registerClass("XmlForm_Field_popupOption", PATH_CLASSES . "class.popupMenu.php");
-        self::registerClass("processMap", PATH_CLASSES . "class.processMap.php");
-        self::registerClass("Processes", PATH_CLASSES . "class.processes.php");
-        self::registerClass("ObjectDocument", PATH_CLASSES . "class.processes.php");
-        self::registerClass("ObjectCellection", PATH_CLASSES . "class.processes.php");
-        self::registerClass("propelTable", PATH_CLASSES . "class.propelTable.php");
-        self::registerClass("replacementLogo", PATH_CLASSES . "class.replacementLogo.php");
-        self::registerClass("Report", PATH_CLASSES . "class.report.php");
-        self::registerClass("ReportTables", PATH_CLASSES . "class.reportTables.php");
-        self::registerClass("BpmnEngine_Services_SearchIndex", PATH_CLASSES . "class.searchIndex.php");
-        self::registerClass("serverConf", PATH_CLASSES . "class.serverConfiguration.php");
-        self::registerClass("Sessions", PATH_CLASSES . "class.sessions.php");
-        self::registerClass("BpmnEngine_SearchIndexAccess_Solr", PATH_CLASSES . "class.solr.php");
-        self::registerClass("spoolRun", PATH_CLASSES . "class.spool.php");
-        self::registerClass("System", PATH_CLASSES . "class.system.php");
-        self::registerClass("Tasks", PATH_CLASSES . "class.tasks.php");
-        self::registerClass("ToolBar", PATH_CLASSES . "class.toolBar.php");
-        self::registerClass("XmlForm_Field_ToolBar", PATH_CLASSES . "class.toolBar.php");
-        self::registerClass("XmlForm_Field_toolButton", PATH_CLASSES . "class.toolBar.php");
-        self::registerClass("triggerLibrary", PATH_CLASSES . "class.triggerLibrary.php");
-        self::registerClass("ProcessMakerWebDav", PATH_CLASSES . "class.webdav.php");
-        self::registerClass("wsBase", PATH_CLASSES . "class.wsBase.php");
-        self::registerClass("wsResponse", PATH_CLASSES . "class.wsResponse.php");
-        self::registerClass("wsCreateUserResponse", PATH_CLASSES . "class.wsResponse.php");
-        self::registerClass("wsCreateGroupResponse", PATH_CLASSES . "class.wsResponse.php");
-        self::registerClass("wsCreateDepartmentResponse", PATH_CLASSES . "class.wsResponse.php");
-        self::registerClass("wsGetVariableResponse", PATH_CLASSES . "class.wsResponse.php");
-        self::registerClass("wsGetCaseNotesResponse", PATH_CLASSES . "class.wsResponse.php");
-        self::registerClass("workspaceTools", PATH_CLASSES . "class.wsTools.php");
-        self::registerClass("XMLDB", PATH_CLASSES . "class.xmlDb.php");
-        self::registerClass("XMLConnection", PATH_CLASSES . "class.xmlDb.php");
-        self::registerClass("XMLResult", PATH_CLASSES . "class.xmlDb.php");
-        self::registerClass("XmlForm_Field_Image", PATH_CLASSES . "class.xmlfield_Image.php");
-        self::registerClass("XmlForm_Field_TextPM", PATH_CLASSES . "class.xmlfield_InputPM.php");
-        self::registerClass("XmlForm_Field_TextareaPM", PATH_CLASSES . "class.xmlfield_InputPM.php");
-        self::registerClass("XmlForm_Field_hours", PATH_CLASSES . "class.xmlfield_InputPM.php");
-        self::registerClass("XmlForm_Field_CheckBoxTable", PATH_CLASSES . "class.xmlfield_InputPM.php");
     }
 
     //below this line, still not approved methods
@@ -333,7 +121,7 @@ class Bootstrap
             throw new Exception('System constant (PATH_THIRDPARTY) is not defined!');
         }
 
-        require_once PATH_THIRDPARTY . 'smarty/libs/Smarty.class.php';
+
 
         // file has absolute path
         if (substr($template, 0, 1) != PATH_SEP) {
@@ -344,7 +132,6 @@ class Bootstrap
             throw new Exception("Template: $template, doesn't exist!");
         }
 
-        self::LoadSystem('inputfilter');
         $filter = new InputFilter();
 
         $smarty = new Smarty ();
@@ -366,16 +153,10 @@ class Bootstrap
     }
 
     /**
-     * Load Gulliver Classes
-     *
-     * @author Fernando Ontiveros Lira <fernando@colosa.com>
-     * @access public
-     * @param string $strClass
-     * @return void
+     * @deprecated 3.2.2, We keep this function only for backwards compatibility because is used in the plugin manager
      */
     public static function LoadSystem($strClass)
     {
-        require_once (PATH_GULLIVER . 'class.' . $strClass . '.php');
     }
 
     /**
@@ -460,7 +241,6 @@ class Bootstrap
      */
     public function streamFile($file, $download = false, $downloadFileName = '', $forceLoad = false)
     {
-        G::LoadSystem('inputfilter');
         $filter = new InputFilter();
         $file = $filter->xssFilterHard($file);
         $downloadFileName = $filter->xssFilterHard($downloadFileName);
@@ -668,52 +448,18 @@ class Bootstrap
 
         return $content;
     }
-
     /**
-     * If the class is not defined by the aplication, it
-     * attempt to load the class from gulliver.system
-     *
-     * @author Fernando Ontiveros Lira <fernando@colosa.com>, David S. Callizaya
-     * @access public
-     * @param string $strClass
-     * @return void
+     * @deprecated 3.2.2, We keep this function only for backwards compatibility because is used in the plugin manager
      */
     public static function LoadClass($strClass)
     {
-        self::LoadSystem('inputfilter');
-        $filter = new InputFilter();
-
-        $path = PATH_GULLIVER . 'class.' . $strClass . '.php';
-        $path = $filter->validateInput($path, "path");
-
-        $classfile = Bootstrap::ExpandPath("classes") . 'class.' . $strClass . '.php';
-        $classfile = $filter->validateInput($classfile, "path");
-
-        if (!file_exists($classfile)) {
-            if (file_exists($path)) {
-                return require_once ($path);
-            } else {
-                return false;
-            }
-        } else {
-            return require_once ($classfile);
-        }
     }
 
     /**
-     * Loads a Class.
-     * If the class is not defined by the aplication, it
-     * attempt to load the class from gulliver.system
-     *
-     * @author Fernando Ontiveros Lira <fernando@colosa.com>, David S. Callizaya
-     * @access public
-     * @param string $strClass
-     * @return void
+     * @deprecated 3.2.2, We keep this function only for backwards compatibility because is used in the plugin manager
      */
     public static function LoadThirdParty($sPath, $sFile)
     {
-        $classfile = PATH_THIRDPARTY . $sPath . '/' . $sFile . ((substr($sFile, 0, - 4) !== '.php') ? '.php' : '');
-        return require_once ($classfile);
     }
 
     /**
@@ -1175,8 +921,8 @@ class Bootstrap
 
             if (((in_array($browserName, $enabledBrowsers)) || (in_array('ALL', $enabledBrowsers))) && (!(in_array($browserName, $disabledBrowsers)))) {
                 if ($cssFileInfo['__ATTRIBUTES__']['file'] == 'rtl.css') {
-                    Bootstrap::LoadClass('serverConfiguration');
-                    $oServerConf = & serverConf::getSingleton();
+
+                    $oServerConf = & ServerConf::getSingleton();
                     if (!(defined('SYS_LANG'))) {
                         if (isset($_SERVER['HTTP_REFERER'])) {
                             $syss = explode('://', $_SERVER['HTTP_REFERER']);
@@ -1287,7 +1033,6 @@ class Bootstrap
      */
     public function getCheckSum($files)
     {
-        Bootstrap::LoadClass('system');
         $key = System::getVersion();
 
         if (!is_array($files)) {
@@ -1458,7 +1203,7 @@ class Bootstrap
         if (function_exists('json_encode')) {
             return json_encode($Json);
         } else {
-            Bootstrap::LoadThirdParty('pear/json', 'class.json');
+
             $oJSON = new Services_JSON();
             return $oJSON->encode($Json);
         }
@@ -1474,7 +1219,7 @@ class Bootstrap
         if (function_exists('json_decode')) {
             return json_decode($Json);
         } else {
-            Bootstrap::LoadThirdParty('pear/json', 'class.json');
+
             $oJSON = new Services_JSON();
             return $oJSON->decode($Json);
         }
@@ -2254,14 +1999,10 @@ class Bootstrap
     }
 
     /**
-     *
-     * @param unknown_type $model
-     * @return unknown
+     * @deprecated 3.2.2, We keep this function only for backwards compatibility because is used in the plugin manager
      */
     public function getModel($model)
     {
-        require_once "classes/model/$model.php";
-        return new $model();
     }
 
     /**
@@ -2400,8 +2141,6 @@ class Bootstrap
                 switch ($params->option) {
                     case "STORED SESSION":
                         if (isset($params->SID)) {
-                            Bootstrap::LoadClass("sessions");
-
                             $oSessions = new Sessions($params->SID);
                             $sysCon = array_merge($sysCon, $oSessions->getGlobals());
                         }
@@ -2745,37 +2484,11 @@ class Bootstrap
         return strtoupper(PHP_OS) == "LINUX";
     }
 
+    /**
+     * @deprecated 3.2.2, We keep this function only for backwards compatibility because is used in the plugin manager
+    */
     public static function initVendors()
     {
-        if (! is_dir(PATH_TRUNK . 'vendor')) {
-            if (file_exists(PATH_TRUNK . 'composer.phar')) {
-                throw new Exception(
-                    "ERROR: Verdors are missing!" . PHP_EOL .
-                        "Please execute the following command to install vendors:" .PHP_EOL.PHP_EOL.
-                        "$>php composer.phar install"
-                );
-            } else {
-                throw new Exception(
-                    "ERROR: Verdors are missing!" . PHP_EOL .
-                        "Please execute the following commands to prepare/install vendors:" .PHP_EOL.PHP_EOL.
-                        "$>curl -sS https://getcomposer.org/installer | php" . PHP_EOL .
-                        "$>php composer.phar install"
-                );
-            }
-        }
-
-        if (! file_exists(PATH_TRUNK . 'vendor' . PATH_SEP . "autoload.php")) {
-            throw new Exception(
-                "ERROR: Problems with Verdors!" . PHP_EOL .
-                    "Please execute the following command to repare vendors:" .PHP_EOL.PHP_EOL.
-                    "$>php composer.phar update"
-            );
-        }
-
-        //require_once PATH_TRUNK . 'vendor' . PATH_SEP . "autoload.php";
-
-        $loader = require PATH_TRUNK . 'vendor' . PATH_SEP . "autoload.php";
-        $loader->add('', PATH_HOME . 'engine/src/');
     }
 
     public static function parseIniFile($filename)
@@ -2824,7 +2537,6 @@ class Bootstrap
 
     public static function getPasswordHashConfig()
     {
-        G::LoadClass('configuration');
         $config= new Configurations();
         $passwordHashConfig = $config->getConfiguration('ENTERPRISE_SETTING_ENCRYPT', '');
         if (!is_null($passwordHashConfig)) {
@@ -2855,7 +2567,6 @@ class Bootstrap
             $hashType = Bootstrap::getPasswordHashType();
         }
 
-        G::LoadSystem('inputfilter');
         $filter = new InputFilter();
         $hashType = $filter->validateInput($hashType);
         $pass = $filter->validateInput($pass);
@@ -2869,18 +2580,37 @@ class Bootstrap
         return $var;
     }
 
-    public function verifyHashPassword ($pass, $userPass)
+    /**
+     * Verify Hash password with password entered
+     *
+     * @param string $pass password
+     * @param string $userPass hash of password
+     * @return bool true or false
+     */
+    public function verifyHashPassword($pass, $userPass)
     {
+        global $RBAC;
         $passwordHashConfig = Bootstrap::getPasswordHashConfig();
         $hashTypeCurrent = $passwordHashConfig['current'];
         $hashTypePrevious = $passwordHashConfig['previous'];
-        if ((Bootstrap::hashPassword($pass, $hashTypeCurrent) == $userPass) || ($pass === $hashTypeCurrent . ':' . $userPass)) {
-            return true;
+        $acceptance = false;
+
+        if ($RBAC != null && $RBAC->loginWithHash()) {
+            //To enable compatibility with soap login
+            if ((Bootstrap::hashPassword($pass, $hashTypeCurrent) == $userPass) || ($pass === $hashTypeCurrent . ':' . $userPass)) {
+                $acceptance = true;
+            } else if ((Bootstrap::hashPassword($pass, $hashTypePrevious) == $userPass) || ($pass === $hashTypePrevious . ':' . $userPass)) {
+                $acceptance = true;
+            }
+        } else {
+            if (Bootstrap::hashPassword($pass, $hashTypeCurrent) == $userPass) {
+                $acceptance = true;
+            } else if (Bootstrap::hashPassword($pass, $hashTypePrevious) == $userPass) {
+                $acceptance = true;
+            }
         }
-        if ((Bootstrap::hashPassword($pass, $hashTypePrevious) == $userPass) || ($pass === $hashTypePrevious . ':' . $userPass)) {
-            return true;
-        }
-        return false;
+
+        return $acceptance;
     }
 
     /**

@@ -46,6 +46,12 @@ abstract class BaseAppDelay extends BaseObject implements Persistent
     protected $app_uid = '0';
 
     /**
+     * The value for the app_number field.
+     * @var        int
+     */
+    protected $app_number = 0;
+
+    /**
      * The value for the app_thread_index field.
      * @var        int
      */
@@ -112,6 +118,18 @@ abstract class BaseAppDelay extends BaseObject implements Persistent
     protected $app_automatic_disabled_date;
 
     /**
+     * The value for the app_delegation_user_id field.
+     * @var        int
+     */
+    protected $app_delegation_user_id = 0;
+
+    /**
+     * The value for the pro_id field.
+     * @var        int
+     */
+    protected $pro_id = 0;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -156,6 +174,17 @@ abstract class BaseAppDelay extends BaseObject implements Persistent
     {
 
         return $this->app_uid;
+    }
+
+    /**
+     * Get the [app_number] column value.
+     * 
+     * @return     int
+     */
+    public function getAppNumber()
+    {
+
+        return $this->app_number;
     }
 
     /**
@@ -343,6 +372,28 @@ abstract class BaseAppDelay extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [app_delegation_user_id] column value.
+     * 
+     * @return     int
+     */
+    public function getAppDelegationUserId()
+    {
+
+        return $this->app_delegation_user_id;
+    }
+
+    /**
+     * Get the [pro_id] column value.
+     * 
+     * @return     int
+     */
+    public function getProId()
+    {
+
+        return $this->pro_id;
+    }
+
+    /**
      * Set the value of [app_delay_uid] column.
      * 
      * @param      string $v new value
@@ -407,6 +458,28 @@ abstract class BaseAppDelay extends BaseObject implements Persistent
         }
 
     } // setAppUid()
+
+    /**
+     * Set the value of [app_number] column.
+     * 
+     * @param      int $v new value
+     * @return     void
+     */
+    public function setAppNumber($v)
+    {
+
+        // Since the native PHP type for this column is integer,
+        // we will cast the input value to an int (if it is not).
+        if ($v !== null && !is_int($v) && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->app_number !== $v || $v === 0) {
+            $this->app_number = $v;
+            $this->modifiedColumns[] = AppDelayPeer::APP_NUMBER;
+        }
+
+    } // setAppNumber()
 
     /**
      * Set the value of [app_thread_index] column.
@@ -672,6 +745,50 @@ abstract class BaseAppDelay extends BaseObject implements Persistent
     } // setAppAutomaticDisabledDate()
 
     /**
+     * Set the value of [app_delegation_user_id] column.
+     * 
+     * @param      int $v new value
+     * @return     void
+     */
+    public function setAppDelegationUserId($v)
+    {
+
+        // Since the native PHP type for this column is integer,
+        // we will cast the input value to an int (if it is not).
+        if ($v !== null && !is_int($v) && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->app_delegation_user_id !== $v || $v === 0) {
+            $this->app_delegation_user_id = $v;
+            $this->modifiedColumns[] = AppDelayPeer::APP_DELEGATION_USER_ID;
+        }
+
+    } // setAppDelegationUserId()
+
+    /**
+     * Set the value of [pro_id] column.
+     * 
+     * @param      int $v new value
+     * @return     void
+     */
+    public function setProId($v)
+    {
+
+        // Since the native PHP type for this column is integer,
+        // we will cast the input value to an int (if it is not).
+        if ($v !== null && !is_int($v) && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->pro_id !== $v || $v === 0) {
+            $this->pro_id = $v;
+            $this->modifiedColumns[] = AppDelayPeer::PRO_ID;
+        }
+
+    } // setProId()
+
+    /**
      * Hydrates (populates) the object variables with values from the database resultset.
      *
      * An offset (1-based "start column") is specified so that objects can be hydrated
@@ -694,34 +811,40 @@ abstract class BaseAppDelay extends BaseObject implements Persistent
 
             $this->app_uid = $rs->getString($startcol + 2);
 
-            $this->app_thread_index = $rs->getInt($startcol + 3);
+            $this->app_number = $rs->getInt($startcol + 3);
 
-            $this->app_del_index = $rs->getInt($startcol + 4);
+            $this->app_thread_index = $rs->getInt($startcol + 4);
 
-            $this->app_type = $rs->getString($startcol + 5);
+            $this->app_del_index = $rs->getInt($startcol + 5);
 
-            $this->app_status = $rs->getString($startcol + 6);
+            $this->app_type = $rs->getString($startcol + 6);
 
-            $this->app_next_task = $rs->getString($startcol + 7);
+            $this->app_status = $rs->getString($startcol + 7);
 
-            $this->app_delegation_user = $rs->getString($startcol + 8);
+            $this->app_next_task = $rs->getString($startcol + 8);
 
-            $this->app_enable_action_user = $rs->getString($startcol + 9);
+            $this->app_delegation_user = $rs->getString($startcol + 9);
 
-            $this->app_enable_action_date = $rs->getTimestamp($startcol + 10, null);
+            $this->app_enable_action_user = $rs->getString($startcol + 10);
 
-            $this->app_disable_action_user = $rs->getString($startcol + 11);
+            $this->app_enable_action_date = $rs->getTimestamp($startcol + 11, null);
 
-            $this->app_disable_action_date = $rs->getTimestamp($startcol + 12, null);
+            $this->app_disable_action_user = $rs->getString($startcol + 12);
 
-            $this->app_automatic_disabled_date = $rs->getTimestamp($startcol + 13, null);
+            $this->app_disable_action_date = $rs->getTimestamp($startcol + 13, null);
+
+            $this->app_automatic_disabled_date = $rs->getTimestamp($startcol + 14, null);
+
+            $this->app_delegation_user_id = $rs->getInt($startcol + 15);
+
+            $this->pro_id = $rs->getInt($startcol + 16);
 
             $this->resetModified();
 
             $this->setNew(false);
 
             // FIXME - using NUM_COLUMNS may be clearer.
-            return $startcol + 14; // 14 = AppDelayPeer::NUM_COLUMNS - AppDelayPeer::NUM_LAZY_LOAD_COLUMNS).
+            return $startcol + 17; // 17 = AppDelayPeer::NUM_COLUMNS - AppDelayPeer::NUM_LAZY_LOAD_COLUMNS).
 
         } catch (Exception $e) {
             throw new PropelException("Error populating AppDelay object", $e);
@@ -935,37 +1058,46 @@ abstract class BaseAppDelay extends BaseObject implements Persistent
                 return $this->getAppUid();
                 break;
             case 3:
-                return $this->getAppThreadIndex();
+                return $this->getAppNumber();
                 break;
             case 4:
-                return $this->getAppDelIndex();
+                return $this->getAppThreadIndex();
                 break;
             case 5:
-                return $this->getAppType();
+                return $this->getAppDelIndex();
                 break;
             case 6:
-                return $this->getAppStatus();
+                return $this->getAppType();
                 break;
             case 7:
-                return $this->getAppNextTask();
+                return $this->getAppStatus();
                 break;
             case 8:
-                return $this->getAppDelegationUser();
+                return $this->getAppNextTask();
                 break;
             case 9:
-                return $this->getAppEnableActionUser();
+                return $this->getAppDelegationUser();
                 break;
             case 10:
-                return $this->getAppEnableActionDate();
+                return $this->getAppEnableActionUser();
                 break;
             case 11:
-                return $this->getAppDisableActionUser();
+                return $this->getAppEnableActionDate();
                 break;
             case 12:
-                return $this->getAppDisableActionDate();
+                return $this->getAppDisableActionUser();
                 break;
             case 13:
+                return $this->getAppDisableActionDate();
+                break;
+            case 14:
                 return $this->getAppAutomaticDisabledDate();
+                break;
+            case 15:
+                return $this->getAppDelegationUserId();
+                break;
+            case 16:
+                return $this->getProId();
                 break;
             default:
                 return null;
@@ -990,17 +1122,20 @@ abstract class BaseAppDelay extends BaseObject implements Persistent
             $keys[0] => $this->getAppDelayUid(),
             $keys[1] => $this->getProUid(),
             $keys[2] => $this->getAppUid(),
-            $keys[3] => $this->getAppThreadIndex(),
-            $keys[4] => $this->getAppDelIndex(),
-            $keys[5] => $this->getAppType(),
-            $keys[6] => $this->getAppStatus(),
-            $keys[7] => $this->getAppNextTask(),
-            $keys[8] => $this->getAppDelegationUser(),
-            $keys[9] => $this->getAppEnableActionUser(),
-            $keys[10] => $this->getAppEnableActionDate(),
-            $keys[11] => $this->getAppDisableActionUser(),
-            $keys[12] => $this->getAppDisableActionDate(),
-            $keys[13] => $this->getAppAutomaticDisabledDate(),
+            $keys[3] => $this->getAppNumber(),
+            $keys[4] => $this->getAppThreadIndex(),
+            $keys[5] => $this->getAppDelIndex(),
+            $keys[6] => $this->getAppType(),
+            $keys[7] => $this->getAppStatus(),
+            $keys[8] => $this->getAppNextTask(),
+            $keys[9] => $this->getAppDelegationUser(),
+            $keys[10] => $this->getAppEnableActionUser(),
+            $keys[11] => $this->getAppEnableActionDate(),
+            $keys[12] => $this->getAppDisableActionUser(),
+            $keys[13] => $this->getAppDisableActionDate(),
+            $keys[14] => $this->getAppAutomaticDisabledDate(),
+            $keys[15] => $this->getAppDelegationUserId(),
+            $keys[16] => $this->getProId(),
         );
         return $result;
     }
@@ -1042,37 +1177,46 @@ abstract class BaseAppDelay extends BaseObject implements Persistent
                 $this->setAppUid($value);
                 break;
             case 3:
-                $this->setAppThreadIndex($value);
+                $this->setAppNumber($value);
                 break;
             case 4:
-                $this->setAppDelIndex($value);
+                $this->setAppThreadIndex($value);
                 break;
             case 5:
-                $this->setAppType($value);
+                $this->setAppDelIndex($value);
                 break;
             case 6:
-                $this->setAppStatus($value);
+                $this->setAppType($value);
                 break;
             case 7:
-                $this->setAppNextTask($value);
+                $this->setAppStatus($value);
                 break;
             case 8:
-                $this->setAppDelegationUser($value);
+                $this->setAppNextTask($value);
                 break;
             case 9:
-                $this->setAppEnableActionUser($value);
+                $this->setAppDelegationUser($value);
                 break;
             case 10:
-                $this->setAppEnableActionDate($value);
+                $this->setAppEnableActionUser($value);
                 break;
             case 11:
-                $this->setAppDisableActionUser($value);
+                $this->setAppEnableActionDate($value);
                 break;
             case 12:
-                $this->setAppDisableActionDate($value);
+                $this->setAppDisableActionUser($value);
                 break;
             case 13:
+                $this->setAppDisableActionDate($value);
+                break;
+            case 14:
                 $this->setAppAutomaticDisabledDate($value);
+                break;
+            case 15:
+                $this->setAppDelegationUserId($value);
+                break;
+            case 16:
+                $this->setProId($value);
                 break;
         } // switch()
     }
@@ -1110,47 +1254,59 @@ abstract class BaseAppDelay extends BaseObject implements Persistent
         }
 
         if (array_key_exists($keys[3], $arr)) {
-            $this->setAppThreadIndex($arr[$keys[3]]);
+            $this->setAppNumber($arr[$keys[3]]);
         }
 
         if (array_key_exists($keys[4], $arr)) {
-            $this->setAppDelIndex($arr[$keys[4]]);
+            $this->setAppThreadIndex($arr[$keys[4]]);
         }
 
         if (array_key_exists($keys[5], $arr)) {
-            $this->setAppType($arr[$keys[5]]);
+            $this->setAppDelIndex($arr[$keys[5]]);
         }
 
         if (array_key_exists($keys[6], $arr)) {
-            $this->setAppStatus($arr[$keys[6]]);
+            $this->setAppType($arr[$keys[6]]);
         }
 
         if (array_key_exists($keys[7], $arr)) {
-            $this->setAppNextTask($arr[$keys[7]]);
+            $this->setAppStatus($arr[$keys[7]]);
         }
 
         if (array_key_exists($keys[8], $arr)) {
-            $this->setAppDelegationUser($arr[$keys[8]]);
+            $this->setAppNextTask($arr[$keys[8]]);
         }
 
         if (array_key_exists($keys[9], $arr)) {
-            $this->setAppEnableActionUser($arr[$keys[9]]);
+            $this->setAppDelegationUser($arr[$keys[9]]);
         }
 
         if (array_key_exists($keys[10], $arr)) {
-            $this->setAppEnableActionDate($arr[$keys[10]]);
+            $this->setAppEnableActionUser($arr[$keys[10]]);
         }
 
         if (array_key_exists($keys[11], $arr)) {
-            $this->setAppDisableActionUser($arr[$keys[11]]);
+            $this->setAppEnableActionDate($arr[$keys[11]]);
         }
 
         if (array_key_exists($keys[12], $arr)) {
-            $this->setAppDisableActionDate($arr[$keys[12]]);
+            $this->setAppDisableActionUser($arr[$keys[12]]);
         }
 
         if (array_key_exists($keys[13], $arr)) {
-            $this->setAppAutomaticDisabledDate($arr[$keys[13]]);
+            $this->setAppDisableActionDate($arr[$keys[13]]);
+        }
+
+        if (array_key_exists($keys[14], $arr)) {
+            $this->setAppAutomaticDisabledDate($arr[$keys[14]]);
+        }
+
+        if (array_key_exists($keys[15], $arr)) {
+            $this->setAppDelegationUserId($arr[$keys[15]]);
+        }
+
+        if (array_key_exists($keys[16], $arr)) {
+            $this->setProId($arr[$keys[16]]);
         }
 
     }
@@ -1174,6 +1330,10 @@ abstract class BaseAppDelay extends BaseObject implements Persistent
 
         if ($this->isColumnModified(AppDelayPeer::APP_UID)) {
             $criteria->add(AppDelayPeer::APP_UID, $this->app_uid);
+        }
+
+        if ($this->isColumnModified(AppDelayPeer::APP_NUMBER)) {
+            $criteria->add(AppDelayPeer::APP_NUMBER, $this->app_number);
         }
 
         if ($this->isColumnModified(AppDelayPeer::APP_THREAD_INDEX)) {
@@ -1218,6 +1378,14 @@ abstract class BaseAppDelay extends BaseObject implements Persistent
 
         if ($this->isColumnModified(AppDelayPeer::APP_AUTOMATIC_DISABLED_DATE)) {
             $criteria->add(AppDelayPeer::APP_AUTOMATIC_DISABLED_DATE, $this->app_automatic_disabled_date);
+        }
+
+        if ($this->isColumnModified(AppDelayPeer::APP_DELEGATION_USER_ID)) {
+            $criteria->add(AppDelayPeer::APP_DELEGATION_USER_ID, $this->app_delegation_user_id);
+        }
+
+        if ($this->isColumnModified(AppDelayPeer::PRO_ID)) {
+            $criteria->add(AppDelayPeer::PRO_ID, $this->pro_id);
         }
 
 
@@ -1278,6 +1446,8 @@ abstract class BaseAppDelay extends BaseObject implements Persistent
 
         $copyObj->setAppUid($this->app_uid);
 
+        $copyObj->setAppNumber($this->app_number);
+
         $copyObj->setAppThreadIndex($this->app_thread_index);
 
         $copyObj->setAppDelIndex($this->app_del_index);
@@ -1299,6 +1469,10 @@ abstract class BaseAppDelay extends BaseObject implements Persistent
         $copyObj->setAppDisableActionDate($this->app_disable_action_date);
 
         $copyObj->setAppAutomaticDisabledDate($this->app_automatic_disabled_date);
+
+        $copyObj->setAppDelegationUserId($this->app_delegation_user_id);
+
+        $copyObj->setProId($this->pro_id);
 
 
         $copyObj->setNew(true);

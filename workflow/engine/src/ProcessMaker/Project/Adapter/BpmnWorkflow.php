@@ -1,6 +1,7 @@
 <?php
 namespace ProcessMaker\Project\Adapter;
 
+use ProcessMaker\Plugins\PluginRegistry;
 use ProcessMaker\Project;
 use ProcessMaker\Util;
 
@@ -92,6 +93,10 @@ class BpmnWorkflow extends Project\Bpmn
 
             if (array_key_exists("PRO_STATUS", $data)) {
                 $wpData["PRO_STATUS"] = $data["PRO_STATUS"];
+            }
+
+            if (array_key_exists("PRO_CREATE_USER", $data)) {
+                $wpData["PRO_CREATE_USER"] = $data["PRO_CREATE_USER"];
             }
 
             $this->wp = new Project\Workflow();
@@ -222,7 +227,7 @@ class BpmnWorkflow extends Project\Bpmn
                     $taskData["TAS_ASSIGN_TYPE"] = "BALANCED";
                     break;
                 case 'SERVICETASK':
-                    $registry = \PMPluginRegistry::getSingleton();
+                    $registry = PluginRegistry::loadSingleton();
                     $taskData["TAS_TYPE"] = "NORMAL";
                     //The plugin pmConnectors will be moved to the core in pm.3.3
                     if ($registry->getStatusPlugin('pmConnectors') === 'enabled') {
@@ -302,7 +307,7 @@ class BpmnWorkflow extends Project\Bpmn
      */
     public function sincronizeActivityData($actUid, $data)
     {
-        $registry = \PMPluginRegistry::getSingleton();
+        $registry = PluginRegistry::loadSingleton();
         $taskData = \TaskPeer::retrieveByPK($actUid);
         //The plugin pmConnectors will be moved to the core in pm.3.3
         if ($taskData->getTasType() == 'SERVICE-TASK' && $registry->getStatusPlugin('pmConnectors') !== 'enabled') {
@@ -321,7 +326,7 @@ class BpmnWorkflow extends Project\Bpmn
      */
     static function __updateServiceTask($activityBefore, $activityCurrent, $taskData)
     {
-        $registry = \PMPluginRegistry::getSingleton();
+        $registry = PluginRegistry::loadSingleton();
         if ($activityBefore->getActTaskType() != "SERVICETASK" && $activityCurrent->getActTaskType() == "SERVICETASK") {
             //The plugin pmConnectors will be moved to the core in pm.3.3
             if ($registry->getStatusPlugin('pmConnectors') === 'enabled') {
@@ -840,18 +845,6 @@ class BpmnWorkflow extends Project\Bpmn
                     "TAS_POSY"  => $taskPosY
                 ));
 
-                if ($elementType == "bpmnEvent" &&
-                    in_array($key, array("end-message-event", "start-message-event", "intermediate-catch-message-event"))
-                ) {
-                    if (in_array($key, array("start-message-event", "intermediate-catch-message-event"))) {
-                        //Task - User
-                        //Assign to admin
-                        $task = new \Tasks();
-
-                        $result = $task->assignUser($taskUid, "00000000000000000000000000000001", 1);
-                    }
-                }
-
                 //Element-Task-Relation - Create
                 $elementTaskRelation = new \ProcessMaker\BusinessModel\ElementTaskRelation();
 
@@ -1316,6 +1309,10 @@ class BpmnWorkflow extends Project\Bpmn
 
         if (isset($projectData['pro_status'])) {
             $data["PRO_STATUS"] = $projectData['pro_status'];
+        }
+
+        if (isset($projectData['prjCreateUser'])){
+            $data["PRO_CREATE_USER"] = $projectData['prjCreateUser'];
         }
 
         $bwp->create($data);
@@ -2089,7 +2086,8 @@ class BpmnWorkflow extends Project\Bpmn
                     $arrayResult = $webEntryEvent->update(
                         $arrayWebEntryEventData['WEE_UID'],
                         $bpmnProject->getPrjAuthor(),
-                        (!is_null($arrayData))? $arrayData : $arrayWebEntryEventData
+                        (!is_null($arrayData))? $arrayData : $arrayWebEntryEventData,
+                        false
                     );
                 }
             }

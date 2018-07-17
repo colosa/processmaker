@@ -9,7 +9,7 @@ Ext.onReady(function() {
         title : _('ID_TITLE_NO_INSTALL'),
 
         items:[
-            {html: _('ID_NO_INSTALL')}
+            {html: messageError}
         ]
     });
 });

@@ -359,7 +359,7 @@ PMDesigner.taskProperties = function (activity) {
                                 label: 'Template'.translate(),
                                 options: [{
                                     value: '',
-                                    label: ''.translate()
+                                    label: ''
                                 }],
                                 labelWidth: "27%"
                             }
@@ -470,7 +470,7 @@ PMDesigner.taskProperties = function (activity) {
                                 label: 'Template'.translate(),
                                 options: [{
                                     value: '',
-                                    label: ''.translate()
+                                    label: ''
                                 }],
                                 labelWidth: "27%"
                             }
@@ -564,437 +564,6 @@ PMDesigner.taskProperties = function (activity) {
         });
     }
 
-    /*----------------------------------********---------------------------------*/
-    /**features-begins**/
-    customGrid = new PMUI.grid.GridPanel({
-        id: 'customGrid',
-        pageSize: 10,
-        width: DEFAULT_WINDOW_WIDTH - 400,
-        style: {
-            cssClasses: ['mafe-gridPanel'],
-            cssProperties: {
-                'margin-left': '0px',
-                'padding-top': '5px'
-            }
-        },
-        emptyMessage: 'No records found'.translate(),
-        nextLabel: 'Next'.translate(),
-        previousLabel: 'Previous'.translate(),
-        behavior: 'dragdropsort',
-        filterable: false,
-        customStatusBar: function (currentPage, pageSize, numberItems, criteria, filter) {
-            return '';
-        },
-        columns: [{
-            id: 'abe_custom_value',
-            title: 'Value'.translate(),
-            dataType: 'string',
-            columnData: 'abe_custom_value',
-            alignmentCell: 'left',
-            width: 95,
-            sortable: true
-        }, {
-            id: 'abe_custom_label',
-            title: 'Label'.translate(),
-            dataType: 'string',
-            alignmentCell: 'left',
-            columnData: 'abe_custom_label',
-            width: 135,
-            sortable: true
-        }, {
-            id: 'abe_custom_format',
-            title: 'Format (CSS)'.translate(),
-            dataType: 'string',
-            alignmentCell: 'left',
-            columnData: 'abe_custom_format',
-            width: 320,
-            sortable: true
-        }, {
-            id: 'varEdit',
-            dataType: 'button',
-            title: '',
-            buttonLabel: 'Edit'.translate(),
-            width: '68px',
-            buttonStyle: {
-                cssClasses: [
-                    'mafe-button-edit'
-                ]
-            },
-            onButtonClick: function (row, grid) {
-                customGridRowEdit(row);
-            }
-        }, {
-            id: 'varDelete',
-            dataType: 'button',
-            title: '',
-            buttonLabel: function (row, data) {
-                return 'Delete'.translate();
-            },
-            width: '68px',
-            buttonStyle: {
-                cssClasses: [
-                    'mafe-button-delete'
-                ]
-            },
-            onButtonClick: function (row, grid) {
-                customGrid.removeItem(row);
-            }
-        }
-        ],
-        dataItems: null
-    });
-
-    abeFields = {
-        'type': {
-            name: "ABE_TYPE",
-            id: "ABE_TYPE",
-            label: "Type",
-            pmType: "dropdown",
-            options: [
-                {
-                    "label": "- None -".translate(),
-                    "value": "",
-                    "type": "default"
-                },
-                {
-                    "label": "Link to fill a form".translate(),
-                    "value": "LINK"
-                },
-                {
-                    "label": "Use a field to generate actions links".translate(),
-                    "value": "FIELD"
-                },
-                {
-                    "label": "Custom actions".translate(),
-                    "value": "CUSTOM"
-                }
-            ],
-            onChange: function (val) {
-                var addOptionForm, buttonAdd, buttonAddControl, buttonCancel, buttonCancelControl;
-                abeFields.type.value = val;
-                $(abeFields.email.getHTML()).find('.pmui-field-message span').css('display', 'none');
-                $(abeFields.action.getHTML()).find('.pmui-field-message span').css('display', 'none');
-                $customGrid = $("#customGrid");
-                if (abeAddOption && abeAddOption.getHTML()) {
-                    addOptionForm = $(abeAddOption.getHTML());
-                    addOptionForm.hide();
-                }
-                switch (val) {
-                    case '' :
-                        abeForm.setItems([abeFields.type]);
-                        break;
-                    case 'LINK' :
-                        $customGrid.hide().appendTo($("#windowProperties").find(".pmui-window-body:eq(0)"));
-                        abeForm.setItems([abeFields.type, abeFields.template, abeFields.dynaform, abeFields.subject, abeFields.email, abeFields.emailAccount, abeFields.emailFrom, abeFields.note, abeFields.forceLogin]);
-                        abeForm.getField('ABE_CASE_NOTE_IN_RESPONSE').setValue(abeFields.note.value);
-                        abeForm.getField("ABE_FORCE_LOGIN").setValue(abeFields.forceLogin.value);
-                        break;
-                    case 'FIELD' :
-                        $customGrid.hide().appendTo($("#windowProperties").find(".pmui-window-body:eq(0)"));
-                        abeForm.setItems([abeFields.type, abeFields.template, abeFields.dynaform, abeFields.subject, abeFields.email, abeFields.action, abeFields.emailAccount, abeFields.emailFrom, abeFields.note, abeFields.forceLogin]);
-                        abeForm.getField('ABE_CASE_NOTE_IN_RESPONSE').setValue(abeFields.note.value);
-                        abeForm.getField("ABE_FORCE_LOGIN").setValue(abeFields.forceLogin.value);
-                        abeFields.action.setLabel('Variable sent in email'.translate());
-                        abeFields.action.setPlaceholder('Insert a variable with options'.translate());
-                        break;
-                    case 'CUSTOM' :
-                        abeForm.setItems([abeFields.type, abeFields.emailAccount, abeFields.emailFrom, abeFields.email, abeFields.subject, abeFields.template, abeFields.action, abeFields.note, abeFields.forceLogin]);
-                        abeForm.getField("ABE_CASE_NOTE_IN_RESPONSE").setValue(abeFields.note.value);
-                        abeForm.getField("ABE_FORCE_LOGIN").setValue(abeFields.forceLogin.value);
-                        if (!abeAddOption) {
-                            abeMainPanel.addItem(abeAddOption = new PMUI.form.Form(abeFields.customGrid));
-                        } else {
-                            addOptionForm.show();
-                        }
-                        buttonAdd = abeAddOption.getField("buttonFieldAdd");
-                        buttonAddControl = buttonAdd.getControl();
-                        buttonAddControl.button.setButtonType("success");
-
-                        buttonCancel = abeAddOption.getField("buttonFieldCancel");
-                        buttonCancelControl = buttonCancel.getControl();
-                        buttonCancelControl.button.setButtonType("error");
-                        abeFields.action.setLabel('Store Result In'.translate());
-                        abeFields.action.setPlaceholder('Store result in variable @@myResult'.translate());
-                        customDOM();
-                        break;
-                }
-            }
-        },
-        'template': abeTemplates = {
-            name: "ABE_TEMPLATE",
-            label: 'Email template'.translate(),
-            pmType: "dropdown",
-            controlsWidth: 300,
-            options: [
-                {
-                    "value": "",
-                    "label": "- Select a Template -".translate(),
-                    "type": "default"
-                }
-            ],
-            onChange: function (val) {
-            }
-        },
-        'dynaform': abeDynaforms = {
-            name: "DYN_UID",
-            label: 'Dynaform'.translate(),
-            pmType: "dropdown",
-            controlsWidth: 300,
-            options: [
-                {
-                    "value": "",
-                    "label": "- Select a Dynaform -".translate(),
-                    "type": "default"
-                }
-            ],
-            onChange: function (val) {
-            }
-        },
-        'subject': new CriteriaField({
-            id: 'ABE_SUBJECT_FIELD',
-            pmType: 'text',
-            name: 'ABE_SUBJECT_FIELD',
-            valueType: 'string',
-            label: 'Subject by email'.translate(),
-            placeholder: 'Insert a subject variable'.translate(),
-            required: false,
-            controlsWidth: 250
-        }),
-        'email': new CriteriaField({
-            id: 'ABE_EMAIL_FIELD',
-            pmType: 'text',
-            name: 'ABE_EMAIL_FIELD',
-            valueType: 'string',
-            label: 'Email variable'.translate(),
-            placeholder: 'Insert an email variable'.translate(),
-            helper: "It leaving this field in blank, the next user's email will be used.".translate(),
-            controlsWidth: 250
-        }),
-        'action': new CriteriaField({
-            id: 'ABE_ACTION_FIELD',
-            pmType: 'text',
-            name: 'ABE_ACTION_FIELD',
-            valueType: 'string',
-            label: 'Variable sent in email'.translate(),
-            placeholder: 'Insert a variable with options'.translate(),
-            required: true,
-            controlsWidth: 250
-        }),
-        'emailAccount': abeEmailAcount =  {
-            id: 'ABE_EMAIL_SERVER_UID',
-            pmType: 'dropdown',
-            name: 'ABE_EMAIL_SERVER_UID',
-            label: 'Email account'.translate(),
-            controlsWidth: 300,
-            options: [
-                {
-                    id: 'defEmailAccount',
-                    label: 'Default email account'.translate(),
-                    value: ''
-                }
-            ]
-        },
-        'emailFrom': {
-            id: 'ABE_MAILSERVER_OR_MAILCURRENT',
-            pmType: 'dropdown',
-            name: 'ABE_MAILSERVER_OR_MAILCURRENT',
-            label: 'Email From Format'.translate(),
-            controlsWidth: 300,
-            options: [
-                {
-                    id: 'emailServerConfiguration',
-                    label: 'Assigned user'.translate(),
-                    value: 0
-                }, {
-                    id: 'femailCurrentUser',
-                    label: 'Email Account Settings'.translate(),
-                    value: 1
-                }
-            ]
-        },
-        'note': {
-            name: "ABE_CASE_NOTE_IN_RESPONSE",
-            pmType: "checkbox",
-            labelVisible: false,
-            options: [
-                {
-                    "id": "formTimingControlOption",
-                    "label": "Register a Case Note when the recipient submits the Response".translate(),
-                    "value": "1"
-                }
-            ]
-        },
-        forceLogin: {
-            name: "ABE_FORCE_LOGIN",
-            pmType: "checkbox",
-            labelVisible: false,
-            options: [
-                {
-                    id: "ABE_FORCE_LOGIN",
-                    label: "Force user login".translate(),
-                    value: 1
-                }
-            ]
-        },
-        'customGrid': {
-            id: "customGridPanel",
-            pmType: "panel",
-            visibleHeader: false,
-            layout: 'vbox',
-            fieldset: false,
-            width: 735,
-            legend: "Options".translate(),
-            items: [
-                {
-                    pmType: 'panel',
-                    legend: "Options".translate(),
-                    fieldset: true,
-                    layout: 'hbox',
-                    items: [
-                        {
-                            pmType: "panel",
-                            id: "customGridPanelControls",
-                            layout: "hbox",
-                            proportion: 1.7,
-                            items: [
-                                {
-                                    pmType: "panel",
-                                    layout: "vbox",
-                                    id: "firstPanel",
-                                    proportion: 0.8,
-                                    items: [
-                                        {
-                                            pmType: "text",
-                                            name: "abe_custom_value_add",
-                                            id: "abe_custom_value_add",
-                                            label: "Value".translate(),
-                                            valueType: "string",
-                                            labelWidth: "37%",
-                                            controlsWidth: 120,
-                                            maxLength: 255,
-                                            required: true
-                                        },
-                                        {
-                                            pmType: "text",
-                                            name: "abe_custom_label_add",
-                                            id: "abe_custom_label_add",
-                                            label: "Label".translate(),
-                                            valueType: "string",
-                                            labelWidth: "37%",
-                                            controlsWidth: 120,
-                                            maxLength: 255,
-                                            required: true
-                                        }
-                                    ]
-                                },
-                                {
-                                    pmType: "panel",
-                                    layout: "vbox",
-                                    id: "secondPanel",
-                                    proportion: 1.2,
-                                    items: [
-                                        {
-                                            pmType: "textarea",
-                                            name: "abe_custom_format_add",
-                                            id: "abe_custom_format_add",
-                                            label: "Format (CSS)".translate(),
-                                            valueType: "string",
-                                            required: false,
-                                            controlsWidth: 235,
-                                            placeholder: "padding:12px;\ntext-decoration:none;\nborder-radius:2px;\nbackground:#1fbc99;\nborder:1px solid #1ba385;",
-                                            style: {
-                                                cssClasses: [
-                                                    'mafe-textarea-resize'
-                                                ]
-                                            },
-                                            rows: 90,
-                                            validators: [
-                                                {
-                                                    pmType: "regexp",
-                                                    criteria: /^[a-zA-Z0-9\s\[\]\.\-_#%;,=:()']*$/,
-                                                    errorMessage: "Please enter only CSS code".translate()
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            pmType: "panel",
-                            id: "thirdPanel",
-                            layout: "vbox",
-                            proportion: 0.3,
-                            items: [
-                                {
-                                    id: 'buttonFieldAdd',
-                                    pmType: 'buttonField',
-                                    value: 'Add'.translate(),
-                                    labelVisible: false,
-                                    buttonAlign: 'center',
-                                    handler: function (field) {
-                                        addAcceptedValue();
-                                    },
-                                    buttonType: "success",
-                                    controlsWidth: 120,
-                                    style: {
-                                        cssProperties: {
-                                            'width': 'auto'
-                                        }
-                                    }
-                                },
-                                {
-                                    id: 'buttonFieldCancel',
-                                    pmType: 'buttonField',
-                                    value: 'Cancel'.translate(),
-                                    labelVisible: false,
-                                    visible: false,
-                                    buttonAlign: 'center',
-                                    handler: function (field) {
-                                        clearAddOptionForm();
-                                    },
-                                    buttonType: "error",
-                                    controlsWidth: 120,
-                                    style: {
-                                        cssProperties: {
-                                            'width': 'auto'
-                                        }
-                                    },
-                                    buttonStyle: {
-                                        cssClasses: [
-                                            'mafe-button-delete'
-                                        ]
-                                    }
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
-    };
-    for (i in ENABLED_FEATURES) {
-        if (ENABLED_FEATURES[i] == 'zLhSk5TeEQrNFI2RXFEVktyUGpnczV1WEJNWVp6cjYxbTU3R29mVXVZNWhZQT0=') {
-            featuresForms.push({
-                id: "ActionsByEmailConfiguration",
-                title: "Actions by Email".translate(),
-                icon: "",
-                panel: abeMainPanel = new PMUI.core.Panel({
-                    id: "ActionsByEmailPanel",
-                    items: [
-                        abeForm = new PMUI.form.Form({
-                            id: "ActionsByEmail",
-                            name: "ActionsByEmail",
-                            visibleHeader: false,
-                            width: DEFAULT_WINDOW_WIDTH - 250,
-                            items: [abeFields.type]
-                        })
-                    ]
-                })
-            });
-        }
-    }
-    /**features-ends**/
     /*----------------------------------********---------------------------------*/
 
     warningChanges = new PMUI.ui.MessageWindow({
@@ -1223,138 +792,6 @@ PMDesigner.taskProperties = function (activity) {
         formNotifications.getField('tas_receive_email_from_format').setValue(dataProperties.tas_receive_email_from_format);
     }
     /*----------------------------------********---------------------------------*/
-
-    /**
-     * Set Visibility from second check(routeCaseMobile) and set value for false
-     * @param value
-     * @param valueTwo
-     */
-    function changeFormOfflineMobile(data) {
-        // Offline setData parameters
-        var dataProperties = data.properties || null,
-            parseValue = dataProperties.tas_offline === stringTrue ? true : false;
-
-        enableTaskMobile.setValue(dataProperties.tas_offline === stringTrue ? arrayTrue : arrayFalse);
-        routeCaseMobile.setValue(dataProperties.tas_auto_root === stringTrue ? arrayTrue : arrayFalse);
-        onChangeMobileOffline(parseValue);
-    }
-
-    function onChangeMobileOffline(parseValue) {
-        if (typeof parseValue === "boolean" && !parseValue) {
-            routeCaseMobile.setValue(arrayFalse);
-        }
-        routeCaseMobile.setVisible(parseValue);
-    }
-
-    /****feature-begin*****/
-    function loadFeaturesConfiguration(response) {
-        var form, type, i, j, customGridData;
-        if (typeof response === 'undefined') {
-            abeForm.setItems([abeFields.template, abeFields.subject, abeFields.email, abeFields.emailFrom, abeFields.action, abeFields.note, abeFields.forceLogin]);
-            return;
-        }
-        for (i in response) {
-            switch (response[i]['feature']) {
-                case 'ActionsByEmail':
-                    abeForm._form_data = response[i];
-                    type = '';
-                    if (typeof response[i]['ABE_TYPE'] !== 'undefined') {
-                        type = response[i]['ABE_TYPE'];
-                    }
-                    abeFields.type.value = type;
-                    for (j in abeFields) {
-                        abeFields[j].value = (response[i][abeFields[j].name] || '');
-                    }
-                    switch (type) {
-                        case '' :
-                            abeForm.setItems([abeFields.type]);
-                            break;
-                        case 'LINK' :
-                            abeForm.setItems([abeFields.type, abeFields.template, abeFields.dynaform, abeFields.subject, abeFields.email, abeFields.emailFrom, abeFields.note, abeFields.forceLogin]);
-                            abeForm.getField('ABE_CASE_NOTE_IN_RESPONSE').setValue(abeFields.note.value);
-                            abeForm.getField("ABE_FORCE_LOGIN").setValue(abeFields.forceLogin.value);
-                            break;
-                        case 'FIELD' :
-                            abeForm.setItems([abeFields.type, abeFields.template, abeFields.dynaform, abeFields.subject, abeFields.email, abeFields.action, abeFields.emailFrom, abeFields.note, abeFields.forceLogin]);
-                            abeForm.getField('ABE_CASE_NOTE_IN_RESPONSE').setValue(abeFields.note.value);
-                            abeForm.getField("ABE_FORCE_LOGIN").setValue(abeFields.forceLogin.value);
-                            break;
-                        case 'CUSTOM' :
-                            abeForm.setItems([abeFields.type, abeFields.emailFrom, abeFields.email, abeFields.subject, abeFields.template, abeFields.action, abeFields.note, abeFields.forceLogin, abeFields.customGrid]);
-                            abeForm.getField("ABE_CASE_NOTE_IN_RESPONSE").setValue(abeFields.note.value);
-                            abeForm.getField("ABE_FORCE_LOGIN").setValue(abeFields.forceLogin.value);
-
-                            customGridData = response[i].ABE_CUSTOM_GRID;
-                            customGrid.setDataItems(customGridData);
-
-                            break;
-                    }
-                    break;
-            }
-        }
-    }
-
-    processDataProperties = function (properties) {
-        var fields = properties.form.getFields(), i;
-        properties.data['_features'] = (properties.data['_features'] || {});
-
-        if (typeof properties.form._form_data === 'undefined') {
-            properties.form._form_data = {};
-            properties.form._form_data['ABE_UID'] = '';
-            properties.form._form_data['PRO_UID'] = PMDesigner.project.id;
-            properties.form._form_data['TAS_UID'] = activity.id;
-        }
-
-        properties.data['_features'][properties.feature] = {
-            'type': properties.type,
-            'fields': {
-                'ABE_UID': properties.form._form_data['ABE_UID'],
-                'ABE_TYPE': 'FIELD',
-                'PRO_UID': properties.form._form_data['PRO_UID'],
-                'TAS_UID': properties.form._form_data['TAS_UID']
-            }
-        };
-        for (i in fields) {
-            properties.data
-                ['_features']
-                [properties.feature]
-                ['fields']
-                [fields[i].name] = fields[i].getValue();
-        }
-        return properties.data;
-    };
-
-    function loadStepsConsolidated(response) {
-        var field = formConsolidated.getField('consolidated_dynaform'), i;
-        field.clearOptions();
-        field.addOption({
-            value: '',
-            label: '- None -'.translate()
-        });
-        for (i = 0; i < response.length; i += 1) {
-            if (response[i].step_type_obj == "DYNAFORM") {
-                field.addOption({
-                    value: response[i].step_uid_obj,
-                    label: response[i].obj_title
-                });
-            }
-        }
-    }
-
-    function loadFormConsolidate(response) {
-        if (response.rep_tab_uid != '') {
-            formConsolidated.getField('consolidated_report_table').setValue(response.rep_tab_uid);
-            formConsolidated.getField('consolidated_dynaform').setValue(response.dyn_uid);
-            changeConsolidated(true);
-        } else {
-            changeConsolidated(false);
-        }
-        formConsolidated.getField('consolidated_table').setValue(response.rep_tab_name);
-        formConsolidated.getField('consolidated_title').setValue(response.con_value);
-    }
-
-    /****feature-end*****/
-    /*----------------------------------********---------------------------------*/
     function loadCalendar(response) {
         var field = formTimingControl.getField('tas_calendar'), i;
         field.clearOptions();
@@ -1511,32 +948,6 @@ PMDesigner.taskProperties = function (activity) {
                 loadEmailAccount(response["emailserver"].response, 'tas_receive_server_uid');
 
                 /*----------------------------------********---------------------------------*/
-                /****features-begin****/
-                if (consolidated == '1') {
-                    if(response["steps"]) {
-                        loadStepsConsolidated(response["steps"].response);
-                    }
-                    if (response["consolidate"]){
-                        loadFormConsolidate(response["consolidate"].response);
-                    }
-                }
-
-                for (i in ENABLED_FEATURES) {
-                    if (ENABLED_FEATURES[i] == 'zLhSk5TeEQrNFI2RXFEVktyUGpnczV1WEJNWVp6cjYxbTU3R29mVXVZNWhZQT0=') {
-                        loadABEmailAccount(response["emailserver"].response);
-                        if (response["featureconfig"]) {
-                            loadFeaturesConfiguration(response["featureconfig"].response);
-                        }
-                        if (response["abetemplates"]) {
-                            loadABETemplateField(response["abetemplates"].response);
-                        }
-                        if (response['abedynaforms']) {
-                            loadABEDynaformField(response['abedynaforms'].response);
-                        }
-                    }
-                }
-                /****features-end****/
-                /*----------------------------------********---------------------------------*/
             },
             functionFailure: function (xhr, response) {
                 PMDesigner.msgWinError(response.error.message);
@@ -1554,27 +965,6 @@ PMDesigner.taskProperties = function (activity) {
                 }
             });
         }
-        /*----------------------------------********---------------------------------*/
-        /****features-begin****/
-        for (i in ENABLED_FEATURES) {
-            if (ENABLED_FEATURES[i] == 'zLhSk5TeEQrNFI2RXFEVktyUGpnczV1WEJNWVp6cjYxbTU3R29mVXVZNWhZQT0=') {
-                $.extend(restClient.data.calls, {
-                    "featureconfig": {
-                        url: 'project/' + PMDesigner.project.id + '/activity/' + activity.id + '/feature-configuration/',
-                        method: 'GET'
-                    },
-                    "abetemplates": {
-                        "url": 'ActionsByEmail/Templates/' + PMDesigner.project.id,
-                        "method": 'GET'
-                    },
-                    "abedynaforms": {
-                        url: 'ActionsByEmail/Dynaforms/' + PMDesigner.project.id,
-                        method: 'GET'
-                    }
-                });
-            }
-        }
-        /****features-end****/
         /*----------------------------------********---------------------------------*/
         restClient.setBaseEndPoint('');
         restClient.executeRestClient();
@@ -1644,13 +1034,6 @@ PMDesigner.taskProperties = function (activity) {
                 return;
             }
         }
-        /*----------------------------------********---------------------------------*/
-        /****features-begin****/
-        if (abeFields && abeFields.type.value === 'FIELD' && abeFields.action.value === '') {
-            $(abeFields.action.getHTML()).find('.pmui-field-message span').css('display', 'block');
-            return;
-        }
-        /****features-end****/
         /*----------------------------------********---------------------------------*/
 
         tas_transfer_fly = formTimingControl.getField('tas_transfer_fly').getValue() === '["1"]';
@@ -1755,35 +1138,6 @@ PMDesigner.taskProperties = function (activity) {
             dataProperties.tas_receive_message_template = dataNotification['tas_receive_message_template'];
         }
         /*----------------------------------********---------------------------------*/
-        /** features-start */
-        for (i in ENABLED_FEATURES) {
-            if (ENABLED_FEATURES[i] == 'zLhSk5TeEQrNFI2RXFEVktyUGpnczV1WEJNWVp6cjYxbTU3R29mVXVZNWhZQT0=') {
-                dataProperties = processDataProperties({
-                    'type': 'configuration',
-                    'feature': abeForm.id,
-                    'data': dataProperties,
-                    'form': abeForm
-                });
-                if (abeForm.getField("ABE_TYPE").getValue() == "CUSTOM") {
-                    if (customGrid.getData().length == 0) {
-                        message = new PMUI.ui.FlashMessage({
-                            message: "At least one option must be filled.".translate(),
-                            duration: 3000,
-                            severity: 'error',
-                            appendTo: windowProperties.footer
-                        });
-                        message.show();
-                        return;
-                    } else {
-                        dataProperties._features.ActionsByEmail.fields.ABE_CUSTOM_GRID = customGrid.getData();
-                    }
-                }
-            }
-        }
-        
-
-        /** features-end */
-        /*----------------------------------********---------------------------------*/
 
         if (consolidated == '1') {
             consolidated_enable = false;
@@ -1805,7 +1159,7 @@ PMDesigner.taskProperties = function (activity) {
         (new PMRestClient({
             endpoint: 'activity/' + activity.id,
             typeRequest: 'update',
-            messageError: ''.translate(),
+            messageError: '',
             data: {
                 definition: {},
                 properties: dataProperties
@@ -1874,13 +1228,6 @@ PMDesigner.taskProperties = function (activity) {
     if (consolidated == '1') {
         formConsolidated.getField('consolidated_report_table').setVisible(false);
     }
-    /*----------------------------------********---------------------------------*/
-    /** features-start */
-    // validates if there is customGrid Action by Email grid
-    if (windowProperties.getItem('customGrid')) {
-        windowProperties.getItem('customGrid').setVisible(false);
-    }
-    /** features-end */
     /*----------------------------------********---------------------------------*/
     function customDOM() {
         $customGrid = $("#customGrid");

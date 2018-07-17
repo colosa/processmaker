@@ -1,5 +1,4 @@
-<?php 
-  G::LoadClass( "plugin");
+<?php
   
  class chartsPlugin extends PMPlugin 
  {
@@ -12,6 +11,7 @@
         $this->sSetupPage    = 'setupPage';
         $this->aWorkspaces = array (  );
         $this->iVersion = 0.45;
+        $this->bPrivate = true;
         return $res;
     }
 

@@ -34,8 +34,7 @@ $G_ID_SUB_MENU_SELECTED = 'CALENDAR';
 
 $CalendarUid = str_replace( '"', '', isset( $_GET['id'] ) ? $_GET['id'] : G::GenerateUniqueID() );
 //TODO: Add validation before save for all fields
-G::LoadClass( 'calendar' );
-$calendarObj = new calendar();
+$calendarObj = new Calendar();
 if ((isset( $_GET['id'] )) && ($_GET['id'] != "")) {
     $fields = $calendarObj->getCalendarInfoE( $CalendarUid );
     $fields['OLD_NAME'] = $fields['CALENDAR_NAME'];

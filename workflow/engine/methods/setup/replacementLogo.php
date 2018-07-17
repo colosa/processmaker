@@ -1,6 +1,6 @@
 <?php
 /**
- * replacementLogo.php
+ * ReplacementLogo.php
  *
  * ProcessMaker Open Source Edition
  * Copyright (C) 2004 - 2008 Colosa Inc.23
@@ -38,17 +38,6 @@ try { //ini_set('display_errors','1');
 
     function changeNamelogo ($snameLogo)
     {
-        // The ereg_replace function has been DEPRECATED as of PHP 5.3.0.
-        // $snameLogo = ereg_replace("[Ã¡Ã Ã¢Ã£Âª]","a",$snameLogo);
-        // $snameLogo = ereg_replace("[Ã�Ã€Ã‚Ãƒ]","A",$snameLogo);
-        // $snameLogo = ereg_replace("[Ã�ÃŒÃŽ]","I",$snameLogo);
-        // $snameLogo = ereg_replace("[Ã­Ã¬Ã®]","i",$snameLogo);
-        // $snameLogo = ereg_replace("[Ã©Ã¨Ãª]","e",$snameLogo);
-        // $snameLogo = ereg_replace("[Ã‰ÃˆÃŠ]","E",$snameLogo);
-        // $snameLogo = ereg_replace("[Ã³Ã²Ã´ÃµÂº]","o",$snameLogo);
-        // $snameLogo = ereg_replace("[Ã“Ã’Ã”Ã•]","O",$snameLogo);
-        // $snameLogo = ereg_replace("[ÃºÃ¹Ã»]","u",$snameLogo);
-        // $snameLogo = ereg_replace("[ÃšÃ™Ã›]","U",$snameLogo);
         $snameLogo = preg_replace( "/[Ã¡Ã Ã¢Ã£Âª]/", "a", $snameLogo );
         $snameLogo = preg_replace( "/[Ã�Ã€Ã‚Ãƒ]/", "A", $snameLogo );
         $snameLogo = preg_replace( "/[Ã�ÃŒÃŽ]/", "I", $snameLogo );
@@ -72,7 +61,7 @@ try { //ini_set('display_errors','1');
             $snameLogo = urldecode( $_GET['NAMELOGO'] );
             $snameLogo = trim( $snameLogo );
             $snameLogo = changeNamelogo( $snameLogo );
-            G::loadClass( 'configuration' );
+
             $oConf = new Configurations();
             $aConf = Array ('WORKSPACE_LOGO_NAME' => SYS_SYS,'DEFAULT_LOGO_NAME' => $snameLogo
             );
@@ -86,7 +75,7 @@ try { //ini_set('display_errors','1');
             break;
         case 'restoreLogo':
             $snameLogo = $_GET['NAMELOGO'];
-            G::loadClass( 'configuration' );
+
             $oConf = new Configurations();
             $aConf = Array ('WORKSPACE_LOGO_NAME' => '','DEFAULT_LOGO_NAME' => ''
             );

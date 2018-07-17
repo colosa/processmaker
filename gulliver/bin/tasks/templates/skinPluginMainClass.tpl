@@ -4,8 +4,6 @@
  *  
  */
 
-  G::LoadClass('plugin');
-
 class {className}Plugin extends PMPlugin {
   
   function {className}Plugin($sNamespace, $sFilename = null) {

@@ -103,6 +103,11 @@ try {
 
     $arrayVariableDocumentToDelete = [];
 
+    //If no variables are submitted and the $_POST variable is empty
+    if (!isset($_POST['form'])) {
+        $_POST['form'] = array();
+    }
+
     if (array_key_exists('__VARIABLE_DOCUMENT_DELETE__', $_POST['form'])) {
         if (is_array($_POST['form']['__VARIABLE_DOCUMENT_DELETE__']) && !empty($_POST['form']['__VARIABLE_DOCUMENT_DELETE__'])) {
             $arrayVariableDocumentToDelete = $_POST['form']['__VARIABLE_DOCUMENT_DELETE__'];
@@ -127,9 +132,6 @@ try {
     $oForm = new Form( $_SESSION["PROCESS"] . "/" . $_GET["UID"], PATH_DYNAFORM );
     $oForm->validatePost();
 
-    //Includes
-    G::LoadClass( "case" );
-
     //Load the variables
     $oCase = new Cases();
     $oCase->thisIsTheCurrentUser( $_SESSION["APPLICATION"], $_SESSION["INDEX"], $_SESSION["USER_LOGGED"], "REDIRECT", "casesListExtJs" );
@@ -139,8 +141,7 @@ try {
         $dataFields = $Fields["APP_DATA"];
         $dataFields["CURRENT_DYNAFORM"] = $_GET['UID'];
 
-        G::LoadClass('pmDynaform');
-        $oPmDynaform = new pmDynaform($dataFields);
+        $oPmDynaform = new PmDynaform($dataFields);
         $pmdynaform = $oPmDynaform->validatePost($pmdynaform);
 
         $Fields["APP_DATA"] = array_merge( $Fields["APP_DATA"], $pmdynaform );
@@ -183,14 +184,6 @@ try {
         //Execute after triggers - End
 
         $_SESSION['TRIGGER_DEBUG']['TRIGGERS_EXECUTION_TIME'] = $oCase->arrayTriggerExecutionTime;
-        $arrayInfoTriggerExecutionTime = [];
-
-        foreach ($_SESSION['TRIGGER_DEBUG']['TRIGGERS_EXECUTION_TIME'] as $key => $value) {
-            $arrayInfoTriggerExecutionTime[] = ['triUid' => $key, 'triExecutionTime' => $value];
-        }
-
-        //Log
-        Bootstrap::registerMonolog('triggerExecutionTime', 200, 'Trigger execution time', ['proUid' => $_SESSION['PROCESS'], 'tasUid' => $_SESSION['TASK'], 'appUid' => $_SESSION['APPLICATION'], 'after' => 'DYNAFORM', 'triggerInfo' => $arrayInfoTriggerExecutionTime], SYS_SYS, 'processmaker.log');
     }
 
     //save data in PM Tables if necessary
@@ -310,7 +303,6 @@ try {
     }
 
     //Save files
-    //require_once ("classes/model/AppDocument.php");
 
     if (isset( $_FILES["form"]["name"] ) && count( $_FILES["form"]["name"] ) > 0) {
         $oInputDocument = new \ProcessMaker\BusinessModel\Cases\InputDocument();

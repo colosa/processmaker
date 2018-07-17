@@ -63,6 +63,32 @@ PoolContainerBehavior.prototype.addToContainer = function (container,
             this.addToCanvas(container, shape);
         }
     }
+    if (!this.addElementLane) {
+        shape.canvas.triggerCreateEvent(shape, []);
+    }
+};
+/**
+ * @inheritDoc
+ */
+PoolContainerBehavior.prototype.removeFromContainer = function (shape) {
+    var pool = shape.getParent();
+
+    pool.getChildren().remove(shape);
+
+    if (pool.isResizable()) {
+        pool.resizeBehavior.updateResizeMinimums(shape.parent);
+    }
+
+    if (shape instanceof PMLane) {
+        pool.removeLane(shape);
+        pool.updateOnRemoveLane(shape);  
+    }
+
+    shape.saveAndDestroy();
+    shape.canvas.triggerRemoveEvent(shape, []);
+    shape.setParent(null);
+
+    return this;
 };
 /**
  * Force to add a shape to canvas

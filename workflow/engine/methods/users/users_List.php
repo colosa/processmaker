@@ -54,7 +54,6 @@ $G_ID_SUB_MENU_SELECTED = 'USERS';
 
 $G_PUBLISH = new Publisher();
 
-G::LoadClass('configuration');
 $c = new Configurations();
 $configPage = $c->getConfiguration('usersList', 'pageSize', '', $_SESSION['USER_LOGGED']);
 $Config['pageSize'] = isset($configPage['pageSize']) ? $configPage['pageSize'] : 20;

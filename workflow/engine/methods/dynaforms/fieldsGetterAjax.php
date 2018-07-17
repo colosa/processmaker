@@ -12,7 +12,6 @@
  * @param $gridFields
  * @return $invalidFields
  */
-G::LoadClass( 'xmlDb' );
 
 function validateGridConversion ($gridFields)
 {

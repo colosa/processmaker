@@ -55,22 +55,25 @@ class DataBaseConnection extends Api
     }
 
     /**
+     * Test a database connection with the provided settings.
+     * 
+     * @url POST /:prj_uid/database-connection/test
+     * 
      * @param string $prj_uid {@min 1} {@max 32}
      * @param array $request_data
-     *
      * @param string $dbs_type {@from body} {@required true}
-     * @param string $dbs_server {@from body} {@required true}
-     * @param string $dbs_database_name {@from body} {@required true}
+     * @param string $dbs_server {@from body} {@required false}
+     * @param string $dbs_database_name {@from body} {@required false}
      * @param string $dbs_username {@from body}
      * @param string $dbs_encode {@from body} {@required true}
      * @param string $dbs_password {@from body}
      * @param string $dbs_description {@from body}
+     * 
      * @return array
-     *
-     * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
-     * @copyright Colosa - Bolivia
-     *
-     * @url POST /:prj_uid/database-connection/test
+     * @throws RestException 
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPostTestDataBaseConnection(
         $prj_uid,
@@ -94,23 +97,26 @@ class DataBaseConnection extends Api
     }
 
     /**
+     * Creates a new database connection.
+     * 
+     * @url POST /:prj_uid/database-connection
+     * @status 201
+     * 
      * @param string $prj_uid {@min 1} {@max 32}
      * @param array $request_data
-     *
      * @param string $dbs_type {@from body} {@required true}
-     * @param string $dbs_server {@from body} {@required true}
-     * @param string $dbs_database_name {@from body} {@required true}
+     * @param string $dbs_server {@from body} {@required false}
+     * @param string $dbs_database_name {@from body} {@required false}
      * @param string $dbs_username {@from body}
      * @param string $dbs_encode {@from body} {@required true}
      * @param string $dbs_password {@from body}
      * @param string $dbs_description {@from body}
+     * 
      * @return array
-     *
-     * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
-     * @copyright Colosa - Bolivia
-     *
-     * @url POST /:prj_uid/database-connection
-     * @status 201
+     * @throws RestException 
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPostDataBaseConnection(
         $prj_uid,
@@ -133,10 +139,13 @@ class DataBaseConnection extends Api
     }
 
     /**
+     * Update database connection.
+     *
+     * @url PUT /:prj_uid/database-connection/:dbs_uid
+     *
      * @param string $prj_uid {@min 1} {@max 32}
      * @param string $dbs_uid {@min 1} {@max 32}
      * @param array $request_data
-     *
      * @param string $dbs_type {@from body} {@required true}
      * @param string $dbs_server {@from body} {@required true}
      * @param string $dbs_database_name {@from body} {@required true}
@@ -144,12 +153,12 @@ class DataBaseConnection extends Api
      * @param string $dbs_encode {@from body} {@required true}
      * @param string $dbs_password {@from body}
      * @param string $dbs_description {@from body}
+     *
      * @return void
+     * @throws RestException
      *
-     * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
-     * @copyright Colosa - Bolivia
-     *
-     * @url PUT /:prj_uid/database-connection/:dbs_uid
+     * @access protected
+     * @class AccessControl {@permission PM_SETUP}
      */
     public function doPutDataBaseConnection(
         $prj_uid,
@@ -173,14 +182,13 @@ class DataBaseConnection extends Api
     }
 
     /**
+     * @url DELETE /:prj_uid/database-connection/:dbs_uid
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
+     *
      * @param string $prj_uid {@min 1} {@max 32}
      * @param string $dbs_uid {@min 1} {@max 32}
      * @return void
-     *
-     * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
-     * @copyright Colosa - Bolivia
-     *
-     * @url DELETE /:prj_uid/database-connection/:dbs_uid
      */
     public function doDeleteDataBaseConnection($prj_uid, $dbs_uid)
     {

@@ -27,9 +27,6 @@
  * @author Erik Amaru Ortiz <erik@colosa.com>
  * @date Jan 10th, 2010
  */
-if (! class_exists( 'Translation' )) {
-    require "classes/model/Translation.php";
-}
 
 $action = $_REQUEST['action'];
 unset($_REQUEST['action']);
@@ -45,12 +42,6 @@ class Ajax
         $params['dateFrom'] = str_replace('T00:00:00', '', $params['dateFrom']);
         $params['dateTo'] = str_replace('T00:00:00', '', $params['dateTo']);
         $result = Translation::getAll('en', $params['start'], $params['limit'], $search, $params['dateFrom'], $params['dateTo']);
-        //$result = Translation::getAll('en', $params['start'], $params['limit'], $search);
-
-
-        /* foreach($result->data as $i=>$row){
-          $result->data[$i]['TRN_VALUE'] = substr($row['TRN_VALUE'], 0, 15) . '...';
-          } */
 
         echo G::json_encode($result);
     }

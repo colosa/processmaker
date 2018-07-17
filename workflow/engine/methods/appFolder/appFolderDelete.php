@@ -6,8 +6,6 @@
   $index=0;
   $FolderUid = str_replace ( '"', '', $aux[$index++] );
 
-
-  require_once ( "classes/model/AppFolder.php" );
   //if exists the row in the database propel will update it, otherwise will insert.
   $tr = AppFolderPeer::retrieveByPK( $FolderUid  );
   

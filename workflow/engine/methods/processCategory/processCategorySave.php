@@ -6,8 +6,6 @@ try {
     $CategoryName = $form['CATEGORY_NAME'];
     $CategoryIcon = $form['CATEGORY_ICON'];
 
-    require_once ("classes/model/ProcessCategory.php");
-
     //if exists the row in the database propel will update it, otherwise will insert.
     $tr = ProcessCategoryPeer::retrieveByPK( $CategoryUid );
     $processCategory = new ProcessCategory();

@@ -3,8 +3,6 @@
   $aux = explode ( '|', isset($_GET['id']) ? $_GET['id'] : '' );
   $FolderUid = str_replace ( '"', '', $aux[0] );
   
-
-  require_once ( "classes/model/AppFolder.php" );
   //if exists the row in the database propel will update it, otherwise will insert.
   $tr = AppFolderPeer::retrieveByPK( $FolderUid  );
   

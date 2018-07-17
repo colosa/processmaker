@@ -36,10 +36,6 @@ try {
             break;
     }
 
-    //srequire_once 'classes/model/StepTrigger.php';
-
-
-    G::LoadClass( 'processMap' );
     $oProcessMap = new ProcessMap();
         
     $infoProcess = new Processes();

@@ -1,10 +1,9 @@
 <?php
+
+use ProcessMaker\Core\System;
+
 $data = $_POST['form'];
 global $RBAC;
-require_once PATH_RBAC."model/RbacUsers.php";
-G::LoadClass('pmFunctions');
-require_once 'classes/model/Users.php';
-G::LoadClass("system");
 
 $rbacUser = new RbacUsers();
 $user = new Users();
@@ -61,9 +60,7 @@ if ($userData['USR_EMAIL'] != '' && $userData['USR_EMAIL'] === $data['USR_EMAIL'
   <a href='http://www.processmaker.com' style='color:#c40000;'>www.processmaker.com</a><br /></td>
   </tr></tbody></table>";
 
-    G::LoadClass('spool');
-
-    $oSpool = new spoolRun();
+    $oSpool = new SpoolRun();
 
     $oSpool->setConfig($aSetup);
     $oSpool->create(array(

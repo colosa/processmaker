@@ -54,13 +54,20 @@ var PMVariables = function (options) {
         buttonAlign: 'center',
         proportion: 0.8,
         handler: function (field) {
-            var inp_doc_uid = that.formVariables.getField('inp_doc_uid').getValue();
-            if (inp_doc_uid) {
-                var inputDocument = new InputDocument();
+            var form = that.formVariables,
+                fieldInpDoc = form.getField('inp_doc_uid'),
+                inp_doc_uid = fieldInpDoc.getValue(),
+                defaultText = "- Select an input document -".translate(),
+                inputDocument;
+            if (inp_doc_uid && inp_doc_uid !== defaultText) {
+                inputDocument = new InputDocument();
                 inputDocument.build();
                 inputDocument.inputDocumentOriginDataForUpdate = {};
                 inputDocument.openFormInMainWindow();
                 inputDocument.inputDocumentFormGetProxy(inp_doc_uid);
+            } else {
+                fieldInpDoc.setValue("");
+                form.isValid();
             }
         }
     });
@@ -84,10 +91,45 @@ var PMVariables = function (options) {
         label: "Related Input Document".translate(),
         controlsWidth: 460,
         valueType: "string",
-        labelPosition: "top"
+        labelPosition: "top",
+        onChange: function () {
+            that.validateInputDoc();
+        }
     });
 
-    that.setInputDocuments(inp_doc_uid);
+    this.buttonFieldAdd = new PMUI.field.ButtonField({
+        id: 'buttonFieldAdd',
+        pmType: 'buttonField',
+        value: 'Create'.translate(),
+        labelVisible: false,
+        buttonAlign: 'center',
+        controlsWidth: 50,
+        proportion: 0.8,
+        handler: function (field) {
+            that.addAcceptedValue();
+        },
+        style: {
+            cssProperties: {
+                "margin-left": "10px"
+            }
+        }
+    });
+    this.buttonFieldAdd.getControl().button.setButtonType("success");
+    this.buttonFieldCancel = new PMUI.field.ButtonField({
+        id: 'buttonFieldCancel',
+        pmType: 'buttonField',
+        value: 'Cancel'.translate(),
+        labelVisible: false,
+        buttonAlign: 'center',
+        controlsWidth: 55,
+        proportion: 0.6,
+        handler: function (field) {
+            that.clickedClose = false;
+            that.cancelAcceptedValue();
+            that.editingOptions = false;
+        }
+    });
+    this.buttonFieldCancel.getControl().button.setButtonType("error");
 
     this.formVariables = new PMUI.form.Form({
         id: 'formVariables',
@@ -109,7 +151,7 @@ var PMVariables = function (options) {
                 validators: [
                     {
                         pmType: "regexp",
-                        criteria: /^[0-9a-zA-Z\_]+$/,
+                        criteria: /^[a-zA-Z\_]{1}\w+$/,
                         errorMessage: "A valid variable starts with a letter or underscore, followed by any number of letters, numbers, or underscores.".translate()
                     }
                 ]
@@ -173,9 +215,9 @@ var PMVariables = function (options) {
                     var sw2 = that.formBooleanOptions.visible === false ? true : (that.formBooleanOptions.getField('trueOption').getValue() + that.formBooleanOptions.getField('falseOption').getValue()) === '';
                     if (sw && sw2) {
                         that.changeViewFieldType(newValue, oldValue);
-                        that.formAcceptedValues.reset();
+                        that.resetAcceptedValuesPanel();
                         that.gridAcceptedValues.clearItems();
-                        that.formBooleanOptions.reset();
+                        that.resetBooleanPanel();
                         return;
                     }
                     var message_window = new PMUI.ui.MessageWindow({
@@ -201,9 +243,9 @@ var PMVariables = function (options) {
                                 handler: function () {
                                     message_window.close();
                                     that.changeViewFieldType(newValue, oldValue);
-                                    that.formAcceptedValues.reset();
+                                    that.resetAcceptedValuesPanel();
                                     that.gridAcceptedValues.clearItems();
-                                    that.formBooleanOptions.reset();
+                                    that.resetBooleanPanel();
                                 },
                                 buttonType: "success"
                             }
@@ -224,7 +266,61 @@ var PMVariables = function (options) {
                     that.buttonCreateInputDocument,
                     that.buttonEditInputDocument
                 ]
-            }, {
+            },
+            {
+                id: 'booleanPanel',
+                pmType: 'panel',
+                legend: 'Options'.translate(),
+                fieldset: true,
+                layout: 'vbox',
+                items: [
+                    {
+                        pmType: 'panel',
+                        layout: 'hbox',
+                        items: [
+                            new PMLabelField({
+                                text: 'Key'.translate(),
+                                textMode: 'plain',
+                                style: {
+                                    cssProperties: {
+                                        color: '#AEAEAE',
+                                        'font-weight': 'bold'
+                                    }
+                                },
+                                proportion: 0.3
+                            }),
+                            new PMLabelField({
+                                text: 'Label'.translate(),
+                                textMode: 'plain',
+                                style: {
+                                    cssProperties: {
+                                        color: '#AEAEAE',
+                                        'font-weight': 'bold'
+                                    }
+                                }
+                            })
+                        ]
+                    },
+                    {
+                        pmType: 'text',
+                        name: 'trueOption',
+                        label: 'True'.translate(),
+                        controlsWidth: 460,
+                        valueType: 'string',
+                        maxLength: 100,
+                        required: true
+                    }, {
+                        pmType: 'text',
+                        name: 'falseOption',
+                        label: 'False'.translate(),
+                        controlsWidth: 460,
+                        valueType: 'string',
+                        maxLength: 100,
+                        required: true
+                    }
+                ]
+            },
+            {
                 pmType: 'dropdown',
                 label: 'Database Connection'.translate(),
                 placeholder: 'Database Connection'.translate(),
@@ -259,6 +355,40 @@ var PMVariables = function (options) {
                 onChange: function (newValue, oldValue) {
                     that.changeViewFieldType(that.formVariables.getField('var_field_type').getValue());
                 }
+            },
+            {
+                id: 'formAcceptedValues',
+                pmType: 'panel',
+                fieldset: false,
+                layout: 'hbox',
+                items: [
+                    {
+                        pmType: 'text',
+                        name: 'keyValue',
+                        id: "variable-keyvalue",
+                        label: 'Key'.translate(),
+                        labelWidth: '100%',
+                        controlsWidth: 210,
+                        proportion: 2.5,
+                        valueType: 'string',
+                        maxLength: 255,
+                        labelPosition: "top"
+                    },
+                    {
+                        pmType: 'text',
+                        name: 'value',
+                        id: "variable-value",
+                        label: 'Label'.translate(),
+                        labelWidth: '100%',
+                        controlsWidth: 300,
+                        valueType: 'string',
+                        maxLength: 255,
+                        proportion: 3.4,
+                        labelPosition: "top"
+                    },
+                    that.buttonFieldCancel,
+                    that.buttonFieldAdd
+                ]
             }
         ]
     });
@@ -330,79 +460,6 @@ var PMVariables = function (options) {
         ],
         dataItems: null
     });
-    this.buttonFieldAdd = new PMUI.field.ButtonField({
-        id: 'buttonFieldAdd',
-        pmType: 'buttonField',
-        value: 'Create'.translate(),
-        labelVisible: false,
-        buttonAlign: 'center',
-        controlsWidth: 50,
-        proportion: 0.8,
-        handler: function (field) {
-            that.addAcceptedValue();
-        },
-        style: {
-            cssProperties: {
-                "margin-left": "10px"
-            }
-        }
-    });
-    this.buttonFieldAdd.controls[0].button.setButtonType("success");
-    this.buttonFieldCancel = new PMUI.field.ButtonField({
-        id: 'buttonFieldCancel',
-        pmType: 'buttonField',
-        value: 'Cancel'.translate(),
-        labelVisible: false,
-        buttonAlign: 'center',
-        controlsWidth: 55,
-        proportion: 0.6,
-        handler: function (field) {
-            that.clickedClose = false;
-            that.cancelAcceptedValue();
-            that.editingOptions = false;
-        }
-    });
-    this.buttonFieldCancel.controls[0].button.setButtonType("error");
-    this.formAcceptedValues = new PMUI.form.Form({
-        id: 'formAcceptedValues',
-        width: 800,
-        visibleHeader: false,
-        items: [
-            {
-                pmType: 'panel',
-                fieldset: false,
-                layout: 'hbox',
-                items: [{
-                    pmType: 'text',
-                    name: 'keyValue',
-                    id: "variable-keyvalue",
-                    label: 'Key'.translate(),
-                    //labelWidth: '55%',
-                    controlsWidth: 210,
-                    proportion: 2.5,
-                    valueType: 'string',
-                    maxLength: 255,
-                    required: true,
-                    labelPosition: "top"
-                }, {
-                    pmType: 'text',
-                    name: 'value',
-                    id: "variable-value",
-                    label: 'Label'.translate(),
-                    //labelWidth: '40%',
-                    controlsWidth: 300,
-                    valueType: 'string',
-                    maxLength: 255,
-                    proportion: 3.4,
-                    required: true,
-                    labelPosition: "top"
-                },
-                    that.buttonFieldCancel,
-                    that.buttonFieldAdd
-                ]
-            }
-        ]
-    });
     this.gridAcceptedValues = new PMUI.grid.GridPanel({
         id: 'gridAcceptedValues',
         pageSize: 5,
@@ -460,65 +517,6 @@ var PMVariables = function (options) {
         ],
         dataItems: null,
         behavior: 'dragdropsort'
-    });
-    this.formBooleanOptions = new PMUI.form.Form({
-        id: 'formAcceptedValues',
-        width: 700,
-        visibleHeader: false,
-        items: [
-            {
-                pmType: 'panel',
-                legend: 'Options'.translate(),
-                fieldset: true,
-                layout: 'vbox',
-                items: [
-                    {
-                        pmType: 'panel',
-                        layout: 'hbox',
-                        items: [
-                            new PMLabelField({
-                                text: 'Key'.translate(),
-                                textMode: 'plain',
-                                style: {
-                                    cssProperties: {
-                                        color: '#AEAEAE',
-                                        'font-weight': 'bold'
-                                    }
-                                },
-                                proportion: 0.3
-                            }),
-                            new PMLabelField({
-                                text: 'Label'.translate(),
-                                textMode: 'plain',
-                                style: {
-                                    cssProperties: {
-                                        color: '#AEAEAE',
-                                        'font-weight': 'bold'
-                                    }
-                                }
-                            })
-                        ]
-                    },
-                    {
-                        pmType: 'text',
-                        name: 'trueOption',
-                        label: 'True'.translate(),
-                        controlsWidth: 460,
-                        valueType: 'string',
-                        maxLength: 100,
-                        required: true
-                    }, {
-                        pmType: 'text',
-                        name: 'falseOption',
-                        label: 'False'.translate(),
-                        controlsWidth: 460,
-                        valueType: 'string',
-                        maxLength: 100,
-                        required: true
-                    }
-                ]
-            }
-        ]
     });
     this.isDirtyFormVariables = function () {
         $("input,select,textarea").blur();
@@ -621,43 +619,42 @@ var PMVariables = function (options) {
         buttonPanelPosition: "bottom"
     });
     PMVariables.prototype.init.call(this);
+    that.setInputDocuments(inp_doc_uid);
 };
 PMVariables.prototype.init = function () {
-    var that = this;
+    var that = this,
+        acceptedValuesForm,
+        label;
 
     that.buttonCreate.defineEvents();
 
     that.windowVariables.addItem(that.gridVariables);
     that.windowVariables.addItem(that.formVariables);
-    that.windowVariables.addItem(that.formAcceptedValues);
     that.windowVariables.addItem(that.gridAcceptedValues);
-    that.windowVariables.addItem(that.formBooleanOptions);
     that.windowVariables.hideFooter();
     that.windowVariables.open();
+    label = $('#booleanPanel');
+    acceptedValuesForm = $('#formAcceptedValues');
     that.customCss();
-    $("#formAcceptedValues .pmui-field-message").css("marginLeft", 10);
+    acceptedValuesForm.find(".pmui-field-message").css("marginLeft", 10);
+    $("#gridAcceptedValues").css({"height": "254px", "margin": "0 10px"});
     $("#requiredMessage").css({"margin-top": "10px"});
     $("#inp_doc_uid").find(".pmui-field-message:eq(0)").css("left", "226px");
-    this.formAcceptedValues.panel.html.style.padding = "0px 0px";
-    this.formAcceptedValues.getField("keyValue").parent.html.style.padding = "0 0 10px 10px";
-    this.formAcceptedValues.getField("keyValue").dom.labelTextContainer.style.width = "100%";
-    this.formAcceptedValues.getField("keyValue").controls[0].html.style.marginLeft = "10px";
-    this.formAcceptedValues.getField("value").dom.labelTextContainer.style.width = "100%";
-    this.formAcceptedValues.getField("value").controls[0].html.style.marginLeft = "10px";
+    this.formAcceptedValues = PMUI.getPMUIObject(acceptedValuesForm.get(0));
 
     this.buttonFieldAdd.controls[0].button.setStyle({cssProperties: {padding: "6px 15px"}});
     this.buttonFieldCancel.controls[0].button.setStyle({cssProperties: {padding: "6px 15px"}});
-
     $('#gridVariables .pmui-textcontrol').css({'margin-top': '5px', width: '250px'});
     that.gridVariables.dom.toolbar.appendChild(that.buttonCreate.getHTML());
 
+    this.formBooleanOptions = PMUI.getPMUIObject(label.get(0));
     that.showGrid();
     that.loadDataBaseConnections();
 
     validateKeysField(that.formVariables.getField('var_name').getControls()[0].getHTML(), ['isbackspace', 'isnumber', 'isletter', 'isunderscore']);
 
-    that.formAcceptedValues.reset();
-    var label = $(this.formBooleanOptions.html).find(".pmui-pmlabelfield");
+    that.resetAcceptedValuesPanel();
+    label = $('#booleanPanel').css({'width': '675px', margin: '10px'}).find(".pmui-pmlabelfield");
     $(label[0]).replaceWith($(label[0]).find(".pmui-pmlabelcontrol").css({
         "font-size": "14px",
         "margin-right": "127px"
@@ -670,7 +667,6 @@ PMVariables.prototype.init = function () {
     $(this.formVariables.panel.html).removeClass("pmui-formpanel");
     $(this.formVariables.panel.html).append(that.formAcceptedValues.html);
     $(this.formVariables.panel.html).append(that.gridAcceptedValues.html);
-    $(this.formVariables.panel.html).append(that.formBooleanOptions.html);
     $(that.formAcceptedValues.html).find(".pmui-formpanel").css({"display": "inline-block"});
     that.windowVariables.footer.html.style.textAlign = "right";
 };
@@ -709,7 +705,7 @@ PMVariables.prototype.saveVariables = function () {
         functionFailure: function (xhr, response) {
             PMDesigner.msgWinError(response.error.message);
         },
-        messageError: ' '.translate(),
+        messageError: ' ',
         data: data,
         messageSuccess: 'Variable saved successfully'.translate(),
         flashContainer: that.panel
@@ -757,7 +753,7 @@ PMVariables.prototype.updateVariables = function () {
         functionFailure: function (xhr, response) {
             PMDesigner.msgWinError(response.error.message);
         },
-        messageError: ' '.translate(),
+        messageError: ' ',
         messageSuccess: 'Variable edited successfully'.translate(),
         flashContainer: that.panel
     })).executeRestClient();
@@ -853,9 +849,9 @@ PMVariables.prototype.customCss = function () {
 PMVariables.prototype.showGrid = function () {
     var that = this;
     that.formVariables.setVisible(false);
-    that.formAcceptedValues.setVisible(false);
+    that.disableAcceptedValuesPanel();
     that.gridAcceptedValues.setVisible(false);
-    that.formBooleanOptions.setVisible(false);
+    that.disableBooleanPanel();
     $(that.gridVariables.dom.toolbar).find("input").val("");
     that.gridVariables.clearFilter();
     that.gridVariables.setVisible(true);
@@ -866,17 +862,17 @@ PMVariables.prototype.showForm = function () {
     that.edit = false;
     that.dirtyAcceptedValue = false;
     that.formVariables.setVisible(true);
-    that.formAcceptedValues.setVisible(true);
+    that.enableAcceptedValuesPanel();
     that.gridAcceptedValues.setVisible(true);
-    that.formBooleanOptions.setVisible(true);
+    that.enableBooleanPanel();
     that.gridVariables.setVisible(false);
     that.windowVariables.setTitle('Create Variable'.translate());
     that.formVariables.reset();
     that.formVariables.setFocus();
     that.changeViewFieldType('string');
-    that.formAcceptedValues.reset();
+    that.resetAcceptedValuesPanel();
     that.gridAcceptedValues.clearItems();
-    that.formBooleanOptions.reset();
+    that.resetBooleanPanel();
     that.buttonFieldCancel.setVisible(false);
     that.windowVariables.showFooter();
     that.buttonCreateInputDocument.setVisible(false);
@@ -938,9 +934,9 @@ PMVariables.prototype.changeViewFieldType = function (newValue) {
     that.formVariables.getField('var_options_control').setVisible(false);
     that.formVariables.getField('inp_doc_uid').setVisible(false);
     that.formVariables.getField('inp_doc_uid').setRequired(false);
-    that.formAcceptedValues.setVisible(false);
+    that.disableAcceptedValuesPanel();
     that.gridAcceptedValues.setVisible(false);
-    that.formBooleanOptions.setVisible(false);
+    that.disableBooleanPanel();
     that.buttonCreateInputDocument.setVisible(false);
     that.buttonEditInputDocument.setVisible(false);
 
@@ -958,14 +954,10 @@ PMVariables.prototype.changeViewFieldType = function (newValue) {
             that.formVariables.getField('var_dbconnection').setVisible(true);
             that.formVariables.getField('var_sql').setVisible(true);
             that.formVariables.getField('var_options_control').setVisible(true);
-            that.formAcceptedValues.setVisible(true && sw);
+            sw ? that.enableAcceptedValuesPanel() : that.disableAcceptedValuesPanel();
             that.gridAcceptedValues.setVisible(true && sw);
             this.fieldInfo.data = "Supported Controls: text, textarea, dropdown, radio, suggest, hidden.".translate();
 
-            /*----------------------------------********---------------------------------*/
-            /**features-begins**/
-            this.fieldInfo.data = "Supported Controls: text, textarea, dropdown, radio, suggest, hidden, geo map, qr code.".translate();
-            /**features-ends**/
             /*----------------------------------********---------------------------------*/
 
             break;
@@ -973,7 +965,7 @@ PMVariables.prototype.changeViewFieldType = function (newValue) {
             that.formVariables.getField('var_dbconnection').setVisible(true);
             that.formVariables.getField('var_sql').setVisible(true);
             that.formVariables.getField('var_options_control').setVisible(true);
-            that.formAcceptedValues.setVisible(true && sw);
+            sw ? that.enableAcceptedValuesPanel() : that.disableAcceptedValuesPanel();
             that.gridAcceptedValues.setVisible(true && sw);
 
             validateKeysField(that.formAcceptedValues.getField('keyValue').getControls()[0].getHTML(), ['isbackspace', 'isnumber', 'ishyphen']);
@@ -983,14 +975,14 @@ PMVariables.prototype.changeViewFieldType = function (newValue) {
             that.formVariables.getField('var_dbconnection').setVisible(true);
             that.formVariables.getField('var_sql').setVisible(true);
             that.formVariables.getField('var_options_control').setVisible(true);
-            that.formAcceptedValues.setVisible(true && sw);
+            sw ? that.enableAcceptedValuesPanel() : that.disableAcceptedValuesPanel();
             that.gridAcceptedValues.setVisible(true && sw);
 
             validateKeysField(that.formAcceptedValues.getField('keyValue').getControls()[0].getHTML(), ['isbackspace', 'isnumber', 'isperiod', 'ishyphen']);
             this.fieldInfo.data = "Supported Controls: text, textarea, dropdown, radio, suggest, hidden.".translate();
             break;
         case 'boolean':
-            that.formBooleanOptions.setVisible(true);
+            that.enableBooleanPanel();
             this.fieldInfo.data = "Supported Controls: checkbox, radio, hidden.".translate();
             break;
         case 'datetime':
@@ -1003,7 +995,7 @@ PMVariables.prototype.changeViewFieldType = function (newValue) {
             that.formVariables.getField('var_dbconnection').setVisible(true);
             that.formVariables.getField('var_sql').setVisible(true);
             that.formVariables.getField('var_options_control').setVisible(true);
-            that.formAcceptedValues.setVisible(true && sw);
+            sw ? that.enableAcceptedValuesPanel() : that.disableAcceptedValuesPanel();
             that.gridAcceptedValues.setVisible(true && sw);
             this.fieldInfo.data = "Supported Controls: checkgroup.".translate();
             break;
@@ -1013,6 +1005,7 @@ PMVariables.prototype.changeViewFieldType = function (newValue) {
             that.buttonEditInputDocument.setVisible(true);
             that.formVariables.getField('inp_doc_uid').setRequired(true);
             this.fieldInfo.data = "Supported Controls: file.".translate();
+            that.validateInputDoc();
             break;
         case 'multiplefile':
             this.fieldInfo.data = "Supported Controls: Multiple File.".translate();
@@ -1022,32 +1015,48 @@ PMVariables.prototype.changeViewFieldType = function (newValue) {
             break;
     }
 };
-PMVariables.prototype.addAcceptedValue = function () {
-    var that = this;
-    if (that.isAcceptedValueAdded()) {
-        PMDesigner.msgFlash('The key value already exists.'.translate(), document.getElementById('windowVariables'), 'error', 1000, 5);
-        return;
+/**
+ * Enable or disable edit button of input document
+ */
+PMVariables.prototype.validateInputDoc = function () {
+    var form = this.formVariables,
+        fieldInpDoc = form.getField("inp_doc_uid"),
+        defaultText = "- Select an input document -".translate();
+    if (fieldInpDoc && fieldInpDoc.getValue() && fieldInpDoc.getValue() !== defaultText) {
+        this.buttonEditInputDocument.enable();
+    } else {
+        this.buttonEditInputDocument.disable();
     }
-    if (!that.formAcceptedValues.isValid()) {
-        return;
+};
+PMVariables.prototype.addAcceptedValue = function () {
+    var that = this,
+        key = jQuery.trim(that.formAcceptedValues.getField('keyValue').getValue()),
+        value = jQuery.trim(that.formAcceptedValues.getField('value').getValue());
+
+    if (that.isAcceptedValueAdded()) {
+        return PMDesigner.msgFlash('The key value already exists.'.translate(),
+            document.getElementById('windowVariables'), 'error', 1000, 5);
+    }
+    if (!(key && value)) {
+        return PMDesigner.msgFlash('The key and label must be supplied.'.translate(),
+            document.getElementById('windowVariables'), 'error', 1000, 5);
     }
     if (that.editRow === null) {
         that.gridAcceptedValues.addItem(new PMUI.grid.GridPanelRow({
             data: {
-                keyValue: that.formAcceptedValues.getField('keyValue').getValue(),
-                value: that.formAcceptedValues.getField('value').getValue()
+                keyValue: key,
+                value: value
             }
         }));
     } else {
         this.editingOptions = false;
         that.editRow.setData({
-            keyValue: that.formAcceptedValues.getField('keyValue').getValue(),
-            value: that.formAcceptedValues.getField('value').getValue()
+            keyValue: key,
+            value: value
         });
     }
     that.dirtyAcceptedValue = true;
     that.cancelAcceptedValue();
-
 };
 PMVariables.prototype.editAcceptedValue = function (row) {
     var that = this;
@@ -1108,7 +1117,11 @@ PMVariables.prototype.getDataAcceptedValues = function () {
         }
     }
     if (that.formBooleanOptions.visible) {
-        var a = that.formBooleanOptions.getData();
+        var a = that.formBooleanOptions.getItems("fields").reduce(function (prev, curr) {
+                prev[curr.getName()] = curr.getValue();
+                return prev;
+            }, {});
+
         data = [
             {value: '1', label: a.trueOption},
             {value: '0', label: a.falseOption}
@@ -1192,7 +1205,7 @@ PMVariables.prototype.cancelAcceptedValue = function () {
     that.editRow = null;
     that.buttonFieldAdd.setValue('Add'.translate());
     that.buttonFieldCancel.setVisible(false);
-    that.formAcceptedValues.reset();
+    that.resetAcceptedValuesPanel();
 };
 PMVariables.prototype.isAcceptedValueAdded = function () {
     var that = this, i, keyValue, data, exist, i, index, rowEditValue;
@@ -1286,6 +1299,82 @@ PMVariables.prototype.isWindowActive = function () {
         return true;
     }
     return false;
+};
+/**
+ * Reset the fields from the form's boolean panel.
+ * @returns {PMVariables}
+ */
+PMVariables.prototype.resetBooleanPanel = function () {
+    if (this.formBooleanOptions) {
+        this.formBooleanOptions.getItems("fields").forEach(function (i) {
+            i.setValue("");
+        });
+    }
+    return this;
+};
+/**
+ * Disable the fields from the form's boolean panel.
+ * @returns {PMVariables}
+ */
+PMVariables.prototype.disableBooleanPanel = function () {
+    if (this.formBooleanOptions) {
+        this.formBooleanOptions.setVisible(false)
+            .getItems("fields").forEach(function (i) {
+            i.disable();
+        });
+    }
+    return this;
+};
+/**
+ * Enable the fields from the form's boolean panel.
+ * @returns {PMVariables}
+ */
+PMVariables.prototype.enableBooleanPanel = function () {
+    if (this.formBooleanOptions) {
+        this.formBooleanOptions.setVisible(true)
+            .getItems("fields").forEach(function (i) {
+            i.enable();
+        });
+    }
+    return this;
+};
+/**
+ * Reset the fields from the form's Accepted Values panel.
+ * @returns {PMVariables}
+ */
+PMVariables.prototype.resetAcceptedValuesPanel = function () {
+    if (this.formAcceptedValues) {
+        this.formAcceptedValues.getItems().forEach(function (i) {
+            i.setValue("");
+        });
+    }
+    return this;
+};
+/**
+ * Enable the fields from the form's Accepted Values panel.
+ * @returns {PMVariables}
+ */
+PMVariables.prototype.enableAcceptedValuesPanel = function () {
+    if (this.formAcceptedValues) {
+        this.formAcceptedValues.setVisible(true)
+            .getItems('fields').forEach(function (i) {
+            i.enable("");
+        });
+    }
+    return this;
+};
+/**
+ * Disable the fields from the form's Accepted Values panel.
+ * @returns {PMVariables}
+ */
+PMVariables.prototype.disableAcceptedValuesPanel = function () {
+    if (this.formAcceptedValues) {
+        this.formAcceptedValues.setVisible(false)
+            .getItems('fields').forEach(function (i) {
+            i.disable("");
+        });
+    }
+    return this;
 };
 PMDesigner.variables = function () {
     var pmvariables = new PMVariables();

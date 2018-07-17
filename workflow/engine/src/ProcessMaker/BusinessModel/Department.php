@@ -1,14 +1,20 @@
 <?php
 namespace ProcessMaker\BusinessModel;
 
-use \G;
-use \UsersPeer;
-use \DepartmentPeer;
+use BasePeer;
+use Configurations;
+use Criteria;
+use Department as DepartmentModel;
+use DepartmentPeer;
+use Exception;
+use ProcessMaker\BusinessModel\Validator;
+use Propel;
+use RBAC;
+use ResultSet;
+use Users;
+use UsersPeer;
+use G;
 
-/**
- * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
- * @copyright Colosa - Bolivia
- */
 class Department
 {
     /**
@@ -16,27 +22,26 @@ class Department
      *
      * @param string $departmentTitle      Title
      * @param string $departmentUidExclude Unique id of Department to exclude
-     *
-     * return bool Return true if exists the title of a Department, false otherwise
+     * @return bool Return true if exists the title of a Department, false otherwise
      */
     public function existsTitle($departmentTitle, $departmentUidExclude = "")
     {
         try {
-            $criteria = new \Criteria("workflow");
+            $criteria = new Criteria("workflow");
 
-            $criteria->addSelectColumn(\DepartmentPeer::DEP_UID);
-            $criteria->addSelectColumn(\DepartmentPeer::DEP_TITLE);
+            $criteria->addSelectColumn(DepartmentPeer::DEP_UID);
+            $criteria->addSelectColumn(DepartmentPeer::DEP_TITLE);
 
             if ($departmentUidExclude != "") {
-                $criteria->add(\DepartmentPeer::DEP_UID, $departmentUidExclude, \Criteria::NOT_EQUAL);
+                $criteria->add(DepartmentPeer::DEP_UID, $departmentUidExclude, Criteria::NOT_EQUAL);
             }
 
-            $criteria->add(\DepartmentPeer::DEP_TITLE, $departmentTitle, \Criteria::EQUAL);
+            $criteria->add(DepartmentPeer::DEP_TITLE, $departmentTitle, Criteria::EQUAL);
 
-            $rsCriteria = \DepartmentPeer::doSelectRS($criteria);
+            $rsCriteria = DepartmentPeer::doSelectRS($criteria);
 
             return ($rsCriteria->next())? true : false;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -46,18 +51,17 @@ class Department
      *
      * @param string $departmentUid
      * @param string $userUid
-     *
-     * return void Throw exception user not exists
+     * @return void Throw exception user not exists
      */
     private function throwExceptionUserNotExistsInDepartment($departmentUid, $userUid)
     {
         try {
-            $user = \UsersPeer::retrieveByPK($userUid);
+            $user = UsersPeer::retrieveByPK($userUid);
 
             if (is_null($user) || $user->getDepUid() != $departmentUid) {
-                throw new \Exception(\G::LoadTranslation('ID_USER_NOT_EXIST_DEPARTMENT', [$userUid]));
+                throw new Exception(G::LoadTranslation('ID_USER_NOT_EXIST_DEPARTMENT', [$userUid]));
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -68,16 +72,15 @@ class Department
      * @param string $departmentTitle       Title
      * @param string $fieldNameForException Field name for the exception
      * @param string $departmentUidExclude  Unique id of Department to exclude
-     *
-     * return void Throw exception if exists the title of a Department
+     * @return void Throw exception if exists the title of a Department
      */
     public function throwExceptionIfExistsTitle($departmentTitle, $fieldNameForException, $departmentUidExclude = "")
     {
         try {
             if ($this->existsTitle($departmentTitle, $departmentUidExclude)) {
-                throw new \Exception(\G::LoadTranslation("ID_DEPARTMENT_TITLE_ALREADY_EXISTS", array($fieldNameForException, $departmentTitle)));
+                throw new Exception(G::LoadTranslation("ID_DEPARTMENT_TITLE_ALREADY_EXISTS", array($fieldNameForException, $departmentTitle)));
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -89,7 +92,6 @@ class Department
      * @param array  $arrayVariableNameForException Variable name for exception
      * @param bool   $throwException Flag to throw the exception if the main parameters are invalid or do not exist
      *                               (TRUE: throw the exception; FALSE: returns FALSE)
-     *
      * @return array Returns an array with Department record, ThrowTheException/FALSE otherwise
      */
     public function getDepartmentRecordByPk(
@@ -98,11 +100,11 @@ class Department
         $throwException = true
     ) {
         try {
-            $obj = \DepartmentPeer::retrieveByPK($departmentUid);
+            $obj = DepartmentPeer::retrieveByPK($departmentUid);
 
             if (is_null($obj)) {
                 if ($throwException) {
-                    throw new \Exception(\G::LoadTranslation(
+                    throw new Exception(G::LoadTranslation(
                         'ID_DEPARTMENT_NOT_EXIST', [$arrayVariableNameForException['$departmentUid'], $departmentUid]
                     ));
                 } else {
@@ -111,8 +113,8 @@ class Department
             }
 
             //Return
-            return $obj->toArray(\BasePeer::TYPE_FIELDNAME);
-        } catch (\Exception $e) {
+            return $obj->toArray(BasePeer::TYPE_FIELDNAME);
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -121,14 +123,11 @@ class Department
      * Get list for Departments
      *
      * @access public
-     * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
-     * @copyright Colosa - Bolivia
-     *
      * @return array
      */
     public function getDepartments()
     {
-        $oDepartment = new \Department();
+        $oDepartment = new DepartmentModel();
         $aDepts = $oDepartment->getDepartments('');
         foreach ($aDepts as &$depData) {
             $depData['DEP_CHILDREN'] = $this->getChildren($depData);
@@ -142,15 +141,14 @@ class Department
      *
      * @param string $departmentUid Unique id of Department
      * @param array  $arrayData     Data
-     *
      * return array Return data of the User assigned to Department
      */
     public function assignUser($departmentUid, array $arrayData)
     {
         try {
             //Verify data
-            $process = new \ProcessMaker\BusinessModel\Process();
-            $validator = new \ProcessMaker\BusinessModel\Validator();
+            $process = new Process();
+            $validator = new Validator();
 
             $validator->throwExceptionIfDataIsNotArray($arrayData, "\$arrayData");
             $validator->throwExceptionIfDataIsEmpty($arrayData, "\$arrayData");
@@ -172,14 +170,14 @@ class Department
             );
 
             //Verify data
-            $departmentUid = \ProcessMaker\BusinessModel\Validator::depUid($departmentUid);
+            $departmentUid = Validator::depUid($departmentUid);
 
             $process->throwExceptionIfDataNotMetFieldDefinition($arrayData, $arrayUserFieldDefinition, $arrayUserFieldNameForException, true);
 
             $process->throwExceptionIfNotExistsUser($arrayData["USR_UID"], $arrayUserFieldNameForException["userUid"]);
 
             //Assign User
-            $department = new \Department();
+            $department = new DepartmentModel();
 
             $department->load($departmentUid);
 
@@ -192,7 +190,7 @@ class Department
             $arrayData = array_change_key_case($arrayData, CASE_LOWER);
 
             return $arrayData;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -201,9 +199,6 @@ class Department
      * Post Unassign User
      *
      * @access public
-     * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
-     * @copyright Colosa - Bolivia
-     *
      * @return void
      */
     public function unassignUser($dep_uid, $usr_uid)
@@ -213,7 +208,7 @@ class Department
 
         $this->throwExceptionUserNotExistsInDepartment($dep_uid, $usr_uid);
 
-        $dep = new \Department();
+        $dep = new DepartmentModel();
         $dep->load( $dep_uid );
         $manager = $dep->getDepManager();
         $dep->removeUserFromDepartment( $dep_uid, $usr_uid );
@@ -229,7 +224,6 @@ class Department
      * Get custom record
      *
      * @param array $record Record
-     *
      * @return array Return an array with custom record
      */
     private function __getUserCustomRecordFromRecord(array $record)
@@ -248,7 +242,7 @@ class Department
             }
 
             return $recordc;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -266,7 +260,6 @@ class Department
      * @param bool   $flagRecord      Flag that set the "getting" of record
      * @param bool   $throwException  Flag to throw the exception (This only if the parameters are invalid)
      *                                (TRUE: throw the exception; FALSE: returns FALSE)
-     *
      * @return array Return an array with all Users of a Department, ThrowTheException/FALSE otherwise
      */
     public function getUsers(
@@ -288,14 +281,14 @@ class Department
             //Verify data and Set variables
             $flagFilter = !is_null($arrayFilterData) && is_array($arrayFilterData) && isset($arrayFilterData['filter']);
 
-            $result = \ProcessMaker\BusinessModel\Validator::validatePagerDataByPagerDefinition(
+            $result = Validator::validatePagerDataByPagerDefinition(
                 ['$start' => $start, '$limit' => $limit],
                 ['$start' => '$start', '$limit' => '$limit']
             );
 
             if ($result !== true) {
                 if ($throwException) {
-                    throw new \Exception($result);
+                    throw new Exception($result);
                 } else {
                     return false;
                 }
@@ -336,22 +329,23 @@ class Department
             }
 
             //Query
-            $criteria = new \Criteria('workflow');
+            $criteria = new Criteria('workflow');
 
-            $criteria->addSelectColumn(\UsersPeer::USR_UID);
-            $criteria->addSelectColumn(\UsersPeer::USR_USERNAME);
-            $criteria->addSelectColumn(\UsersPeer::USR_FIRSTNAME);
-            $criteria->addSelectColumn(\UsersPeer::USR_LASTNAME);
-            $criteria->addSelectColumn(\UsersPeer::USR_STATUS);
+            $criteria->addSelectColumn(UsersPeer::USR_UID);
+            $criteria->addSelectColumn(UsersPeer::USR_USERNAME);
+            $criteria->addSelectColumn(UsersPeer::USR_FIRSTNAME);
+            $criteria->addSelectColumn(UsersPeer::USR_LASTNAME);
+            $criteria->addSelectColumn(UsersPeer::USR_STATUS);
 
-            $criteria->add(\UsersPeer::USR_STATUS, 'CLOSED', \Criteria::NOT_EQUAL);
+            $criteria->add(UsersPeer::USR_STATUS, 'CLOSED', Criteria::NOT_EQUAL);
 
             switch ($option) {
                 case 'ASSIGNED':
-                    $criteria->add(\UsersPeer::DEP_UID, $departmentUid, \Criteria::EQUAL);
+                    $criteria->add(UsersPeer::DEP_UID, $departmentUid, Criteria::EQUAL);
                     break;
                 case 'AVAILABLE':
-                    $criteria->add(\UsersPeer::DEP_UID, '', \Criteria::EQUAL);
+                    $criteria->add(UsersPeer::DEP_UID, '', Criteria::EQUAL);
+                    $criteria->add(UsersPeer::USR_UID, RBAC::GUEST_USER_UID, Criteria::NOT_EQUAL);
                     break;
             }
 
@@ -367,24 +361,24 @@ class Department
                 ];
 
                 $criteria->add(
-                    $criteria->getNewCriterion(\UsersPeer::USR_USERNAME,  $search, \Criteria::LIKE)->addOr(
-                    $criteria->getNewCriterion(\UsersPeer::USR_FIRSTNAME, $search, \Criteria::LIKE)->addOr(
-                    $criteria->getNewCriterion(\UsersPeer::USR_LASTNAME,  $search, \Criteria::LIKE)))
+                    $criteria->getNewCriterion(UsersPeer::USR_USERNAME,  $search, Criteria::LIKE)->addOr(
+                    $criteria->getNewCriterion(UsersPeer::USR_FIRSTNAME, $search, Criteria::LIKE)->addOr(
+                    $criteria->getNewCriterion(UsersPeer::USR_LASTNAME,  $search, Criteria::LIKE)))
                 );
             }
 
             //Number records total
-            $numRecTotal = \UsersPeer::doCount($criteria);
+            $numRecTotal = UsersPeer::doCount($criteria);
 
             //Query
-            $conf = new \Configurations();
-            $sortFieldDefault = \UsersPeer::TABLE_NAME . '.' . $conf->userNameFormatGetFirstFieldByUsersTable();
+            $conf = new Configurations();
+            $sortFieldDefault = UsersPeer::TABLE_NAME . '.' . $conf->userNameFormatGetFirstFieldByUsersTable();
 
             if (!is_null($sortField) && trim($sortField) != '') {
                 $sortField = strtoupper($sortField);
 
-                if (in_array(\UsersPeer::TABLE_NAME . '.' . $sortField, $criteria->getSelectColumns())) {
-                    $sortField = \UsersPeer::TABLE_NAME . '.' . $sortField;
+                if (in_array(UsersPeer::TABLE_NAME . '.' . $sortField, $criteria->getSelectColumns())) {
+                    $sortField = UsersPeer::TABLE_NAME . '.' . $sortField;
                 } else {
                     $sortField = $sortFieldDefault;
                 }
@@ -406,8 +400,8 @@ class Department
                 $criteria->setLimit((int)($limit));
             }
 
-            $rsCriteria = \UsersPeer::doSelectRS($criteria);
-            $rsCriteria->setFetchmode(\ResultSet::FETCHMODE_ASSOC);
+            $rsCriteria = UsersPeer::doSelectRS($criteria);
+            $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
 
             while ($rsCriteria->next()) {
                 $record = $rsCriteria->getRow();
@@ -431,7 +425,7 @@ class Department
                 $filterName => ($flagFilter)? $arrayFilterData['filter'] : '',
                 'data'      => $arrayUser
             ];
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -440,9 +434,6 @@ class Department
      * Put Set Manager User
      *
      * @access public
-     * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
-     * @copyright Colosa - Bolivia
-     *
      * @return void
      */
     public function setManagerUser($dep_uid, $usr_uid)
@@ -450,23 +441,23 @@ class Department
         $dep_uid = Validator::depUid($dep_uid);
         $usr_uid = Validator::usrUid($usr_uid);
 
-        $oCriteria = new \Criteria( 'workflow' );
+        $oCriteria = new Criteria( 'workflow' );
         $oCriteria->addSelectColumn( DepartmentPeer::DEP_UID );
-        $oCriteria->add( DepartmentPeer::DEP_MANAGER, $usr_uid, \Criteria::EQUAL );
+        $oCriteria->add( DepartmentPeer::DEP_MANAGER, $usr_uid, Criteria::EQUAL );
 
         $oDataset = DepartmentPeer::doSelectRS( $oCriteria );
-        $oDataset->setFetchmode( \ResultSet::FETCHMODE_ASSOC );
+        $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
         if ($oDataset->next()) {
-            throw (new \Exception(\G::LoadTranslation("ID_DEPARTMENT_MANAGER_EXIST", array('usr_uid',$usr_uid))));
+            throw (new Exception(G::LoadTranslation("ID_DEPARTMENT_MANAGER_EXIST", array('usr_uid',$usr_uid))));
         }
 
         $editDepartment['DEP_UID'] = $dep_uid;
         $editDepartment['DEP_MANAGER'] = $usr_uid;
-        $oDept = new \Department();
+        $oDept = new DepartmentModel();
         $oDept->update( $editDepartment );
         $oDept->updateDepartmentManager( $dep_uid );
 
-        $oDept = new \Department();
+        $oDept = new DepartmentModel();
         $oDept->Load($dep_uid);
         $oDept->addUserToDepartment($dep_uid, $usr_uid, ($oDept->getDepManager() == "")? true : false, false);
         $oDept->updateDepartmentManager($dep_uid);
@@ -474,22 +465,19 @@ class Department
 
     /**
      * Get list for Departments
+     *
      * @var string $dep_uid. Uid for Department
-     *
      * @access public
-     * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
-     * @copyright Colosa - Bolivia
-     *
      * @return array
      */
     public function getDepartment($dep_uid)
     {
         $dep_uid = Validator::depUid($dep_uid);
-        $criteria = new \Criteria( 'workflow' );
-        $criteria->add( DepartmentPeer::DEP_UID, $dep_uid, \Criteria::EQUAL );
-        $con = \Propel::getConnection( DepartmentPeer::DATABASE_NAME );
+        $criteria = new Criteria( 'workflow' );
+        $criteria->add( DepartmentPeer::DEP_UID, $dep_uid, Criteria::EQUAL );
+        $con = Propel::getConnection( DepartmentPeer::DATABASE_NAME );
         $objects = DepartmentPeer::doSelect( $criteria, $con );
-        $oUsers = new \Users();
+        $oUsers = new Users();
 
         $node = array ();
         foreach ($objects as $oDepartment) {
@@ -513,14 +501,14 @@ class Department
                 $node['DEP_MANAGER_LASTNAME'] = '';
             }
 
-            $criteria = new \Criteria();
-            $criteria->add(UsersPeer::DEP_UID, $dep_uid, \Criteria::EQUAL );
+            $criteria = new Criteria();
+            $criteria->add(UsersPeer::DEP_UID, $dep_uid, Criteria::EQUAL );
             $node['DEP_MEMBERS'] = UsersPeer::doCount($criteria);
 
-            $criteriaCount = new \Criteria( 'workflow' );
+            $criteriaCount = new Criteria( 'workflow' );
             $criteriaCount->clearSelectColumns();
             $criteriaCount->addSelectColumn( 'COUNT(*)' );
-            $criteriaCount->add( DepartmentPeer::DEP_PARENT, $oDepartment->getDepUid(), \Criteria::EQUAL );
+            $criteriaCount->add( DepartmentPeer::DEP_PARENT, $oDepartment->getDepUid(), Criteria::EQUAL );
             $rs = DepartmentPeer::doSelectRS( $criteriaCount );
             $rs->next();
             $row = $rs->getRow();
@@ -532,13 +520,10 @@ class Department
 
     /**
      * Save Department
+     *
      * @var string $dep_data. Data for Process
      * @var string $create. Flag for create or update
-     *
      * @access public
-     * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
-     * @copyright Colosa - Bolivia
-     *
      * @return array
      */
     public function saveDepartment($dep_data, $create = true)
@@ -553,7 +538,7 @@ class Department
             unset($dep_data["DEP_UID"]);
         }
 
-        $oDepartment = new \Department();
+        $oDepartment = new DepartmentModel();
         if (isset($dep_data['DEP_UID']) && $dep_data['DEP_UID'] != '') {
             Validator::depUid($dep_data['DEP_UID']);
         }
@@ -580,7 +565,7 @@ class Department
             if (isset($dep_data['DEP_TITLE'])) {
                 $this->throwExceptionIfExistsTitle($dep_data["DEP_TITLE"], strtolower("DEP_TITLE"));
             } else {
-                throw (new \Exception(\G::LoadTranslation("ID_FIELD_REQUIRED", array('dep_title'))));
+                throw (new Exception(G::LoadTranslation("ID_FIELD_REQUIRED", array('dep_title'))));
             }
 
             $dep_uid = $oDepartment->create($dep_data);
@@ -594,41 +579,35 @@ class Department
      * @var string $dep_uid. Uid for department
      *
      * @access public
-     * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
-     * @copyright Colosa - Bolivia
-     *
      * @return array
      */
     public function deleteDepartment($dep_uid)
     {
         $dep_uid = Validator::depUid($dep_uid);
-        $oDepartment = new \Department();
+        $oDepartment = new DepartmentModel();
         $countUsers = $oDepartment->cantUsersInDepartment($dep_uid);
         if ($countUsers != 0) {
-            throw (new \Exception(\G::LoadTranslation("ID_CANT_DELETE_DEPARTMENT_HAS_USERS")));
+            throw (new Exception(G::LoadTranslation("ID_CANT_DELETE_DEPARTMENT_HAS_USERS")));
         }
         $dep_data = $this->getDepartment($dep_uid);
         if ($dep_data['has_children'] != 0) {
-            throw (new \Exception(\G::LoadTranslation("ID_CANT_DELETE_DEPARTMENT_HAS_CHILDREN")));
+            throw (new Exception(G::LoadTranslation("ID_CANT_DELETE_DEPARTMENT_HAS_CHILDREN")));
         }
         $oDepartment->remove($dep_uid);
     }
 
     /**
      * Look for Children for department
+     *
      * @var array $dataDep. Data for child department
-     *
      * @access public
-     * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
-     * @copyright Colosa - Bolivia
-     *
      * @return array
      */
     protected function getChildren ($dataDep)
     {
         $children = array();
         if ((int)$dataDep['HAS_CHILDREN'] > 0) {
-            $oDepartment = new \Department();
+            $oDepartment = new DepartmentModel();
             $aDepts = $oDepartment->getDepartments($dataDep['DEP_UID']);
             foreach ($aDepts as &$depData) {
                 $depData['DEP_CHILDREN'] = $this->getChildren($depData);
@@ -639,4 +618,3 @@ class Department
         return $children;
     }
 }
-

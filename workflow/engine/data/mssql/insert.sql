@@ -2065,7 +2065,7 @@ SELECT 'LABEL','ID_REASON','en','Reason','2016-10-20'
   UNION ALL
 SELECT 'LABEL','ID_NOTIFY','en','Notify','2016-10-20'
   UNION ALL
-SELECT 'JAVASCRIPT','ID_THE_REASON_REASSIGN_USER_EMPTY','en','Please complete the reassign reason.','2016-10-20'
+SELECT 'LABEL','ID_THE_REASON_REASSIGN_USER_EMPTY','en','Please complete the reassign reason.','2016-10-20'
   UNION ALL
 SELECT 'LABEL','ID_PRIORITY_VH','en','VERY HIGH','2014-01-15' 
   UNION ALL
@@ -3725,7 +3725,7 @@ SELECT 'LABEL','ID_FIRSTNAME','en','First Name','2014-01-15'
   UNION ALL
 SELECT 'LABEL','ID_LASTNAME','en','Last Name','2014-01-15' 
   UNION ALL
-SELECT 'LABEL','ID_REASSIGNMENT_SUCCESS','en','The case #{APP_NUMBER} was reassigned to user {USER} successfully!','2014-01-15' 
+SELECT 'LABEL','ID_REASSIGNMENT_SUCCESS','en','Case #{APP_NUMBER} was reassigned to user {USER}.','2014-01-15'
   UNION ALL
 SELECT 'LABEL','ID_REASSIGN_CONFIRM','en','Are you sure to reassign the current case?','2014-01-15' 
   UNION ALL
@@ -10751,7 +10751,7 @@ SELECT 'LABEL','ID_SCRIPT_TASK_ACTIVITY_ALREADY_REGISTERED','en','The Script-Tas
   UNION ALL
 SELECT 'LABEL','ID_CASE_CANCELLED_PARALLEL','en','To cancel a case, no parallel threads must be active. Only cases with one active thread can be canceled.','2016-08-11' 
   UNION ALL
-SELECT 'LABEL','ID_REASSIGNMENT_ERROR','en','The case was already derivated to other person. Try to open again the case to reassign.','2016-08-12' 
+SELECT 'LABEL','ID_REASSIGNMENT_ERROR','en','The case has already been routed or assigned to another person. Try to open the case again to reassign it.','2016-08-12'
   UNION ALL
 SELECT 'LABEL','ID_REASSIGNMENT_PAUSED_ERROR','en','The case is paused and can''t be reasigned.','2016-08-12' 
   UNION ALL

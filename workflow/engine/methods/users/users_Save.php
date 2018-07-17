@@ -276,7 +276,7 @@ try {
     //Save Calendar assigment
     if ((isset( $form['USR_CALENDAR'] ))) {
         //Save Calendar ID for this user
-        G::LoadClass( "calendar" );
+
         $calendarObj = new Calendar();
         $calendarObj->assignCalendarTo( $aData['USR_UID'], $form['USR_CALENDAR'], 'USER' );
     }

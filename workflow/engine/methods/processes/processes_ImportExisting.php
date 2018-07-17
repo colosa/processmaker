@@ -23,8 +23,6 @@
  */
 
 try {
-    //load the variables
-    G::LoadClass( 'processes' );
     $oProcess = new Processes();
 
     if (! isset( $_POST['form']['IMPORT_OPTION'] )) {

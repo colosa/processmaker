@@ -42,7 +42,6 @@ function sendJsonResultGeneric ($response, $callback)
 function getNotesList ()
 {
     extract( getExtJSParams() );
-    require_once ("classes/model/AppNotes.php");
     if ((isset( $_REQUEST['appUid'] )) && (trim( $_REQUEST['appUid'] ) != "")) {
         $appUid = $_REQUEST['appUid'];
     } else {
@@ -64,7 +63,6 @@ function postNote ()
         $appUid = $_SESSION['APPLICATION'];
     }
     $usrUid = (isset( $_SESSION['USER_LOGGED'] )) ? $_SESSION['USER_LOGGED'] : "";
-    require_once ("classes/model/AppNotes.php");
 
     $noteContent = addslashes( $_POST['noteText'] );
 

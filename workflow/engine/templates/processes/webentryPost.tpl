@@ -35,6 +35,12 @@ try {
     $a->next();
     $row = $a->getRow();
     $swpmdynaform = isset($row) && $row["DYN_VERSION"] == 2;
+
+    //If no variables are submitted and the $_POST variable is empty
+    if (!isset($_POST['form'])) {
+        $_POST['form'] = array();
+    }
+
     if ($swpmdynaform) {
         $pmdynaform = $_POST["form"];
     }
@@ -59,8 +65,6 @@ try {
         {USR_VAR}
 
         if ($USR_UID == -1) {
-            G::LoadClass("sessions");
-
             global $sessionId;
 
             $sessions = new Sessions();
@@ -153,7 +157,7 @@ try {
         $result = ws_routeCase($caseId, 1);
         $assign = $result->message;
 
-        $aMessage["MESSAGE"] = "<br />Case created in ProcessMaker<br />Case Number: $caseNr <br />Case Id: $caseId<br />Case derivated to: $assign";
+        $aMessage["MESSAGE"] = "<br />Case created in ProcessMaker<br />Case Number: $caseNr <br />Case Id: $caseId<br />Case routed to: $assign";
     } else {
         $aMessage["MESSAGE"] = "<font color=\"red\">
                                 An error occurred while the application was being processed.<br />
@@ -169,14 +173,35 @@ try {
     * you can change it or redirect to another page
     * i.e. G::header("Location: http://www.processmaker.com");
     */
+	 /*----------------------------------********---------------------------------*/
+     $_POST['__notValidateThisFields__'] = (isset( $_POST['__notValidateThisFields__'] ) && $_POST['__notValidateThisFields__'] != '') ? $_POST['__notValidateThisFields__'] : $_POST['DynaformRequiredFields'];
+     if ($missing_req_values = $oForm->validateRequiredFields( $_POST['form'], Bootstrap::json_decode( stripslashes( $_POST['__notValidateThisFields__'] ) ) )) {
+        $fieldsRequired = Bootstrap::json_decode(str_replace(array("%27", "%39"), array("\"", "'"), $_POST["DynaformRequiredFields"]));
+
+        foreach ($fieldsRequired as $key1 => $value1) {
+           foreach ($missing_req_values as $key2 => $value2) {
+                if ($value1->name == $value2) {
+                    $missing_req_values[$key2] = $value1->label;
+                }
+           }
+        }
+
+        $_POST['next_step']['PAGE'] = "";
+        $_POST['previous_step']['PAGE'] = $_SERVER['HTTP_REFERER'];
+        $_POST['req_val'] = $missing_req_values;
+
+        global $G_PUBLISH;
+        $G_PUBLISH = new Publisher();
+        $G_PUBLISH->AddContent( 'view', 'cases/missRequiredFields' );
+        G::RenderPage( 'publish', 'blank' );
+        exit( 0 );
+    }
 	/*----------------------------------********---------------------------------*/
-    $G_PUBLISH = new Publisher();
-    $G_PUBLISH->AddContent("xmlform", "xmlform", "login/showInfo", "", $aMessage);
-    G::RenderPage("publish", "blank");
+    $_SESSION["__webEntrySuccess__"] = $aMessage;
+    G::header("location:{weTitle}Info.php");
 } catch (Exception $e) {
-    $G_PUBLISH = new Publisher();
     $suggest_message = "This web entry should be regenerated, please contact to your system administrator.";
     $aMessage["MESSAGE"] = "<font color=\"red\"><pre>" . $e->getMessage() . "</pre>" . $suggest_message . "</font>";
-    $G_PUBLISH->AddContent("xmlform", "xmlform", "login/showMessage", "", $aMessage);
-    G::RenderPage("publish", "blank");
+    $_SESSION["__webEntryError__"] = $aMessage;
+    G::header("location:{weTitle}Info.php");
 }

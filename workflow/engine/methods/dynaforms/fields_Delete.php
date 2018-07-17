@@ -27,9 +27,6 @@ if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1) {
 
     //G::genericForceLogin( 'WF_MYINFO' , 'login/noViewPage', $urlLogin = 'login/login' );
 
-
-G::LoadClass( 'dynaFormField' );
-
 if (! (isset( $_POST['A'] ) && $_POST['A'] !== '')) {
     return;
 }
@@ -47,7 +44,6 @@ if (! isset( $_POST['XMLNODE_NAME'] )) {
 
 $fields->Delete( $_POST['XMLNODE_NAME'] );
 
-G::LoadClass( 'xmlDb' );
 $i = 0;
 $aFields = array ();
 $aFields[] = array ('XMLNODE_NAME' => 'char','TYPE' => 'char','UP' => 'char','DOWN' => 'char');

@@ -24,8 +24,7 @@
 if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1) {
     return $RBAC_Response;
 }
-G::LoadClass( 'reportTables' );
-G::LoadClass( 'xmlfield_InputPM' );
+
 $aFields['FIELDS'] = array ();
 if (isset( $_GET['REP_TAB_UID'] )) {
     $oReportTable = new ReportTable();

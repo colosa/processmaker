@@ -36,7 +36,6 @@ $G_ID_SUB_MENU_SELECTED = 'CALENDAR';
 
 $G_PUBLISH = new Publisher();
 
-G::LoadClass( 'configuration' );
 $c = new Configurations();
 $configPage = $c->getConfiguration( 'calendarList', 'pageSize', '', $_SESSION['USER_LOGGED'] );
 $Config['pageSize'] = isset( $configPage['pageSize'] ) ? $configPage['pageSize'] : 20;

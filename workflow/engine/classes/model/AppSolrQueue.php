@@ -110,7 +110,7 @@ class AppSolrQueue extends BaseAppSolrQueue
             $row = $rs->getRow();
 
             while (is_array( $row )) {
-                $appSolrQueue = Entity_AppSolrQueue::createEmpty();
+                $appSolrQueue = EntityAppSolrQueue::createEmpty();
                 $appSolrQueue->appUid = $row["APP_UID"];
                 $appSolrQueue->appChangeDate = $row["APP_CHANGE_DATE"];
                 $appSolrQueue->appChangeTrace = $row["APP_CHANGE_TRACE"];

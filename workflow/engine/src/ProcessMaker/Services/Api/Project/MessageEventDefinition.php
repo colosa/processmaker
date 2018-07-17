@@ -80,12 +80,19 @@ class MessageEventDefinition extends Api
     }
 
     /**
+     * Create message event definition.
+     * 
      * @url POST /:prj_uid/message-event-definition
-     *
+     * @status 201
+     * 
      * @param string $prj_uid      {@min 32}{@max 32}
      * @param array  $request_data
-     *
-     * @status 201
+     * 
+     * @return array
+     * @throws RestException
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPostMessageEventDefinition($prj_uid, array $request_data)
     {
@@ -101,11 +108,18 @@ class MessageEventDefinition extends Api
     }
 
     /**
+     * Update message event definition.
+     *
      * @url PUT /:prj_uid/message-event-definition/:msged_uid
      *
      * @param string $prj_uid      {@min 32}{@max 32}
      * @param string $msged_uid    {@min 32}{@max 32}
      * @param array  $request_data
+     *
+     * @throws RestException
+     *
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPutMessageEventDefinition($prj_uid, $msged_uid, array $request_data)
     {
@@ -118,6 +132,8 @@ class MessageEventDefinition extends Api
 
     /**
      * @url DELETE /:prj_uid/message-event-definition/:msged_uid
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      *
      * @param string $prj_uid   {@min 32}{@max 32}
      * @param string $msged_uid {@min 32}{@max 32}

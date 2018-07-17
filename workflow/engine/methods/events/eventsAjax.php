@@ -11,7 +11,7 @@ switch($req){
         */
         $sDataBase = 'database_' . strtolower(DB_ADAPTER);
         if (G::LoadSystemExist($sDataBase)) {
-            G::LoadSystem($sDataBase);
+
             $oDataBase = new database();
             $sConcat = $oDataBase->concatString("USR_FIRSTNAME", "' '" , "USR_LASTNAME") ;
         }
@@ -36,7 +36,6 @@ switch($req){
         global $_DBArray;
         $_DBArray['virtualtable']   = $aRows;
         $_SESSION['_DBArray'] = $_DBArray;
-        G::LoadClass('ArrayPeer');
         $oCriteria = new Criteria('dbarray');
         $oCriteria->setDBArrayTable('virtualtable');
         $G_PUBLISH = new Publisher();
@@ -44,7 +43,6 @@ switch($req){
         G::RenderPage('publish', 'raw');
         break;
     case 'showGroups':
-        G::LoadClass('groups');
         $groups = new Groups();
         $allGroups= $groups->getAllGroups();
 
@@ -57,7 +55,6 @@ switch($req){
         global $_DBArray;
         $_DBArray['virtualtable']   = $aRows;
         $_SESSION['_DBArray'] = $_DBArray;
-        G::LoadClass('ArrayPeer');
         $oCriteria = new Criteria('dbarray');
         $oCriteria->setDBArrayTable('virtualtable');
         $G_PUBLISH = new Publisher();
@@ -65,7 +62,6 @@ switch($req){
         G::RenderPage('publish', 'raw');
         break;
     case 'showDynavars':
-        G::LoadClass('xmlfield_InputPM');
         $dynaformFields = getDynaformsVars($_SESSION['PROCESS'], false, false);
         $fields = array(array('id' => 'char', 'dynaform' => 'char', 'name' => 'char'));
         foreach ($dynaformFields as $dynaformField) {
@@ -75,7 +71,6 @@ switch($req){
         global $_DBArray;
         $_DBArray['virtualtable'] = $fields;
         $_SESSION['_DBArray'] = $_DBArray;
-        G::LoadClass('ArrayPeer');
         $oCriteria = new Criteria('dbarray');
         $oCriteria->setDBArrayTable('virtualtable');
         $G_PUBLISH = new Publisher();

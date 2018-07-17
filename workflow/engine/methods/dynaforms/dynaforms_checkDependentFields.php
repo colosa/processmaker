@@ -28,7 +28,7 @@
  * also the functionality of dependent fields in grids doesn't depends in this
  * file so this is somewhat expendable.
  */
-G::LoadSystem('inputfilter');
+
 $filter = new InputFilter();
 $_POST = $filter->xssFilterHard($_POST);
 
@@ -73,7 +73,7 @@ $formValues = (Bootstrap::json_decode( $_POST['fields'] ));
 $sFieldName = $_POST['fieldName'];
 $sMasterField = '';
 $sPath = PATH_DYNAFORM;
-$G_FORM = new form( $sDynUid, $sPath );
+$G_FORM = new Form( $sDynUid, $sPath );
 $aux = array ();
 $newValues = Bootstrap::json_decode( urlDecode( stripslashes( $_POST['form'] ) ) );
 

@@ -1,5 +1,7 @@
 <?php
 
+use ProcessMaker\Plugins\PluginRegistry;
+
 class caseSchedulerProxy extends HttpProxyController
 {
 
@@ -14,8 +16,7 @@ class caseSchedulerProxy extends HttpProxyController
         $sch_uid = $oData['EVN_ACTION'];
 
         if ($sch_uid != '') {
-            G::LoadClass( 'processMap' );
-            $oProcessMap = new processMap( new DBConnection() );
+            $oProcessMap = new ProcessMap( new DBConnection() );
             $rows = $oProcessMap->caseNewSchedulerList( $sch_uid );
             if ($rows['SCH_OPTION'] == '3') {
                 $sch_start_day = explode( '|', $rows['SCH_START_DAY'] );
@@ -114,11 +115,7 @@ class caseSchedulerProxy extends HttpProxyController
         $messageCode = true;
         $message = $result->message;
 
-        G::LoadClass( 'Task' );
-        //G::LoadClass ( 'Event' );
-        G::LoadClass( 'User' );
-        G::LoadClass( 'TaskUser' );
-        G::LoadClass( 'Groupwf' );
+
 
         $event = new Event();
         $event->load( $sEVN_UID );
@@ -128,9 +125,6 @@ class caseSchedulerProxy extends HttpProxyController
         $task->load( $sTASKS );
         $sTASKS_SEL = $task->getTasTitle();
 
-        if (! class_exists( 'GroupUser' )) {
-            G::LoadClass( 'GroupUser' );
-        }
         // if the user has been authenticated, then check if has the rights or
         // permissions to create the webentry
         if ($result->status_code == 0) {
@@ -515,11 +509,11 @@ class caseSchedulerProxy extends HttpProxyController
 
         if ((isset( $_POST['form']['CASE_SH_PLUGIN_UID'] )) && ($_POST['form']['CASE_SH_PLUGIN_UID'] != "")) {
             $params = explode( "--", $_REQUEST['form']['CASE_SH_PLUGIN_UID'] );
-            $oPluginRegistry = & PMPluginRegistry::getSingleton();
+            $oPluginRegistry = PluginRegistry::loadSingleton();
             $activePluginsForCaseScheduler = $oPluginRegistry->getCaseSchedulerPlugins();
-
-            foreach ($activePluginsForCaseScheduler as $key => $caseSchedulerPluginDetail) {
-                if (($caseSchedulerPluginDetail->sNamespace == $params[0]) && ($caseSchedulerPluginDetail->sActionId == $params[1])) {
+            /** @var \ProcessMaker\Plugins\Interfaces\CaseSchedulerPlugin $caseSchedulerPluginDetail */
+            foreach ($activePluginsForCaseScheduler as $caseSchedulerPluginDetail) {
+                if (($caseSchedulerPluginDetail->equalNamespaceTo($params[0])) && ($caseSchedulerPluginDetail->equalActionIdTo($params[1]))) {
                     $caseSchedulerSelected = $caseSchedulerPluginDetail;
                 }
             }
@@ -527,7 +521,7 @@ class caseSchedulerProxy extends HttpProxyController
                 //Save the form
                 $oData = $_POST['pluginFields'];
                 $oData['SCH_UID'] = $aData['SCH_UID'];
-                $oPluginRegistry->executeMethod( $caseSchedulerPluginDetail->sNamespace, $caseSchedulerPluginDetail->sActionSave, $oData );
+                $oPluginRegistry->executeMethod( $caseSchedulerPluginDetail->getNamespace(), $caseSchedulerPluginDetail->getActionSave(), $oData );
             }
         }
 

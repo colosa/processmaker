@@ -1,0 +1,4 @@
+syntax: regexp
+^website$
+^build$
+^vendor/

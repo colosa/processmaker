@@ -38,7 +38,6 @@ try {
     require_once 'classes/model/Step.php';
     $oStep = new Step();
     $aFields = $oStep->load( $_GET['UID'] );
-    G::LoadClass( 'xmlfield_InputPM' );
     $G_PUBLISH = new Publisher();
     $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'steps/conditions_Edit', '', $aFields, '../steps/conditions_Save' );
     G::RenderPage( 'publish-raw', 'raw' );

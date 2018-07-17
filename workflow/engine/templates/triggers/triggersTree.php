@@ -24,13 +24,11 @@
  */
 
 try {
-    G::LoadClass("tree");
-    G::LoadClass("triggerLibrary");
 
-    $triggerLibrary = triggerLibrary::getSingleton();
+    $triggerLibrary = TriggerLibrary::getSingleton();
     $triggerLibraryO = $triggerLibrary->getRegisteredClasses();
 
-    $oTree = new Tree();
+    $oTree = new PmTree();
     $oTree->nodeType = "blank";
     $oTree->name = "Triggers";
     $oTree->showSign = false;

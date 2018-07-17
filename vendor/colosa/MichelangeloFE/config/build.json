@@ -57,12 +57,13 @@
             "src/pm_participant.js",
             "src/participant_resize_behavior.js",
             "src/pm_pool_resize_behavior.js",
+            "src/pm_pool_drop_behavior.js",
             "src/pm_pool.js",
             "src/pm_lane.js",
             "src/pm_command_create_lane.js",
             "src/pm_command_add_to_lane.js",
             "src/pm_container_drop_behavior.js",
-            "src/pool_container_behavior.js",                      
+            "src/pool_container_behavior.js",
             "src/pm_command_pool_resize.js",
             "src/pm_lane_resize_behavior.js",
             "src/pm_lane_container_behavior.js",
@@ -138,7 +139,8 @@
             // CROWN
             "src/crown/crown.js",
             "src/crown/itemCrown.js",
-            "src/crown/modelCrown.js"
+            "src/crown/modelCrown.js",
+            "src/enviroment/constants.js"
         ]
     },
     //Css library

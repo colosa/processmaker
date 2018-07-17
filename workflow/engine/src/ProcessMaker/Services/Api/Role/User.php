@@ -72,9 +72,9 @@ class User extends Api
     }
 
     /**
+     * @url DELETE /:rol_uid/user/:usr_uid
      * @access protected
      * @class  AccessControl {@permission PM_USERS}
-     * @url DELETE /:rol_uid/user/:usr_uid
      *
      * @param string $rol_uid {@min 32}{@max 32}
      * @param string $usr_uid {@min 32}{@max 32}

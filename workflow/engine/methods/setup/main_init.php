@@ -93,7 +93,7 @@ $oHeadPublisher->assign( "tabActive", $tabActive );
 $oHeadPublisher->assign( "tabItems", $tabItems );
 $oHeadPublisher->assign( "_item_selected", (($adminSelected != null) ? $adminSelected : "") );
 
-$oServerConf = & serverConf::getSingleton();
+$oServerConf = & ServerConf::getSingleton();
 if ($oServerConf->isRtl( SYS_LANG )) {
     $regionTreePanel = 'east';
     $regionDebug = 'west';

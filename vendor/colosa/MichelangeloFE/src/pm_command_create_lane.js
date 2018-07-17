@@ -3,35 +3,45 @@
  * @class BPMNCommandCreateLane
  * @constructor
  */
-var PMCommandCreateLane = function (receiver) {
-    var NewObj = function (receiver) {
-        PMUI.command.CommandCreate.call(this, receiver);
-    };
+var PMCommandCreateLane = function (settngs) {
+    PMUI.command.Command.call(this, settngs);
+};
 
-    NewObj.prototype = new PMUI.command.CommandCreate(receiver);
-    /**
-     * Type of command of this object
-     * @type {String}
-     */
-    NewObj.prototype.type = 'PMCommandCreateLane';
-    /**
-     * Executes the command
-     */
-    NewObj.prototype.execute = function () {
-        PMUI.command.CommandCreate.prototype.execute.call(this);
-        this.receiver.parent.setLanePositionAndDimension(this.receiver);
-    };
-    /**
-     * Inverse executes the command a.k.a. undo
-     */
-    NewObj.prototype.undo = function () {
-        PMUI.command.CommandCreate.prototype.undo.call(this);
-        this.receiver.parent.bpmnLanes.remove(this.receiver);
-        this.receiver.parent.updateOnRemoveLane(this.receiver);
-    };
-    NewObj.prototype.redo = function () {
-        this.execute();
-        return this;
-    };
-    return new NewObj(receiver);
+PMCommandCreateLane.prototype = new PMUI.command.Command({});
+/**
+ * Type of command of this object
+ * @type {String}
+ */
+PMCommandCreateLane.prototype.type = 'PMCommandCreateLane';
+
+/**
+ * Executes the command
+ */
+PMCommandCreateLane.prototype.execute = function () {
+    var pool = this.receiver.pool,
+        lane = this.receiver.lane;
+
+    pool.addElement(lane, this.receiver.x, this.receiver.y, lane.topLeftOnCreation);
+    lane.showOrHideResizeHandlers(false);
+    lane.canvas.triggerCreateEvent(lane, []);
+    if (lane instanceof PMLane) {
+        pool.setLanePositionAndDimension(lane);
+    }
+};
+/**
+ * Inverse executes the command a.k.a. undo
+ */
+PMCommandCreateLane.prototype.undo = function () {
+    var pool = this.receiver.pool,
+        lane = this.receiver.lane;
+
+    pool.removeElement(lane);
+};
+/**
+ * Re-executes the command.
+ * @returns {BPMNCommandCreateLane}
+ */
+PMCommandCreateLane.prototype.redo = function () {
+    this.execute();
+    return this;
 };

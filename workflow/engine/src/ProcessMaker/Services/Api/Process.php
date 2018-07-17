@@ -63,6 +63,17 @@ class Process extends Api
         return $response;
     }
 
+    /**
+     * Create process
+     * 
+     * @param array $request_data
+     * 
+     * @return array
+     * @throws RestException 
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
+     */
     public function post($request_data = null)
     {
         defined('SYS_LANG') || define("SYS_LANG", $request_data["lang"]);
@@ -78,6 +89,18 @@ class Process extends Api
         }
     }
 
+    /**
+     * Update a process by UID.
+     *
+     * @param string $processUid
+     * @param array $request_data
+     *
+     * @return array
+     * @throws RestException
+     *
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
+     */
     public function put($processUid, $request_data = null)
     {
         $response = array();

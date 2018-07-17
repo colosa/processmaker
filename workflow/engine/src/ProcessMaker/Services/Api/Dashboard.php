@@ -220,12 +220,18 @@ class Dashboard extends Api
     }
 
     /**
+     * Create dashboard.
+     * 
      * @url POST
-     *
-     * @param array $request_data
-     *
-     *
      * @status 201
+     * 
+     * @param array $request_data
+     * 
+     * @return integer
+     * @throws RestException 
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_DASHBOARD}
      */
     public function doPostDashboard($request_data)
     {
@@ -242,11 +248,15 @@ class Dashboard extends Api
     /**
      * Put dashboards configuration
      *
-     * @param array $request_data
-     *
-     *
      * @url PUT
      *
+     * @param array $request_data
+     *
+     * @return string
+     * @throws RestException
+     *
+     * @access protected
+     * @class AccessControl {@permission PM_DASHBOARD}
      */
     public function doPutDashboard($request_data)
     {
@@ -262,6 +272,8 @@ class Dashboard extends Api
 
     /**
      * @url DELETE /:das_uid
+     * @access protected
+     * @class AccessControl {@permission PM_DASHBOARD}
      *
      * @param string $das_uid  {@min 32}{@max 32}
      *
@@ -279,12 +291,18 @@ class Dashboard extends Api
     }
 
     /**
-     * @param array $request_data
-     *
-     *
+     * Create owner
+     * 
      * @url POST /owner
-     *
      * @status 201
+     * 
+     * @param array $request_data
+     * 
+     * @return object
+     * @throws RestException 
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_DASHBOARD}
      */
     public function doPostOwner($request_data)
     {
@@ -300,6 +318,8 @@ class Dashboard extends Api
 
     /**
      * @url DELETE /:das_uid/owner/:owner_uid
+     * @access protected
+     * @class AccessControl {@permission PM_DASHBOARD}
      *
      * @param string $das_uid  {@min 32}{@max 32}
      * @param string $owner_uid  {@min 32}{@max 32}
@@ -317,12 +337,18 @@ class Dashboard extends Api
     }
 
     /**
-     * @param array $request_data
-     *
-     *
+     * Create indicator.
+     * 
      * @url POST /indicator
-     *
      * @status 201
+     * 
+     * @param array $request_data
+     * 
+     * @return string
+     * @throws RestException 
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_DASHBOARD}
      */
     public function doPostIndicator($request_data)
     {
@@ -341,8 +367,11 @@ class Dashboard extends Api
      *
      * @param array $request_data
      *
-     * @url PUT /indicator
+     * @return string
+     * @throws RestException
      *
+     * @class AccessControl {@permission PM_DASHBOARD}
+     * @access protected
      */
     public function doPutIndicator($request_data)
     {
@@ -358,6 +387,8 @@ class Dashboard extends Api
 
     /**
      * @url DELETE /indicator/:ind_uid
+     * @access protected
+     * @class AccessControl {@permission PM_DASHBOARD}
      *
      * @param string $ind_uid  {@min 32}{@max 32}
      *
@@ -376,10 +407,15 @@ class Dashboard extends Api
     /**
      * Post dashboards configuration by userUid
      *
-     * @param array $request_data
-     *
      * @url POST /config/
-     *
+     * 
+     * @param array $request_data
+     * 
+     * @return integer
+     * @throws RestException 
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_DASHBOARD}
      */
     public function doPostDashboardConfigByUsrUid($request_data)
     {
@@ -416,10 +452,15 @@ class Dashboard extends Api
     /**
      * Put dashboards configuration by usr_uid
      *
-     * @param array $request_data
-     *
      * @url PUT /config
      *
+     * @param array $request_data
+     *
+     * @return array
+     * @throws RestException
+     *
+     * @access protected
+     * @class AccessControl {@permission PM_DASHBOARD}
      */
     public function doPutDashboardConfigByUsrUid($request_data)
     {

@@ -22,6 +22,9 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  *
  */
+
+use ProcessMaker\Plugins\PluginRegistry;
+
 global $G_TMP_MENU;
 global $RBAC;
 $partnerFlag = (defined('PARTNER_FLAG')) ? PARTNER_FLAG : false;
@@ -59,16 +62,6 @@ if ($RBAC->userCanAccess('PM_SETUP') === 1) {
     }
 }
 
-if ($RBAC->userCanAccess('PM_SETUP_ADVANCE') === 1) {
-    if ($RBAC->userCanAccess('PM_SETUP_LANGUAGE') === 1) {
-        $G_TMP_MENU->AddIdRawOption(
-            'LANGUAGES', 'languages',
-            G::LoadTranslation('ID_LANGUAGES'),
-            'icon-language.png','', 'settings'
-        );
-    }
-}
-
 if ($RBAC->userCanAccess('PM_SETUP') === 1) {
     if ($RBAC->userCanAccess('PM_SETUP_SKIN') === 1) {
         $G_TMP_MENU->AddIdRawOption(
@@ -99,14 +92,6 @@ if ($RBAC->userCanAccess('PM_SETUP') === 1) {
     }
 }
 
-if ($RBAC->userCanAccess('PM_SETUP_ADVANCE') === 1) {
-    $G_TMP_MENU->AddIdRawOption(
-        'APPCACHEVIEW_SETUP', '../setup/appCacheViewConf',
-        G::LoadTranslation('ID_APPCACHE_SETUP'),
-        "", '', 'settings'
-    );
-}
-
 if ($RBAC->userCanAccess('PM_SETUP') === 1) {
     if ($RBAC->userCanAccess('PM_SETUP_CLEAR_CACHE') === 1) {
         $G_TMP_MENU->AddIdRawOption(
@@ -131,7 +116,7 @@ if ($RBAC->userCanAccess('PM_SETUP') === 1) {
     }
     if ($RBAC->userCanAccess('PM_SETUP_DASHBOARDS') === 1) {
         $G_TMP_MENU->AddIdRawOption(
-            'DASHBOARD', '../dashboard/dashletsList',
+            'DASHBOARD', '../DashboardModule/dashletsList',
             ucfirst(G::LoadTranslation('ID_DASHBOARD')),
             '', '', 'settings'
         );
@@ -140,6 +125,20 @@ if ($RBAC->userCanAccess('PM_SETUP') === 1) {
 }
 //tools options
 if ($RBAC->userCanAccess('PM_SETUP_ADVANCE') === 1) {
+    if ($RBAC->userCanAccess('PM_SETUP_LANGUAGE') === 1) {
+        $G_TMP_MENU->AddIdRawOption(
+            'LANGUAGES', 'languages',
+            G::LoadTranslation('ID_LANGUAGES'),
+            'icon-language.png','', 'settings'
+        );
+    }
+    if ($RBAC->userCanAccess('PM_SETUP_CASES_LIST_CACHE_BUILDER') === 1) {
+        $G_TMP_MENU->AddIdRawOption(
+            'APPCACHEVIEW_SETUP', '../setup/appCacheViewConf',
+            G::LoadTranslation('ID_APPCACHE_SETUP'),
+            "", '', 'settings'
+        );
+    }
     if (!$partnerFlag) {
         if ($RBAC->userCanAccess('PM_SETUP_PLUGINS') === 1) {
             $G_TMP_MENU->AddIdRawOption(

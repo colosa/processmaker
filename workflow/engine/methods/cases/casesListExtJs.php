@@ -1,4 +1,8 @@
 <?php
+
+use ProcessMaker\Core\System;
+use ProcessMaker\Plugins\PluginRegistry;
+
 unset($_SESSION['APPLICATION']);
 
 //get the action from GET or POST, default is todo
@@ -14,9 +18,6 @@ if ($action == 'selfservice') {
 }
 
 /*----------------------------------********---------------------------------*/
-
-G::LoadClass("BasePeer");
-G::LoadClass("configuration");
 
 $oHeadPublisher = & headPublisher::getSingleton();
 // oHeadPublisher->setExtSkin( 'xtheme-blue');
@@ -83,7 +84,6 @@ if ($action == "todo" || $action == "draft" || $action == "sent" || $action == "
     $action == "unassigned" || $action == "search") {
     $solrConfigured = ($solrConf = System::solrEnv()) !== false ? 1 : 0;
     if ($solrConfigured == 1) {
-        G::LoadClass('AppSolr');
         $applicationSolrIndex = new AppSolr(
             $solrConf['solr_enabled'],
             $solrConf['solr_host'],
@@ -96,30 +96,31 @@ if ($action == "todo" || $action == "draft" || $action == "sent" || $action == "
 }
 
 //get values for the comboBoxes
-$processes[] = array ('',G::LoadTranslation( 'ID_ALL_PROCESS' ));
-$status = getStatusArray( $action, $userUid );
+$processes[] = array('', G::LoadTranslation('ID_ALL_PROCESS'));
+$status = getStatusArray($action, $userUid);
 $category = getCategoryArray();
-
-$oHeadPublisher->assign( 'reassignReaderFields', $reassignReaderFields ); //sending the fields to get from proxy
-$oHeadPublisher->addExtJsScript( 'cases/reassignList', false );
+$columnToSearch = getColumnsSearchArray();
+$oHeadPublisher->assign('reassignReaderFields', $reassignReaderFields); //sending the fields to get from proxy
+$oHeadPublisher->addExtJsScript('cases/reassignList', false);
 $enableEnterprise = false;
-if (class_exists( 'enterprisePlugin' )) {
+if (class_exists('enterprisePlugin')) {
     $enableEnterprise = true;
-    $oHeadPublisher->addExtJsScript(PATH_PLUGINS . "enterprise" . PATH_SEP . "advancedTools" . PATH_SEP , false, true);
+    $oHeadPublisher->addExtJsScript(PATH_PLUGINS . "enterprise" . PATH_SEP . "advancedTools" . PATH_SEP, false, true);
 }
 
-$oHeadPublisher->assign( 'pageSize', $pageSize ); //sending the page size
-$oHeadPublisher->assign( 'columns', $columns ); //sending the columns to display in grid
-$oHeadPublisher->assign( 'readerFields', $readerFields ); //sending the fields to get from proxy
-$oHeadPublisher->assign( 'reassignColumns', $reassignColumns ); //sending the columns to display in grid
-$oHeadPublisher->assign( 'action', $action ); //sending the action to make
-$oHeadPublisher->assign( 'urlProxy', $urlProxy ); //sending the urlProxy to make
-$oHeadPublisher->assign( 'PMDateFormat', $dateFormat ); //sending the fields to get from proxy
-$oHeadPublisher->assign( 'statusValues', $status ); //Sending the listing of status
-$oHeadPublisher->assign( 'processValues', $processes ); //Sending the listing of processes
-$oHeadPublisher->assign( 'categoryValues', $category ); //Sending the listing of categories
-$oHeadPublisher->assign( 'solrEnabled', $solrEnabled ); //Sending the status of solar
-$oHeadPublisher->assign( 'enableEnterprise', $enableEnterprise ); //sending the page size
+$oHeadPublisher->assign('pageSize', $pageSize); //sending the page size
+$oHeadPublisher->assign('columns', $columns); //sending the columns to display in grid
+$oHeadPublisher->assign('readerFields', $readerFields); //sending the fields to get from proxy
+$oHeadPublisher->assign('reassignColumns', $reassignColumns); //sending the columns to display in grid
+$oHeadPublisher->assign('action', $action); //sending the action to make
+$oHeadPublisher->assign('urlProxy', $urlProxy); //sending the urlProxy to make
+$oHeadPublisher->assign('PMDateFormat', $dateFormat); //sending the fields to get from proxy
+$oHeadPublisher->assign('statusValues', $status); //Sending the listing of status
+$oHeadPublisher->assign('processValues', $processes); //Sending the listing of processes
+$oHeadPublisher->assign('categoryValues', $category); //Sending the listing of categories
+$oHeadPublisher->assign('solrEnabled', $solrEnabled); //Sending the status of solar
+$oHeadPublisher->assign('enableEnterprise', $enableEnterprise); //sending the page size
+$oHeadPublisher->assign('columnSearchValues', $columnToSearch); //Sending the list of column for search: caseTitle, caseNumber, tasTitle
 
 
 /*----------------------------------********---------------------------------*/
@@ -130,7 +131,6 @@ $reassignCase    = ($RBAC->userCanAccess( 'PM_REASSIGNCASE' ) == 1) ? 'true' : '
 $reassignCaseSup = ($RBAC->userCanAccess( 'PM_REASSIGNCASE_SUPERVISOR' ) == 1) ? 'true':'false';
 $oHeadPublisher->assign( 'varReassignCase', $reassignCase );
 $oHeadPublisher->assign( 'varReassignCaseSupervisor', $reassignCaseSup );
-G::LoadClass( 'configuration' );
 $c = new Configurations();
 $oHeadPublisher->addExtJsScript( 'app/main', true );
 $oHeadPublisher->addExtJsScript( 'cases/casesList', false ); //adding a javascript file .js
@@ -140,12 +140,13 @@ $oHeadPublisher->assign('extJsViewState', $oHeadPublisher->getExtJsViewState());
 $oHeadPublisher->assign('isIE', Bootstrap::isIE());
 $oHeadPublisher->assign('__OPEN_APPLICATION_UID__', $openApplicationUid);
 
-$oPluginRegistry =& PMPluginRegistry::getSingleton();
+$oPluginRegistry = PluginRegistry::loadSingleton();
 $fromPlugin = $oPluginRegistry->getOpenReassignCallback();
 $jsFunction = false;
 if(sizeof($fromPlugin)) {
-    foreach($fromPlugin as $key => $jsFile) {
-        $jsFile = $jsFile->callBackFile;
+    /** @var \ProcessMaker\Plugins\Interfaces\OpenReassignCallback $jsFile */
+    foreach($fromPlugin as $jsFile) {
+        $jsFile = $jsFile->getCallBackFile();
         if(is_file($jsFile)) {
             $jsFile = file_get_contents($jsFile);
             if(!empty($jsFile)) {
@@ -155,7 +156,6 @@ if(sizeof($fromPlugin)) {
     }
 }
 $oHeadPublisher->assign( 'openReassignCallback', $jsFunction );
-
 G::RenderPage( 'publish', 'extJs' );
 
 function getCategoryArray ()
@@ -195,8 +195,6 @@ function getStatusArray($action, $userUid)
     }
     return $status;
 }
-
-//these getXX function gets the default fields in casesListSetup
 
 /**
  * get the list configuration headers of the cases checked for reassign, for the
@@ -329,5 +327,17 @@ function getAdditionalFields($action, $confCasesList = array())
     return $arrayConfig;
 }
 
+/**
+ * This function define the possibles columns for apply the specific search
+ * @return array $filters values of the dropdown
+ */
+function getColumnsSearchArray ()
+{
+    $filters = [];
+    $filters[] = ['APP_TITLE', G::LoadTranslation('ID_CASE_TITLE')];
+    $filters[] = ['APP_NUMBER', G::LoadTranslation('ID_CASE_NUMBER')];
+    $filters[] = ['TAS_TITLE', G::LoadTranslation('ID_TASK')];
+    return $filters;
+}
 
 /*----------------------------------********---------------------------------*/

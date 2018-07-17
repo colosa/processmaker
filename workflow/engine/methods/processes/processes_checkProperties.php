@@ -45,7 +45,7 @@ if ($access != 1) {
     }
 }
 
-G::LoadSystem('inputfilter');
+
 $filter = new InputFilter();
 $form = $_POST['form'];
 $form = $filter->xssFilterHard($form);

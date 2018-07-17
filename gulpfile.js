@@ -471,7 +471,26 @@ gulp.task('clean', function () {
     cleanDirectory('workflow/public_html/lib');
 });
 
-gulp.task('default', ['clean'], function (cb) {
+/**
+ * This scheduled task is to be able to create the guest user constants
+ */
+gulp.task('__env', function (cb) {
+    var data = require('./config/enviromentvariables.json'),
+        pathEnviroment = 'vendor/colosa/MichelangeloFE/src/enviroment/',
+        content = 'var __env = __env || {};';
+
+    gutil.log(gutil.colors.green('Creating System Constants...'));
+    if (!fs.existsSync(pathEnviroment)){
+        fs.mkdirSync(pathEnviroment);
+    }
+    fs.writeFile(
+        pathEnviroment + 'constants.js',
+        content + '__env.USER_GUEST = ' + JSON.stringify(data.constants.userguest) + ';',
+        cb
+    );
+});
+
+gulp.task('default', ['clean', '__env'], function (cb) {
     var i, tasks = [];
 
     gutil.log(gutil.colors.green('Initializing ProcessMaker building...'));

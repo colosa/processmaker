@@ -25,7 +25,7 @@ abstract class BaseUsersPropertiesPeer
     const CLASS_DEFAULT = 'classes.model.UsersProperties';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 5;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -43,6 +43,9 @@ abstract class BaseUsersPropertiesPeer
     /** the column name for the USR_PASSWORD_HISTORY field */
     const USR_PASSWORD_HISTORY = 'USERS_PROPERTIES.USR_PASSWORD_HISTORY';
 
+    /** the column name for the USR_SETTING_DESIGNER field */
+    const USR_SETTING_DESIGNER = 'USERS_PROPERTIES.USR_SETTING_DESIGNER';
+
     /** The PHP to DB Name Mapping */
     private static $phpNameMap = null;
 
@@ -54,10 +57,10 @@ abstract class BaseUsersPropertiesPeer
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     private static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('UsrUid', 'UsrLastUpdateDate', 'UsrLoggedNextTime', 'UsrPasswordHistory', ),
-        BasePeer::TYPE_COLNAME => array (UsersPropertiesPeer::USR_UID, UsersPropertiesPeer::USR_LAST_UPDATE_DATE, UsersPropertiesPeer::USR_LOGGED_NEXT_TIME, UsersPropertiesPeer::USR_PASSWORD_HISTORY, ),
-        BasePeer::TYPE_FIELDNAME => array ('USR_UID', 'USR_LAST_UPDATE_DATE', 'USR_LOGGED_NEXT_TIME', 'USR_PASSWORD_HISTORY', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('UsrUid', 'UsrLastUpdateDate', 'UsrLoggedNextTime', 'UsrPasswordHistory', 'UsrSettingDesigner', ),
+        BasePeer::TYPE_COLNAME => array (UsersPropertiesPeer::USR_UID, UsersPropertiesPeer::USR_LAST_UPDATE_DATE, UsersPropertiesPeer::USR_LOGGED_NEXT_TIME, UsersPropertiesPeer::USR_PASSWORD_HISTORY, UsersPropertiesPeer::USR_SETTING_DESIGNER, ),
+        BasePeer::TYPE_FIELDNAME => array ('USR_UID', 'USR_LAST_UPDATE_DATE', 'USR_LOGGED_NEXT_TIME', 'USR_PASSWORD_HISTORY', 'USR_SETTING_DESIGNER', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -67,10 +70,10 @@ abstract class BaseUsersPropertiesPeer
      * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     private static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('UsrUid' => 0, 'UsrLastUpdateDate' => 1, 'UsrLoggedNextTime' => 2, 'UsrPasswordHistory' => 3, ),
-        BasePeer::TYPE_COLNAME => array (UsersPropertiesPeer::USR_UID => 0, UsersPropertiesPeer::USR_LAST_UPDATE_DATE => 1, UsersPropertiesPeer::USR_LOGGED_NEXT_TIME => 2, UsersPropertiesPeer::USR_PASSWORD_HISTORY => 3, ),
-        BasePeer::TYPE_FIELDNAME => array ('USR_UID' => 0, 'USR_LAST_UPDATE_DATE' => 1, 'USR_LOGGED_NEXT_TIME' => 2, 'USR_PASSWORD_HISTORY' => 3, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('UsrUid' => 0, 'UsrLastUpdateDate' => 1, 'UsrLoggedNextTime' => 2, 'UsrPasswordHistory' => 3, 'UsrSettingDesigner' => 4, ),
+        BasePeer::TYPE_COLNAME => array (UsersPropertiesPeer::USR_UID => 0, UsersPropertiesPeer::USR_LAST_UPDATE_DATE => 1, UsersPropertiesPeer::USR_LOGGED_NEXT_TIME => 2, UsersPropertiesPeer::USR_PASSWORD_HISTORY => 3, UsersPropertiesPeer::USR_SETTING_DESIGNER => 4, ),
+        BasePeer::TYPE_FIELDNAME => array ('USR_UID' => 0, 'USR_LAST_UPDATE_DATE' => 1, 'USR_LOGGED_NEXT_TIME' => 2, 'USR_PASSWORD_HISTORY' => 3, 'USR_SETTING_DESIGNER' => 4, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -178,6 +181,8 @@ abstract class BaseUsersPropertiesPeer
         $criteria->addSelectColumn(UsersPropertiesPeer::USR_LOGGED_NEXT_TIME);
 
         $criteria->addSelectColumn(UsersPropertiesPeer::USR_PASSWORD_HISTORY);
+
+        $criteria->addSelectColumn(UsersPropertiesPeer::USR_SETTING_DESIGNER);
 
     }
 

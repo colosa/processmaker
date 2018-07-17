@@ -58,7 +58,6 @@ try {
     $aFields["INP_DOC_UPLOAD_MAX_FILESIZE"] = $uploadMaxFilesize;
     $aFields["INP_DOC_UPLOAD_MAX_FILESIZE_LABEL"] = "(" . $arrayMatch[1] . " " . $uploadMaxFilesizeUnit . ")";
 
-    G::LoadClass( 'xmlfield_InputPM' );
     $G_PUBLISH = new Publisher();
     $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'inputdocs/inputdocs_Edit', '', $aFields, '../inputdocs/inputdocs_Save' );
     G::RenderPage( 'publish', 'raw' );

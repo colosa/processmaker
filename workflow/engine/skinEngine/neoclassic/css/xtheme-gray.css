@@ -437,6 +437,7 @@ textarea.x-form-inner-invalid {
 .x-fieldset {
   border-color: #CCCCCC;
   margin-top: -5px;
+  overflow: visible;
 }
 .x-fieldset legend {
   font: bold 11px "Open Sans", Tahoma, sans-serif, MiscFixed;

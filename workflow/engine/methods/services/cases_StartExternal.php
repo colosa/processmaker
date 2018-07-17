@@ -1,9 +1,5 @@
 <?php
 try {
-    require_once ("classes/model/Task.php");
-    require_once ("classes/model/Users.php");
-    G::LoadClass( 'case' );
-    G::LoadClass( 'derivation' );
 
     $oTask = new Task();
     $TaskFields = $oTask->load( $_POST['TASKS'] );

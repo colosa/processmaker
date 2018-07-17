@@ -14,14 +14,12 @@ switch ($page) {
     case "startCase":
         $oHeadPublisher->addExtJsScript( 'cases/casesStartCase', true ); //adding a javascript file .js
         $oHeadPublisher->addContent( 'cases/casesStartCase' ); //adding a html file  .html.
-        G::LoadClass( 'configuration' );
         $c = new Configurations();
         $oHeadPublisher->assign( 'FORMATS', $c->getFormats() );
         $oHeadPublisher->assign('isIE', Bootstrap::isIE());
         break;
     case "documents":
 
-        G::LoadClass( 'configuration' );
         $c = new Configurations();
         $configPage = $c->getConfiguration( 'documentsModule', 'pageSize', '', $_SESSION['USER_LOGGED'] );
         $configEnv = $c->getConfiguration( 'ENVIRONMENT_SETTINGS', '' );

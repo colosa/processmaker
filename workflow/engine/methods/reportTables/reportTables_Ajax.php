@@ -22,15 +22,11 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
 
-G::LoadClass( 'case' );
-
 $action = $_REQUEST['action'];
 unset( $_POST['action'] );
 
 switch ($action) {
     case 'availableFieldsReportTables':
-        G::LoadClass( 'reportTables' );
-        G::LoadClass( 'xmlfield_InputPM' );
 
         $aFields['FIELDS'] = array ();
         $aFields['PRO_UID'] = $_POST['PRO_UID'];
@@ -76,8 +72,6 @@ switch ($action) {
         break;
     case 'fieldsList':
 
-        G::LoadClass( 'reportTables' );
-        G::LoadClass( 'xmlfield_InputPM' );
         $aFields['FIELDS'] = array ();
         $oReportTable = new ReportTable();
         $aFields = $oReportTable->load( $_POST['REP_TAB_UID'] );
@@ -99,7 +93,6 @@ switch ($action) {
         echo G::json_encode( $result );
         break;
     case 'getDbConnectionsList':
-        G::LoadClass( 'dbConnections' );
         $proUid = $_POST['PRO_UID'];
         $dbConn = new DbConnections();
         $dbConnections = $dbConn->getConnectionsProUid( $proUid );
@@ -272,10 +265,9 @@ switch ($action) {
         echo G::json_encode( $result );
         break;
     case 'delete':
-        require_once 'classes/model/AdditionalTables.php';
-        G::LoadClass( 'reportTables' );
+
         $rows = G::json_decode( $_REQUEST['rows'] );
-        $rp = new reportTables();
+        $rp = new ReportTables();
         $at = new AdditionalTables();
 
         try {
@@ -294,11 +286,9 @@ switch ($action) {
         echo G::json_encode( $result );
         break;
     case 'list':
-        require_once 'classes/model/AdditionalTables.php';
-        G::LoadClass( 'configuration' );
-        G::LoadClass( 'processMap' );
+
         $configigurations = new Configurations();
-        $oProcessMap = new processMap();
+        $oProcessMap = new ProcessMap();
 
         $config = $configigurations->getConfiguration( 'additionalTablesList', 'pageSize', '', $_SESSION['USER_LOGGED'] );
         $env = $configigurations->getConfiguration( 'ENVIRONMENT_SETTINGS', '' );

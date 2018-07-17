@@ -179,5 +179,43 @@ class GroupUser extends BaseGroupUser
 
         return $rows;
     }
+
+    /**
+     * This function check if the array have at least one UID valid
+     * Ex. we need to check the data for self service value based assignment
+     *
+     * @param array $toValidate , this array contains uid of user or uid of groups
+     * @param array $statusToCheck , this array must be have a valid status for users or groups, ACTIVE INACTIVE VACATION
+     * @param string $tableReview , if you need to check uid for users or groups
+     * @return boolean $rows
+     */
+    public function groupsUsersAvailable($toValidate, $statusToCheck = array('ACTIVE'), $tableReview = 'users')
+    {
+        //Define the batching value for the MySQL error related to max_allowed_packet
+        $batching = 25000;
+        $array = array_chunk($toValidate, $batching);
+        foreach ($array as $key => $uidValues) {
+            $oCriteria = new Criteria('workflow');
+            switch ($tableReview) {
+                case 'groups':
+                    $oCriteria->add(GroupwfPeer::GRP_UID, $uidValues, Criteria::IN);
+                    $oCriteria->add(GroupwfPeer::GRP_STATUS, $statusToCheck, Criteria::IN);
+                    $oCriteria->setLimit(1);
+                    $rsCriteria = GroupwfPeer::doSelectRS($oCriteria);
+                    break;
+                default:
+                    $oCriteria->add(UsersPeer::USR_UID, $uidValues, Criteria::IN);
+                    $oCriteria->add(UsersPeer::USR_STATUS, $statusToCheck, Criteria::IN);
+                    $oCriteria->setLimit(1);
+                    $rsCriteria = UsersPeer::doSelectRS($oCriteria);
+                    break;
+            }
+            $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+            if ($rsCriteria->next()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 

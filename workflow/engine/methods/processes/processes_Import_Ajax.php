@@ -64,7 +64,7 @@ if (isset($_FILES["PROCESS_FILENAME"]) && (pathinfo($_FILES["PROCESS_FILENAME"][
         } else {
                 $prjUid = $importer->import();
         }
-        G::LoadClass('Process');
+
         $oProcess = new Process();
         $processData = $oProcess->load($prjUid);
         $proType = $processData["PRO_TYPE"];
@@ -166,7 +166,6 @@ if (isset($_POST["PRO_FILENAME"]) &&
         /*----------------------------------********---------------------------------*/
         $prjUid = $importer->import($option, $optionGroup, false, $objectsToImport);
 
-        G::LoadClass( 'Process' );
         $oProcess = new Process();
         $processData = $oProcess->load( $prjUid );
         $proType = $processData["PRO_TYPE"];
@@ -248,7 +247,6 @@ if ($action == "uploadFileNewProcess") {
         }
 
         if ($processFileType == "pm") {
-            G::LoadClass( 'processes' );
             $oProcess = new Processes();
         }
 
@@ -278,7 +276,6 @@ if ($action == "uploadFileNewProcess") {
 
         //importing a bpmn diagram, using external class to do it.
         if ($processFileType == "bpmn") {
-            G::LoadClass( 'bpmnExport' );
             $bpmn = new bpmnExport();
             $bpmn->importBpmn( $path . $filename );
             die();
@@ -384,7 +381,6 @@ if ($action == "uploadFileNewProcessExist") {
 
         //load the variables
         if ($processFileType == "pm") {
-            G::LoadClass( 'processes' );
             $oProcess = new Processes();
         }
 

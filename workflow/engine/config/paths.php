@@ -35,7 +35,7 @@
   define( 'PATH_GULLIVER',      PATH_GULLIVER_HOME . 'system' . PATH_SEP );   //gulliver system classes
   define( 'PATH_GULLIVER_BIN',  PATH_GULLIVER_HOME . 'bin' . PATH_SEP );   //gulliver bin classes
   define( 'PATH_TEMPLATE',      PATH_GULLIVER_HOME . 'templates' . PATH_SEP );
-  define( 'PATH_THIRDPARTY',    PATH_GULLIVER_HOME . 'thirdparty' . PATH_SEP );
+  define( 'PATH_THIRDPARTY',    PATH_TRUNK . 'thirdparty' . PATH_SEP );
   define( 'PATH_RBAC',          PATH_RBAC_HOME .     'engine'  . PATH_SEP . 'classes' . PATH_SEP );  //to enable rbac version 2
   define( 'PATH_RBAC_CORE',     PATH_RBAC_HOME .     'engine'  . PATH_SEP );
   define( 'PATH_HTML',          PATH_HOME .          'public_html' . PATH_SEP );
@@ -68,6 +68,7 @@
 
   // include Gulliver Class
   require_once( PATH_GULLIVER . PATH_SEP . 'class.g.php');
+  // include Bootstrap Class
 
   if(file_exists(FILE_PATHS_INSTALLED)) {
     // backward compatibility; parsing old definitions in the compiled path constant
@@ -141,3 +142,4 @@
   define('PML_UPLOAD_URL',   PML_SERVER . '/syspmLibrary/en/green/services/uploadProcess');
   define('PML_DOWNLOAD_URL', PML_SERVER . '/syspmLibrary/en/green/services/download');
 
+  G::defineConstants();

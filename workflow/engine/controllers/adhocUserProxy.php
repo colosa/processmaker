@@ -1,15 +1,10 @@
 <?php
-require_once 'classes/model/Application.php';
-G::LoadClass( 'case' );
 
 class adhocUserProxy extends HttpProxyController
 {
     //list of users into adhoc option
     function adhocAssignUsersk ($params)
     {
-
-        G::LoadClass( 'groups' );
-        G::LoadClass( 'tasks' );
         $oTasks = new Tasks();
         $aAux = $oTasks->getGroupsOfTask( $_SESSION['TASK'], 2 );
         $aAdhocUsers = array ();

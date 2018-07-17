@@ -139,6 +139,10 @@ class Event extends Api
     }
 
     /**
+     * Update event.
+     *
+     * @url PUT /:prj_uid/event/:evn_uid
+     *
      * @param string $prj_uid {@min 1} {@max 32}
      * @param string $evn_uid {@min 1} {@max 32}
      * @param array $request_data
@@ -156,13 +160,11 @@ class Event extends Api
      * @param string $evn_tas_uid_to {@from body}
      * @param string $evn_conditions {@from body}
      *
-     * @access public
-     * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
-     * @copyright Colosa - Bolivia
-     *
      * @return void
+     * @throws RestException
      *
-     * @url PUT /:prj_uid/event/:evn_uid
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPutEvent (
         $prj_uid,
@@ -201,17 +203,13 @@ class Event extends Api
     }
 
     /**
+     * @url DELETE /:prj_uid/event/:evn_uid
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
+     *
      * @param string $prj_uid {@min 1} {@max 32}
      * @param string $evn_uid {@min 1} {@max 32}
      * @return void
-     *
-     * @access public
-     * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
-     * @copyright Colosa - Bolivia
-     *
-     * @return void
-     *
-     * @url DELETE /:prj_uid/event/:evn_uid
      */
     public function doDeleteEvent($prj_uid, $evn_uid)
     {

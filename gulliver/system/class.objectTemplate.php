@@ -33,7 +33,7 @@
  * @access public
  */
 
-class objectTemplate extends smarty
+class objectTemplate extends Smarty
 {
 
     /**

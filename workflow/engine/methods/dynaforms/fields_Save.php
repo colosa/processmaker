@@ -24,15 +24,10 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  *
  */
-G::LoadClass('dynaformEditor');
 
 if (($RBAC_Response = $RBAC->userCanAccess("PM_FACTORY")) != 1) {
     return $RBAC_Response;
 }
-
-//G::genericForceLogin( 'WF_MYINFO' , 'login/noViewPage', $urlLogin = 'login/login' );
-
-G::LoadClass('dynaFormField');
 
 $type = strtolower($_POST['form']['PME_TYPE']);
 if (!(isset($_POST['form']['PME_A']) && $_POST['form']['PME_A'] !== '')) {
@@ -262,7 +257,6 @@ foreach ($FieldAttributes as $key => $value) {
 
 $fields->saveField($attributes, $FieldAttrib, $labels);
 
-G::LoadClass('xmlDb');
 $i = 0;
 $aFields = array();
 $aFields[] = array('XMLNODE_NAME' => 'char',
@@ -288,7 +282,7 @@ $_SESSION['_DBArray'] = $_DBArray;
 // Additions to javascript
 if (isset($sType) && $sType === 'javascript') {
     $sCode = urlencode($pmeCode);
-    $editor = new dynaformEditorAjax($_POST);
+    $editor = new DynaformEditorAjax($_POST);
     $editor->set_javascript($A, $fieldName, $sCode);
 }
 

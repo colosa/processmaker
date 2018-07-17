@@ -127,7 +127,13 @@ PMShape.prototype.getExtendedObject = function () {
 PMShape.prototype.getMarkers = function () {
     return this.markersArray;
 };
-
+/**
+ * Factory method for drop behaviors.
+ * @param {String} type
+ * @param {Array} selectors An array in which each element is a valid JQuery selector to specify the accepted elements by
+ * the drop operation.
+ * @returns {*}
+ */
 PMShape.prototype.dropBehaviorFactory = function (type, selectors) {
     if (type === 'pmconnection') {
         if (!this.pmConnectionDropBehavior) {
@@ -774,6 +780,9 @@ PMShape.prototype.updateShapeParent = function (businessObject, parentBusinessOb
     if (parentBusinessObject.elem &&
         parentBusinessObject.elem.$type === 'bpmn:Lane') {
         //text annotation Data store Data object into lane
+        if (!businessObject.elem.$lane && parentBusinessObject.elem) {
+            businessObject.elem.$lane = parentBusinessObject.elem;
+        }
         if (businessObject.elem.$type !== 'bpmn:TextAnnotation'
             && businessObject.elem.$type !== 'bpmn:DataStoreReference'
             && businessObject.elem.$type !== 'bpmn:DataObjectReference') {
@@ -1241,23 +1250,31 @@ PMShape.prototype.removeIncomingConnection = function(element){
 };
 /**
  * Return the list of incoming connections.
- * @param {String} [type] Optional, returns only the connections of the specified type.
+ * @param {...String} [types] Optional, returns only the connections of the specified types.
  * @returns {Array}
  */
-PMShape.prototype.getIncomingConnections = function(type){
-    if (type) {
+PMShape.prototype.getIncomingConnections = function(){
+    var validTypes = [],
+        i;
+
+    if (arguments.length) {
+        for (i = 0; i < arguments.length; i += 1) {
+            validTypes.push(arguments[i]);
+        }
+
         return this.incomingConnections.asArray().filter(function (i) {
-            return i.flo_type === type;
+            return validTypes.indexOf(i.flo_type) >= 0;
         });
     }
     return this.incomingConnections.asArray().slice(0);
 };
 /**
  * Returns the list of the elements connected to this element's incoming connections.
+ * @param {...String} [connection_types] The incoming elements whose connections are of this specified type, optional.
  * @returns {Array|*|{applyDefaultStyles, childOptions, initChildLayout, destroyChildLayout, resizeChildLayout, resizeNestedLayout, resizeWhileDragging, resizeContentWhileDragging, triggerEventsWhileDragging, maskIframesOnResize, useStateCookie, [cookie.autoLoad], [cookie.autoSave], [cookie.keys], [cookie.name], [cookie.domain], [cookie.path], [cookie.expires], [cookie.secure], noRoomToOpenTip, togglerTip_open, togglerTip_closed, resizerTip, sliderTip}}
  */
-PMShape.prototype.getIncomingElements = function (type) {
-    return this.getIncomingConnections(type).map(function (i) {
+PMShape.prototype.getIncomingElements = function () {
+    return this.getIncomingConnections.apply(this, arguments).map(function (i) {
         return i.getSrcPort().getParent();
     });
 };
@@ -1296,24 +1313,32 @@ PMShape.prototype.removeOutgoingConnection = function(element){
 };
 /**
  * Return the list of outgoing connections.
- * @param {String} [type] Optional, returns only the connections of the specified type.
+ * @param {...String} [types] Optional, returns only the connections of the specified types.
  * @returns {Array}
  */
-PMShape.prototype.getOutgoingConnections = function(type){
-    if (type) {
+PMShape.prototype.getOutgoingConnections = function(){
+    var validTypes = [],
+        i;
+
+    if (arguments.length) {
+        for (i = 0; i < arguments.length; i += 1) {
+            validTypes.push(arguments[i]);
+        }
+
         return this.outgoingConnections.asArray().filter(function (i) {
-            return i.flo_type === type;
+            return validTypes.indexOf(i.flo_type) >= 0;
         });
     }
+
     return this.outgoingConnections.asArray().slice(0);
 };
 /**
  * Returns a list of the elements connected to the element's outgoing connections.
- * @param {String} [type] Optional, returns only the connections of the specified type.
+ * @param {...String} [type] Optional, returns only the connections of the specified type.
  * @returns {Array}
  */
 PMShape.prototype.getOutgoingElements = function (type) {
-    return this.getOutgoingConnections(type).map(function (i) {
+    return this.getOutgoingConnections.apply(this, arguments).map(function (i) {
         return i.getDestPort().getParent();
     });
 };

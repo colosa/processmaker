@@ -285,7 +285,7 @@ class Translation extends BaseTranslation
     /* Load strings from plugin translation.php.
      * @parameter $languageId   (es|en|...).
     */
-    public function generateFileTranslationPlugin ($plugin, $languageId = '')
+    public static function generateFileTranslationPlugin ($plugin, $languageId = '')
     {
         if (!file_exists(PATH_PLUGINS . $plugin . PATH_SEP . 'translations' . PATH_SEP . 'translations.php')) {
             return;
@@ -314,7 +314,7 @@ class Translation extends BaseTranslation
             $translation[$key] = $row;
         }
 
-        G::LoadSystem( 'i18n_po' );
+
         $POFile = new i18n_PO( $languageFile );
         $POFile->readInit();
         while ($rowTranslation = $POFile->getTranslation()) {
@@ -501,7 +501,7 @@ class Translation extends BaseTranslation
         return $this->sortByColumn($environments, 'LANGUAGE');
 
         /*
-        G::LoadSystem('dbMaintenance');
+
         $o = new DataBaseMaintenance('localhost', 'root', 'atopml2005');
         $o->connect('wf_os');
         $r = $o->query('select * from ISO_COUNTRY');
@@ -547,7 +547,6 @@ class Translation extends BaseTranslation
 
     public function getInfoFromPOFile ($file)
     {
-        G::loadClass( 'i18n_po' );
         $POFile = new i18n_PO( $file );
         $POFile->readInit();
         $POHeaders = $POFile->getHeaders();

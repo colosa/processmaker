@@ -155,8 +155,7 @@ class Dashboard {
     public function getListDashboards($options = array())
     {
         Validator::isArray($options, '$options');
-        
-        G::LoadClass("dashboards");
+
         $dir = isset( $options["dir"] ) ? $options["dir"] : "DESC";
         $sort = isset( $options["sort"] ) ? $options["sort"] : "DASHBOARD.DAS_TITLE";
         $start = isset( $options["start"] ) ? $options["start"] : "0";
@@ -173,7 +172,6 @@ class Dashboard {
         $limit = (int)$limit;
         $limit = abs($limit);
         if ($limit == 0) {
-            G::LoadClass("configuration");
             $conf = new \Configurations();
             $configList = $conf->getConfiguration('ENVIRONMENT_SETTINGS', '');
             if (isset($configList['casesListRowNumber'])) {
@@ -228,8 +226,7 @@ class Dashboard {
     public function getOwnerByDasUid($options = array())
     {
         Validator::isArray($options, '$options');
-        
-        G::LoadClass("dashboards");
+
         $das_uid = isset( $options["das_uid"] ) ? $options["das_uid"] : "";
         $start = isset( $options["start"] ) ? $options["start"] : "0";
         $limit = isset( $options["limit"] ) ? $options["limit"] : "";
@@ -245,7 +242,6 @@ class Dashboard {
         $limit = (int)$limit;
         $limit = abs($limit);
         if ($limit == 0) {
-            G::LoadClass("configuration");
             $conf = new \Configurations();
             $configList = $conf->getConfiguration('ENVIRONMENT_SETTINGS', '');
             if (isset($configList['casesListRowNumber'])) {
@@ -394,8 +390,7 @@ class Dashboard {
     	$data['USR_UID'] = $usrUid;
     	$data['PRO_UID'] = "";
     	$data['APP_UID'] = "";
-    
-    	//require_once (PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Configuration.php");
+
     	$oConfig = new \Configuration();
     
     	$response = $oConfig->create($data);
@@ -413,7 +408,6 @@ class Dashboard {
      */
     public function getConfig($usr_uid)
     {
-    	//require_once (PATH_HOME . "engine" . PATH_SEP . "classes" . PATH_SEP . "model" . PATH_SEP . "Configuration.php");
     	$oConfig = new \Configuration();
     
     	$response = array();

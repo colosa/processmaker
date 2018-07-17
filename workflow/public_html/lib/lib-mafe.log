@@ -1,30 +1,30 @@
-[3 weeks ago] ccf0581  bugfix/FBI-1673 <jonathanquispe>
-[4 weeks ago] 17daff4  FBI-1623: [MANTIS 22368] Only 10 triggers are visible when setting up task steps <Rodrigo Quelca>
-[6 weeks ago] 8bd8764  fix CR observations <Rodrigo Quelca>
-[6 weeks ago] e19bff8  FBI-1567: form.setOnchange() does not work <Rodrigo Quelca>
-[6 weeks ago] 564e97a  fix more changes <Rodrigo Quelca>
-[6 weeks ago] 0bf9b98  change label a <Rodrigo Quelca>
-[6 weeks ago] d32408d  FBI-1561: [variables] Grammar mistakes incomplete in the Create of Variables <Rodrigo Quelca>
-[9 weeks ago] 8a693d8  FBI-993: [Diseñador de procesos] al entrar a la opción MESSAGE TYPES se ve el mismo mensaje repetido Fields marked with asterisk (*) are required. <alex_santos>
-[9 weeks ago] d9f28ab  FBI-1512 Grammar mistake found in the Permissions section <Marco A. Nina Mena>
-[9 weeks ago] c12f225  FBI-1008: [Mantis 20954 ] Template for routing step gets corrupted once it is edited <alex_santos>
-[9 weeks ago] 1fef3c5  change the error message <vagrant>
-[9 weeks ago] 0ce0da0  fix pool container <vagrant>
-[10 weeks ago] c674f61  add an array of factors <Rodrigo Quelca>
-[2 months ago] 96780e2  fix lane width <alex_santos>
-[2 months ago] 5bb2217  bigfix/FBI-990 <jonathanquispe>
-[2 months ago] 84464a0  FBI-903: [Diseñador de procesos] Al mover un task dentro de un lane este no se redibuja el lane que lo contiene. <vagrant>
-[3 months ago] 6ad8c4d  bugfix/FBI-1300 <jonathanquispe>
-[3 months ago] ca2c6f6  FBI-1437: RTL Preview <alex_santos>
-[3 months ago] e5b2525  bugfix/FBI-1421 <jonathanquispe>
-[3 months ago] b42ef14  (origin/bugfix/FBI-915, composer/bugfix/FBI-915) bugfix: FBI-915 <duhnnie>
-[3 months ago] 5d8f5dc  add dragg validations <Rodrigo Quelca>
-[3 months ago] 84d7f08  fix QA observations <Rodrigo Quelca>
-[3 months ago] 78e432f  composer.json edited online with Bitbucket to release/3.2 <Jonathan Quispe>
-[3 months ago] 67faaa1  fix identations <Rodrigo Quelca>
-[3 months ago] ec3c8a1  The lasso does not work when we move the process flow <Rodrigo Quelca>
-[3 months ago] d540102  bugfix/FBI-1090 <jonathanquispe>
-[3 months ago] 2a80736  fix Starting Activity label and fix dinamically placeholder <Rodrigo Quelca>
-[3 months ago] 85a45ee  FBI-1470: Change text in the "Sub-process Properties" dialog box <Rodrigo Quelca>
-[3 months ago] 88b58e3  bugfix/FBI-1392 <jonathanquispe>
-[4 months ago] 2a7f406  FBI-1370: (Grid) Controls supported information is not updated <alex_santos>
+[10 weeks ago] 95ef32e  FBI-2311 (WE 2.0) The scroll does not work when we edit a trigger <dheeyi william>
+[3 months ago] 04d6f75  FBI-2302:Mafe clean code ' '.translate() <Fabio Guachalla>
+[3 months ago] 46901a8  FBI-2209:"Lasso" and "validator" icons they can moved inside the canvas <Fabio Guachalla>
+[3 months ago] a235acf  FBI-2291 (Message Type) The Message field name is not displaying the required mark <dheeyi william>
+[4 months ago] 4bc6357  FBI-2271: (MessageType) Message Field allows to create an invalid field even if there is an alert <Rodrigo Quelca>
+[4 months ago] f3c93fb  FBI-2250 We can not go into web entry in IE11 <dheeyi william>
+[4 months ago] 8c4af39  FBI-2250 We can not go into web entry in IE11 <dheeyi william>
+[5 months ago] c0d7657  FBI-1337: [Mantis - 0021645] Grid Columns rename problem <Rodrigo Quelca>
+[5 months ago] e2f9779  FBI-2206 (Web Entry) The checkbox of "Show task in New Case" is saved as checked, even if we didn't check it before <dheeyi william>
+[5 months ago] f627047  duplicate connectos was fixed <Rodrigo Quelca>
+[5 months ago] 9e5fb08  comment the loadShape method <Rodrigo Quelca>
+[5 months ago] 427730e  FBI-2203: The elements are duplicate in the process Designer when I enable the "Enable Grid Lines" option <Rodrigo Quelca>
+[5 months ago] 4af88ab  FBI-1614: (Message Type) Position of the buttons are incorrect <Rodrigo Quelca>
+[6 months ago] 9b826df  (origin/improvement/FBI-2144, composer/improvement/FBI-2144) FBI-2144 <Daniel>
+[6 months ago] ca28a8a  FBI-2182 Web Entry 2.0 User field Improvements request <dheeyi william>
+[7 months ago] 271f1ec  FBI-2140 Web_Entry2>The first two options are not enabled in "CallBack Action", when we are in "Anonymous" <dheeyi william>
+[7 months ago] f3677b9  FBI-2147 Grammar mistake in the confirmation message when deleting a Web Entry (2.0) <dheeyi william>
+[7 months ago] 76297e0  FBI-1456: (Message Type) Can not create messages with arabic language <Rodrigo Quelca>
+[7 months ago] 924bd6e   FBI-1681: Report Table: the variables can not start with numbers or only numbers <alex_santos>
+[7 months ago] a367d80  FBI-2120 <duhnnie>
+[7 months ago] 85728f3  FBI-2120 <duhnnie>
+[7 months ago] 15146f2  (origin/feature/FBI-2057, composer/feature/FBI-2057) FBI-2106 Flag for versioning must be a boolean instead of a string. <dheeyi william>
+[7 months ago] 6950795  FBI-2055 Add the checkbox element in the Form Designer for File Versioning <dheeyi william>
+[7 months ago] 01bdc10  FBI-1525: get the offline properties back on mafe <Rodrigo Quelca>
+[8 months ago] 316d95b  FBI-2053 CLONE - Web Entry2> You can not populate the Custom Domain field with an IP <dheeyi william>
+[8 months ago] b4cacae  FBI-2054 <alex>
+[8 months ago] 4f60164  Change label Show task in New Case <dheeyi william>
+[8 months ago] 16340b3  FBI-2049 CLONE - Web Entry configured Start Events should not be displayed in Home->New Case <dheeyi william>
+[8 months ago] eada9e4  FBI-2049 CLONE - Web Entry configured Start Events should not be displayed in Home->New Case <dheeyi william>
+[8 months ago] 156241a  FBI-2049 CLONE - Web Entry configured Start Events should not be displayed in Home->New Case <dheeyi william>

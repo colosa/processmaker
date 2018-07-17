@@ -44,6 +44,25 @@ WHERE
   <PRO_TRI_PAUSED type="dropdown"><![CDATA[SELECT TRI_UID, CON_VALUE FROM `TRIGGERS` LEFT JOIN CONTENT ON (TRI_UID = CON_ID AND CON_CATEGORY = 'TRI_TITLE' AND CON_LANG = '@#SYS_LANG') WHERE PRO_UID = '@#PRO_UID' ORDER BY CON_VALUE ASC]]><en><![CDATA[Execute a trigger when a case is paused]]><option name=""><![CDATA[- Don't execute anything -]]></option></en></PRO_TRI_PAUSED>
   <PRO_TRI_REASSIGNED type="dropdown"><![CDATA[SELECT TRI_UID, CON_VALUE FROM `TRIGGERS` LEFT JOIN CONTENT ON (TRI_UID = CON_ID AND CON_CATEGORY = 'TRI_TITLE' AND CON_LANG = '@#SYS_LANG') WHERE PRO_UID = '@#PRO_UID' ORDER BY CON_VALUE ASC]]><en><![CDATA[Execute a trigger when a case is reassigned]]><option name=""><![CDATA[- Don't execute anything -]]></option></en></PRO_TRI_REASSIGNED>
   <!--//////////////////////////////////********//////////////////////////////////-->
+  <PRO_TRI_UNPAUSED type="dropdown" required="0" readonly="0" optgroup="0" mode="edit">
+    <![CDATA[
+    SELECT TRI_UID, CON_VALUE
+    FROM   TRIGGERS LEFT JOIN CONTENT ON (TRI_UID = CON_ID AND CON_CATEGORY = 'TRI_TITLE' AND CON_LANG = '@#SYS_LANG')
+    WHERE  PRO_UID = '@#PRO_UID' ORDER BY CON_VALUE ASC
+    ]]>
+    <en>
+        Execute a trigger when a case is unpaused
+        <option name="">- Don't execute anything -</option>
+    </en>
+  </PRO_TRI_UNPAUSED>
+  <PRO_TYPE_PROCESS type="dropdown" defaultvalue="PUBLIC" colWidth="80" titleAlign="left" align="left">
+    <en>
+      Process Design Access: Public / Private (Owner)
+      <option name="PUBLIC">Public</option>
+      <option name="PRIVATE">Private</option>
+    </en>
+  </PRO_TYPE_PROCESS>
+  <!--//////////////////////////////////********//////////////////////////////////-->
   <BTN_CANCEL type="button" onclick="cancel();">
     <en><![CDATA[Cancel]]></en>
   </BTN_CANCEL>

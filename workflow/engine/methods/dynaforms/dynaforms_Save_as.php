@@ -36,7 +36,7 @@ if (! class_exists( "FieldCondition" )) {
 
 try {
 
-    G::LoadSystem('inputfilter');
+
     $filter = new InputFilter();
     $frm = $_POST['form'];
     $PRO_UID = $frm['PRO_UID'];
@@ -47,7 +47,7 @@ try {
     $oFieldCondition = new FieldCondition();
     $aConditions = $oFieldCondition->getAllByDynUid( $DYN_UID );
 
-    $dynaform = new dynaform();
+    $dynaform = new Dynaform();
     $arrayData = array();
 
     $arrayData["PRO_UID"] = $PRO_UID;
@@ -99,7 +99,7 @@ try {
         fclose( $templateHd1 );
     }
 
-    $criteria = processMap::getDynaformsCriteria($PRO_UID);
+    $criteria = ProcessMap::getDynaformsCriteria($PRO_UID);
     //FROM
     //WHERE
     //QUERY

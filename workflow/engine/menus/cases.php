@@ -22,7 +22,12 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  *
  */
+
+use ProcessMaker\Plugins\PluginRegistry;
+
+/** @var RBAC $RBAC */
 global $RBAC;
+/** @var Menu $G_TMP_MENU */
 global $G_TMP_MENU;
 
 $G_TMP_MENU->AddIdRawOption('FOLDERS', '', G::LoadTranslation('ID_CASES_MENU_FOLDERS'), '', '', 'blockHeader');
@@ -41,10 +46,6 @@ $G_TMP_MENU->AddIdRawOption('CASES_SELFSERVICE', 'casesListExtJs?action=selfserv
     G::LoadTranslation('ID_UNASSIGNED'),'rotate_cw.png');
 $G_TMP_MENU->AddIdRawOption('CASES_PAUSED', 'casesListExtJs?action=paused', G::LoadTranslation('ID_PAUSED'),
     'mail-queue.png');
-
-if ($RBAC->userCanAccess('PM_ALLCASES') == 1) {
-    //$G_TMP_MENU->AddIdRawOption('CASES_GRAL', 'casesListExtJs?action=gral', G::LoadTranslation('ID_GENERAL'));
-}
 
 $G_TMP_MENU->AddIdRawOption('SEARCHS', '', G::LoadTranslation('ID_CASES_MENU_SEARCH'), '', '', 'blockHeader');
 
@@ -71,14 +72,15 @@ if ($RBAC->userCanAccess('PM_FOLDERS_VIEW') == 1) {
 
 
 //Load Other registered Dashboards (From plugins)
-$oPluginRegistry = & PMPluginRegistry::getSingleton ();
+$oPluginRegistry = PluginRegistry::loadSingleton();
+/** @var \ProcessMaker\Plugins\Interfaces\DashboardPage[] $dashBoardPages */
 $dashBoardPages = $oPluginRegistry->getDashboardPages ();
 if (count($dashBoardPages)>0) {
     $G_TMP_MENU->AddIdRawOption('PLUGINS', '', G::LoadTranslation('ID_PLUGINS'), '', '', 'blockHeader');
     foreach ($dashBoardPages as $key => $tabInfo) {
-        $tabNameSpace=$tabInfo->sNamespace;
-        $tabName=$tabInfo->sName;
-        $tabIcon=str_replace("ICON_","",$tabInfo->sIcon);
+        $tabNameSpace=$tabInfo->getNamespace();
+        $tabName=$tabInfo->getName();
+        $tabIcon=str_replace("ICON_","",$tabInfo->getIcon());
         if ($tabName!= "") {
             $G_TMP_MENU->AddIdRawOption($tabIcon, 'casesStartPage?action='.$tabNameSpace.'-'.$tabName,
                 ucwords(strtolower($tabName)), '');

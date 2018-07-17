@@ -6,6 +6,7 @@ use ProcessMaker\Project;
 use ProcessMaker\Project\Adapter;
 use ProcessMaker\BusinessModel\Migrator;
 use ProcessMaker\BusinessModel\Migrator\ImportException;
+use ProcessMaker\Util\Common;
 
 abstract class Importer
 {
@@ -14,6 +15,7 @@ abstract class Importer
     protected $filename = "";
     protected $saveDir = "";
     protected $metadata = array();
+    protected $prjCreateUser = '';
     /**
      * Title of the process before being updated/deleted.
      * @var string
@@ -429,6 +431,7 @@ abstract class Importer
         $project["diagrams"] = array($diagram);
         $project["prj_author"] = isset($this->data["usr_uid"])? $this->data["usr_uid"]: "00000000000000000000000000000001";
         $project["process"] = $tables["process"][0];
+        $project["prjCreateUser"] = $this->prjCreateUser;
 
         return Adapter\BpmnWorkflow::createFromStruct($project, $generateUid);
     }
@@ -633,7 +636,7 @@ abstract class Importer
                 "KEEP"      => self::IMPORT_OPTION_KEEP_WITHOUT_CHANGING_AND_CREATE_NEW
             );
 
-            $option = $arrayAux[$option];
+            $opt = $arrayAux[$option];
 
             $arrayAux = array(
                 (($optionGroup != "")? "CREATE" : "") => self::GROUP_IMPORT_OPTION_CREATE_NEW,
@@ -657,7 +660,8 @@ abstract class Importer
 
             //Import
             try {
-                $projectUid = $this->import($option, $optionGroup);
+                $generateUID = (isset($option) && $option == "CREATE") ? true : false;
+                $projectUid = $this->import($opt, $optionGroup, $generateUID);
 
                 $arrayData = array_merge(array("PRJ_UID" => $projectUid), $arrayData);
             } catch (\Exception $e) {
@@ -696,14 +700,14 @@ abstract class Importer
         }
     }
 
-    public function saveAs($prj_uid, $prj_name, $prj_description, $prj_category)
+    public function saveAs($prj_uid, $prj_name, $prj_description, $prj_category, $prj_user = '')
     {
         try {
             $exporter = new \ProcessMaker\Exporter\XmlExporter($prj_uid);
             $getProjectName = $exporter->truncateName($exporter->getProjectName(), false);
 
             $outputDir = PATH_DATA . "sites" . PATH_SEP . SYS_SYS . PATH_SEP . "files" . PATH_SEP . "output" . PATH_SEP;
-            $version = \ProcessMaker\Util\Common::getLastVersion($outputDir . $getProjectName . "-*.pmx") + 1;
+            $version = Common::getLastVersionSpecialCharacters($outputDir, $getProjectName, "pmx") + 1;
             $outputFilename = $outputDir . sprintf("%s-%s.%s", str_replace(" ", "_", $getProjectName), $version, "pmx");
 
             $exporter->setMetadata("export_version", $version);
@@ -714,6 +718,7 @@ abstract class Importer
 
             $this->setSourceFile($outputFilename);
             $this->prepare();
+            $this->prjCreateUser = $prj_user;
             $this->importData["tables"]["bpmn"]["project"][0]["prj_name"] = $prj_name;
             $this->importData["tables"]["bpmn"]["project"][0]["prj_description"] = $prj_description;
             $this->importData["tables"]["bpmn"]["diagram"][0]["dia_name"] = $prj_name;

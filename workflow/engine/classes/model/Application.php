@@ -189,9 +189,6 @@ class Application extends BaseApplication
 
         try {
             $oApplication = ApplicationPeer::retrieveByPK( $AppUid );
-            if (!$oApplication) {
-                return false;
-            }
             if (is_object($oApplication) && get_class ($oApplication) == 'Application' ) {
                 $aFields = $oApplication->toArray(BasePeer::TYPE_FIELDNAME);
                 $this->fromArray($aFields, BasePeer::TYPE_FIELDNAME);

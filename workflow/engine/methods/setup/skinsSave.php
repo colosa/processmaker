@@ -52,8 +52,6 @@ switch ($RBAC->userCanAccess( 'PM_SETUP' )) {
         break;
 }
 
-G::LoadClass( "system" );
-
 $id = strip_tags( str_replace( ' ', '_', trim( $_POST['form']['NAME'] ) ) );
 $desc = $_POST['form']['DESCRIPTION'];
 

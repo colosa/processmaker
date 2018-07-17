@@ -20,8 +20,6 @@
 if (isset( $_POST['form'] )) {
     $frm = "{$_POST['form']}";
 
-    G::LoadClass( 'insert' );
-
     $db_spool = array ();
 
     $db_spool['msg_uid'] = 'msg_uid';

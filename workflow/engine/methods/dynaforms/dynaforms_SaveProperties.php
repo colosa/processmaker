@@ -26,12 +26,6 @@ if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1) {
     //G::genericForceLogin( 'WF_MYINFO' , 'login/noViewPage', $urlLogin = 'login/login' );
 }
 
-
-
-G::LoadInclude( 'ajax' );
-G::LoadClass( 'dynaform' );
-G::LoadClass( 'xmlDb' );
-
 $dbc = new DBConnection();
 $ses = new DBSession( $dbc );
 

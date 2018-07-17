@@ -24,6 +24,9 @@
  *
  */
 
+use ProcessMaker\Core\System;
+use ProcessMaker\Plugins\PluginRegistry;
+
 /**
  * @package gulliver.system
  */
@@ -42,6 +45,91 @@ class G
     public static $memcachedEnabled;
     public static $pathDataPublic;
     public static $httpHost;
+
+    /**
+     * Adapters used for different services inside Processmaker.
+     *
+     * @var string[] $adapters
+     */
+    private static $adapters = [
+        'ldap'                          => LDAP::class,
+        'ldapadvanced'                  => LdapAdvanced::class,
+        'dashletopenvscompleted'        => DashletOpenVsCompleted::class,
+        'dashletrssreader'              => DashletRssReader::class,
+        'dashletprocessmakerenterprise' => DashletProcessMakerEnterprise::class,
+        'dashletprocessmakercommunity'  => DashletProcessMakerCommunity::class,
+    ];
+
+    /**
+     * This function verify if exist file name in the PATH_GULLIVER
+     * @param string $strClass
+     * @return boolean
+     */
+    public function LoadSystemExist($strClass)
+    {
+        if (file_exists( PATH_GULLIVER . 'class.' . $strClass . '.php' )) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @deprecated 3.2.2, We keep this function only for backwards compatibility because is used in the plugin manager
+     */
+    public static function LoadSystem($strClass)
+    {
+        //For backward compatibilities
+    }
+
+    /**
+     * @deprecated 3.2.2, We keep this function only for backwards compatibility because is used in the plugin manager
+     */
+    public function LoadInclude($strClass)
+    {
+        //For backward compatibilities
+    }
+
+    /**
+     * @deprecated 3.2.2, We keep this function only for backwards compatibility because is used in the plugin manager
+     */
+    public function LoadClassRBAC($strClass)
+    {
+        //For backward compatibilities
+    }
+
+    /**
+     * @deprecated 3.2.2, We keep this function only for backwards compatibility because is used in the plugin manager
+     */
+    public static function LoadClass($strClass)
+    {
+        //For backward compatibilities
+    }
+
+    /**
+     * @deprecated 3.2.2, We keep this function only for backwards compatibility because is used in the plugin manager
+     */
+    public static function LoadThirdParty($sPath, $sFile)
+    {
+        //For backward compatibilities
+    }
+
+    /**
+     * Include all model files
+     * @access public
+     * @return void
+     */
+    public function LoadAllModelClasses()
+    {
+        $baseDir = PATH_CORE . 'classes' . PATH_SEP . 'model';
+        if ($handle = opendir( $baseDir )) {
+            while (false !== ($file = readdir( $handle ))) {
+                if (strpos( $file, '.php', 1 ) && ! strpos( $file, 'Peer.php', 1 )) {
+                    require_once ($baseDir . PATH_SEP . $file);
+                }
+            }
+        }
+    }
 
     /**
      * is_https
@@ -411,7 +499,7 @@ class G
      *
      * @return void
      */
-    public function rm_dir ($dirName)
+    public static function rm_dir ($dirName)
     {
         if (! is_writable( $dirName )) {
             return false;
@@ -536,37 +624,6 @@ class G
         return $res;
     }
 
-    /**
-     * Load Gulliver Classes
-     *
-     * @author Fernando Ontiveros Lira <fernando@colosa.com>
-     * @access public
-     * @param string $strClass
-     * @return void
-     */
-    public static function LoadSystem ($strClass)
-    {   
-        $path  = PATH_GULLIVER . 'class.' . $strClass . '.php';
-        if(file_exists(PATH_GULLIVER . 'class.inputfilter.php')) {  
-            require_once (PATH_GULLIVER . 'class.inputfilter.php');
-            $filter = new InputFilter();
-            $path  = $filter->validateInput($path, 'path');
-        } else {
-            if(!file_exists($path)) {
-                $path = '';
-            }
-        }
-        require_once ($path);
-    }
-
-    public function LoadSystemExist ($strClass)
-    {
-        if (file_exists( PATH_GULLIVER . 'class.' . $strClass . '.php' )) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     /**
      * Render Page
@@ -578,7 +635,7 @@ class G
      * @param string $strSkin
      * @return void
      */
-    public function RenderPage ($strTemplate = "default", $strSkin = SYS_SKIN, $objContent = null, $layout = '')
+    public static function RenderPage ($strTemplate = "default", $strSkin = SYS_SKIN, $objContent = null, $layout = '')
     {
         global $G_CONTENT;
         global $G_TEMPLATE;
@@ -648,48 +705,6 @@ class G
 
     }
 
-    /**
-     * Include javascript files
-     *
-     * @author Fernando Ontiveros Lira <fernando@colosa.com>
-     * @access public
-     * @param string $strInclude
-     * @return void
-     */
-    public function LoadInclude ($strInclude)
-    {
-        $incfile = G::ExpandPath( "includes" ) . 'inc.' . $strInclude . '.php';
-        if (! file_exists( $incfile )) {
-            $incfile = PATH_GULLIVER_HOME . 'includes' . PATH_SEP . 'inc.' . $strInclude . '.php';
-        }
-
-        if (file_exists( $incfile )) {
-            require_once ($incfile);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Include all model files
-     *
-     * @author Fernando Ontiveros Lira <fernando@colosa.com>
-     * @access public
-     * @param string $strInclude
-     * @return void
-     */
-    public function LoadAllModelClasses ()
-    {
-        $baseDir = PATH_CORE . 'classes' . PATH_SEP . 'model';
-        if ($handle = opendir( $baseDir )) {
-            while (false !== ($file = readdir( $handle ))) {
-                if (strpos( $file, '.php', 1 ) && ! strpos( $file, 'Peer.php', 1 )) {
-                    require_once ($baseDir . PATH_SEP . $file);
-                }
-            }
-        }
-    }
 
     /**
      * Include all model plugin files
@@ -719,10 +734,7 @@ class G
                             }
                         }
                     }
-                    //Include also the extendGulliverClass that could have some new definitions for fields
-                    if (file_exists( $possiblePath . 'classes' . PATH_SEP . 'class.extendGulliver.php' )) {
-                        include_once $possiblePath . 'classes' . PATH_SEP . 'class.extendGulliver.php';
-                    }
+                    
                 }
             }
         }
@@ -756,59 +768,6 @@ class G
                 include ($file);
             }
         }
-    }
-
-    /**
-     * public function LoadClassRBAC
-     *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
-     * @access public
-     * @param eter string strClass
-     * @return string
-     */
-    public function LoadClassRBAC ($strClass)
-    {
-        $classfile = PATH_RBAC . "class.$strClass" . '.php';
-        require_once ($classfile);
-    }
-
-    /**
-     * If the class is not defined by the aplication, it
-     * attempt to load the class from gulliver.system
-     *
-     * @author Fernando Ontiveros Lira <fernando@colosa.com>, David S. Callizaya
-     * @access public
-     * @param string $strClass
-     * @return void
-     */
-    public static function LoadClass ($strClass)
-    {
-        $classfile = G::ExpandPath( "classes" ) . 'class.' . $strClass . '.php';
-        if (! file_exists( $classfile )) {
-            if (file_exists( PATH_GULLIVER . 'class.' . $strClass . '.php' )) {
-                return require_once (PATH_GULLIVER . 'class.' . $strClass . '.php');
-            } else {
-                return false;
-            }
-        } else {
-            return require_once ($classfile);
-        }
-    }
-
-    /**
-     * Loads a Class.
-     * If the class is not defined by the aplication, it
-     * attempt to load the class from gulliver.system
-     *
-     * @author Fernando Ontiveros Lira <fernando@colosa.com>, David S. Callizaya
-     * @access public
-     * @param string $strClass
-     * @return void
-     */
-    public static function LoadThirdParty($sPath, $sFile)
-    {
-        $classfile = PATH_THIRDPARTY . $sPath . '/' . $sFile . ((substr( $sFile, 0, - 4 ) !== '.php') ? '.php' : '');
-        return require_once ($classfile);
     }
 
     /**
@@ -1073,8 +1032,7 @@ class G
 
             if (((in_array($browserName, $enabledBrowsers)) || (in_array('ALL', $enabledBrowsers)))&&(!(in_array($browserName, $disabledBrowsers)))) {
                 if ($cssFileInfo['__ATTRIBUTES__']['file'] == 'rtl.css') {
-                    G::LoadClass('serverConfiguration');
-                    $oServerConf =& serverConf::getSingleton();
+                    $oServerConf =& ServerConf::getSingleton();
                     if (!(defined('SYS_LANG'))) {
                         if (isset($_SERVER['HTTP_REFERER'])) {
                             $syss = explode('://', $_SERVER['HTTP_REFERER']);
@@ -1161,7 +1119,7 @@ class G
      */
     public static function streamFile ($file, $download = false, $downloadFileName = '')
     {
-        G::LoadSystem('inputfilter');
+
         $filter = new InputFilter();
         $file = $filter->xssFilterHard($file);
         if(isset($_SERVER['REQUEST_URI'])) {
@@ -1864,6 +1822,14 @@ class G
 
             $arrayGrid = array_unique($arrayGrid);
 
+            //Given the set: 'valueOne', 'valueOneTwo', where the second string 
+            //contains the first string, this causes the larger string to take 
+            //the second, resulting in a delimitation error, to avoid this problem 
+            //we first search the string larger size.
+            usort($arrayGrid, function($a, $b) {
+                return strlen($b) - strlen($a);
+            });
+
             foreach ($arrayGrid as $index => $value) {
                 if($value !== "") {
                     $grdName = $value;
@@ -2020,7 +1986,7 @@ class G
      *
      * @return void
      */
-    public function SendTemporalMessage ($msgID, $strType, $sType = 'LABEL', $time = null, $width = null, $customLabels = null)
+    public static function SendTemporalMessage ($msgID, $strType, $sType = 'LABEL', $time = null, $width = null, $customLabels = null)
     {
         if (isset( $width )) {
             $_SESSION['G_MESSAGE_WIDTH'] = $width;
@@ -2595,7 +2561,7 @@ class G
      */
     public function gotDirectoryStructureVer2()
     {
-        G::LoadClass( "configuration" );
+
         $configuration = new Configurations();
         if (defined('SYS_SYS') && $configuration->exists("ENVIRONMENT_SETTINGS")) {
             return ($configuration->getDirectoryStructureVer() > 1);
@@ -2755,7 +2721,7 @@ class G
                 }
             }
 
-            G::LoadSystem('inputfilter');
+
             $filter = new InputFilter();
             $file = $filter->validateInput($file, "path");
             $path = $filter->validateInput($path, "path");
@@ -2826,7 +2792,7 @@ class G
         $outputFn( $image_p, $saveTo );
         
         if(!is_null($saveTo)) {
-            G::LoadSystem('inputfilter');
+
             $filter = new InputFilter();
             $saveTo = $filter->validateInput($saveTo, "path");
         }
@@ -2952,6 +2918,16 @@ class G
     }
 
     /**
+     * Verify if the input string is a valid UID of size 32
+     * @param string $uid
+     * @return boolean
+     */
+    public static function verifyUniqueID32($uid)
+    {
+        return (bool) preg_match('/^[0-9A-Za-z]{32,32}$/', $uid);
+    }
+
+    /**
      * is_utf8
      *
      * @param string $string
@@ -2960,11 +2936,10 @@ class G
      */
     public function is_utf8 ($string)
     {
-        if (is_array( $string )) {
-            $enc = implode( '', $string );
-            return @! ((ord( $enc[0] ) != 239) && (ord( $enc[1] ) != 187) && (ord( $enc[2] ) != 191));
+        if (preg_match('//u', $string)) {
+            return true;
         } else {
-            return (utf8_encode( utf8_decode( $string ) ) == $string);
+            return false;
         }
     }
 
@@ -3021,8 +2996,6 @@ class G
                 switch ($params->option) {
                     case "STORED SESSION":
                         if (isset($params->SID)) {
-                            G::LoadClass("sessions");
-
                             $oSessions = new Sessions($params->SID);
                             $sysCon = array_merge($sysCon, $oSessions->getGlobals());
                         }
@@ -3246,7 +3219,8 @@ class G
      */
     public function evalJScript ($c)
     {
-        /*G::LoadSystem('inputfilter');
+        /*
+
         $filter = new InputFilter();
         $c = $filter->xssFilterHard($c);*/
         print ('<script language="javascript">'.$c.'</script>') ;
@@ -3261,20 +3235,34 @@ class G
      * @param (array) additional characteres map
      *
      */
-    public function inflect ($string, $replacement = '_', $map = array())
+    public function inflect($string, $replacement = '_', $map = array())
     {
-        if (is_array( $replacement )) {
+        if (is_array($replacement)) {
             $map = $replacement;
             $replacement = '_';
         }
 
-        $quotedReplacement = preg_quote( $replacement, '/' );
+        $quotedReplacement = preg_quote($replacement, '/');
 
-        $default = array ('/à|á|å|â/' => 'a','/è|é|ê|ẽ|ë/' => 'e','/ì|í|î/' => 'i','/ò|ó|ô|ø/' => 'o','/ù|ú|ů|û/' => 'u','/ç/' => 'c','/ñ/' => 'n','/ä|æ/' => 'ae','/ö/' => 'oe','/ü/' => 'ue','/Ä/' => 'Ae','/Ü/' => 'Ue','/Ö/' => 'Oe','/ß/' => 'ss','/\.|\,|\:|\-|\\|\//' => " ",'/\\s+/' => $replacement
-        );
+        $default = array('/à|á|å|â/' => 'a',
+            '/è|é|ê|ẽ|ë/' => 'e',
+            '/ì|í|î/' => 'i',
+            '/ò|ó|ô|ø/' => 'o',
+            '/ù|ú|ů|û/' => 'u',
+            '/ç/' => 'c',
+            '/ñ/' => 'n',
+            '/ä|æ/' => 'ae',
+            '/ö/' => 'oe',
+            '/ü/' => 'ue',
+            '/Ä/' => 'Ae',
+            '/Ü/' => 'Ue',
+            '/Ö/' => 'Oe',
+            '/ß/' => 'ss',
+            '/[\.|\,|\+|\"|\:|\;|\-|\\|\/]/' => " ",
+            '/\\s+/' => $replacement);
 
-        $map = array_merge( $default, $map );
-        return preg_replace( array_keys( $map ), array_values( $map ), $string );
+        $map = array_merge($default, $map);
+        return preg_replace(array_keys($map), array_values($map), $string);
     }
 
     /**
@@ -3452,7 +3440,7 @@ class G
         if ( function_exists('json_encode') ) {
             return json_encode($Json);
         } else {
-            G::LoadThirdParty('pear/json', 'class.json');
+
             $oJSON = new Services_JSON();
             return $oJSON->encode($Json);
         }
@@ -3468,7 +3456,7 @@ class G
         if (function_exists('json_decode')) {
             return json_decode($Json, $assoc);
         } else {
-            G::LoadThirdParty('pear/json', 'class.json');
+
             $oJSON = new Services_JSON();
             return $oJSON->decode($Json);
         }
@@ -3506,8 +3494,7 @@ class G
     public function sendMail ($from, $fromName, $address, $subject, $body)
     {
         // require_once "classes/class.pmFunctions.php";
-        G::LoadClass("pmFunctions");
-        G::LoadThirdParty('phpmailer', 'class.phpmailer');
+
         $setup = getEmailConfiguration();
         if ($setup['MESS_RAUTH'] == false || (is_string($setup['MESS_RAUTH']) && $setup['MESS_RAUTH'] == 'false')) {
             $setup['MESS_RAUTH'] = 0;
@@ -3737,7 +3724,7 @@ class G
 
     //public function getModel($model)
     //{
-    //    require_once "classes/model/$model.php";
+
     //    return new $model();
     //}
 
@@ -4683,7 +4670,6 @@ class G
      */
     public function getCheckSum ($files)
     {
-        G::LoadClass( 'system' );
         $key = System::getVersion();
 
         if (! is_array( $files )) {
@@ -4851,7 +4837,6 @@ class G
             throw new Exception( 'System constant (PATH_THIRDPARTY) is not defined!' );
         }
 
-        require_once PATH_THIRDPARTY . 'smarty/libs/Smarty.class.php';
         $fInfo = pathinfo( $template );
 
         $tplExists = true;
@@ -5054,9 +5039,9 @@ class G
             $restClasses = array_merge( $restClasses, $pluginRestClasses );
         }
         // hook to get rest api classes from plugins
-        if (class_exists( 'PMPluginRegistry' )) {
-            $pluginRegistry = & PMPluginRegistry::getSingleton();
-            $pluginClasses = $pluginRegistry->getRegisteredRestClassFiles();
+        if (class_exists( 'ProcessMaker\Plugins\PluginRegistry' )) {
+            $pluginRegistry = PluginRegistry::loadSingleton();
+            $pluginClasses = $pluginRegistry->getRegisteredRestServices();
             $restClasses = array_merge( $restClasses, $pluginClasses );
         }
         foreach ($restClasses as $key => $classFile) {
@@ -5426,7 +5411,7 @@ class G
       */
     public function sanitizeInput($data, $tagsArray = array(), $attrArray = array(), $tagsMethod = 0, $attrMethod = 0, $xssAuto = 1)
     {
-        G::LoadSystem('inputfilter');
+
         $filtro = new InputFilter($tagsArray , $attrArray, $tagsMethod, $attrMethod, $xssAuto);
         return $filtro->process($data);
     }
@@ -5442,7 +5427,7 @@ class G
     public static function log($message, $pathData = PATH_DATA, $file = 'cron.log')
     {
         $config = System::getSystemConfiguration();
-        G::LoadSystem('logger');
+
 
         $oLogger = Logger::getSingleton($pathData, PATH_SEP, $file);
         $oLogger->limitFile = $config['number_log_file'];
@@ -5451,6 +5436,12 @@ class G
     }
 
     /**
+     * This function save history about some actions in the file audit.log
+     * The data is used in the Audit Log functionality
+     *
+     * @param string $actionToLog
+     * @param string $valueToLog
+     * @return void
     */
     public static function auditLog($actionToLog, $valueToLog = "")
     {
@@ -5459,14 +5450,9 @@ class G
         $sflag = $conf->getConfiguration('AUDIT_LOG', 'log');
         $sflagAudit = $sflag == 'true' ? true : false;
         $ipClient = G::getIpAddress();
+        $userUid = 'Unknow User';
+        $fullName = '-';
 
-        /*----------------------------------********---------------------------------*/
-        $licensedFeatures = PMLicensedFeatures::getSingleton();
-        if ($sflagAudit && $licensedFeatures->verifyfeature('vtSeHNhT0JnSmo1bTluUVlTYUxUbUFSVStEeXVqc1pEUG5EeXc0MGd2Q3ErYz0=')) {
-            $username = isset($_SESSION['USER_LOGGED']) && $_SESSION['USER_LOGGED'] != '' ? $_SESSION['USER_LOGGED'] : 'Unknow User';
-            $fullname = isset($_SESSION['USR_FULLNAME']) && $_SESSION['USR_FULLNAME'] != '' ? $_SESSION['USR_FULLNAME'] : '-';
-            G::log("|". $workspace ."|". $ipClient ."|". $username . "|" . $fullname ."|" . $actionToLog . "|" . $valueToLog, PATH_DATA, "audit.log");
-        }
         /*----------------------------------********---------------------------------*/
     }
 
@@ -5704,28 +5690,42 @@ class G
     }
 
     /**
-    * Check the browser compativility
-    */
-	public function checkBrowserCompatibility($browser = null, $version = null){
-	    if($browser == null || $version == null){
-	    	$info = G::getBrowser();
-	    	$browser = $info['name'];
-	    	$version = $info['version'];
-	    }
-		if ((($browser== 'msie') && (($version >= 8) && ($version <= 11))) ||
-			(($browser== 'chrome') && ($version >= 26)) ||
-			(($browser== 'firefox') && ($version >= 20))
-		){
-			return true;
-		}
-		return false;
+     * Check the browser compatibility
+     *
+     * @param string $browser
+     * @param integer $version
+     *
+     * @return boolean
+     */
+    public function checkBrowserCompatibility($browser = null, $version = null)
+    {
+        if ($browser == null || $version == null) {
+            $info = G::getBrowser();
+            $browser = $info['name'];
+            $version = $info['version'];
+        }
+
+        if (
+            (($browser == 'msie') && (($version >= 8) && ($version <= 11))) ||
+            (($browser == 'chrome') && ($version >= 26)) ||
+            (($browser == 'firefox') && ($version >= 20)) ||
+            (($browser == 'safari') && ($version >= 10))
+        ) {
+            return true;
+        }
+
+        return false;
     }
 
-    /*
-    *     $string       - The string to sanitize.
-    *     $lowercase    - Force the string to lowercase?
-    *     $alpha        - If set to *true*, will remove all non-alphanumeric characters.
-    */
+    /**
+     * This function sanitizes the string
+     *
+     * @param string $string, The string to sanitize.
+     * @param boolean $lowercase, Force the string to lowercase
+     * @param boolean $alpha, If set to *true*, will remove all non-alphanumeric characters.
+     *
+     * @return string
+     */
     public function sanitizeString ($string, $lowercase = true, $alpha = false)
     {
        $strip = array("~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "=", "+", "[", "{", "]",
@@ -5744,7 +5744,7 @@ class G
     *
     * @return showRes($string)
     */
-    public function outRes ($sInfVar)
+    public static function outRes ($sInfVar)
     {
         echo $sInfVar;
     }
@@ -5808,98 +5808,118 @@ class G
     {
         return $e->getMessage();
     }
-}
 
-/**
- * eprint
- *
- * @param string $s default value ''
- * @param string $c default value null
- *
- * @return void
- */
-function eprint ($s = "", $c = null)
-{
-    if (G::isHttpRequest()) {
-        if (isset( $c )) {
-            echo "<pre style='color:$c'>$s</pre>";
-        } else {
-            echo "<pre>$s</pre>";
-        }
-    } else {
-        if (isset( $c )) {
-            switch ($c) {
-                case 'green':
-                    printf( "\033[0;35;32m$s\033[0m" );
-                    return;
-                    break;
-                case 'red':
-                    printf( "\033[0;35;31m$s\033[0m" );
-                    return;
-                    break;
-                case 'blue':
-                    printf( "\033[0;35;34m$s\033[0m" );
-                    return;
-                    break;
-                default:
-                    print "$s";
-            }
-        } else {
-            print "$s";
+    /**
+     * Add log of execution of triggers
+     * @param $data
+     * @param string $error
+     * @param string $typeError
+     * @param int $executionTime
+     */
+    public static function logTriggerExecution($data, $error = 'NO-ERROR', $typeError = '', $executionTime = 0)
+    {
+        if ((!empty($data['_CODE_']) || $typeError == 'FATAL_ERROR') && isset($data['_DATA_TRIGGER_']) &&
+            !isset($data['_DATA_TRIGGER_']['_TRI_LOG_'])
+        ) {
+            $lg = Bootstrap::getDefaultContextLog();
+            $lg['TRI_TITLE'] = isset($data['_DATA_TRIGGER_']['TRI_TITLE']) ? $data['_DATA_TRIGGER_']['TRI_TITLE'] : '';
+            $lg['TRI_UID'] = isset($data['_DATA_TRIGGER_']['TRI_UID']) ? $data['_DATA_TRIGGER_']['TRI_UID'] : '';
+            $lg['TRI_CODE'] = isset($data['_DATA_TRIGGER_']['TRI_WEBBOT']) ? $data['_DATA_TRIGGER_']['TRI_WEBBOT'] : '';
+            $lg['TRI_EXECUTION_TIME'] = $executionTime;
+            $lg['TRI_MSG_ERROR'] = $error;
+            $lg['APP_UID'] = isset($data['APPLICATION']) ? $data['APPLICATION'] : '';
+            $lg['PRO_UID'] = isset($data['PROCESS']) ? $data['PROCESS'] : '';
+            $lg['TAS_UID'] = isset($data['TASK']) ? $data['TASK'] : '';
+            $lg['USR_UID'] = isset($data['USER_LOGGED']) ? $data['USER_LOGGED'] : '';
+
+            Bootstrap::registerMonolog(
+                (empty($sError)) ? 'TriggerExecution' : 'TriggerExecutionError',
+                (empty($sError)) ? 200 : 400,
+                (empty($sError)) ? 'Trigger Execution' : 'Trigger Execution Error',
+                $lg, $lg['workspace'], 'processmaker.log');
+
+            $_SESSION['_DATA_TRIGGER_']['_TRI_LOG_'] = true;
         }
     }
-}
 
-/**
- * println
- *
- * @param string $s
- *
- * @return eprintln($s)
- */
-function println ($s)
-{
-    return eprintln( $s );
-}
-
-/**
- * eprintln
- *
- * @param string $s
- * @param string $c
- *
- * @return void
- */
-function eprintln ($s = "", $c = null)
-{
-    if (G::isHttpRequest()) {
-        if (isset( $c )) {
-            echo "<pre style='color:$c'>$s</pre>";
-        } else {
-            echo "<pre>$s</pre>";
+    /**
+     * Define the Processmaker constants.
+     *
+     */
+    public static function defineConstants()
+    {
+        //Moved from Enterprise class.
+        if (file_exists(PATH_METHODS . "login/version-pmos.php")) {
+            include (PATH_METHODS . "login/version-pmos.php");
         }
-    } else {
-        if (isset( $c ) && (PHP_OS != 'WINNT')) {
-            switch ($c) {
-                case 'green':
-                    printf( "\033[0;35;32m$s\033[0m\n" );
-                    return;
-                    break;
-                case 'red':
-                    printf( "\033[0;35;31m$s\033[0m\n" );
-                    return;
-                    break;
-                case 'blue':
-                    printf( "\033[0;35;34m$s\033[0m\n" );
-                    return;
-                    break;
-            }
-        }
-        print "$s\n";
+        //Removed default version from code.
+        
+        /**
+         * The constants defined comes from the file:
+         * processmaker/workflow/engine/classes/class.plugin.php, the loading of this
+         * file is not done by 'require' in this version of ProcessMaker. Therefore,
+         * these definitions have been moved to this class.
+         */
+        define('G_PLUGIN_CLASS', 1);
+        define('PM_CREATE_CASE', 1001);
+        define('PM_UPLOAD_DOCUMENT', 1002);
+        define('PM_CASE_DOCUMENT_LIST', 1003);
+        define('PM_BROWSE_CASE', 1004);
+        define('PM_NEW_PROCESS_LIST', 1005);
+        define('PM_NEW_PROCESS_SAVE', 1006);
+        define('PM_NEW_DYNAFORM_LIST', 1007);
+        define('PM_NEW_DYNAFORM_SAVE', 1008);
+        define('PM_EXTERNAL_STEP', 1009);
+        define('PM_CASE_DOCUMENT_LIST_ARR', 1010);
+        define('PM_LOGIN', 1011);
+        define('PM_UPLOAD_DOCUMENT_BEFORE', 1012);
+        define('PM_CREATE_NEW_DELEGATION', 1013);
+        define('PM_SINGLE_SIGN_ON', 1014);
+        define('PM_GET_CASES_AJAX_LISTENER', 1015);
+        define('PM_BEFORE_CREATE_USER', 1016);
+        define('PM_AFTER_LOGIN', 1017);
+        define('PM_HASH_PASSWORD', 1018);
+        define('PM_SCHEDULER_CREATE_CASE_BEFORE', 1019);
+        define('PM_SCHEDULER_CREATE_CASE_AFTER', 1020);
     }
-}
 
-function __ ($msgID, $lang = SYS_LANG, $data = null)
-{
-    return G::LoadTranslation( $msgID, $lang, $data );
+    /**
+     * Instanciate an adapter by name.
+     *
+     * @param string $name Adapter name or class name                                                                                                     :P
+     * 
+     * @param string[] $parameters Constructor parameters
+     */
+    public static function factory($name, ...$parameters)
+    {
+        $key = strtolower($name);
+        $class = isset(self::$adapters[$key]) ? self::$adapters[$key] : $name;
+        $rc = new ReflectionClass($class);
+        return $rc->newInstanceArgs($parameters);
+    }
+
+    /**
+     * Return current class
+     *
+     * @param $name string name class
+     * @return string name of class
+     */
+    public static function nameClass($name)
+    {
+        $key = strtolower($name);
+        return isset(self::$adapters[$key]) ? self::$adapters[$key] : $name;
+    }
+
+    /**
+     * Verify class exists
+     *
+     * @param $name
+     * @return bool true or false
+     */
+    public static function classExists($name)
+    {
+        $key = strtolower($name);
+        $class = isset(self::$adapters[$key]) ? self::$adapters[$key] : $name;
+        return class_exists($class);
+    }
 }

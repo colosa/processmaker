@@ -73,11 +73,18 @@ class Group extends Api
     }
 
     /**
+     * Create a new group.
+     * 
      * @url POST
-     *
-     * @param array $request_data
-     *
      * @status 201
+     * 
+     * @param array $request_data
+     * 
+     * @return array
+     * @throws RestException 
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_USERS}
      */
     public function doPost($request_data)
     {
@@ -96,10 +103,17 @@ class Group extends Api
     }
 
     /**
+     * Update group.
+     *
      * @url PUT /:grp_uid
      *
      * @param string $grp_uid      {@min 32}{@max 32}
      * @param array  $request_data
+     *
+     * @throws RestException
+     *
+     * @access protected
+     * @class AccessControl {@permission PM_USERS}
      */
     public function doPut($grp_uid, $request_data)
     {
@@ -115,6 +129,8 @@ class Group extends Api
 
     /**
      * @url DELETE /:grp_uid
+     * @access protected
+     * @class AccessControl {@permission PM_USERS}
      *
      * @param string $grp_uid {@min 32}{@max 32}
      */

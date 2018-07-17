@@ -3,15 +3,8 @@ namespace ProcessMaker\Services\OAuth2;
 
 use Luracast\Restler\iAuthenticate;
 use Luracast\Restler\RestException;
+use ProcessMaker\Core\System;
 
-
-/**
- * Class Server
- *
- * @package OAuth2
- * @author Erik Amaru Ortiz <aortiz.erik at gmail dot com>
- *
- */
 class Server implements iAuthenticate
 {
     /**
@@ -284,6 +277,8 @@ class Server implements iAuthenticate
      */
     public function postToken($request = null, $returnResponse = false)
     {
+        \ProcessMaker\Policies\ControlUnderUpdating::verifyUnderUpgrading();
+        
         // Handle a request for an OAuth2.0 Access Token and send the response to the client
         if ($request == null) {
             $request = \OAuth2\Request::createFromGlobals();
@@ -369,7 +364,7 @@ class Server implements iAuthenticate
                 $userTimeZone = $user->getUsrTimeZone();
 
                 if (trim($userTimeZone) == '') {
-                    $arraySystemConfiguration = \System::getSystemConfiguration('', '', SYS_SYS);
+                    $arraySystemConfiguration = System::getSystemConfiguration('', '', SYS_SYS);
 
                     $userTimeZone = $arraySystemConfiguration['time_zone'];
                 }

@@ -25,6 +25,8 @@
  *
  */
 
+use ProcessMaker\Plugins\PluginRegistry;
+
 /**
  * Class headPublisher
  *
@@ -225,6 +227,12 @@ class headPublisher
         }
         
         $head = $head . "
+        <!--//////////////////////////////////********//////////////////////////////////-->
+        <noscript>
+		<div>
+		 ". G::LoadTranslation( 'ID_ERROR_JS_NOT_AVAILABLE' )."
+		</div>
+		</noscript>
 		<!--//////////////////////////////////********//////////////////////////////////-->
 
         <script type=\"text/javascript\">
@@ -352,7 +360,7 @@ class headPublisher
         //$head .= $this->getExtJsStylesheets();
         $head .= $this->getExtJsScripts();
         $head .= $this->getExtJsVariablesScript();
-        $oServerConf = & serverConf::getSingleton();
+        $oServerConf = & ServerConf::getSingleton();
         if ($oServerConf->isRtl(SYS_LANG)) {
             $head = $head . "  <script type=\"text/javascript\" src=\"" . G::browserCacheFilesUrl("/js/ext/extjs_rtl.js") . "\"></script>\n";
         }
@@ -380,11 +388,12 @@ class headPublisher
          */
         // Load external/plugin css
         // NOTE is necesary to move this to decorator server
-        if (class_exists('PMPluginRegistry')) {
-            $oPluginRegistry = & PMPluginRegistry::getSingleton();
+        if (class_exists('ProcessMaker\Plugins\PluginRegistry') && defined('SYS_SYS')) {
+            $oPluginRegistry = PluginRegistry::loadSingleton();
             $registeredCss = $oPluginRegistry->getRegisteredCss();
+            /** @var \ProcessMaker\Plugins\Interfaces\CssFile $cssFile */
             foreach ($registeredCss as $cssFile) {
-                $script .= "  <link rel='stylesheet' type='text/css' href='" . $cssFile->sCssFile . ".css' />\n";
+                $script .= "  <link rel='stylesheet' type='text/css' href='" . $cssFile->getCssFile() . ".css' />\n";
             }
         }
         return $script;
@@ -498,7 +507,7 @@ class headPublisher
                 $flagPlugin = false;
                 $keyPlugin = count($aux)-2;
 
-                $oPluginRegistry = & PMPluginRegistry::getSingleton();
+                $oPluginRegistry = PluginRegistry::loadSingleton();
                 if ($oPluginRegistry->isRegisteredFolder($aux[$keyPlugin])) {
                     $flagPlugin = true;
                 } else {
@@ -536,7 +545,6 @@ class headPublisher
             $cacheFilename = PATH_C . 'ExtJs' . PATH_SEP . $cacheName . '.js';
 
             if (!file_exists($cacheFilename)) {
-                require_once (PATH_THIRDPARTY . 'jsmin/jsmin.php');
                 $content = JSMin::minify(file_get_contents($jsFilename));
                 file_put_contents($cacheFilename, $content);
             }
@@ -545,8 +553,8 @@ class headPublisher
         $this->extJsScript[] = '/extjs/' . $cacheName;
 
         //hook for registered javascripts from plugins
-        if (class_exists('PMPluginRegistry')) {
-            $oPluginRegistry = & PMPluginRegistry::getSingleton();
+        if (class_exists('ProcessMaker\Plugins\PluginRegistry') && defined('SYS_SYS')) {
+            $oPluginRegistry = PluginRegistry::loadSingleton();
             $pluginJavascripts = $oPluginRegistry->getRegisteredJavascriptBy($filename);
         } else {
             $pluginJavascripts = array();
@@ -581,7 +589,6 @@ class headPublisher
                         $cacheFilename = PATH_C . 'ExtJs' . PATH_SEP . $jsPluginCacheName . '.js';
 
                         if (!file_exists($cacheFilename)) {
-                            require_once (PATH_THIRDPARTY . 'jsmin/jsmin.php');
                             $content = JSMin::minify(file_get_contents(PATH_PLUGINS . $pluginJsFile));
                             file_put_contents($cacheFilename, $content);
                         }
@@ -677,7 +684,7 @@ class headPublisher
                     $aux = explode(PATH_SEP, $file);
                     //check if G_PLUGIN_CLASS is defined, because publisher can be called without an environment
                     if (count($aux) == 2 && defined('G_PLUGIN_CLASS')) {
-                        $oPluginRegistry = & PMPluginRegistry::getSingleton();
+                        $oPluginRegistry = PluginRegistry::loadSingleton();
                         if ($oPluginRegistry->isRegisteredFolder($aux[0])) {
                             $sPath = PATH_PLUGINS;
                         }
@@ -741,10 +748,11 @@ class headPublisher
      */
     public function getExtJsViewState()
     {
+        $json = new stdClass();
         $views = array();
         $keyState = "extJsViewState";
         $prefixExtJs = "ys-";
-        $oServerConf = &serverConf::getSingleton();
+        $oServerConf = &ServerConf::getSingleton();
         $deleteCache = true;
 
         $sjson = $oServerConf->getProperty($keyState);
@@ -765,7 +773,9 @@ class headPublisher
                 $views[$key] = $value[1];
             }
         }
-        $oServerConf->setProperty($keyState, G::json_encode($views));
+        if ((array)$json != $views) {
+            $oServerConf->setProperty($keyState, G::json_encode($views));
+        }
         return $views;
     }
 

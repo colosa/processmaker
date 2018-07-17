@@ -29,7 +29,7 @@ function pagedTable_BeforeQuery (&$ntable)
 {
     $file = G::decrypt( $ntable->xmlForm->values['URL'], URL_KEY );
     /* Start Block: Defines the virtual XMLDB*/
-    G::LoadClass( 'xmlDb' );
+
     define( 'DB_XMLDB_HOST', PATH_DYNAFORM . $file . '.xml' );
     define( 'DB_XMLDB_USER', '' );
     define( 'DB_XMLDB_PASS', '' );
@@ -39,8 +39,6 @@ function pagedTable_BeforeQuery (&$ntable)
 }
 require_once (PATH_GULLIVER_HOME . 'methods/pagedTableAjax.php');
 die();
-G::LoadSystem( 'pagedTable' );
-G::LoadInclude( 'ajax' );
 
 $id = get_ajax_value( 'ptID' );
 $ntable = unserialize(base64_decode($_SESSION['pagedTable[' . $id . ']']));
@@ -78,7 +76,7 @@ if (isset( $page ) && $page !== '') {
 
 $file = G::decrypt( $ntable->xmlForm->values['URL'], URL_KEY );
 /* Start Block: Defines the virtual XMLDB*/
-G::LoadClass( 'xmlDb' );
+
 define( 'DB_XMLDB_HOST', PATH_DYNAFORM . $file . '.xml' );
 define( 'DB_XMLDB_USER', '' );
 define( 'DB_XMLDB_PASS', '' );
@@ -132,7 +130,7 @@ switch ($function) {
         return;
 }
 $ntable->renderTable( 'content' );
-G::LoadClass( 'configuration' );
+
 $dbc = new DBConnection();
 $conf = new Configuration( $dbc, $ntable );
 $conf->setConfig( $ntable->__Configuration, $ntable, $conf->aConfig );

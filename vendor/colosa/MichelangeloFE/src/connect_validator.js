@@ -929,3 +929,48 @@ ConnectValidator.prototype.canAcceptOutgoingConnection = function (shape, connec
     }
     return true;
 };
+/**
+ * Validate if PMActivity/PMEvent onDrop is correct
+ * @param {PMUI.draw.Shape} shape
+ * @param {PMUI.draw.Shape} customShape
+ * @returns {boolean}
+ */
+ConnectValidator.prototype.onDropMovementIsAllowed = function (shape, customShape) {
+    var result = true,
+        i,
+        connection,
+        ports,
+        len,
+        sourceShape,
+        targetShape,
+        elemShape,
+        flowType,
+        oldParent = customShape.getOldParent().getParent();
+
+    if (shape.getID() !== customShape.getParent().getID()) {
+        ports = customShape.getPorts();
+        len = ports.getSize();
+        for (i = 0; i < len; i += 1) {
+            //Get sourceShape and targetShape (PMevent/PMactivity)
+            connection = ports.get(i).getConnection();
+            sourceShape = connection.getSrcPort().getParent();
+            targetShape = connection.getDestPort().getParent();
+            elemShape = shape.businessObject.elem;
+            elemShape = (elemShape && elemShape.$parent && elemShape.$parent.$parent) ? elemShape : false;
+            flowType = (connection.getFlowType() === 'MESSAGE') ? true : false;
+
+            if (flowType &&
+                (sourceShape.getParent().getID() === shape.getID()
+                    || targetShape.getParent().getID() === shape.getID())) {
+                result = false;
+                break;
+            } else if (elemShape && flowType &&
+                (elemShape.$parent.$parent.id === sourceShape.businessObject.elem.$parent.id ||
+                    elemShape.$parent.$parent.id === targetShape.businessObject.elem.$parent.id)) {
+                result = (oldParent) ? (oldParent.getID() !== shape.getParent().getID()) ? false : true : false;
+                break;
+            }
+        }
+    }
+    return result;
+};

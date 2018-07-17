@@ -55,8 +55,7 @@ try {
 
     $sMaxExecutionTime = ini_get( 'max_execution_time' );
     ini_set( 'max_execution_time', '0' );
-    G::LoadClass( 'configuration' );
-    G::LoadSystem('inputfilter');
+
     $filter = new InputFilter();
 
     $languageFile = $_FILES['form']['tmp_name']['LANGUAGE_FILENAME'];
@@ -79,8 +78,7 @@ try {
     $configuration = new Configurations();
     $importResults = $language->import( $languageFile );
 
-    G::LoadClass( "wsTools" );
-    $renegerateContent = new workspaceTools( SYS_SYS );
+    $renegerateContent = new WorkspaceTools( SYS_SYS );
     $messs = $renegerateContent->upgradeContent();
 
     $result->msg = G::LoadTranslation( 'IMPORT_LANGUAGE_SUCCESS' ) . "\n";

@@ -52,6 +52,12 @@ abstract class BaseUsersProperties extends BaseObject implements Persistent
     protected $usr_password_history;
 
     /**
+     * The value for the usr_setting_designer field.
+     * @var        string
+     */
+    protected $usr_setting_designer;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -128,6 +134,17 @@ abstract class BaseUsersProperties extends BaseObject implements Persistent
     {
 
         return $this->usr_password_history;
+    }
+
+    /**
+     * Get the [usr_setting_designer] column value.
+     * 
+     * @return     string
+     */
+    public function getUsrSettingDesigner()
+    {
+
+        return $this->usr_setting_designer;
     }
 
     /**
@@ -226,6 +243,28 @@ abstract class BaseUsersProperties extends BaseObject implements Persistent
     } // setUsrPasswordHistory()
 
     /**
+     * Set the value of [usr_setting_designer] column.
+     * 
+     * @param      string $v new value
+     * @return     void
+     */
+    public function setUsrSettingDesigner($v)
+    {
+
+        // Since the native PHP type for this column is string,
+        // we will cast the input to a string (if it is not).
+        if ($v !== null && !is_string($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->usr_setting_designer !== $v) {
+            $this->usr_setting_designer = $v;
+            $this->modifiedColumns[] = UsersPropertiesPeer::USR_SETTING_DESIGNER;
+        }
+
+    } // setUsrSettingDesigner()
+
+    /**
      * Hydrates (populates) the object variables with values from the database resultset.
      *
      * An offset (1-based "start column") is specified so that objects can be hydrated
@@ -250,12 +289,14 @@ abstract class BaseUsersProperties extends BaseObject implements Persistent
 
             $this->usr_password_history = $rs->getString($startcol + 3);
 
+            $this->usr_setting_designer = $rs->getString($startcol + 4);
+
             $this->resetModified();
 
             $this->setNew(false);
 
             // FIXME - using NUM_COLUMNS may be clearer.
-            return $startcol + 4; // 4 = UsersPropertiesPeer::NUM_COLUMNS - UsersPropertiesPeer::NUM_LAZY_LOAD_COLUMNS).
+            return $startcol + 5; // 5 = UsersPropertiesPeer::NUM_COLUMNS - UsersPropertiesPeer::NUM_LAZY_LOAD_COLUMNS).
 
         } catch (Exception $e) {
             throw new PropelException("Error populating UsersProperties object", $e);
@@ -471,6 +512,9 @@ abstract class BaseUsersProperties extends BaseObject implements Persistent
             case 3:
                 return $this->getUsrPasswordHistory();
                 break;
+            case 4:
+                return $this->getUsrSettingDesigner();
+                break;
             default:
                 return null;
                 break;
@@ -495,6 +539,7 @@ abstract class BaseUsersProperties extends BaseObject implements Persistent
             $keys[1] => $this->getUsrLastUpdateDate(),
             $keys[2] => $this->getUsrLoggedNextTime(),
             $keys[3] => $this->getUsrPasswordHistory(),
+            $keys[4] => $this->getUsrSettingDesigner(),
         );
         return $result;
     }
@@ -538,6 +583,9 @@ abstract class BaseUsersProperties extends BaseObject implements Persistent
             case 3:
                 $this->setUsrPasswordHistory($value);
                 break;
+            case 4:
+                $this->setUsrSettingDesigner($value);
+                break;
         } // switch()
     }
 
@@ -577,6 +625,10 @@ abstract class BaseUsersProperties extends BaseObject implements Persistent
             $this->setUsrPasswordHistory($arr[$keys[3]]);
         }
 
+        if (array_key_exists($keys[4], $arr)) {
+            $this->setUsrSettingDesigner($arr[$keys[4]]);
+        }
+
     }
 
     /**
@@ -602,6 +654,10 @@ abstract class BaseUsersProperties extends BaseObject implements Persistent
 
         if ($this->isColumnModified(UsersPropertiesPeer::USR_PASSWORD_HISTORY)) {
             $criteria->add(UsersPropertiesPeer::USR_PASSWORD_HISTORY, $this->usr_password_history);
+        }
+
+        if ($this->isColumnModified(UsersPropertiesPeer::USR_SETTING_DESIGNER)) {
+            $criteria->add(UsersPropertiesPeer::USR_SETTING_DESIGNER, $this->usr_setting_designer);
         }
 
 
@@ -663,6 +719,8 @@ abstract class BaseUsersProperties extends BaseObject implements Persistent
         $copyObj->setUsrLoggedNextTime($this->usr_logged_next_time);
 
         $copyObj->setUsrPasswordHistory($this->usr_password_history);
+
+        $copyObj->setUsrSettingDesigner($this->usr_setting_designer);
 
 
         $copyObj->setNew(true);

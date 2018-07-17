@@ -1,11 +1,10 @@
 <select style="width: 300px;" name="form[TAS_UID]" id="form[TAS_UID]"
 	class="module_app_input___gray" required="1">
 <?php
-//$oUserId = '2963666854afbb1cea372c4011254883';
-//$oProcessId = '9977730834afd2a0deecaf3040551794';
+
 $oUserId = $_POST['USR_UID'];
 $oProcessId = $_POST['PRO_UID'];
-G::LoadClass( 'case' );
+
 $oCase = new Cases();
 $startTasks = $oCase->getStartCases( $oUserId );
 foreach ($startTasks as $task) {

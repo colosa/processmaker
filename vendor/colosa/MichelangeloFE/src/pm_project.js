@@ -7,7 +7,8 @@ PMProject = function (options) {
     this.isSave = false;
     this.XMLSupported = true;
     this.isClose = false;
-
+    this.userSettings = null;
+    this.definitions = null;
     this.dirtyElements = [
         {
             laneset: {},
@@ -106,6 +107,15 @@ PMProject.prototype.setProjectName = function (name) {
     }
     return this;
 };
+/**
+ * Sets the user settings to the local property
+ * @param settings
+ * @returns {PMProject}
+ */
+PMProject.prototype.setUserSettings= function (settings) {
+    this.userSettings = settings;
+    return this;
+};
 
 PMProject.prototype.setDescription = function (description) {
     this.description = description;
@@ -181,7 +191,9 @@ PMProject.prototype.buildCanvas = function (selectors, options) {
     canvas.createConnectHandlers('', '');
     var menuCanvas = PMDesigner.getMenuFactory("CANVAS");
     canvas.setContextMenu(menuCanvas);
-
+    //enable gridLines
+    options.userSettings && options.userSettings.enabled_grid ?
+        canvas.enableGridLine(): canvas.disableGridLine();
     PMDesigner.canvasList.addOption(
         {
             label: options.name,
@@ -233,14 +245,15 @@ PMProject.prototype.loadProject = function (project) {
     var that = this,
         i,
         j,
-        moddle,
-        imported = false,
+        diagram,
+        canvas,
         sidebarCanvas = [];
     if (project) {
         this.loadingProcess = true;
         this.setProjectId(project.prj_uid);
         this.setProjectName(project.prj_name);
         this.setDescription(project.prj_description);
+        this.setUserSettings(project.usr_setting_designer);
         if (project.prj_bpmn_file_upload) {
             that.importDiagram(project.prj_bpmn_file_upload);
         } else {
@@ -250,7 +263,11 @@ PMProject.prototype.loadProject = function (project) {
                     sidebarCanvas = sidebarCanvas.concat(PMDesigner.sidebar[j].getSelectors());
                     jQuery(".bpmn_shapes").append(PMDesigner.sidebar[j].getHTML());
                 }
+                //Remove Lane
                 sidebarCanvas.splice(15, 1);
+                //Remove Lasso and Validator
+                sidebarCanvas.splice(17, 2);
+                
                 sidebarCanvas = sidebarCanvas.concat('.mafe-event-start');
                 sidebarCanvas = sidebarCanvas.concat('.mafe-event-intermediate');
                 sidebarCanvas = sidebarCanvas.concat('.mafe-event-end');
@@ -263,7 +280,11 @@ PMProject.prototype.loadProject = function (project) {
                 sidebarCanvas = sidebarCanvas.concat('.mafe_participant');
 
 
-                var canvas = PMDesigner.project.buildCanvas(sidebarCanvas, {name: 'Main'});
+                canvas = PMDesigner.project.buildCanvas(sidebarCanvas, {
+                    name: 'Main',
+                    userSettings: this.userSettings
+                });
+
                 PMUI.setActiveCanvas(canvas);
                 jQuery("#p-center-layout").scroll(canvas.onScroll(canvas, jQuery("#p-center-layout")));
 
@@ -293,14 +314,18 @@ PMProject.prototype.loadProject = function (project) {
     }
 
 };
+/**
+ * Imports a Diagram if this is a valid .bpmn file
+ * @param data
+ */
 
 PMProject.prototype.importDiagram = function (data) {
-    var that = this;
     this.isSave = true;
     PMDesigner.moddle.fromXML(data, function (err, definitions) {
         if (err) {
             PMDesigner.msgFlash('Import Error: '.translate() + err.message, document.body, 'error', 5000, 5);
         } else {
+            PMDesigner.definitions = definitions;
             var imp = new importBpmnDiagram(definitions);
             if (PMDesigner.project.XMLSupported) {
                 PMDesigner.businessObject = definitions;
@@ -443,7 +468,7 @@ PMProject.prototype.getDirtyObject = function () {
     var that = this,
         diaArray = [],
         shape,
-        i,
+        isGridEnabled = false,
         diagram,
         lastDiagram;
 
@@ -463,10 +488,12 @@ PMProject.prototype.getDirtyObject = function () {
         data: shape.data,
         participants: shape.participants
     });
+    isGridEnabled = PMUI.getActiveCanvas().isGridLine &&  PMUI.getActiveCanvas().isGridLine? true: false;
     return {
         prj_uid: that.id,
         prj_name: that.projectName,
         prj_description: that.description,
+        usr_setting_designer: {enabled_grid : isGridEnabled},
         diagrams: diaArray
     };
 };

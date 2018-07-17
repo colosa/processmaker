@@ -1290,7 +1290,7 @@ XMLReader.prototype.fromXML = function(xml, rootHandler, done) {
     var context = new Context(rootHandler);
 
     var parser = sax.parser(true, { xmlns: true, trim: true });
-        stackInstance =  stack();
+    var stackInstance =  stack();
 
     var model = this.model,
         self = this;

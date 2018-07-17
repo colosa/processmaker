@@ -27,6 +27,8 @@
  * @author David Callizaya <davidsantos@colosa.com>
  */
 
+use ProcessMaker\Plugins\PluginRegistry;
+
 if (isset($_REQUEST['actionAjax']) && $_REQUEST['actionAjax'] == "verifySession" ) {
     if (!isset($_SESSION['USER_LOGGED'])) {
         if ((isset( $_POST['request'] )) && ($_POST['request'] == true)) {
@@ -107,7 +109,7 @@ if (file_exists( $realPath )) {
 
 if (!$sw_file_exists) {
 
-    $oPluginRegistry = & PMPluginRegistry::getSingleton();
+    $oPluginRegistry = PluginRegistry::loadSingleton();
     if ($oPluginRegistry->existsTrigger( PM_UPLOAD_DOCUMENT )) {
         $error_message = G::LoadTranslation( 'ID_ERROR_FILE_NOT_EXIST', SYS_LANG, array('filename' => $info['basename'] . $ver . '.' . $ext) ) . ' ' . G::LoadTranslation('ID_CONTACT_ADMIN');
     } else {

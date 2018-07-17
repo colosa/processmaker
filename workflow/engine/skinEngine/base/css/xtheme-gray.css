@@ -309,6 +309,7 @@ ul.x-tab-strip-bottom{
 .x-fieldset {
     border-color:#CCCCCC;
     margin-top: -5px;
+    overflow: visible;
 }
 
 .x-fieldset legend {

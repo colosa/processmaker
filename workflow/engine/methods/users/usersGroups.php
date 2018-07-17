@@ -54,12 +54,10 @@ $G_ID_SUB_MENU_SELECTED = 'USERS';
 
 $G_PUBLISH = new Publisher();
 
-G::LoadClass( 'configuration' );
 $c = new Configurations();
 $configEnv = $c->getConfiguration( 'ENVIRONMENT_SETTINGS', '' );
 $Config['fullNameFormat'] = isset( $configEnv['format'] ) ? $configEnv['format'] : '@firstName @lastName (@userName)';
 
-require_once 'classes/model/Users.php';
 $oCriteria = new Criteria();
 $oCriteria->addSelectColumn( UsersPeer::USR_FIRSTNAME );
 $oCriteria->addSelectColumn( UsersPeer::USR_LASTNAME );

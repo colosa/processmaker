@@ -132,7 +132,7 @@ Ext.onReady(function(){
               positionCol2: Ext.encode(orderNow[2]),
               columns: 3
             },
-            url: 'dashboard/saveOrderDashlet',
+            url: 'DashboardModule/saveOrderDashlet',
               success: function (res) {
                 var data = Ext.decode(res.responseText);
                 if (data.success) {
@@ -186,7 +186,7 @@ Ext.onReady(function(){
               positionCol2: Ext.encode(orderNow[2]),
               columns: 2
             },
-            url: 'dashboard/saveOrderDashlet',
+            url: 'DashboardModule/saveOrderDashlet',
               success: function (res) {
                 var data = Ext.decode(res.responseText);
                 if (data.success) {
@@ -223,7 +223,7 @@ Ext.onReady(function(){
               positionCol2: Ext.encode(orderNow[2]),
               columns: 1
             },
-            url: 'dashboard/saveOrderDashlet',
+            url: 'DashboardModule/saveOrderDashlet',
               success: function (res) {
                 var data = Ext.decode(res.responseText);
                 if (data.success) {
@@ -292,7 +292,7 @@ Ext.onReady(function(){
                                 positionCol2: Ext.encode(orderNow[2]),
                                 columns: colum
                             },
-                            url: "dashboard/saveOrderDashlet",
+                            url: "DashboardModule/saveOrderDashlet",
                                 success: function (res) {
                                     var data = Ext.decode(res.responseText);
                                     if (data.success) {
@@ -327,10 +327,10 @@ Ext.onReady(function(){
           'resize': function(p, w, h) {
             var template = new Ext.XTemplate(dashletsInstances[p.indicei][p.indiced].DAS_XTEMPLATE).apply({
               id: p.dasInsUid,
-              page: 'dashboard/renderDashletInstance',
+              page: 'DashboardModule/renderDashletInstance',
               width: w - 12,
               random: Math.floor(Math.random() * 1000000)
-            })
+            });
             p.update(template);
           }
         }

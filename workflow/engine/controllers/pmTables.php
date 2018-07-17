@@ -26,7 +26,6 @@ class pmTables extends Controller
         global $RBAC;
         $RBAC->requirePermissions( 'PM_SETUP_ADVANCE', 'PM_SETUP_PM_TABLES' );
 
-        G::LoadClass( 'configuration' );
         $c = new Configurations();
         $configPage = $c->getConfiguration( 'additionalTablesList', 'pageSize', '', $_SESSION['USER_LOGGED'] );
         $Config['pageSize'] = isset( $configPage['pageSize'] ) ? $configPage['pageSize'] : 20;
@@ -62,10 +61,6 @@ class pmTables extends Controller
      */
     public function edit ($httpData)
     {
-        require_once PATH_CONTROLLERS . 'pmTablesProxy.php';
-        require_once 'classes/model/AdditionalTables.php';
-        G::loadClass( 'pmTable' );
-
         $additionalTables = new AdditionalTables();
         $table = false;
         $addTabUid = isset( $httpData->id ) ? $httpData->id : false;
@@ -127,7 +122,6 @@ class pmTables extends Controller
      */
     public function data ($httpData)
     {
-        require_once 'classes/model/AdditionalTables.php';
         $additionalTables = new AdditionalTables();
         $tableDef = $additionalTables->load( $httpData->id, true );
 
@@ -157,6 +151,11 @@ class pmTables extends Controller
         $sFileName = $httpData->f;
 
         $realPath = $PUBLIC_ROOT_PATH . $sFileName;
+
+        if ($this->isValidFileToBeStreamed($sFileName) === false) {
+            throw new Exception("You are trying to access an unauthorized resource.");
+        }
+
         G::streamFile( $realPath, true );
         unlink( $realPath );
     }
@@ -210,6 +209,33 @@ class pmTables extends Controller
         }
         $tableSize = $tableSize - 8; // Prefix PMT_
         return $tableSize;
+    }
+
+    /**
+     * Validates if the file with the $fileName is a valid one,
+     * that is, it must be a file without relative references that
+     * can open a door to get some unauthorized system file and
+     * must have one of the valid file extensions.
+     *
+     * @param $fileName, emporal file name that will be streamed
+     * @return bool
+     */
+    private function isValidFileToBeStreamed($fileName)
+    {
+        $result = true;
+        $validExtensionsForExporting = ['csv', 'pmt'];
+
+        $pathInfo = pathinfo($fileName);
+
+        if ($pathInfo['dirname'] !== '.') {
+            $result =  false;
+        }
+
+        if (!in_array($pathInfo['extension'], $validExtensionsForExporting)) {
+            $result =  false;
+        }
+
+        return $result;
     }
 }
 

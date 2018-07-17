@@ -8,7 +8,7 @@ class RoutingScreen extends \Derivation
     protected $convergent;
     protected $divergent;
     public $gateway = array('PARALLEL', 'PARALLEL-BY-EVALUATION');
-    public $routeType = array('SEC-JOIN', 'EVALUATE');
+    public $routeType = array('SEC-JOIN');
     public $isFirst;
     public $isUniqueSecJoin = false;
     protected $taskSecJoin;
@@ -16,7 +16,7 @@ class RoutingScreen extends \Derivation
     public function __construct()
     {
         parent::__construct();
-        $this->setRegexpTaskTypeToInclude("GATEWAYTOGATEWAY|END-MESSAGE-EVENT|END-EMAIL-EVENT|INTERMEDIATE-CATCH-TIMER-EVENT|INTERMEDIATE-THROW-MESSAGE-EVENT|INTERMEDIATE-THROW-EMAIL-EVENT");
+        $this->setRegexpTaskTypeToInclude("GATEWAYTOGATEWAY|END-MESSAGE-EVENT|END-EMAIL-EVENT|INTERMEDIATE-THROW-MESSAGE-EVENT|INTERMEDIATE-THROW-EMAIL-EVENT");
     }
 
     /**

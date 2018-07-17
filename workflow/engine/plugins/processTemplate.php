@@ -22,8 +22,6 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  * 
  */
-  G::LoadClass( "plugin");
-
 
  class processTemplatePlugin extends PMPlugin 
  {

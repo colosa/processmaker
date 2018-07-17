@@ -66,8 +66,6 @@ $processUID = $_GET['PRO_UID'];
 $_SESSION['PROCESS'] = $processUID;
 $_SESSION['PROCESSMAP'] = 'LEIMNUD';
 
-G::LoadClass( 'processMap' );
-
 $oTemplatePower = new TemplatePower( PATH_TPL . 'processes/processes_Map.html' );
 $oTemplatePower->prepare();
 
@@ -85,7 +83,7 @@ $consolidated = 0;
 $oHeadPublisher = & headPublisher::getSingleton();
 $oHeadPublisher->addScriptFile( '/jscore/dbConnections/main.js' );
 $oHeadPublisher->addScriptCode( '
-    var maximunX = ' . processMap::getMaximunTaskX( $processUID ) . ';
+    var maximunX = ' . ProcessMap::getMaximunTaskX( $processUID ) . ';
 	var leimnud = new maborak();
 	leimnud.make();
 	leimnud.Package.Load("rpc,drag,drop,panel,app,validator,fx,dom,abbr",{Instance:leimnud,Type:"module"});

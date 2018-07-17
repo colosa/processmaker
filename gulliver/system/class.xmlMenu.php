@@ -30,21 +30,21 @@
  *
  * @package gulliver.system
  */
-class xmlMenu extends form
+class xmlMenu extends Form
 {
     public $type = 'xmlmenu';
     public $parentFormId;
 }
 
 /**
- * XmlForm_Field_XmlMenu
+ * XmlFormFieldXmlMenu
  *
- * extends XmlForm_Field
+ * extends XmlFormField
  *
  * @package gulliver.system
  *
  */
-class XmlForm_Field_XmlMenu extends XmlForm_Field
+class XmlFormFieldXmlMenu extends XmlFormField
 {
     public $xmlfile = '';
     public $type = 'xmlmenuDyn';
@@ -54,7 +54,7 @@ class XmlForm_Field_XmlMenu extends XmlForm_Field
     public $parentFormId;
 
     /**
-     * XmlForm_Field_XmlMenu
+     * XmlFormFieldXmlMenu
      *
      * @param string $xmlNode
      * @param string $lang default value 'en'
@@ -63,9 +63,9 @@ class XmlForm_Field_XmlMenu extends XmlForm_Field
      *
      * @return none
      */
-    public function XmlForm_Field_XmlMenu ($xmlNode, $lang = 'en', $home = '', $owner = null)
+    public function XmlFormFieldXmlMenu ($xmlNode, $lang = 'en', $home = '', $owner = null)
     {
-        parent::XmlForm_Field( $xmlNode, $lang, $home, $owner );
+        parent::__construct( $xmlNode, $lang, $home, $owner );
         $this->home = $home;
     }
 

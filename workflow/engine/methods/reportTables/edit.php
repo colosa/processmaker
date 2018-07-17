@@ -9,9 +9,6 @@ $oHeadPublisher->assign( 'ADD_TAB_UID', $id );
 
 if ($id) {
     // if is a edit request
-    require_once 'classes/model/AdditionalTables.php';
-    require_once 'classes/model/Fields.php';
-    G::LoadClass( 'xmlfield_InputPM' );
 
     $additionalTables = new AdditionalTables();
     $table = $additionalTables->load( $id, true );

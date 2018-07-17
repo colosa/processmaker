@@ -51,12 +51,19 @@ class OutputDocuments extends Api
     }
 
     /**
+     * Create a new output document for a project.
+     * 
      * @url POST /:prjUid/output-document
-     *
+     * @status 201
+     * 
      * @param string $prjUid {@min 32} {@max 32}
      * @param OutputDocumentStructure $request_data
-     *
-     * @status 201
+     * 
+     * @return array
+     * @throws RestException
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPostProjectOutputDocument($prjUid, OutputDocumentStructure $request_data = null)
     {
@@ -74,12 +81,18 @@ class OutputDocuments extends Api
     }
 
     /**
+     * Update project output document.
+     *
      * @url PUT /:prjUid/output-document/:outputDocumentUid
      *
      * @param string $prjUid {@min 32} {@max 32}
      * @param string $outputDocumentUid {@min 32} {@max 32}
      * @param array $request_data
      *
+     * @throws RestException
+     *
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPutProjectOutputDocument($prjUid, $outputDocumentUid, $request_data)
     {
@@ -95,6 +108,9 @@ class OutputDocuments extends Api
 
     /**
      * @url DELETE /:prjUid/output-document/:outputDocumentUid
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
+     *
      * @param string $prjUid {@min 32} {@max 32}
      * @param string $outputDocumentUid {@min 32} {@max 32}
      *

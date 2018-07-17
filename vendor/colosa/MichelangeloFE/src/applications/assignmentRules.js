@@ -222,7 +222,7 @@
                     options: [{
                         id: 'formAssignmentRulesTriggerOption1',
                         value: '',
-                        label: ''.translate()
+                        label: ''
                     }]
                 }, {
                     id: 'formAssignmentRulesTriggerExecute',
@@ -430,7 +430,7 @@
                     buttonLabel: function (row, data) {
                         var sw = row.getData()["aas_type"] === 'user';
                         row.getCells()[0].content.style.addClasses([sw ? 'button-icon-user' : 'button-icon-group']);
-                        return ''.translate();
+                        return '';
                     },
                     onButtonClick: function (row, grid) {
                         var dataRow = {};
@@ -649,7 +649,7 @@
                     buttonLabel: function (row, data) {
                         var sw = row.getData()["aas_type"] === 'user';
                         row.getCells()[0].content.style.addClasses([sw ? 'button-icon-user' : 'button-icon-group']);
-                        return ''.translate();
+                        return '';
                     },
                     onButtonClick: function (row, grid) {
                         var dataRow = {};
@@ -877,7 +877,7 @@
                     buttonLabel: function (row, data) {
                         var sw = row.getData()["ada_type"] === 'user';
                         row.getCells()[0].content.style.addClasses([sw ? 'button-icon-user' : 'button-icon-group']);
-                        return ''.translate();
+                        return '';
                     },
                     onButtonClick: function (row, grid) {
                         var dataRow = {};
@@ -1105,7 +1105,7 @@
                     buttonLabel: function (row, data) {
                         var sw = row.getData()["ada_type"] === 'user';
                         row.getCells()[0].content.style.addClasses([sw ? 'button-icon-user' : 'button-icon-group']);
-                        return ''.translate();
+                        return '';
                     },
                     onButtonClick: function (row, grid) {
                         var dataRow = {};
@@ -1342,7 +1342,7 @@
             (new PMRestClient({
                 endpoint: 'activity/' + activity.id,
                 typeRequest: 'update',
-                messageError: ' '.translate(),
+                messageError: ' ',
                 data: {
                     definition: {},
                     properties: dataProperties

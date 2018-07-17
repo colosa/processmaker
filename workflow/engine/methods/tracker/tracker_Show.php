@@ -44,7 +44,7 @@ global $G_PUBLISH;
 
 switch ($_GET['CTO_TYPE_OBJ']) {
     case 'DYNAFORM':
-        G::LoadClass( 'case' );
+
         $oCase = new Cases();
         $Fields = $oCase->loadCase( $_SESSION['APPLICATION'] );
         $Fields['APP_DATA']['__DYNAFORM_OPTIONS']['PREVIOUS_STEP_LABEL'] = '';
@@ -59,12 +59,11 @@ switch ($_GET['CTO_TYPE_OBJ']) {
         $arrayDynaFormData = $dynaForm->Load($_GET["CTO_UID_OBJ"]);
 
         if (isset($arrayDynaFormData["DYN_VERSION"]) && $arrayDynaFormData["DYN_VERSION"] == 2) {
-            G::LoadClass("pmDynaform");
 
             $Fields["PRO_UID"] = $_SESSION["PROCESS"];
             $Fields["CURRENT_DYNAFORM"] = $_GET["CTO_UID_OBJ"];
 
-            $pmDynaForm = new pmDynaform($Fields);
+            $pmDynaForm = new PmDynaform($Fields);
 
             if ($pmDynaForm->isResponsive()) {
                 $pmDynaForm->printTracker();
@@ -76,7 +75,7 @@ switch ($_GET['CTO_TYPE_OBJ']) {
         }
         break;
     case 'INPUT_DOCUMENT':
-        G::LoadClass( 'case' );
+
         $oCase = new Cases();
         $c = $oCase->getAllUploadedDocumentsCriteriaTracker( $_SESSION['PROCESS'], $_SESSION['APPLICATION'], $_GET['CTO_UID_OBJ'] );
 
@@ -89,7 +88,7 @@ switch ($_GET['CTO_TYPE_OBJ']) {
         break;
 
     case 'OUTPUT_DOCUMENT':
-        G::LoadClass( 'case' );
+
         $oCase = new Cases();
         $c = $oCase->getAllGeneratedDocumentsCriteriaTracker( $_SESSION['PROCESS'], $_SESSION['APPLICATION'], $_GET['CTO_UID_OBJ'] );
 

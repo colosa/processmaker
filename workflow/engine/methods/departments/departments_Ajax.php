@@ -24,7 +24,6 @@
  */
 function LookForChildren ($parent, $level, $aDepUsers)
 {
-    G::LoadClass( 'configuration' );
     $conf = new Configurations();
     $oDept = new Department();
     $allDepartments = $oDept->getDepartments( $parent );
@@ -63,7 +62,6 @@ function LookForChildren ($parent, $level, $aDepUsers)
 if (($RBAC_Response = $RBAC->userCanAccess( "PM_USERS" )) != 1) {
     return $RBAC_Response;
 }
-G::LoadInclude( 'ajax' );
 $_POST['action'] = get_ajax_value( 'action' );
 
 require_once 'classes/model/Department.php';
@@ -133,7 +131,7 @@ switch ($_POST['action']) {
         if (($RBAC_Response = $RBAC->userCanAccess( "PM_USERS" )) != 1) {
             return $RBAC_Response;
         }
-        G::LoadClass( 'departments' );
+
         $oDept = new Department();
 
         $G_PUBLISH = new Publisher();
@@ -182,7 +180,7 @@ switch ($_POST['action']) {
         echo '{success: true}';
         break;
     case 'usersByDepartment':
-        G::LoadClass( 'configuration' );
+
         $sDepUid = $_REQUEST['DEP_UID'];
         $oCriteria = new Criteria( 'workflow' );
         $oCriteria->addSelectColumn( UsersPeer::USR_UID );

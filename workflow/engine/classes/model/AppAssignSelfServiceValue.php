@@ -99,8 +99,6 @@ class AppAssignSelfServiceValue extends BaseAppAssignSelfServiceValue
     public function generateData()
     {
         try {
-            G::LoadClass("case");
-
             AppAssignSelfServiceValuePeer::doDeleteAll(); //Delete all records
 
             //Generate data

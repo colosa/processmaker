@@ -35,7 +35,6 @@ $G_ID_SUB_MENU_SELECTED = 'CALENDAR';
 
 $G_PUBLISH = new Publisher();
 
-G::LoadClass( 'configuration' );
 $c = new Configurations();
 $configPage = $c->getConfiguration( 'skinList', 'pageSize', '', $_SESSION['USER_LOGGED'] );
 $Config['pageSize'] = isset( $configPage['pageSize'] ) ? $configPage['pageSize'] : 20;
@@ -132,7 +131,6 @@ if ($handle = opendir( PATH_SKINS )) {
 $_DBArray['plugins'] = $items;
 $_SESSION['_DBArray'] = $_DBArray;
 
-G::LoadClass( 'ArrayPeer' );
 $c = new Criteria( 'dbarray' );
 $c->setDBArrayTable( 'plugins' );
 $c->addAscendingOrderByColumn( 'id' );

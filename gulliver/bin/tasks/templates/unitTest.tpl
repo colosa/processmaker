@@ -5,16 +5,13 @@
   require_once( PATH_THIRDPARTY . '/lime/lime.php');
   require_once( PATH_THIRDPARTY.'lime/yaml.class.php');
  
-  G::LoadThirdParty('smarty/libs','Smarty.class');
+
   G::LoadSystem ( 'xmlform');
   G::LoadSystem ( 'xmlDocument');
   G::LoadSystem ( 'form');
   require_once( 'propel/Propel.php' );
   require_once ( "creole/Creole.php" );
   require_once (  PATH_CORE . "config/databases.php");  
-
-  G::LoadClass ( '{$classFile}');
-
 
   $obj = new {$className} ($dbc); 
   $t   = new lime_test( {$testItems}, new lime_output_color() );

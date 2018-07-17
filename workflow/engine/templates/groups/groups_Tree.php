@@ -25,13 +25,10 @@
 
   //G::genericForceLogin( 'WF_MYINFO' , 'login/noViewPage', $urlLogin = 'login/login' );
 
-  //G::LoadClass('group');
 
   $WIDTH_PANEL = 350;
 
-  G::LoadSystem('inputfilter');
   $filter = new InputFilter();
-  G::LoadClass('groups');
 
   $groups = new Groups();
 

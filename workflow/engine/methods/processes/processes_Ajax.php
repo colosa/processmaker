@@ -39,7 +39,7 @@ try {
       } */
     //$oJSON = new Services_JSON();
 
-    G::LoadSystem('inputfilter');
+
     $filter = new InputFilter();
     $_GET = $filter->xssFilterHard($_GET);
     $_POST = $filter->xssFilterHard($_POST);
@@ -72,7 +72,6 @@ try {
                 $uidAux = $proUid;
             }
 
-            G::LoadClass('processes');
             $infoProcess = new Processes();
 
             if(!$infoProcess->processExists($proUid)) {
@@ -106,7 +105,6 @@ try {
                 $row = $oDataset->getRow();
                 $userSupervisor = $row['USR_UID'];
 
-                G::LoadClass('processes');
                 $infoProcess = new Processes();
                 $resultProcess = $infoProcess->getProcessRow($row['PRO_UID']);
             }
@@ -119,13 +117,12 @@ try {
         } else {
             $proUid = $_REQUEST['PRO_UID'];
         }
-        G::LoadClass('processes');
+
         $infoProcess = new Processes();
         $resultProcess = $infoProcess->getProcessRow($proUid);
     }
 
     if(isset($proUid) && $proUid != "") {
-        G::LoadClass("processes");
 
         $infoProcess = new Processes();
 
@@ -139,8 +136,7 @@ try {
         $resultProcess = $infoProcess->getProcessRow($proUid);
     }
 
-    //G::LoadClass( 'processMap' );
-    $oProcessMap = new processMap(new DBConnection());
+    $oProcessMap = new ProcessMap(new DBConnection());
 
     switch ($_REQUEST['action']) {
         case 'load':
@@ -190,7 +186,7 @@ try {
             include (PATH_METHODS . 'processes/processes_webEntryValidate.php');
             break;
         case 'webEntry_delete':
-            G::LoadSystem('inputfilter');
+
             $filter = new InputFilter();
             $form = $_REQUEST;
             $filePath = PATH_DATA . "sites" . PATH_SEP . SYS_SYS . PATH_SEP . "public" . PATH_SEP . $form['PRO_UID'] . PATH_SEP . $form['FILENAME'];
@@ -211,7 +207,7 @@ try {
             break;
         case 'assignProcessUser':
             $oProcessMap->assignProcessUser($oData->PRO_UID, $oData->USR_UID, $oData->TYPE_UID);
-            G::LoadClass('processMap');
+
             $oProcessMap = new ProcessMap();
             $oProcessMap->listProcessesUser($oData->PRO_UID);
             G::auditLog('AssignRole','Assign new supervisor ('.$oData->USR_UID.') in process "'.$resultProcess['PRO_TITLE'].'"');
@@ -521,7 +517,7 @@ try {
                 unset($aRow);
             }
             if (($oData->delete) || ($oData->type == 0) || ($oData->type == 5) || ($oData->type == 8)) {
-                G::LoadClass('tasks');
+
                 $oTasks = new Tasks();
                 $oTasks->deleteAllRoutesOfTask($oData->pro_uid, $oData->tas_uid);
                 $oTasks->deleteAllGatewayOfTask($oData->pro_uid, $oData->tas_uid);
@@ -529,7 +525,7 @@ try {
             $oProcessMap->saveNewPattern($oData->pro_uid, $oData->tas_uid, $oData->next_task, $sType, $oData->delete);
             break;
         case 'deleteAllRoutes':
-            G::LoadClass('tasks');
+
             $oTaskNewPattern = new Task();
             $taskInfo=$oTaskNewPattern->load($oData->tas_uid);
             $titleTask=$taskInfo['TAS_TITLE'];
@@ -583,7 +579,7 @@ try {
             $oProcessMap->subProcess_Properties($oData->pro_uid, $oData->tas_uid, $oData->index);
             break;
         case 'showDetailsPMDWL':
-            G::LoadClass('processes');
+
             $oProcesses = new Processes();
             $oProcesses->ws_open_public();
             $aFields = get_object_vars($oProcesses->ws_processGetData($oData->pro_uid));
@@ -642,8 +638,8 @@ try {
             G::RenderPage('publish', 'raw');
             break;
         case 'loginPML':
-            G::LoadClass('processes');
-            //G::LoadThirdParty( 'pear/json', 'class.json' );
+
+
             $oProcesses = new Processes();
             try {
                 if ($oProcesses->ws_open($oData->u, $oData->p) == 1) {
@@ -760,7 +756,7 @@ try {
             $G_PUBLISH = new Publisher();
             global $RBAC;
             if ( $RBAC->userCanAccess('PM_FACTORY') == 1) {
-                G::LoadClass('processes');
+
                 $app = new Processes();
                 if (!$app->processExists($_REQUEST['pro_uid'])) {
                     echo G::LoadTranslation('ID_PROCESS_UID_NOT_DEFINED');
@@ -809,7 +805,7 @@ try {
             * returns an array with all Dynaforms Fields
             */
         case 'getVariableList':
-            G::LoadClass('xmlfield_InputPM');
+
             $proUid = isset($_REQUEST['process']) ? $_REQUEST['process'] : '';
             $queryText = isset($_REQUEST['queryText']) ? $_REQUEST['queryText'] : '';
             switch($_REQUEST['type']) {
@@ -869,7 +865,7 @@ try {
             * return an array with all Variables of Grid type
             */
         case 'getGridList':
-            G::LoadClass('xmlfield_InputPM');
+
             $proUid = isset($_REQUEST['PRO_UID']) ? $_REQUEST['PRO_UID'] : '';
 
             $aFields = getGridsVars($proUid);
@@ -884,7 +880,6 @@ try {
             * return an array with all Grid Variables according to Grid
             */
         case 'getVariableGrid':
-            G::LoadClass('xmlfield_InputPM');
 
             $proUid = isset($_REQUEST['PRO_UID']) ? $_REQUEST['PRO_UID'] : '';
             $dynUid = isset($_REQUEST['DYN_UID']) ? $_REQUEST['DYN_UID'] : '';
@@ -900,13 +895,13 @@ try {
             echo Bootstrap::json_encode($aVariables);
             break;
         case 'getDynaformFieldList':
-            G::LoadClass('dynaformhandler');
+
             $dynaformFields = array();
             $resultArray = array();
             $proUid = isset($_REQUEST['PRO_UID']) ? $_REQUEST['PRO_UID'] : '';
             $dynUid = isset($_REQUEST['DYN_UID']) ? $_REQUEST['DYN_UID'] : '';
             if (is_file(PATH_DATA . '/sites/' . SYS_SYS . '/xmlForms/' . $proUid . '/' . $dynUid . '.xml') && filesize(PATH_DATA . '/sites/' . SYS_SYS . '/xmlForms/' . $proUid . '/' . $dynUid . '.xml') > 0) {
-                $dyn = new dynaFormHandler(PATH_DATA . '/sites/' . SYS_SYS . '/xmlForms/' . $proUid . '/' . $dynUid . '.xml');
+                $dyn = new DynaformHandler(PATH_DATA . '/sites/' . SYS_SYS . '/xmlForms/' . $proUid . '/' . $dynUid . '.xml');
                 $dynaformFields[] = $dyn->getFields();
             }
             foreach ($dynaformFields as $aDynFormFields) {

@@ -234,13 +234,20 @@ class ProcessSupervisors extends Api
     }
 
     /**
+     * Assign a user or group as a process supervisor.
+     * 
      * @url POST /:prjUid/process-supervisor
-     *
+     * @status 201
+     * 
      * @param string $prjUid {@min 32} {@max 32}
      * @param string $usr_uid {@min 32} {@max 32}
      * @param string $pu_type {@choice SUPERVISOR,GROUP_SUPERVISOR}
-     *
-     * @status 201
+     * 
+     * @return array
+     * @throws RestException
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPostProcessSupervisor($prjUid, $usr_uid, $pu_type)
     {
@@ -257,13 +264,20 @@ class ProcessSupervisors extends Api
     }
 
     /**
+     * Assign a Dynaform to a Process Supervisor.
+     * 
      * @url POST /:prjUid/process-supervisor/dynaform
-     *
+     * @status 201
+     * 
      * @param string $prjUid {@min 32} {@max 32}
      * @param string $dyn_uid {@min 32} {@max 32}
      * @param int $pud_position
-     *
-     * @status 201
+     * 
+     * @return array
+     * @throws RestException
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPostProcessSupervisorDynaform($prjUid, $dyn_uid, $pud_position = null)
     {
@@ -280,13 +294,20 @@ class ProcessSupervisors extends Api
     }
 
     /**
+     * Assign an input document to a Process Supervisor.
+     * 
      * @url POST /:prjUid/process-supervisor/input-document
-     *
+     * @status 201
+     * 
      * @param string $prjUid {@min 32} {@max 32}
      * @param string $inp_doc_uid {@min 32} {@max 32}
      * @param int $pui_position
-     *
-     * @status 201
+     * 
+     * @return array
+     * @throws RestException
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPostProcessSupervisorInputDocument($prjUid, $inp_doc_uid, $pui_position = null)
     {
@@ -304,6 +325,8 @@ class ProcessSupervisors extends Api
 
     /**
      * @url DELETE /:prjUid/process-supervisor/:puUid
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      *
      * @param string $prjUid {@min 32} {@max 32}
      * @param string $puUid {@min 32} {@max 32}
@@ -322,6 +345,8 @@ class ProcessSupervisors extends Api
 
     /**
      * @url DELETE /:prjUid/process-supervisor/dynaform/:pudUid
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      *
      * @param string $prjUid {@min 32} {@max 32}
      * @param string $pudUid {@min 32} {@max 32}
@@ -340,6 +365,8 @@ class ProcessSupervisors extends Api
 
     /**
      * @url DELETE /:prjUid/process-supervisor/input-document/:puiUid
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      *
      * @param string $prjUid {@min 32} {@max 32}
      * @param string $puiUid {@min 32} {@max 32}
@@ -357,13 +384,19 @@ class ProcessSupervisors extends Api
     }
 
     /**
+     * Update process supervisor dynaform.
+     *
      * @url PUT /:prjUid/process-supervisor/dynaform/:pud_uid
+     * @status 201
      *
      * @param string $prjUid {@min 32} {@max 32}
      * @param string $pud_uid {@min 32} {@max 32}
      * @param int $pud_position
      *
-     * @status 201
+     * @throws RestException
+     *
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPutProcessSupervisorDynaform($prjUid, $pud_uid, $pud_position = null)
     {
@@ -380,13 +413,20 @@ class ProcessSupervisors extends Api
     }
 
     /**
+     * Update process supervisor input document.
+     *
      * @url PUT /:prjUid/process-supervisor/input-document/:pui_uid
+     * @status 201
      *
      * @param string $prjUid {@min 32} {@max 32}
      * @param string $pui_uid {@min 32} {@max 32}
      * @param int $pui_position
      *
-     * @status 201
+     * @return array
+     * @throws RestException
+     *
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPutProcessSupervisorInputDocument($prjUid, $pui_uid, $pui_position = null)
     {

@@ -22,7 +22,7 @@ function runHotfixInstall($command, $args)
         foreach ($arrayFile as $value) {
             $f = $value;
 
-            $result = workspaceTools::hotfixInstall($f);
+            $result = WorkspaceTools::hotfixInstall($f);
 
             CLI::logging($result["message"] . "\n");
         }

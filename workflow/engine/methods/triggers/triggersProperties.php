@@ -35,7 +35,6 @@ if (isset( $_GET['TRI_UID'] )) {
     $aFields['TRI_TYPE'] = 'SCRIPT';
 }
 
-G::LoadClass( 'xmlfield_InputPM' );
 $G_PUBLISH = new Publisher();
 $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'triggers/triggersProperties', '', $aFields, '../triggers/triggers_Save' );
 G::RenderPage( 'publish', 'raw' );

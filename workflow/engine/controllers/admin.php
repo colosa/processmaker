@@ -1,5 +1,7 @@
 <?php
 
+use ProcessMaker\Core\System;
+
 /**
  * Admin controller
  *
@@ -18,7 +20,7 @@ class Admin extends Controller
         global $RBAC;
         $RBAC->requirePermissions( 'PM_SETUP' );
         require_once PATH_CONTROLLERS . 'main.php';
-        G::loadClass( 'system' );
+
         $skinsList = System::getSkingList();
         foreach ($skinsList['skins'] as $key => $value) {
             if ($value['SKIN_WORKSPACE'] != 'Global') {
@@ -36,7 +38,6 @@ class Admin extends Controller
         }
 
         $this->includeExtJS( 'admin/system' );
-        //G::LoadClass('configuration');
 
         // $c = new Configurations();
         // $configPage = $c->getConfiguration('usersList', 'pageSize','',$_SESSION['USER_LOGGED']);
@@ -61,7 +62,6 @@ class Admin extends Controller
         $RBAC->requirePermissions( 'PM_SETUP' );
         require_once PATH_CONTROLLERS . 'adminProxy.php';
         $this->includeExtJS( 'admin/uxUsersList' );
-        G::LoadClass( 'configuration' );
 
         $c = new Configurations();
         $configPage = $c->getConfiguration( 'usersList', 'pageSize', '', $_SESSION['USER_LOGGED'] );
@@ -84,11 +84,9 @@ class Admin extends Controller
     {
         global $RBAC;
         //$RBAC->requirePermissions('PM_SETUP_ADVANCE');
-        G::LoadClass( 'configuration' );
-        G::LoadClass( 'calendar' );
 
         $CalendarUid = str_replace( '"', '', isset( $_GET['id'] ) ? $_GET['id'] : G::GenerateUniqueID() );
-        $calendarObj = new calendar();
+        $calendarObj = new Calendar();
 
         if ((isset( $_GET['id'] )) && ($_GET['id'] != "")) {
             $fields = $calendarObj->getCalendarInfoE( $CalendarUid );
@@ -169,7 +167,6 @@ class Admin extends Controller
         global $RBAC;
         $RBAC->requirePermissions( 'PM_SETUP_ADVANCE', 'PM_SETUP_LOGO');
 
-        G::LoadClass( 'configuration' );
         $c = new Configurations();
         $configPage = $c->getConfiguration( 'additionalTablesList', 'pageSize', '', $_SESSION['USER_LOGGED'] );
         $Config['pageSize'] = isset( $configPage['pageSize'] ) ? $configPage['pageSize'] : 20;
@@ -199,22 +196,26 @@ class Admin extends Controller
         $this->render('extJs');
     }
 
-    function getSystemInfo ()
+    public function getSystemInfo()
     {
-        $this->setResponseType( 'json' );
-        $infoList = $this->_getSystemInfo();
-        $data = array ();
+        global $RBAC;
+        $RBAC->requirePermissions('PM_SETUP_ADVANCE');
 
-        foreach ($infoList as $row) {
-            $data[] = array ('label' => $row[0],'value' => $row[1],'section' => $row[2]
-            );
+        $this->setResponseType('json');
+        $data = [];
+
+        foreach ($this->_getSystemInfo() as $row) {
+            $data[] = [
+                'label' => $row[0],
+                'value' => $row[1],
+                'section' => $row[2]
+            ];
         }
         return $data;
     }
 
     private function _getSystemInfo ()
     {
-        G::LoadClass( "system" );
 
         if (getenv( 'HTTP_CLIENT_IP' )) {
             $ip = getenv( 'HTTP_CLIENT_IP' );
@@ -236,12 +237,10 @@ class Admin extends Controller
 
         $redhat .= " (" . PHP_OS . ")";
         if (defined( "DB_HOST" )) {
-            G::LoadClass( 'net' );
-            G::LoadClass( 'dbConnections' );
-            $dbNetView = new NET( DB_HOST );
+            $dbNetView = new Net( DB_HOST );
             $dbNetView->loginDbServer( DB_USER, DB_PASS );
 
-            $dbConns = new dbConnections( '' );
+            $dbConns = new DbConnections( '' );
             $availdb = '';
             foreach ($dbConns->getDbServicesAvailables() as $key => $val) {
                 if ($availdb != '') {
@@ -271,7 +270,8 @@ class Admin extends Controller
         $pmSection = G::LoadTranslation('ID_PROCESS_INFORMATION');
 
         $properties = array ();
-        $ee = class_exists( 'pmLicenseManager' ) ? " - Enterprise Edition" : '';
+        $ee = '';
+        /*----------------------------------********---------------------------------*/
         $systemName = 'ProcessMaker';
         if (defined('SYSTEM_NAME')) {
             $systemName = SYSTEM_NAME;

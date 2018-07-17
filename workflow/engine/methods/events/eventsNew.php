@@ -30,8 +30,6 @@ if ($RBAC->userCanAccess( 'PM_SETUP' ) != 1) {
 }
 
 global $_DBArray;
-G::LoadClass( 'tasks' );
-G::LoadClass( 'processMap' );
 
 $oTasks = new Tasks();
 $aAux1 = $oTasks->getAllTasks( $_GET['PRO_UID'] );
@@ -45,7 +43,7 @@ foreach ($aAux1 as $aAux2) {
     }
 }
 
-$oProcessMap = new processMap( new DBConnection() );
+$oProcessMap = new ProcessMap( new DBConnection() );
 $aTriggersList = $oProcessMap->getTriggers( $_GET['PRO_UID'] );
 
 $aTriggersFileds = array();

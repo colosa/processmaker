@@ -26,9 +26,6 @@
 
 //G::genericForceLogin( 'WF_MYINFO' , 'login/noViewPage', $urlLogin = 'login/login' );
 
-
-G::LoadClass( 'dynaFormField' );
-
 // if (!(isset($_GET['A']) && $_GET['A']!==''))  return;
 
 

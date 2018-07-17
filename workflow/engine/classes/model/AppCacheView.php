@@ -303,7 +303,6 @@ class AppCacheView extends BaseAppCacheView
         }
 
         //check groups assigned to SelfService task
-        G::LoadClass('groups');
         $group = new Groups();
         $aGroups = $group->getActiveGroupsForAnUser($userUid);
 
@@ -335,8 +334,6 @@ class AppCacheView extends BaseAppCacheView
     public function getSelfServiceCasesByEvaluate($userUid)
     {
         try {
-            G::LoadClass("groups");
-
             $arrayAppAssignSelfServiceValueData = array();
 
             //Get APP_UIDs
@@ -384,9 +381,6 @@ class AppCacheView extends BaseAppCacheView
     public function getUnassigned($userUid, $doCount)
     {
         //get the valid selfservice tasks for this user
-        if (!class_exists('Cases')) {
-            G::loadClass('case');
-        }
 
         $oCase = new Cases();
         $tasks = $this->getSelfServiceTasks( $userUid );
@@ -1689,7 +1683,6 @@ class AppCacheView extends BaseAppCacheView
     public function replaceRowUserData($rowData)
     {
         try {
-            G::loadClass('configuration');
             $oConfig = new Configuration();
             $aConfig = $oConfig->load('ENVIRONMENT_SETTINGS');
             $aConfig = unserialize($aConfig['CFG_VALUE']);

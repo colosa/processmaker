@@ -14,10 +14,6 @@ $G_FORM = new xmlform();
 $G_FORM->home = PATH_DYNAFORM;
 $G_FORM->parseFile($filename, SYS_LANG, true);
 
-G::LoadClass("case");
-G::LoadClass("pmFunctions");
-G::LoadSystem('inputfilter');
-
 //Load the variables
 $oCase = new Cases();
 $sqlQuery = null;

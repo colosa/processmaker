@@ -1,7 +1,5 @@
-/*
- * @author: Erik A. Ortiz
- * Aug 20th, 2010
- */
+// TODO: Move RCBase64 to an individual file
+var RCBase64={keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",encode:function(e){var t,r,s,o,i,n,a,h="",c=0;for(e=this.utf8_encode(e);c<e.length;)t=e.charCodeAt(c++),r=e.charCodeAt(c++),s=e.charCodeAt(c++),o=t>>2,i=(3&t)<<4|r>>4,n=(15&r)<<2|s>>6,a=63&s,isNaN(r)?n=a=64:isNaN(s)&&(a=64),h=h+this.keyStr.charAt(o)+this.keyStr.charAt(i)+this.keyStr.charAt(n)+this.keyStr.charAt(a);return h},decode:function(e){var t,r,s,o,i,n,a,h="",c=0;for(e=e.replace(/[^A-Za-z0-9\+\/\=]/g,"");c<e.length;)o=this.keyStr.indexOf(e.charAt(c++)),i=this.keyStr.indexOf(e.charAt(c++)),n=this.keyStr.indexOf(e.charAt(c++)),a=this.keyStr.indexOf(e.charAt(c++)),t=o<<2|i>>4,r=(15&i)<<4|n>>2,s=(3&n)<<6|a,h+=String.fromCharCode(t),64!==n&&(h+=String.fromCharCode(r)),64!==a&&(h+=String.fromCharCode(s));return h=this.utf8_decode(h)},utf8_encode:function(e){e=e.replace(/\r\n/g,"\n");var t,r,s="";for(t=0;t<e.length;t++)r=e.charCodeAt(t),128>r?s+=String.fromCharCode(r):r>127&&2048>r?(s+=String.fromCharCode(r>>6|192),s+=String.fromCharCode(63&r|128)):(s+=String.fromCharCode(r>>12|224),s+=String.fromCharCode(r>>6&63|128),s+=String.fromCharCode(63&r|128));return s},utf8_decode:function(e){for(var t="",r=0,s=0,o=0,i=0;r<e.length;)s=e.charCodeAt(r),128>s?(t+=String.fromCharCode(s),r++):s>191&&224>s?(o=e.charCodeAt(r+1),t+=String.fromCharCode((31&s)<<6|63&o),r+=2):(o=e.charCodeAt(r+1),i=e.charCodeAt(r+2),t+=String.fromCharCode((15&s)<<12|(63&o)<<6|63&i),r+=3);return t}};
 var processesGrid,
     store,
     comboCategory,
@@ -370,8 +368,7 @@ Ext.onReady(function(){
     region: 'center',
     layout: 'fit',
     id: 'processesGrid',
-    height:500,
-    //autoWidth : true,
+    height: 500,
     width:'',
     title : '',
     stateful : true,
@@ -382,13 +379,6 @@ Ext.onReady(function(){
     plugins: expander,
     cls : 'grid_with_checkbox',
     columnLines: true,
-
-
-    /*view: new Ext.grid.GroupingView({
-        //forceFit:true,
-        //groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
-        groupTextTpl: '{text}'
-    }),*/
     viewConfig: {
       forceFit:true,
       cls:"x-grid-empty",
@@ -729,7 +719,6 @@ function newProcess(params)
         xtype:'textfield',
         width: 260,
         maxLength: 100,
-        maskRe: /^(?!^(PRN|AUX|CLOCK\$|NUL|CON|COM\d|LPT\d|\...*)(\..+)?$)[^\x00-\x1f\\?*\";|/]+$/i,
         allowBlank: false,
         vtype: "textWithoutTags",
         autoCreate: {tag: 'input', type: 'text', size: '100', autocomplete: 'off', maxlength: '100'},
@@ -746,16 +735,7 @@ function newProcess(params)
         xtype:'textarea',
         width: 260
       },
-      ProcessCategories/*,
-      {
-        id: 'editor',
-        xtype: 'radiogroup',
-        fieldLabel: _('ID_OPEN_WITH'),
-        items: [
-          {boxLabel: _('ID_CLASSIC_EDITOR'), name: 'editor', inputValue: 'classic', checked: true},
-          {boxLabel: _('ID_BPMN_EDITOR'), name: 'editor', inputValue: 'bpmn'}
-        ]
-      }*/
+      ProcessCategories
     ],
     buttons : [{
       text : _('ID_CREATE'),
@@ -863,89 +843,172 @@ editNewProcess = function(){
   }
 }
 
-deleteProcess = function(){
-  var rows = processesGrid.getSelectionModel().getSelections();
-  var i;
-  if( rows.length > 0 ) {
-    isValid = true;
-    errLog = Array();
-
-    //verify if the selected rows have not any started or delegated cases
-    for(i=0; i<rows.length; i++){
-      if( rows[i].get('CASES_COUNT') != 0 ){
-        errLog.push(i);
-        isValid = false;
-      }
-    }
-
-    if( isValid ){
-      ids = Array();
-      for(i=0; i<rows.length; i++)
-        ids[i] = rows[i].get('PRO_UID');
-
-      PRO_UIDS = ids.join(',');
-
-      Ext.Msg.confirm(
-        _('ID_CONFIRM'),
-        (rows.length == 1) ? _('ID_PROCESS_DELETE_LABEL') : _('ID_PROCESS_DELETE_ALL_LABEL'),
-        function(btn, text){
-          if ( btn == 'yes' ){
-            Ext.MessageBox.show({ msg: _('ID_DELETING_ELEMENTS'), wait:true,waitConfig: {interval:200} });
-            Ext.Ajax.request({
-              url: 'processes_Delete',
-              success: function(response) {
-                Ext.MessageBox.hide();
-                processesGrid.store.reload();
-                result = Ext.util.JSON.decode(response.responseText);
-
-                if(result){
-                  if(result.status != 0){
-                    Ext.MessageBox.show({
-                      title: _('ID_ERROR'),
-                      msg: result.msg,
-                      buttons: Ext.MessageBox.OK,
-                      icon: Ext.MessageBox.ERROR
-                    });
-                  }
-                } else
-                  Ext.MessageBox.show({
-                    title: _('ID_ERROR'),
-                    msg: response.responseText,
-                    buttons: Ext.MessageBox.OK,
-                    icon: Ext.MessageBox.ERROR
-                  });
-              },
-              params: {PRO_UIDS:PRO_UIDS}
-            });
-          }
+/**
+ * Removes bpmn processes in block (bulk)
+ * @param successCallback
+ * @param failureCallback
+ * @param dataBulk
+ */
+deleteProcessBpmn = function (successCallback, failureCallback, dataBulk) {
+    var refreshTokenCalled = false,
+        data = {
+            data: [{
+                action: 'delete',
+                data: dataBulk
+            }]
+        };
+    Ext.Ajax.request({
+        url: HTTP_SERVER_HOSTNAME + '/api/1.0/' + SYS_SYS + '/project/bulk',
+        method: 'POST',
+        jsonData: data,
+        success: function (response) {
+            successCallback(response);
+        },
+        failure: function (xhr) {
+            if (xhr.status === 401 && !refreshTokenCalled) {
+                refreshTokenCalled = true;
+                return refreshAccessToken(deleteProcessBpmn);
+            }
+            failureCallback(xhr);
+        },
+        headers: {
+            "Authorization": "Bearer " + credentials.access_token
         }
-      );
-    } else {
-      errMsg = '';
-      for(i=0; i<errLog.length; i++){
-        e = _('ID_PROCESS_CANT_DELETE');
-        e = e.replace('{0}', rows[errLog[i]].get('PRO_TITLE'));
-        e = e.replace('{1}', rows[errLog[i]].get('CASES_COUNT'));
-        errMsg += e + '<br/>';
-      }
-      Ext.MessageBox.show({
+    });
+};
+/**
+ * Removes classic processes
+ * @param messageError
+ */
+deleteProcessClassic = function (messageError) {
+    var message = messageError || '',
+        result;
+    Ext.Ajax.request({
+        url: 'processes_Delete',
+        success: function (response) {
+            Ext.MessageBox.hide();
+            processesGrid.store.reload();
+            result = Ext.util.JSON.decode(response.responseText);
+
+            if (result) {
+                if (result.status != 0) {
+                    message = message + result.msg;
+                }
+            } else {
+                message = message + response.responseText;
+            }
+            if (message) {
+                showMessageError(message);
+            }
+        },
+        params: {PRO_UIDS: PRO_UIDS}
+    });
+};
+/**
+ * Displays an error message
+ * @param messageError
+ */
+showMessageError = function (messageError) {
+    Ext.MessageBox.hide();
+    Ext.MessageBox.show({
         title: _('ID_ERROR'),
-        msg: errMsg,
+        msg: messageError,
         buttons: Ext.MessageBox.OK,
         icon: Ext.MessageBox.ERROR
-      });
-    }
-  } else {
-    Ext.Msg.show({
-      title: _("ID_INFORMATION"),
-      msg: _('ID_NO_SELECTION_WARNING'),
-      buttons: Ext.Msg.INFO,
-      fn: function(){},
-      animEl: 'elId',
-      icon: Ext.MessageBox.INFO,
-      buttons: Ext.MessageBox.OK
     });
-  }
+};
+/**
+ * Eliminate processes
+ */
+deleteProcess = function () {
+    var rows = processesGrid.getSelectionModel().getSelections(),
+        i,
+        e,
+        ids,
+        errLog,
+        isValid,
+        dataBulk = [];
+
+    if (rows.length > 0) {
+        isValid = true;
+        errLog = [];
+
+        //verify if the selected rows have not any started or delegated cases
+        for (i = 0; i < rows.length; i += 1) {
+            if (rows[i].get('CASES_COUNT') !== 0) {
+                errLog.push(i);
+                isValid = false;
+                break;
+            }
+        }
+
+        if (isValid) {
+            ids = [];
+            for (i = 0; i < rows.length; i += 1) {
+                if (rows[i].get('PROJECT_TYPE') === 'classic') {
+                    ids.push(rows[i].get('PRO_UID'));
+                } else {
+                    dataBulk.push({
+                        type: 'bpmn',
+                        prj_uid: rows[i].get('PRO_UID')
+                    });
+                }
+            }
+
+            PRO_UIDS = ids.join(',');
+
+            Ext.Msg.confirm(
+                _('ID_CONFIRM'),
+                (rows.length == 1) ? _('ID_PROCESS_DELETE_LABEL') : _('ID_PROCESS_DELETE_ALL_LABEL'),
+                function (btn, text) {
+                    if (btn === 'yes') {
+                        Ext.MessageBox.show({msg: _('ID_DELETING_ELEMENTS'), wait: true, waitConfig: {interval: 200}});
+                        deleteProcessBpmn(
+                            function (response) {
+                                Ext.MessageBox.hide();
+                                if (PRO_UIDS.length) {
+                                    deleteProcessClassic();
+                                    PRO_UIDS.length = 0;
+                                }
+                                processesGrid.store.reload();
+                            },
+                            function (xhr) {
+                                if (PRO_UIDS.length) {
+                                    deleteProcessClassic(Ext.util.JSON.decode(xhr.responseText).error.message);
+                                }
+                                showMessageError(Ext.util.JSON.decode(xhr.responseText).error.message);
+                            },
+                            dataBulk
+                        );
+                    }
+                }
+            );
+        } else {
+            errMsg = '';
+            for (i = 0; i < errLog.length; i += 1) {
+                e = _('ID_PROCESS_CANT_DELETE');
+                e = e.replace('{0}', rows[errLog[i]].get('PRO_TITLE'));
+                e = e.replace('{1}', rows[errLog[i]].get('CASES_COUNT'));
+                errMsg += e + '<br/>';
+            }
+            Ext.MessageBox.show({
+                title: _('ID_ERROR'),
+                msg: errMsg,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    } else {
+        Ext.Msg.show({
+            title: _("ID_INFORMATION"),
+            msg: _('ID_NO_SELECTION_WARNING'),
+            buttons: Ext.Msg.INFO,
+            fn: function(){},
+            animEl: 'elId',
+            icon: Ext.MessageBox.INFO,
+            buttons: Ext.MessageBox.OK
+        });
+    }
 }
 
 var deleteCases = function(){
@@ -955,14 +1018,14 @@ var deleteCases = function(){
         PRO_UIDS,
         i;
     if( rows.length > 0 ) {
-        for(i=0; i<rows.length; i++){
+        for (i = 0; i < rows.length; i+= 1) {
             var numCases = rows[i].get('CASES_COUNT');
             if(numCases != 0) {
                 totalCases = totalCases + parseInt(numCases);
             }
         }
 
-        for(i=0; i<rows.length; i++) {
+        for (i = 0; i < rows.length; i++) {
             ids[i] = rows[i].get('PRO_UID');
         }
 
@@ -1134,7 +1197,7 @@ function exportImportProcessObjects(typeAction)
     gridProcessObjects = new Ext.grid.EditorGridPanel( {
         region: 'center',
         layout: 'fit',
-        id: 'processesGrid',
+        id: 'gridProcessObjects',
         height:365,
         width:355,
         title : '',
@@ -2336,3 +2399,55 @@ function openWindowIfIE(pathDesigner) {
     location.href = pathDesigner;
 }
 
+function refreshAccessToken(callback) {
+    Ext.Ajax.request({
+        url: HTTP_SERVER_HOSTNAME + "/api/1.0/" + SYS_SYS + "/token",
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        params: JSON.stringify({
+            grant_type: "refresh_token",
+            client_id: credentials.client_id,
+            client_secret: credentials.client_secret,
+            refresh_token: credentials.refresh_token
+        }),
+        success: function (xhr) {
+            var jsonResponse = JSON.parse(xhr.responseText);
+
+            credentials.access_token = jsonResponse.access_token;
+            credentials.expires_in = jsonResponse.expires_in;
+            credentials.token_type = jsonResponse.token_type;
+            credentials.scope = jsonResponse.scope;
+            credentials.refresh_token = jsonResponse.refresh_token;
+
+            if (typeof callback === 'function') {
+                callback();
+            }
+        },
+        failure: function (xhr) {
+            Ext.MessageBox.hide();
+            Ext.MessageBox.show({
+                title: _('ID_ERROR'),
+                msg: xhr.statusText,
+                buttons: Ext.MessageBox.OK,
+                icon: Ext.MessageBox.ERROR
+            });
+        }
+    });
+}
+
+Ext.onReady(function () {
+    if (credentials) {
+        credentials = JSON.parse(RCBase64.decode(credentials));
+    }
+    if (typeof credentials !== 'object') {
+        Ext.MessageBox.hide();
+        Ext.MessageBox.show({
+            title: _('ID_ERROR'),
+            msg: _('ID_CREDENTIAL_ERROR'),
+            buttons: Ext.MessageBox.OK,
+            icon: Ext.MessageBox.ERROR
+        });
+    }
+});

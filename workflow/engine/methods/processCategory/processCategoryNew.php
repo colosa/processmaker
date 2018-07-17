@@ -6,8 +6,6 @@ if ($RBAC->userCanAccess( 'PM_SETUP' ) != 1 && $RBAC->userCanAccess( 'PM_SETUP_A
     die();
 }
 
-require_once ("classes/model/ProcessCategory.php");
-
 $fields['CATEGORY_UID'] = G::GenerateUniqueID();
 ;
 

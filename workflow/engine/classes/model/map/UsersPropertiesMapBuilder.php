@@ -73,6 +73,8 @@ class UsersPropertiesMapBuilder
 
         $tMap->addColumn('USR_PASSWORD_HISTORY', 'UsrPasswordHistory', 'string', CreoleTypes::LONGVARCHAR, false, null);
 
+        $tMap->addColumn('USR_SETTING_DESIGNER', 'UsrSettingDesigner', 'string', CreoleTypes::LONGVARCHAR, false, null);
+
     } // doBuild()
 
 } // UsersPropertiesMapBuilder

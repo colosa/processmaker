@@ -91,7 +91,7 @@ function DumpHeaders ($filename)
     }
 
     //$filename = PATH_UPLOAD . "$filename";
-    G::LoadSystem('inputfilter');
+
     $filter = new InputFilter();
     $filename = $filter->xssFilterHard($filename, 'path');
     readfile( $filename );

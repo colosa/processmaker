@@ -246,11 +246,11 @@ PMCanvas.prototype.onRemoveElementHandler = function (elements) {
                     element = elements[i];
                     element.updateIncomingAndOutgoingConnections("remove");
                     shapeElement = element.destPort.getParent();
-                    if(shapeElement instanceof PMGateway){
+                    if (shapeElement instanceof PMGateway) {
                         shapeElement.evaluateGatewayDirection();
                     }
                     shapeElement = element.srcPort.getParent();
-                    if(shapeElement instanceof PMGateway){
+                    if (shapeElement instanceof PMGateway) {
                         shapeElement.evaluateGatewayDirection();
                     }
                     PMDesigner.project.updateElement([]);
@@ -866,6 +866,7 @@ PMCanvas.prototype.hideAllCoronas = function () {
             shape.corona.hide();
         }
     }
+    return this;
 };
 /**
  * cancel connection action
@@ -1444,11 +1445,11 @@ PMCanvas.prototype.addConnection = function (conn) {
     }
     conn.updateIncomingAndOutgoingConnections("create");
     shapeElement = conn.destPort.getParent();
-    if(shapeElement instanceof PMGateway){
+    if (shapeElement instanceof PMGateway) {
         shapeElement.evaluateGatewayDirection();
     }
     shapeElement = conn.srcPort.getParent();
-    if(shapeElement instanceof PMGateway){
+    if (shapeElement instanceof PMGateway) {
         shapeElement.evaluateGatewayDirection();
     }
     PMDesigner.project.updateElement([]);
@@ -1648,8 +1649,15 @@ PMCanvas.prototype.propertiesReview = function (type, currenShape) {
     }
     return true;
 };
+/**
+ * Loads the shape provided by the shape factory.
+ * @param type
+ * @param shape
+ * @param fireTrigger
+ * @param businessObject
+ */
 
-PMCanvas.prototype.loadShape = function (type, shape, fireTrigger) {
+PMCanvas.prototype.loadShape = function (type, shape, fireTrigger, businessObject) {
     var customShape,
         command,
         transformShape,
@@ -1659,6 +1667,10 @@ PMCanvas.prototype.loadShape = function (type, shape, fireTrigger) {
     customShape = this.shapeFactory(type, transformShape);
 
     if (customShape) {
+        //to import .bpmn diagram
+        if (businessObject) {
+            customShape.businessObject = businessObject;
+        }
         customShape.extendedType = type;
         if (shape.bou_container === 'bpmnDiagram') {
             this.addElement(customShape, parseInt(shape.bou_x, 10), parseInt(shape.bou_y, 10), true);
@@ -1964,20 +1976,48 @@ PMCanvas.prototype.removeBPMNDiagram = function () {
 };
 PMCanvas.prototype.toogleGridLine = function () {
     if (this.isGridLine === true) {
-        this.isGridLine = false;
-        this.html.classList.remove("pmui-pmcanvas");
-
+        this.disableGridLine();
     } else {
-        this.isGridLine = true;
-        this.html.classList.add("pmui-pmcanvas");
+        this.enableGridLine();
     }
+    //force to update the designer
+    PMDesigner.project.updateElement([]);
+    return this.isGridLine;
+};
+/**
+ * Disable grid lines, removing the class pmui-pmcanvas
+ * @returns {PMCanvas}
+ */
+PMCanvas.prototype.disableGridLine = function () {
+    this.html.classList.remove("pmui-pmcanvas");
+    this.isGridLine = false;
+
+    return this;
+};
+
+/**
+ * Enable grid lines, adding the class pmui-pmcanvas
+ * @returns {PMCanvas}
+ */
+PMCanvas.prototype.enableGridLine = function () {
+    this.html.classList.add("pmui-pmcanvas");
+    this.isGridLine = true;
+    return this;
+};
+
+
+/**
+ * Return GridLine boolean property
+ * @returns {PMCanvas}
+ */
+PMCanvas.prototype.getGridLine = function () {
     return this.isGridLine;
 };
 
 /**
  * Override method "fixSnapData" of PUI.draw.Canvas
  */
-PMCanvas.prototype.fixSnapData = function(){
+PMCanvas.prototype.fixSnapData = function () {
     //TODO complete fixSnapData function
 };
 /**
@@ -1986,7 +2026,7 @@ PMCanvas.prototype.fixSnapData = function(){
  * @returns {PMCanvas}
  */
 PMCanvas.prototype.setLassoLimits = function () {
-    var  minXObj = {
+    var minXObj = {
             "limit": 99999,
             "shape": null
         },
@@ -1996,12 +2036,12 @@ PMCanvas.prototype.setLassoLimits = function () {
         },
         shape,
         i;
-    for (i = 0; i < this.currentSelection.getSize(); i +=1) {
-        shape =  this.currentSelection.get(i);
+    for (i = 0; i < this.currentSelection.getSize(); i += 1) {
+        shape = this.currentSelection.get(i);
         if (shape.getX() < minXObj.limit) {
             minXObj = {
-                "limit" : shape.getX(),
-                "shape" : shape
+                "limit": shape.getX(),
+                "shape": shape
             }
         }
         if (shape.getY() < minYObj.limit) {

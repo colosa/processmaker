@@ -53,7 +53,6 @@ if ((isset( $parameters->hash ) && $hash != $parameters->hash) || $aFields['EVN_
     // check again a hash, this time to check the trigger itself integrity
     if ($oTriggerParams['hash'] != $hash) {
         // if has changed edit manually
-        G::LoadClass( 'xmlfield_InputPM' );
         $G_PUBLISH = new Publisher();
         $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'triggers/triggersNarrowEdit', '', $aTrigger, '../events/triggersSave' );
         G::RenderPage( 'publish', 'raw' );
@@ -90,7 +89,6 @@ if (isset( $parameters->TO )) {
                 }
                 break;
             case 'grp':
-                G::LoadClass( 'groups' );
                 $group = new Groups();
                 $rec = $group->load( $row[1] );
                 $value = strip_tags( $rec->getGrpTitle() );
@@ -134,7 +132,6 @@ if (isset( $parameters->CC )) {
                 }
                 break;
             case 'grp':
-                G::LoadClass( 'groups' );
                 $group = new Groups();
                 $rec = $group->load( $row[1] );
                 $value = strip_tags( $rec->getGrpTitle() );
@@ -175,7 +172,6 @@ if (isset( $parameters->BCC )) {
                 }
                 break;
             case 'grp':
-                G::LoadClass( 'groups' );
                 $group = new Groups();
                 $rec = $group->load( $row[1] );
                 $value = strip_tags( $rec->getGrpTitle() );
@@ -216,7 +212,6 @@ while ($sObject = $oDirectory->read()) {
 $_DBArray['templates'] = $aTemplates;
 
 $aTriggers[] = array ('TRI_UID' => 'char','TRI_TITLE' => 'char');
-G::LoadClass( 'processMap' );
 $oProcessMap = new ProcessMap();
 $oDataset = TriggersPeer::doSelectRS( $oProcessMap->getTriggersCriteria( $aFields['PRO_UID'] ) );
 $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );

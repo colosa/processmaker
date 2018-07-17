@@ -2,6 +2,8 @@
 namespace ProcessMaker\BusinessModel;
 
 use \G;
+use ProcessMaker\Plugins\Interfaces\StepDetail;
+use ProcessMaker\Plugins\PluginRegistry;
 use \ProcessMaker\Util;
 
 class Task
@@ -108,9 +110,6 @@ class Task
         try {
             $prj_uid = $this->validateProUid($prj_uid);
             $taskUid = $this->validateActUid($act_uid);
-
-            //G::LoadClass("configuration");
-            require_once (PATH_TRUNK . "workflow" . PATH_SEP . "engine" . PATH_SEP . "classes" . PATH_SEP . "class.configuration.php");
 
             $task = new \Task();
             $arrayDataAux = $task->load($taskUid);
@@ -418,7 +417,6 @@ class Task
                 }
                 //Additional configuration
                 if (isset($arrayProperty["TAS_DEF_MESSAGE_TYPE"])) {
-                    \G::LoadClass("configuration");
                     $oConf = new \Configurations();
                     if (!isset($arrayProperty["TAS_DEF_MESSAGE_TEMPLATE"])) {
                         $arrayProperty["TAS_DEF_MESSAGE_TEMPLATE"] = "alert_message.html";
@@ -470,7 +468,6 @@ class Task
             $result = $task->update($arrayProperty);
             if (!empty($arrayProperty['CONSOLIDATE_DATA'])) {
                 if (!empty($arrayProperty['CONSOLIDATE_DATA']['consolidated_dynaform'])) {
-                    G::LoadClass("consolidatedCases");
                     $consolidated = new \ConsolidatedCases();
                     $dataConso = array(
                         'con_status' => $arrayProperty['CONSOLIDATE_DATA']['consolidated_enable'],
@@ -511,7 +508,6 @@ class Task
             $prj_uid = $this->validateProUid($prj_uid);
             $act_uid = $this->validateActUid($act_uid);
 
-            G::LoadClass('tasks');
             $tasks = new \Tasks();
             $tasks->deleteTask($act_uid);
         } catch (Exception $e) {
@@ -630,14 +626,15 @@ class Task
             }
 
             //Call plugin
-            $pluginRegistry = &\PMPluginRegistry::getSingleton();
+            $pluginRegistry = PluginRegistry::loadSingleton();
             $externalSteps = $pluginRegistry->getSteps();
 
             if (is_array($externalSteps) && count($externalSteps) > 0) {
-                foreach ($externalSteps as $key => $value) {
+                /** @var StepDetail $value */
+                foreach ($externalSteps as $value) {
                     $arraydbStep[] = array(
-                        $this->getFieldNameByFormatFieldName("OBJ_UID")         => $value->sStepId,
-                        $this->getFieldNameByFormatFieldName("OBJ_TITLE")       => $value->sStepTitle,
+                        $this->getFieldNameByFormatFieldName("OBJ_UID")         => $value->getStepId(),
+                        $this->getFieldNameByFormatFieldName("OBJ_TITLE")       => $value->getStepTitle(),
                         $this->getFieldNameByFormatFieldName("OBJ_DESCRIPTION") => "",
                         $this->getFieldNameByFormatFieldName("OBJ_TYPE")        => "EXTERNAL"
                     );
@@ -717,8 +714,6 @@ class Task
     public function getUsers($taskUid, $taskUserType, $keyCaseToLower = false)
     {
         try {
-            //G::LoadClass("BasePeer");
-            require_once (PATH_TRUNK . "workflow" . PATH_SEP . "engine" . PATH_SEP . "classes" . PATH_SEP . "class.BasePeer.php");
 
             $arrayData = array();
             $keyCase = ($keyCaseToLower)? CASE_LOWER : CASE_UPPER;
@@ -1899,7 +1894,12 @@ class Task
         }
     }
 
-    public function getValidateSelfService($data)
+    /**
+     * This method verify if an activity has cases
+     * @param $data
+     * @return \stdclass
+     */
+    public function hasPendingCases($data)
     {
         $paused = false;
         $data = array_change_key_case($data, CASE_LOWER);

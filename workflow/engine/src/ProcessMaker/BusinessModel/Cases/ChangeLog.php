@@ -2,14 +2,14 @@
 
 namespace ProcessMaker\BusinessModel\Cases;
 
-use Propel;
-use StdClass;
-use G;
-use Cases;
 use AppDocument;
+use Cases as ClassesCases;
 use Dynaform;
 use Exception;
-use Task;
+use G;
+use Propel;
+use StdClass;
+use Task as ClassesTask;
 
 /**
  * Return the ChangeLog of a Dynaform
@@ -61,6 +61,13 @@ class ChangeLog
         return ['data' => $this->tree, 'totalCount' => $totalCount];
     }
 
+    /**
+     * This function get the appHistory related to the case
+     *
+     * @param string $appUid
+     *
+     * @return array;
+    */
     private function getResultSet($appUid)
     {
         $conn = Propel::getConnection('workflow');
@@ -75,6 +82,15 @@ class ChangeLog
         return $stmt->getResultSet();
     }
 
+    /**
+     * This function read the records, related to the specific result and update the data
+     *
+     * @param object $result
+     * @param integer $start
+     * @param integer $limit
+     *
+     * @return integer;
+     */
     private function readRecords($result, $start = 0, $limit = 15)
     {
         $index = 0;
@@ -97,6 +113,13 @@ class ChangeLog
         return $index;
     }
 
+    /**
+     * This function check if is empty
+     *
+     * @param array $data
+     *
+     * @return boolean;
+     */
     private function isEmpty($data)
     {
         foreach ($data as $key => $value) {
@@ -108,6 +131,16 @@ class ChangeLog
         return true;
     }
 
+    /**
+     * This function update the data
+     *
+     * @param array $data
+     * @param array $row
+     * @param boolean $hasPermission
+     * @param boolean $addToTree
+     *
+     * @return integer;
+     */
     private function updateData($data, $row, $hasPermission, $addToTree = false)
     {
         $i = 0;
@@ -143,6 +176,13 @@ class ChangeLog
         return $i;
     }
 
+    /**
+     * This function get the title related to the row
+     *
+     * @param array $row
+     *
+     * @return string;
+     */
     private function getHistoryTitle($row)
     {
         return $this->getObjectTitle($row['TAS_UID'], 'TASK')
@@ -151,6 +191,14 @@ class ChangeLog
             .' / '.G::LoadTranslation('ID_USER').': '.$row['USR_USERNAME'];
     }
 
+    /**
+     * This function get the object title
+     *
+     * @param string $uid
+     * @param string $objType
+     *
+     * @return string;
+     */
     private function getObjectTitle($uid, $objType)
     {
         switch ($objType) {
@@ -166,7 +214,7 @@ class ChangeLog
                 $title = $obj->getDynTitle();
                 break;
             case 'TASK':
-                $obj = new Task();
+                $obj = new ClassesTask();
                 $obj->load($uid);
                 $title = $obj->getTasTitle();
                 break;
@@ -176,15 +224,30 @@ class ChangeLog
         return $title;
     }
 
-    private function loadPermissions($APP_UID, $PRO_UID, $TAS_UID)
+    /**
+     * This function get the permissions
+     *
+     * @param string $appUid
+     * @param string $proUid
+     * @param string $tasUid
+     *
+     * @return void;
+     */
+    private function loadPermissions($appUid, $proUid, $tasUid)
     {
-        G::LoadClass('case');
-        $oCase = new Cases();
+        $oCase = new ClassesCases();
         $this->permissions = $oCase->getAllObjects(
-            $PRO_UID, $APP_UID, $TAS_UID, $_SESSION['USER_LOGGED']
+            $proUid, $appUid, $tasUid, $_SESSION['USER_LOGGED']
         );
     }
 
+    /**
+     * This function verify if has permission
+     *
+     * @param string $uid
+     *
+     * @return boolean;
+     */
     private function hasPermission($uid)
     {
         if(array_search($uid, $this->reservedSteps)!==false) {

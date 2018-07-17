@@ -90,7 +90,7 @@ EventMessagesForm.prototype.init = function () {
         label: 'Name'.translate(),
         value: '',
         maxLength: 100,
-        placeholder: ''.translate(),
+        placeholder: '',
         name: '',
         required: true,
         controlsWidth: 300

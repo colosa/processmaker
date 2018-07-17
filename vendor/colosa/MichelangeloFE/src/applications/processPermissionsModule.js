@@ -163,6 +163,11 @@
                             return true;
                         }
                         break;
+                    case "ATTACHMENT":
+                        if (cboPermission.getValue() !== processPermissionsData.op_action) {
+                            return true;
+                        }
+                        break;
                     case "INPUT":
                         inputDocument = (cboInputDocument.getValue() !== "") ? cboInputDocument.getValue() : "0";
 
@@ -435,6 +440,9 @@
                         cboDynaForm.setVisible(true);
                         cboPermission.setVisible(true);
                         break;
+                    case "ATTACHMENT":
+                        cboPermission.setVisible(true);
+                        break;
                     case "INPUT":
                         cboPermission.addOption({value: "DELETE", label: "Delete".translate()});
 
@@ -542,6 +550,9 @@
                                 break;
                             case "DYNAFORM":
                                 cboDynaForm.setValue(processPermissionsData.op_obj_uid);
+                                cboPermission.setValue(processPermissionsData.op_action);
+                                break;
+                            case "ATTACHMENT":
                                 cboPermission.setValue(processPermissionsData.op_action);
                                 break;
                             case "INPUT":
@@ -668,6 +679,10 @@
                 {
                     value: "DYNAFORM",
                     label: "Dynaform".translate()
+                },
+                {
+                    value: "ATTACHMENT",
+                    label: "Attachment".translate()
                 },
                 {
                     value: "INPUT",

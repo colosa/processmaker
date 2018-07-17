@@ -132,12 +132,12 @@ class FieldCondition extends BaseFieldCondition
     public function getConditionScript ($DYN_UID)
     {
         require_once 'classes/model/Dynaform.php';
-        G::LoadSystem( 'dynaformhandler' );
+
 
         $oDynaform = DynaformPeer::retrieveByPk( $DYN_UID );
         $PRO_UID = $oDynaform->getProUid();
 
-        $this->oDynaformHandler = new dynaFormHandler( PATH_DYNAFORM . "$PRO_UID/$DYN_UID" . '.xml' );
+        $this->oDynaformHandler = new DynaformHandler( PATH_DYNAFORM . "$PRO_UID/$DYN_UID" . '.xml' );
         $aDynaformFields = $this->oDynaformHandler->getFieldNames();
         for ($i = 0; $i < count( $aDynaformFields ); $i ++) {
             $aDynaformFields[$i] = "'$aDynaformFields[$i]'";

@@ -78,14 +78,21 @@ class Variable extends Api
     }
 
     /**
+     * Create a variable in a case, meaning the variable is instantiated in the case.
+     * 
      * @url POST /:app_uid/:del_index/variable/:var_name
-     *
+     * @status 201
+     * 
      * @param string $app_uid      {@min 32}{@max 32}
      * @param int    $del_index    {@min 1}
      * @param string $var_name
      * @param array  $request_data
-     *
-     * @status 201
+     * 
+     * @return array
+     * @throws RestException 
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_CASES}
      */
     public function doPostVariable($app_uid, $del_index, $var_name, array $request_data)
     {
@@ -99,14 +106,20 @@ class Variable extends Api
     }
 
     /**
+     * Update variable.
+     *
      * @url PUT /:app_uid/:del_index/variable/:var_name
+     * @status 204
      *
      * @param string $app_uid      {@min 32}{@max 32}
      * @param int    $del_index    {@min 1}
      * @param string $var_name
      * @param array  $request_data
      *
-     * @status 204
+     * @throws RestException
+     *
+     * @access protected
+     * @class AccessControl {@permission PM_CASES}
      */
     public function doPutVariable($app_uid, $del_index, $var_name, array $request_data)
     {
@@ -119,6 +132,8 @@ class Variable extends Api
 
     /**
      * @url DELETE /:app_uid/:del_index/variable/:var_name
+     * @access protected
+     * @class AccessControl {@permission PM_CASES}
      *
      * @param string $app_uid   {@min 32}{@max 32}
      * @param int    $del_index {@min 1}

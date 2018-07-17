@@ -368,6 +368,13 @@ jQuery.fn.extend({
         }
         return null;
     },
+    /**
+     * Sets a field's value into a form or grid
+     * @param value
+     * @param row
+     * @param col
+     * @returns {jQuery}
+     */
     setValue: function (value, row, col) {
         var field = getFieldById(this.attr("id")) || null;
         if (field) {
@@ -747,26 +754,24 @@ jQuery.fn.extend({
         return this;
     },
     /**
-     * Get Instance from Id
+     * Get Instance by Id (Form or Field)
      * @returns {*}
      */
     getIntanceById: function (idItem) {
-        var idInstance = idItem ? idItem : null,
-            instanceForm = getFormById(idInstance),
-            instanceField = getFieldById(idInstance),
-            instanceResult = null;
+        var idInstance = idItem || null,
+            instanceResult = getFormById(idInstance) || getFieldById(idInstance);
+        return instanceResult || null;
+    },
+    /**
+     * Returns all the forms fields, including the ones in any nested subform.
+     * @param id The form's id.
+     * @returns {Array<T>PMDynaform.view.Field}
+     */
+    getFields: function (id) {
+        var form = getFormById(this.attr("id"))
+            || getFieldById(this.attr("id"));
 
-        if (idInstance) {
-            if (instanceForm) {
-                instanceResult = instanceForm;
-            } else {
-                if (instanceField) {
-                    instanceResult = instanceField;
-                }
-            }
-        }
-
-        return instanceResult;
+        return (form && form.getAllFields()) || [];
     }
 });
 
@@ -887,22 +892,24 @@ xCase.extendNamespace = function (path, newClass) {
      * - Using '#', is possible select a field with the identifier of the field
      * - Using ''. is possible select a field with the className of the field
      * - Putting 'attr[name="my-name"]' is possible select fields with the same name attribute
-     *
      **/
     var Selector = function (options) {
         this.onSupportSelectorFields = null;
-        this.fieldType = null;
-        this.fields = [];
+        this.fields = {};
         this.queries = [];
-        this.forms = [];
+        this.form = {};
 
         Selector.prototype.init.call(this, options);
     };
+    /**
+     * Initializes properties of the selector
+     * @param options
+     */
     Selector.prototype.init = function (options) {
         var defaults = {
-            fields: [],
+            fields: {},
             queries: [],
-            forms: [],
+            form: {},
             onSupportSelectorFields: {
                 text: "onTextField",
                 textarea: "onTextAreaField"
@@ -913,7 +920,7 @@ xCase.extendNamespace = function (path, newClass) {
 
         this.setOnSupportSelectorFields(defaults.onSupportSelectorFields)
             .setFields(defaults.fields)
-            .setForms(defaults.forms)
+            .setForms(defaults.form)
             .applyGlobalSelectors();
     };
     Selector.prototype.addQuery = function (query) {
@@ -934,70 +941,82 @@ xCase.extendNamespace = function (path, newClass) {
 
         return this;
     };
+    /**
+     * Sets fields
+     * @param fields
+     * @returns {Selector}
+     */
     Selector.prototype.setFields = function (fields) {
         if (typeof fields === "object") {
             this.fields = fields;
         }
-
         return this;
     };
-
-    Selector.prototype.setForms = function (forms) {
-        if (jQuery.isArray(forms)) {
-            this.forms = forms;
+    /**
+     * Sets form
+     * @param form
+     * @returns {Selector}
+     */
+    Selector.prototype.setForms = function (form) {
+        if (typeof form === "object") {
+            this.form = form;
         }
         return this;
     };
-
     Selector.prototype.onTextField = function () {
         return this;
     };
     Selector.prototype.onTextAreaField = function () {
         return this;
     };
-
-    Selector.prototype.findFieldById = function (selectorAttr) {
-        var i,
-            fieldFinded = null;
-
-        searching:
-            for (i = 0; i < this.fields.length; i += 1) {
-                if (this.fields[i].model.id === selectorAttr) {
-                    fieldFinded = this.fields[i];
-                    break searching;
-                }
-            }
-        return fieldFinded;
+    /**
+     * Gets field instance searched
+     * @param selectorId
+     * @returns {object || null}
+     */
+    Selector.prototype.findFieldById = function (selectorId) {
+        return selectorId && this.fields.hasOwnProperty(selectorId) ?
+            this.fields[selectorId] : null;
     };
+    /**
+     * Gets form instance by id
+     * @param selectorId
+     * @returns {object || null}
+     */
     Selector.prototype.findFormById = function (selectorId) {
-        var i;
-        for (i = 0; i < this.forms.length; i += 1) {
-            if (this.forms[i].model.id === selectorId) {
-                return this.forms[i];
-            }
-        }
-        return null;
+        return selectorId && this.form.model.get("id") === selectorId ?
+            this.form : null;
     };
+    /**
+     * Gets fields searched by name
+     * @param selectorAttr
+     * @returns {Array}
+     */
     Selector.prototype.findFieldByName = function (selectorAttr) {
-        var i,
+        var prop,
             fieldFinded = [];
 
-        for (i = 0; i < this.fields.length; i += 1) {
-            if (this.fields[i].model.get("name") === selectorAttr) {
-                fieldFinded.push(this.fields[i]);
+        for (prop in this.fields) {
+            if (this.fields[prop].model.get("name") === selectorAttr) {
+                fieldFinded.push(this.fields[prop]);
             }
         }
         return fieldFinded;
     };
+    /**
+     * Gets fields by attribute
+     * @param parameter
+     * @param value
+     * @returns {Array}
+     */
     Selector.prototype.findFieldByAttribute = function (parameter, value) {
-        var i,
-            fieldFinded = [];
-
-        for (i = 0; i < this.fields.length; i += 1) {
-            if (this.fields[i].model.attributes[parameter]) {
-                if (this.fields[i].model.get(parameter) === value) {
-                    fieldFinded.push(this.fields[i]);
-                }
+        var prop,
+            fieldFinded = [],
+            modelField;
+        for (prop in this.fields) {
+            modelField = this.fields[prop].model;
+            if (value && modelField.attributes.hasOwnProperty(parameter) && modelField.get(parameter) === value) {
+                fieldFinded.push(this.fields[prop]);
             }
         }
         return fieldFinded;
@@ -1007,14 +1026,15 @@ xCase.extendNamespace = function (path, newClass) {
      * @returns {object}
      */
     Selector.prototype.findFieldByVariable = function(selectorAttr) {
-        var i;
-        for (i = 0; i < this.fields.length; i += 1) {
-            fieldFinded = this.fields[i];
-            if (fieldFinded && fieldFinded.model.get("variable") === selectorAttr) {
-                return fieldFinded = this.fields[i];
+        var prop,
+            fieldFinded;
+        for (prop in this.fields) {
+            if (this.fields[prop].model.get("variable") === selectorAttr) {
+                fieldFinded = this.fields[prop];
+                break;
             }
         }
-        return null;
+        return fieldFinded;
     };
     Selector.prototype.applyGlobalSelectors = function () {
         var that = this;
@@ -1046,11 +1066,20 @@ xCase.extendNamespace = function (path, newClass) {
             that.addQuery("name: " + query);
             return that.findFieldByVariable(query);
         };
+        /**
+         * get the subform with the supplied id
+         * @param id
+         * @returns {PMDynaform.view.SubForm|null}
+         */
+        window.getSubformById = function (id) {
+            return that.findFieldById(id);
+        };
         return this;
     };
 
     PMDynaform.extendNamespace("PMDynaform.core.Selector", Selector);
 }());
+
 (function () {
 
     var Utils = {
@@ -1370,7 +1399,7 @@ xCase.extendNamespace = function (path, newClass) {
             }
         },
         requiredFile: {
-            message: "This field File is required",
+            message: "This field is required",
             fn: function (value) {
                 value = value.trim();
                 if (value === null || value.length === 0 || /^\s+$/.test(value)) {
@@ -1425,7 +1454,7 @@ xCase.extendNamespace = function (path, newClass) {
          * return [boolean]
          */
         requiredGrid: {
-            message: "At least one row is required",
+            message: "Information Required",
             fn: function (value) {
                 if (value === null || value === 0) {
                     return false;
@@ -1927,7 +1956,6 @@ xCase.extendNamespace = function (path, newClass) {
         if (typeof fields === "object") {
             this.fields = fields;
             this.selector.setFields(fields);
-            //console.log("set fields");
         }
         return this;
     };
@@ -1958,7 +1986,7 @@ xCase.extendNamespace = function (path, newClass) {
             project: this
         });
         this.flashMessage();
-        if (onload && typeof onload == "function") {
+        if (onload && typeof onload === "function") {
             onload();
         }
         this.forms = this.view.getPanels();
@@ -1980,35 +2008,58 @@ xCase.extendNamespace = function (path, newClass) {
         }));
         this.view.$el.find("#shadow-form").css("height", this.view.$el.height() + "px");
     };
+    /**
+     * Create selector instance
+     * @returns {Project}
+     */
     Project.prototype.createSelectors = function () {
-        var i,
-            eachForm,
-            fields = [];
+        var currentForm = this.getForm(),
+            allFields = this.getAllItems(currentForm);
 
-        eachForm = function (items) {
-            var jFields;
-
-            for (jFields = 0; jFields < items.length; jFields += 1) {
-                if (items[jFields].model.get("type") === "form") {
-                    eachForm(items[jFields].formView.getFields());
-                } else {
-                    fields.push(items[jFields]);
-                }
-            }
-        };
-
-        //Each Form
-        for (i = 0; i < this.forms.length; i += 1) {
-            eachForm(this.forms[i].getFields());
-        }
-
-        this.fields = fields;
+        this.fields = allFields;
         this.selector = new PMDynaform.core.Selector({
-            fields: fields,
-            forms: this.forms
+            fields: allFields,
+            form: currentForm
         });
-
         return this;
+    };
+    /**
+     * Creates a object with all children fields of the
+     * form (included the fields into SubForms and SubForms objects) ordered by id.
+     * Example:
+     * {
+     *    "textVar001": [Object View],
+     *    "textareaVar001": [Object View],
+     *    "suggestVar001": [Object View],
+     *    "dropdownVar001": [Object View],
+     *    "checkboxVar001": [Object View],
+     *    "32123154646546545644565": [Object View], //SubFormId
+     *    "textareaSubForm": [object View] // Children SubForm
+     *    ...
+     * }
+     * @param form
+     * @returns {{}}
+     */
+    Project.prototype.getAllItems = function (form) {
+        var that = this,
+            formItems = form ? form.getFields() : [],
+            type,
+            items = {},
+            subItems = {};
+
+        if (formItems.length) {
+            $.each(formItems, function (index, item) {
+                type = item.model.get("type");
+                if (type !== "empty") {
+                    items[item.model.get("id")] = item;
+                    if (type === "form") {
+                        subItems = that.getAllItems(item.getFormView());
+                    }
+                    $.extend(items, subItems);
+                }
+            });
+        }
+        return items;
     };
     Project.prototype.createGlobalPmdynaformClass = function (form) {
 
@@ -2077,14 +2128,24 @@ xCase.extendNamespace = function (path, newClass) {
         }
         return this;
     };
+    /**
+     * Gets the current form
+     * @returns {object || null}
+     */
+    Project.prototype.getForm = function () {
+        var forms = this.getForms(),
+            index = 0;
+        return forms && forms.length ? forms[index] : null;
+    };
+    /**
+     * Gets Array forms
+     * @returns {array || null}
+     */
     Project.prototype.getForms = function () {
-        var forms,
-            panels = [];
-
+        var forms;
         if (this.view instanceof PMDynaform.view.Panel) {
             forms = this.view.getPanels();
         }
-
         return forms;
     };
     Project.prototype.getData = function () {
@@ -2207,12 +2268,12 @@ xCase.extendNamespace = function (path, newClass) {
         if (typeof config === "object") {
             if (!Project.flashMessage) {
                 this.flashModel = new PMDynaform.ui.FlashMessageModel({
-                    message: config.message || "undefined message",
-                    emphasisMessage: config.emphasisMessage || "undefined emphasisMessage",
+                    message: config.message || "",
+                    emphasisMessage: config.emphasisMessage || "",
                     startAnimation: config.startAnimation || 1000,
                     type: config.type || "info",
                     appendTo: config.appendTo || document.body,
-                    duration: config.duration || 1500,
+                    duration: config.duration,
                     absoluteTop: config.absoluteTop || false
                 });
                 this.flashView = new PMDynaform.ui.FlashMessageView({
@@ -2290,6 +2351,7 @@ xCase.extendNamespace = function (path, newClass) {
     PMDynaform.extendNamespace("PMDynaform.core.Project", Project);
 
 }());
+
 (function () {
     /**
      * @class PMDynaform.core.TokenStream
@@ -2656,10 +2718,12 @@ xCase.extendNamespace = function (path, newClass) {
             nextStep: "light/get-next-step/{caseUID}",
             upload: "light/case/{caseUID}/upload",
             uploadMultipart: "light/case/{caseUID}/upload/{docUID}",
-            fileStreaming: "en/neoclassic/cases/casesStreamingFile?actionAjax=streaming&a={caseUID}&d={fileId}"
+            fileStreaming: "en/neoclassic/cases/casesStreamingFile?actionAjax=streaming&a={caseUID}&d={fileId}",
+            fileVersionsList: "cases/{caseUID}/input-document/{docUID}/versions",
+            downloadFile: "cases/{caseUID}/input-document/{docUID}/file?v={version}"
         };
         this.options.links = {
-            showDocument: "{server}/sys{workspace}/en/{skin}/cases/cases_ShowDocument?a={docUID}&v=1"
+            showDocument: "{server}/sys{workspace}/en/{skin}/cases/cases_ShowDocument?a={docUID}&v={version}"
         };
         this.options.urlBase = "{server}/api/1.0/{workspace}/{endPointPath}";
         this.options.urlBaseStreaming = "{server}/sys{workspace}/{endPointPath}";
@@ -2776,7 +2840,8 @@ xCase.extendNamespace = function (path, newClass) {
      */
     WebServiceManager.prototype.saveData = function (config, callback) {
         var that = this,
-            url, method, resp;
+            url,
+            method;
         this.setKey('formUID', config["formUID"]);
         url = that.getFullEndPoint(that.options.keys, that.options.urlBase, that.options.endPoints.saveData);
         method = "PUT";
@@ -2805,7 +2870,6 @@ xCase.extendNamespace = function (path, newClass) {
                 callback(textStatus, null);
             }
         });
-        return resp;
     };
 
     WebServiceManager.prototype.execAjax = function (ajaxParams) {
@@ -3036,63 +3100,59 @@ xCase.extendNamespace = function (path, newClass) {
             url,
             resp = {};
         url = that.getFullEndPoint(that.options.keys, that.options.urlBase, that.options.endPoints.imageInfo);
-        method = "POST",
-            $.ajax({
-                url: url,
-                type: method,
-                async: false,
-                data: JSON.stringify([{
-                    fileId: id,
-                    width: width,
-                    version: 1
-                }]),
-                contentType: "application/json",
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Authorization", "Bearer " + that.options.token.accessToken);
-                    if (that.options.language != null) {
-                        xhr.setRequestHeader("Accept-Language", that.options.keys.lan);
-                    }
-                },
-                success: function (data, textStatus) {
-                    resp = data;
+        method = "POST";
+        $.ajax({
+            url: url,
+            type: method,
+            async: false,
+            data: JSON.stringify([{
+                fileId: id,
+                width: width,
+                version: 1
+            }]),
+            contentType: "application/json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + that.options.token.accessToken);
+                if (that.options.language !== null) {
+                    xhr.setRequestHeader("Accept-Language", that.options.keys.lan);
                 }
-            });
-        if (resp) {
-            return {
-                id: resp[0].fileId,
-                base64: resp[0].fileContent
-            };
-        } else {
-            return {
-                id: "",
-                base64: ""
-            };
-        }
+            },
+            success: function (data, textStatus) {
+                resp = {
+                    id: data[0].fileId,
+                    base64: data[0].fileContent
+                }
+            },
+            error: function (error) {
+                resp = false;
+            }
+        });
+        return resp;
     };
 
     WebServiceManager.prototype.imagesInfo = function (data) {
         var that = this,
             method,
             url,
-            resp = {};
+            resp = [];
         url = that.getFullEndPoint(that.options.keys, that.options.urlBase, that.options.endPoints.imageInfo);
-        method = "POST",
-            $.ajax({
-                url: url,
-                type: method,
-                async: false,
-                data: JSON.stringify(data),
-                contentType: "application/json",
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Authorization", "Bearer " + that.options.token.accessToken);
-                    if (that.options.language != null) {
-                        xhr.setRequestHeader("Accept-Language", that.options.language);
-                    }
-                },
-                success: function (data, textStatus) {
-                    resp = data;
+        method = "POST";
+        $.ajax({
+            url: url,
+            type: method,
+            async: false,
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + that.options.token.accessToken);
+                if (that.options.language !== null) {
+                    xhr.setRequestHeader("Accept-Language", that.options.language);
                 }
-            });
+            },
+            success: function (data, textStatus) {
+                resp = data;
+            }
+        });
         return resp;
     };
 
@@ -3203,13 +3263,56 @@ xCase.extendNamespace = function (path, newClass) {
                 }
             },
             success: function (data, textStatus) {
+                resp = data;
                 callback(null, data);
             },
             error: function (xhr, textStatus, errorThrown) {
-                callback(xhr, null);
+                callback(textStatus, null);
             }
         });
         return resp;
+    };
+    /**
+     * Returns all the versions of a doc.
+     * @param {String} appDocUid The doc uid from the versions must be retrieved.
+     * @param {Function} callback A callback to invoke when the petition completes or fails.
+     * @returns {WebServiceManager}
+     */
+    WebServiceManager.prototype.getFileVersions = function (appDocUid, callback) {
+        var url = this.getFullEndPoint({
+                caseUID: this.options.keys.caseUID,
+                docUID: appDocUid, // or use the options one?
+                server: this.options.keys.server,
+                workspace: this.options.keys.workspace
+            }, this.options.urlBase, this.options.endPoints.fileVersionsList),
+            that = this;
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            async: true,
+            contentType: "application/json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + that.options.token.accessToken);
+                if (that.options.language != null) {
+                    xhr.setRequestHeader("Accept-Language", that.options.language);
+                }
+            },
+            success: function (data, textStatus) {
+                resp = {
+                    status: "success",
+                    data: data
+                };
+                callback(null, resp);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                resp = {
+                    "status": "error"
+                };
+                callback(resp, null);
+            }
+        });
+        return this;
     };
 
     WebServiceManager.prototype.upload = function (data, callback) {
@@ -3217,7 +3320,7 @@ xCase.extendNamespace = function (path, newClass) {
             method = "POST", url, resp = [];
 
         url = that.getFullEndPoint(that.options.keys, that.options.urlBase, that.options.endPoints.upload);
-        $.ajax({
+        return $.ajax({
             url: url,
             type: method,
             data: JSON.stringify(data),
@@ -3243,7 +3346,6 @@ xCase.extendNamespace = function (path, newClass) {
                 callback(resp, null);
             }
         });
-        return this;
     };
 
     WebServiceManager.prototype.uploadMultipart = function (docUID, data, callback, callbackupdate) {
@@ -3270,7 +3372,7 @@ xCase.extendNamespace = function (path, newClass) {
                 xhr.setRequestHeader("Authorization", "Bearer " + that.options.token.accessToken);
             },
             success: function (data) {
-                callback(data);
+                callback(null, data);
             },
             error: function (xhr, textStatus, errorThrown) {
                 callback(textStatus);
@@ -3286,16 +3388,17 @@ xCase.extendNamespace = function (path, newClass) {
     WebServiceManager.prototype.showDocument = function (data) {
         var keys = {
             docUID: data.uid || "",
-            type: data.type || ""
+            type: data.type || "",
+            version: data.version || 1
         };
-        return this.getFullLink(keys);
+        return this.getDocumentLink(keys);
     };
 
-    WebServiceManager.prototype.getFullLink = function (options) {
+    WebServiceManager.prototype.getDocumentLink = function (options) {
         var k,
             keys,
             urlbase = this.options.links[options["type"]];
-        if (urlbase){
+        if (urlbase) {
             keys = $.extend(true, this.options.keys, options);
             for (k in keys) {
                 if (keys.hasOwnProperty(k)) {
@@ -3305,9 +3408,40 @@ xCase.extendNamespace = function (path, newClass) {
         }
         return urlbase;
     };
+    /**
+     * Gets file type blob
+     * @param data {object}
+     * @param callback
+     */
+    WebServiceManager.prototype.downloadFile = function (data, callback) {
+        var that = this,
+            method = "GET",
+            url;
+
+        this.setKey('docUID', data.docUID);
+        this.setKey('version', data.version);
+        url = this.getFullEndPoint(this.options.keys, this.options.urlBase, this.options.endPoints.downloadFile);
+        this.deleteKey('docUID');
+        this.deleteKey('version');
+
+        $.ajax({
+            url: url,
+            type: method,
+            headers: {Authorization: "Bearer " + that.options.token.accessToken},
+            dataType: 'binary',
+            async: true,
+            success: function (data) {
+                callback(data);
+            },
+            error: function () {
+                callback(null);
+            }
+        });
+    };
 
     xCase.extendNamespace("xCase.service.WebServiceManager", WebServiceManager);
 }());
+
 (function () {
     var Logger = function (option) {
         this.template = _.template($("#tpl-messageWarning").html()),
@@ -3384,6 +3518,8 @@ xCase.extendNamespace = function (path, newClass) {
     TransformJSON.prototype.text = function (field) {
         return {
             type: "label",
+            colSpanControl: field.colSpanControl,
+            colSpanLabel: field.colSpanLabel,
             colSpan: field.colSpan,
             label: field.label,
             fullOptions: [
@@ -4996,9 +5132,12 @@ xCase.extendNamespace = function (path, newClass) {
                 forms = this.views,
                 i,
                 form,
+                formMode = "edit",
                 project = this.project;
 
-            if ((project && project.isPreview)) {
+            formMode = forms && forms.length ? forms[0].model.get("mode") : formMode;
+
+            if ((project && project.isPreview) || formMode === "disabled") {
                 window.print();
             } else {
                 if (typeof  this.views[0].model.get("onBeforePrintHandler") === "function") {
@@ -5273,18 +5412,54 @@ xCase.extendNamespace = function (path, newClass) {
         onChangeCallback: function () {
         },
         requireVariableByField: [],
-        checkBinding: function () {
-            this.onChangeCallback(this.model.get("name"), this.previusValue, this.model.get("value"));
-            //If the key is not pressed, executes the render method
-            if (!this.keyPressed) {
-                this.render();
+        /**
+         * Executes form and subForm's onChangeCallBack
+         * @param params
+         */
+        checkBinding: function (params) {
+            var parent = this.project.getForm(),
+                mobileSubForm = this.model.get("form"),
+                idField = this.model.get("id") || (mobileSubForm && mobileSubForm.model.get("id"));
+            params = this.getExtraData(params);
+            //Executes onChangeCallBack of the SubForm
+            this.onChangeCallback(params.idField, params.current, params.previous, params.row);
+            if (parent && parent.model.isSubForm(idField)) {
+                //Executes onChangeCallBack of the Form
+                parent.onChangeCallback(params.idField, params.current, params.previous, params.row);
             }
         },
+        /**
+         * Sets OnChangeCallBack function.
+         * @param handler
+         * @returns {FormPanel}
+         */
         setOnChange: function (handler) {
             if (typeof handler === "function") {
                 this.onChangeCallback = handler;
             }
             return this;
+        },
+        /**
+         * Modifies the current params.
+         * @param params {object}
+         * @returns {object}
+         */
+        getExtraData: function (params) {
+            if (this.hasOwnProperty("extraData")) {
+                params.idField = this.createGridId(this.extraData.gridId, this.extraData.nRow, params.idField) || params.idField;
+                params.row = this.getFields() || null;
+            }
+            return params;
+        },
+        /**
+         * Create newId for MobileGrid.
+         * @param gridId
+         * @param nRow
+         * @param idColumn
+         * @returns {string}
+         */
+        createGridId: function (gridId, nRow, idColumn) {
+            return "[" + gridId + "][" + nRow + "][" + idColumn + "]";
         },
         onChangeHandler: function () {
             var that = this;
@@ -5453,7 +5628,6 @@ xCase.extendNamespace = function (path, newClass) {
         },
         setAction: function () {
             this.$el.attr("action", this.model.get("action"));
-
             return this;
         },
         setMethod: function () {
@@ -5551,7 +5725,8 @@ xCase.extendNamespace = function (path, newClass) {
                 jsonFixed,
                 fieldModel,
                 fields,
-                items;
+                items,
+                configColSpan;
             this.sqlFields = [];
             fields = this.model.get("items");
             this.viewsBuilt = [];
@@ -5595,6 +5770,7 @@ xCase.extendNamespace = function (path, newClass) {
                         }
 
                         //The number 12 is related to 12 columns from Bootstrap framework
+                        configColSpan = this.generateColSpan(fields[i][j].colSpan);
                         fieldModel = {
                             project: this.project,
                             parentMode: this.model.get("mode"),
@@ -5608,10 +5784,13 @@ xCase.extendNamespace = function (path, newClass) {
                             required: fields[i][j].required || false,
                             hint: fields[i][j].hint || "",
                             format: fields[i][j].format || "",
+                            formula: fields[i][j].formula || "",
                             sql: fields[i][j].sql || "",
                             defaultValue: fields[i][j].defaultValue || "",
                             defaultDate: fields[i][j].defaultDate || null,
-                            _hidden: fields[i][j]._hidden || false
+                            _hidden: fields[i][j]._hidden || false,
+                            colSpanLabel: configColSpan.label,
+                            colSpanControl: configColSpan.control
                         };
                         if (fields[i][j].type === "form" || fields[i][j].type === "grid") {
                             fieldModel.variables = this.model.get("variables") || [];
@@ -5665,6 +5844,32 @@ xCase.extendNamespace = function (path, newClass) {
             this.runningFormulator();
             this.model.loadSqlOptionsInFields();
             return this;
+        },
+        /**
+         * Generate the colSpan to label and control
+         * @param colSpan
+         * @returns {{label: number, control: number}}
+         */
+        generateColSpan: function (colSpan) {
+            var defaultColSpan = {
+                label: 2,
+                control: 10
+            };
+            switch (parseInt(colSpan)) {
+                case 6:
+                case 4:
+                case 1:
+                    defaultColSpan.label = 4;
+                    defaultColSpan.control = 8;
+                    break;
+                case 5:
+                case 3:
+                case 2:
+                    defaultColSpan.label = 5;
+                    defaultColSpan.control = 7;
+                    break;
+            }
+            return defaultColSpan;
         },
         runningFormulator: function () {
             var items,
@@ -5786,6 +5991,28 @@ xCase.extendNamespace = function (path, newClass) {
         getFields: function () {
             return (this.items.getSize() > 0) ? this.items.asArray() : [];
         },
+        /**
+         * Returns all the fields in the form including the ones in any nested subform.
+         * @returns {Array.<T>PMDynaform.view.Field}
+         */
+        getAllFields: function () {
+            var formElements = this.getFields(),
+                subformsFields = [],
+                fields;
+
+            fields = formElements.filter(function (i) {
+                // The second expression is necessary since Grid for Mobile doesn't inherit from PMDynaform.view.Field.
+                if (i instanceof PMDynaform.view.Field
+                    || (PMDynaform.view.GridMobile && i instanceof PMDynaform.view.GridMobile)) {
+                    return true;
+                } else if (i instanceof PMDynaform.view.SubForm) {
+                    subformsFields = subformsFields.concat(i.getAllFields());
+                }
+                return false;
+            });
+
+            return fields.concat(subformsFields);
+        },
         beforeRender: function () {
             return this;
         },
@@ -5833,20 +6060,7 @@ xCase.extendNamespace = function (path, newClass) {
          * Submit to next step the current form panel
          */
         submitNextStep: function () {
-            var btnSubmit,
-                index = 0;
-            btnSubmit = this.el.querySelectorAll('[type="submit"]');
-            if (btnSubmit && btnSubmit.length) {
-                btnSubmit[index].click();
-            } else {
-                btnSubmit = $('<button>');
-                btnSubmit.attr("type", "submit");
-                btnSubmit.attr("name", "form[__NEXT_STEP__]");
-                btnSubmit.hide();
-                $(this.el).append(btnSubmit);
-                btnSubmit.click();
-                btnSubmit.remove();
-            }
+            this.$el.submit();
             return this;
         },
         /**
@@ -6620,6 +6834,7 @@ xCase.extendNamespace = function (path, newClass) {
     });
     PMDynaform.extendNamespace("PMDynaform.view.Field", FieldView);
 }());
+
 (function () {
     var GridView = PMDynaform.view.Field.extend({
         block: true,
@@ -6927,6 +7142,7 @@ xCase.extendNamespace = function (path, newClass) {
                     operation: mergeModel.operation || "",
                     columnWidth: mergeModel.columnWidth || "",
                     defaultValue: mergeModel.defaultValue || "",
+                    sql: mergeModel.sql || "",
                     required: mergeModel.required || false,
                     hint: mergeModel.hint || "",
                     format: mergeModel.format || null,
@@ -7123,7 +7339,6 @@ xCase.extendNamespace = function (path, newClass) {
                             if (!validGrid) {
                                 gridpanel[i][k].setFocus();
                                 this.model.attributes.valid = false;
-                                return false;
                             }
                         }
                     }
@@ -7357,8 +7572,8 @@ xCase.extendNamespace = function (path, newClass) {
 
             cell.model.set('name', name);
             cell.model.set('id', name);
-            cell.model.set('nameToPostControl', this.createNameCell(index, cell.model.get('columnName')));
-            cell.model.set('nameToPostLabelControl', this.createNameToLabelCell(index, cell.model.get('columnName')));
+            cell.model.set('nameToPostControl', this.createPostVariables(index, cell.model.get('columnName')));
+            cell.model.set('nameToPostLabelControl', this.createPostVariables(index, cell.model.get('columnName'), '_label'));
             cell.model.get('view').removeHiddens();
 
             files = cell.model.get("fileCollection");
@@ -8051,8 +8266,15 @@ xCase.extendNamespace = function (path, newClass) {
             this.showToolTip();
             return this;
         },
+        /**
+         * Creates the html row
+         * @param numberRow
+         * @param dataRow
+         * @param sectionAfected
+         * @returns {{model: Array, view: Array, data: (*|Array)}}
+         */
         createHTMLRow: function (numberRow, dataRow, sectionAfected) {
-            var tr,
+            var tr = this._createHtmlRow(),
                 td,
                 k,
                 tdRemove,
@@ -8065,21 +8287,16 @@ xCase.extendNamespace = function (path, newClass) {
                 cloneModel,
                 idCell,
                 cellView,
-                row, that,
-                rowModel,
-                rowView,
+                row = [],
+                rowModel = [],
+                rowView = [],
                 rowData,
                 i,
-                j,
-                idColumn,
                 that = this,
+                nameToPostControl,
+                nameToPostLabelControl,
                 keyEvent = PMDynaform.core.Utils.generateID();
 
-            rowModel = [];
-            rowView = [];
-
-            tr = this._createHtmlRow(), that = this;
-            row = [];
             if (sectionAfected) {
                 this.flagRow = sectionAfected;
             }
@@ -8089,8 +8306,8 @@ xCase.extendNamespace = function (path, newClass) {
                 cloneModel = jQuery.extend(true, {}, this.columnsModel[k]);
                 cellModel = null;
                 product = cloneModel.product;
-                var nameToPostControl = this.createNameCell(numberRow + 1, cloneModel.name);
-                var nameToPostLabelControl = this.createNameToLabelCell(numberRow + 1, cloneModel.name);
+                nameToPostControl = this.createPostVariables(numberRow + 1, cloneModel.name);
+                nameToPostLabelControl = this.createPostVariables(numberRow + 1, cloneModel.name, '_label');
                 cloneModel["nameToPostControl"] = nameToPostControl;
                 cloneModel["nameToPostLabelControl"] = nameToPostLabelControl;
                 cloneModel["row"] = numberRow;
@@ -8213,11 +8430,17 @@ xCase.extendNamespace = function (path, newClass) {
                 data: rowData
             };
         },
+        /**
+         * Prepare the data for the grid row
+         * @param row
+         * @param dataRow
+         * @returns {Array}
+         */
         prepareNewRow: function (row, dataRow) {
             var cellView,
-                cellModel,
                 that = this,
                 rowData = [];
+
             this.setRowData(row, dataRow);
             if (_.isArray(row)) {
                 for (var i = 0; i < row.length; i += 1) {
@@ -8244,36 +8467,27 @@ xCase.extendNamespace = function (path, newClass) {
             return rowData;
         },
         /**
-         * this method, set data in the cells
-         * @param {array|number} row: is a index or un array
+         * Sets data in the cells identifying the mode (view, edit and disabled)
+         * @param {array|number} row: is a index of array
          * @param {[type]} rowData : is a set of data
          */
         setRowData: function (row, rowData) {
             var i,
                 cell,
-                auxValue,
                 type,
-                dataType,
-                viewMode,
-                realIndex = 0;
+                viewMode;
             if (typeof row === "number") {
                 row = this.gridtable[row];
             }
             if (_.isArray(row) && _.isArray(rowData)) {
                 for (i = 0; i < row.length; i += 1) {
                     cell = row[i];
-                    if (cell.model.get('type') !== 'multipleFile') {
-                        viewMode = cell.model.get("mode");
-                        if (rowData[realIndex] !== null && rowData[realIndex] !== undefined) {
-                            if (viewMode === "edit" || viewMode === "disabled") {
-                                this._setDataToEditMode(cell, rowData[realIndex]);
-                            } else {
-                                this._setDataToViewMode(cell, rowData[realIndex]);
-                            }
-                        }
-                        realIndex += 1;
+                    type = cell.model.get("originalType");
+                    viewMode = cell.model.get("mode");
+                    if (rowData[i] && type !== "multipleFile") {
+                        (viewMode === "edit" || viewMode === "disabled")  ?
+                            this._setDataToEditMode(cell, rowData[i]) : this._setDataToViewMode(cell, rowData[i]);
                     }
-
                 }
             }
             return this;
@@ -8288,21 +8502,31 @@ xCase.extendNamespace = function (path, newClass) {
         },
         _setDataToEditMode: function (cell, data) {
             var type,
-                dataType;
+                dataType,
+                fixedData;
             if (cell && data !== undefined && data !== null) {
+                // Zanitizing the data because from helper arrives only the value and row works wit value and label
+                fixedData = {
+                    value: data.value || '',
+                    label: data.label || data.value || ''
+                };
                 type = cell.model.get("type");
                 dataType = cell.model.get("dataType") || "";
                 if (type === "suggest" && typeof cell.setData === "function") {
-                    cell.model.set({"data": data}, {silent: true});
-                    cell.model.set({"value": data.value}, {silent: true});
+                    cell.model.set({"data": fixedData}, {silent: true});
+                    cell.model.set({"value": fixedData.value}, {silent: true});
                     cell.model.set("toDraw", true);
                 } else if (dataType === "boolean" && typeof cell.setValue === "function") {
-                    cell.setValue(data['value'] || false);
+                    cell.setValue(fixedData['value'] || false);
                 } else {
                     if (typeof cell.setValue === "function") {
-                        cell.model.set({"data": data}, {silent: true});
-                        cell.model.set({"value": data.value}, {silent: true});
+                        cell.model.set({"data": fixedData}, {silent: true});
+                        cell.model.set({"value": fixedData.value}, {silent: true});
                         cell.model.set("toDraw", true);
+                        //TODO: This solution must be changed, because it's a patch.
+                        if (type === "link") {
+                            cell.setValue(data.value);
+                        }
                     }
                 }
             }
@@ -8766,12 +8990,20 @@ xCase.extendNamespace = function (path, newClass) {
         getValue: function (row, col) {
             return this.model.getValue(row, col);
         },
-        createNameCell: function (rowIndex, columnName) {
-            return "form[" + this.model.get("variable") + "][" + rowIndex + "][" + columnName + "]";
+        /**
+         * Create grid variables to send by AJAX to the server side
+         * using the native form action to send via POST.
+         * @param rowIndex index number
+         * @param columnName column number
+         * @param suffix when the field has _label suffix
+         * @returns {string}
+         */
+        createPostVariables: function (rowIndex, columnName, suffix) {
+            var index = this.model.get("variable") || this.model.get("id"),
+                suffix =  suffix || '' ;
+            return "form[" + index + "][" + rowIndex + "][" + columnName + suffix + "]";
         },
-        createNameToLabelCell: function (rowIndex, columnName) {
-            return "form[" + this.model.get("variable") + "][" + rowIndex + "][" + columnName + "_label]";
-        },
+
         getColumnHeader: function (index) {
             var cols;
             if (this._gridHeader) {
@@ -9099,9 +9331,9 @@ xCase.extendNamespace = function (path, newClass) {
         events: {
             "keydown": "preventEvents"
         },
-        initialize: function () {
-            this.model.on("change", this.render, this);
-        },
+        tagControl: null,
+        tagLabel: null,
+        initialize: function () {},
         preventEvents: function (event) {
             //Validation for the Submit event
             if (event.which === 13) {
@@ -9112,23 +9344,25 @@ xCase.extendNamespace = function (path, newClass) {
         },
         on: function (e, fn) {
             var that = this;
-            $(this.$el.find("button")[0]).on(e, function (event) {
-                fn(event, that);
-
-                event.stopPropagation();
-            });
+            if (this.tagControl.length) {
+                this.tagControl.on(e, function (event) {
+                    fn(event, that);
+                    event.stopPropagation();
+                });
+            }
             return this;
         },
         render: function () {
             this.$el.html(this.template(this.model.toJSON()));
-            this.tagControl = this.tagHiddenToLabel = this.$el.find("button span");
+            this.tagControl = this.$el.find("button");
+            this.tagLabel = this.$el.find("button span");
             PMDynaform.view.Field.prototype.render.apply(this, arguments);
             return this;
         },
         setValue: function (text) {
-            if (text !== undefined) {
+            if (text) {
                 this.model.set("label", text);
-                this.$el.find("button").text(text);
+                this.tagLabel.text(text);
             }
             return this;
         },
@@ -9140,11 +9374,8 @@ xCase.extendNamespace = function (path, newClass) {
             return this.model.getValue();
         }
     });
-
     PMDynaform.extendNamespace("PMDynaform.view.Button", ButtonView);
-
 }());
-
 (function () {
     var DropDownView = PMDynaform.view.Field.extend({
         events: {
@@ -9156,7 +9387,7 @@ xCase.extendNamespace = function (path, newClass) {
         jsonData: {},
         firstLoad: true,
         dirty: false,
-        previousValue: null,
+        previousValue: "",
         triggerCallback: false,
         template: _.template($("#tpl-dropdown").html()),
         templateOptions: _.template($("#tpl-dropdown-options").html()),
@@ -9202,8 +9433,13 @@ xCase.extendNamespace = function (path, newClass) {
             }
             return this;
         },
+        /**
+         * Initializes properties
+         * @param options
+         */
         initialize: function (options) {
             this.form = options.form ? options.form : null;
+            this.previousValue = this.getValue();
             this.formulaFieldsAssociated = [];
             this.model.on("change:value", this.eventListener, this, {change: true});
             this.model.on("change:options", this.redrawOptions, this);
@@ -9219,8 +9455,16 @@ xCase.extendNamespace = function (path, newClass) {
             this.tagControl.find("#placeholder-option").remove();
             return this;
         },
+        /**
+         * Default function
+         */
         onChangeCallback: function () {
         },
+        /**
+         * Sets onChangeCallback function
+         * @param fn {function}
+         * @returns {DropDownView}
+         */
         setOnChange: function (fn) {
             if (typeof fn === "function") {
                 this.onChangeCallback = fn;
@@ -9228,30 +9472,33 @@ xCase.extendNamespace = function (path, newClass) {
             return this;
         },
         /**
-         * events triggered "change" and "validate when the field undergoes a change,
-         * this method is llamdo by the set function or action
+         * Listens to change event
+         * @param event
+         * @param value
          */
         eventListener: function (event, value) {
             this.onChange(event, value);
-            this.checkBinding(event);
+            this.checkBinding();
         },
-        checkBinding: function (event) {
-            var form = this.form;
-            if (typeof this.onChangeCallback === 'function'
-                && this.getValue() != this.previousValue) {
-                this.onChangeCallback(this.getValue(), this.previousValue);
+        /**
+         * Executes onChangeCallback function
+         */
+        checkBinding: function () {
+            var form = this.form,
+                paramsValue = {
+                    idField: this.model.get("id"),
+                    current: this.getValue(),
+                    previous: this.previousValue
+                };
+            if (paramsValue.current !== paramsValue.previous) {
+                this.onChangeCallback(paramsValue.current, paramsValue.previous);
+                if (form) {
+                    form.checkBinding(paramsValue);
+                }
+                this.previousValue = this.getValue();
             }
-            if (form && form.onChangeCallback && !this.firstLoad) {
-                this.firstLoad = true;
-                form.onChangeCallback(this.model.get("id"), this.model.get("value"), this.previousValue);
-            }
-            if (!this.firstLoad) {
-                this.firstLoad = false;
-            }
-            this.previousValue = this.getValue();
             // For execute formulas in the fields associated
             this.onFieldAssociatedHandler();
-            return this;
         },
         preventEvents: function (event) {
             //Validation for the Submit event
@@ -9302,6 +9549,12 @@ xCase.extendNamespace = function (path, newClass) {
             this.$el.find(".content-print").text(data.label);
             return this;
         },
+        /**
+         * Updates data and value
+         * @param event
+         * @param value
+         * @returns {DropDownView}
+         */
         onChange: function (event, value) {
             if (this.model.get("therePlaceholder")) {
                 this.removePlaceholder();
@@ -9386,7 +9639,6 @@ xCase.extendNamespace = function (path, newClass) {
             this.tagControl.val(this.model.get("value").toString() || "");
             this.tagHiddenToLabel = this.$el.find("input[type='hidden']");
             this.keyLabelControl = this.$el.find("input[type='hidden']");
-            this.previousValue = this.getValue();
             PMDynaform.view.Field.prototype.render.apply(this, arguments);
             return this;
         },
@@ -9449,9 +9701,15 @@ xCase.extendNamespace = function (path, newClass) {
             }
             return this;
         },
+        /**
+         * Sets value and updates previousValue
+         * @param value
+         * @returns {DropDownView}
+         */
         setValue: function (value) {
             var currentValue = this.model.get("value");
             if (value !== undefined) {
+                this.previousValue = this.getValue();
                 if (value === currentValue && this.firstLoad) {
                     this.model.trigger("change:value", this.model, value);
                 } else {
@@ -9507,17 +9765,20 @@ xCase.extendNamespace = function (path, newClass) {
         previousValue: null,
         template: _.template($("#tpl-radio").html()),
         templateOptions: _.template($("#tpl-radio-options").html()),
-        firstLoad: false,
         existHTML: false,
         events: {
             "change input": "eventListener",
             "keydown input": "preventEvents"
         },
+        /**
+         * Initializes properties
+         * @param options
+         */
         initialize: function (options) {
             this.form = options.form ? options.form : null;
+            this.previousValue = this.getValue();
             // this property have a control of formulas field
             this.formulaFieldsAssociated = [];
-            this.model.on("change:value", this.eventListener, this);
             this.model.on("change:value", this.eventListener, this);
             this.model.on("change:options", this.redrawOptions, this);
             this.model.on("change:toDraw", this.render, this);
@@ -9530,35 +9791,50 @@ xCase.extendNamespace = function (path, newClass) {
             }
             return this;
         },
+        /**
+         * Default function
+         */
         onChangeCallback: function () {
         },
+        /**
+         * Sets onChangeCallback function
+         * @param fn
+         * @returns {RadioView}
+         */
         setOnChange: function (fn) {
             if (typeof fn === "function") {
                 this.onChangeCallback = fn;
             }
             return this;
         },
+        /**
+         * Listens to change event
+         * @param event
+         * @param value
+         */
         eventListener: function (event, value) {
             this.onChange(event, value);
             this.checkBinding(event);
         },
+        /**
+         * Executes onChangeCallBack function
+         */
         checkBinding: function () {
-            var form = this.form;
+            var form = this.form,
+                paramsValue = {
+                    idField: this.model.get("id"),
+                    current: this.getValue(),
+                    previous: this.previousValue
+                };
             // For execute the formula field associated
             this.onFieldAssociatedHandler();
-            if (typeof this.onChangeCallback === 'function'
-                && this.getValue() != this.previousValue) {
-                this.onChangeCallback(this.getValue(), this.previousValue);
+            if (paramsValue.current !== paramsValue.previous) {
+                this.onChangeCallback(paramsValue.current, paramsValue.previous);
+                if (form) {
+                    form.checkBinding(paramsValue);
+                }
+                this.previousValue = this.getValue();
             }
-            if (form && form.onChangeCallback && !this.firstLoad) {
-                this.firstLoad = true;
-                form.onChangeCallback(this.model.get("id"), this.model.get("value"), this.previousValue);
-            }
-            if (!this.firstLoad) {
-                this.firstLoad = false;
-            }
-            this.previousValue = this.getValue();
-            return this;
         },
         render: function () {
             this.existHTML = true;
@@ -9567,12 +9843,11 @@ xCase.extendNamespace = function (path, newClass) {
                 this.enableTooltip();
             }
             this.setValueToDomain();
-            this.previousValue = this.model.get("value");
             if (this.model.get("name").trim().length === 0) {
                 this.$el.find("input[type='radio']").attr("name", "");
                 this.$el.find("input[type='hidden']").attr("name", "");
             }
-            this.$el.find(".content-print").text(this.model.get("data")["label"]);
+            this.$el.find(".content-print").text(this.getText());
             this.tagControl = this.$el.find(".pmdynaform-radio-items");
             this.keyLabelControl = this.$el.find("input[type='hidden']");
             this.tagHiddenToLabel = this.$el.find("input[type='hidden']");
@@ -9598,11 +9873,13 @@ xCase.extendNamespace = function (path, newClass) {
             }
             return this;
         },
+        /**
+         * Updates data and value
+         * @param event
+         * @param value
+         */
         onChange: function (event, value) {
-            var controls,
-                label,
-                i,
-                option;
+            var option;
             this.clicked = true;
             if (value !== undefined && value !== null) {
                 option = this.model.findOption(value, "value");
@@ -9620,10 +9897,9 @@ xCase.extendNamespace = function (path, newClass) {
         updateDom: function (option) {
             var selectedHTMLOption;
 
-            if (option !== null && option !== null) {
+            if (option !== null) {
                 selectedHTMLOption = this.tagControl.find('input[type=radio][value="' + option.value + '"]');
             }
-
             if (selectedHTMLOption && selectedHTMLOption.length) {
                 selectedHTMLOption[0].checked = true;
                 this.updateValueHiddenControl(option.label);
@@ -9632,9 +9908,13 @@ xCase.extendNamespace = function (path, newClass) {
             }
             return this;
         },
+        /**
+         * Updates data and value of the model
+         * @param tagOption
+         * @returns {RadioView}
+         */
         updateModel: function (tagOption) {
-            var value,
-                option,
+            var option,
                 value = tagOption.val();
             option = this.model.findOption(value, "value");
             if (option && option.value) {
@@ -9652,16 +9932,19 @@ xCase.extendNamespace = function (path, newClass) {
         getHTMLControl: function () {
             return this.$el.find(".pmdynaform-control-radio-list");
         },
+        /**
+         * Sets value and updates previous value
+         * @param value
+         * @returns {RadioView}
+         */
         setValue: function (value) {
-            var currentValue = this.model.get("value");
-            if (value === currentValue && this.firstLoad) {
-                this.model.trigger("change:value", this.model, value);
-            } else {
-                this.model.set("value", value);
-            }
-            if (this.firstLoad) {
-                this.firstLoad = false;
-            }
+            var dataSelected = this.model.findOption(value, "value") || {value: "", label: ""};
+            this.previousValue = this.getValue();
+            this.model.set("data", {
+                value: dataSelected.value,
+                label: dataSelected.label
+            });
+            this.model.set("value", value);
             return this;
         },
         getText: function () {
@@ -9693,8 +9976,7 @@ xCase.extendNamespace = function (path, newClass) {
             return this;
         },
         getControl: function () {
-            var htmlControl = this.$el.find("input[type='radio']");
-            return htmlControl;
+            return this.$el.find("input[type='radio']");
         },
         /**
          * redrawOptions, Draw component options
@@ -9719,9 +10001,9 @@ xCase.extendNamespace = function (path, newClass) {
         events: {
             "keydown": "preventEvents"
         },
-        initialize: function (options) {
-            this.model.on("change", this.render, this);
-        },
+        tagControl: null,
+        tagLabel: null,
+        initialize: function () {},
         preventEvents: function (event) {
             //Validation for the Submit event
             if (event.which === 13) {
@@ -9731,27 +10013,26 @@ xCase.extendNamespace = function (path, newClass) {
             return this;
         },
         on: function (e, fn) {
-            var that = this,
-                control = this.$el.find("button");
-
-            if (control) {
-                control.on(e, function (event) {
+            var that = this;
+            if (this.tagControl.length) {
+                this.tagControl.on(e, function (event) {
                     fn(event, that);
                     event.stopPropagation();
                 });
             }
-
             return this;
         },
         render: function () {
             this.$el.html(this.template(this.model.toJSON()));
-            this.tagControl = this.tagHiddenToLabel = this.$el.find("button span");
+            this.tagControl = this.$el.find("button");
+            this.tagLabel = this.$el.find("button span");
+            PMDynaform.view.Field.prototype.render.apply(this, arguments);
             return this;
         },
         setValue: function (text) {
-            if (text !== undefined) {
+            if (text) {
                 this.model.set("label", text);
-                this.$el.find("button").text(text);
+                this.tagLabel.text(text);
             }
             return this;
         },
@@ -9764,7 +10045,6 @@ xCase.extendNamespace = function (path, newClass) {
         }
     });
     PMDynaform.extendNamespace("PMDynaform.view.Submit", SubmitView);
-
 }());
 (function () {
     var TextareaView = PMDynaform.view.Field.extend({
@@ -9776,14 +10056,26 @@ xCase.extendNamespace = function (path, newClass) {
             "change textarea": "eventListener",
             "keydown textarea": "refreshBinding"
         },
+        /**
+         * Default function
+         */
         onChangeCallback: function () {
         },
+        /**
+         * Sets onChangeCallback function
+         * @param fn {function}
+         * @returns {TextareaView}
+         */
         setOnChange: function (fn) {
             if (typeof fn === "function") {
                 this.onChangeCallback = fn;
             }
             return this;
         },
+        /**
+         * Initializes Textarea properties
+         * @param options
+         */
         initialize: function (options) {
             // this property have a control of formulas field
             this.form = options.form ? options.form : null;
@@ -9796,30 +10088,41 @@ xCase.extendNamespace = function (path, newClass) {
             return this;
         },
         /**
-         * events triggered "change" and "validate when the field undergoes a change,
-         * this method is llamdo by the set function or action
+         * Listens to event change
+         * @param event
+         * @returns {TextareaView}
          */
         eventListener: function (event) {
             this.onChange(event);
-            this.checkBinding(event);
+            this.checkBinding();
             return this;
         },
-        checkBinding: function (event) {
-            var form = this.form;
+        /**
+         * Executes onChangeCallback function
+         */
+        checkBinding: function () {
+            var form = this.form,
+                paramsValue = {
+                    idField: this.model.get("id"),
+                    current: this.getValue(),
+                    previous: this.previousValue
+                };
             this.onFieldAssociatedHandler();
             if (this.model.get("operation")) {
                 this.onChangeCallbackOperation(this);
             }
-            if (typeof this.onChangeCallback === 'function'
-                && this.getValue() != this.previousValue) {
-                this.onChangeCallback(this.getValue(), this.previousValue);
+            if (paramsValue.current !== paramsValue.previous) {
+                this.onChangeCallback(paramsValue.current, paramsValue.previous);
+                if (form) {
+                    form.checkBinding(paramsValue);
+                }
+                this.previousValue = this.getValue();
             }
-            if (form && form.onChangeCallback
-                && this.model.get("value") != this.previousValue) {
-                form.onChangeCallback(this.model.get("id"), this.model.get("value"), this.previousValue);
-            }
-            this.previousValue = this.getValue();
         },
+        /**
+         * Updates the values in the inputs controls nodes
+         * @returns {TextareaView}
+         */
         updateValueInput: function () {
             var textInput, hiddenInput;
             textInput = this.$el.find("textarea");
@@ -9830,6 +10133,11 @@ xCase.extendNamespace = function (path, newClass) {
             }
             return this;
         },
+        /**
+         * Updates data and value
+         * @param event
+         * @returns {TextareaView}
+         */
         onChange: function (event) {
             if (event.type !== "change") {
                 this.updateValueInput();
@@ -9843,6 +10151,10 @@ xCase.extendNamespace = function (path, newClass) {
             this.clicked = false;
             return this;
         },
+        /**
+         * Updates model's data
+         * @returns {TextareaView}
+         */
         updateDataModel: function () {
             var data;
             data = {
@@ -9918,6 +10230,9 @@ xCase.extendNamespace = function (path, newClass) {
 
             return this;
         },
+        /**
+         * Gets HTML textarea of the control
+         */
         getHTMLControl: function () {
             return this.$el.find("textarea");
         },
@@ -9941,21 +10256,34 @@ xCase.extendNamespace = function (path, newClass) {
             }
             return this;
         },
+        /**
+         * Calls setValue of the TextareaModel
+         * @param value
+         * @returns {TextareaView}
+         */
         setValue: function (value) {
-            if (value !== undefined) {
-                this.model.set("value", value);
+            if (value !== undefined && value !== null) {
+                this.previousValue = this.getValue();
+                this.model.setValue(value);
             }
+            return this;
         },
+        /**
+         * Gets label of data
+         * @returns {null}
+         */
         getText: function () {
             var data = this.model.get("data");
             return data ? data["label"] : null;
         },
+        /**
+         * Gets value of data
+         */
         getValue: function () {
             return this.model.getValue();
         },
         getControl: function () {
-            var htmlControl = this.$el.find("textarea");
-            return htmlControl;
+            return this.$el.find("textarea");
         }
     });
     PMDynaform.extendNamespace("PMDynaform.view.TextArea", TextareaView);
@@ -9972,29 +10300,47 @@ xCase.extendNamespace = function (path, newClass) {
         formulaFieldsAssociated: [],
         jsonData: {},
         events: {
-            "change input": "updateFromView",
+            "change input": "eventListener",
             "keydown input": "refreshBinding"
         },
+        /**
+         * Default function
+         */
         onChangeCallback: function () {
         },
+        /**
+         * Sets onChangeCallBack function
+         * @param fn {function}
+         * @returns {TextView}
+         */
         setOnChange: function (fn) {
             if (typeof fn === "function") {
                 this.onChangeCallback = fn;
             }
             return this;
         },
+        /**
+         * Sets onChangeCallbackOperation
+         * @param fn {function}
+         * @returns {TextView}
+         */
         setOnChangeCallbackOperation: function (fn) {
             if (typeof fn === "function") {
                 this.onChangeCallbackOperation = fn;
             }
             return this;
         },
+        /**
+         * Initializes field properties
+         * @param options {object}
+         */
         initialize: function (options) {
             this.form = options.form ? options.form : null;
+            this.previousValue = this.model.get("value");
             this.formulaFieldsAssociated = [];
             this.model.on("change:data", this.eventListener, this);
+            this.model.on("change:value", this.eventListener, this);
             this.model.on("change:toDraw", this.render, this);
-            this.model.on("change:value", this.updateFromView, this);
         },
         on: function (e, fn) {
             var that = this,
@@ -10018,56 +10364,75 @@ xCase.extendNamespace = function (path, newClass) {
             return this;
         },
         /**
-         * events triggered "change" and "validate when the field undergoes a change,
-         * this method is llamdo by the set function or action
+         * Listen to event change
+         * @param event
+         * @returns {TextView}
          */
         eventListener: function (event) {
             this.onChange(event);
             this.onFieldAssociatedHandler();
-            this.checkBinding(event);
+            this.checkBinding();
             return this;
         },
-        checkBinding: function (event) {
-            var form = this.form;
-
+        /**
+         * Executes onChangeCallBack function
+         */
+        checkBinding: function () {
+            var form = this.form,
+                paramsValue = {
+                    idField: this.model.get("id"),
+                    current: this.getValue(),
+                    previous: this.previousValue
+                };
             if (this.model.get("group") === "grid" && this.onChangeCallbackOperation) {
                 if (typeof this.onChangeCallbackOperation === "function") {
                     this.onChangeCallbackOperation();
                 }
             }
-            if (typeof this.onChangeCallback === 'function'
-                && this.getValue() != this.previousValue) {
-                this.onChangeCallback(this.getValue(), this.previousValue);
+            if (paramsValue.current !== paramsValue.previous) {
+                this.onChangeCallback(paramsValue.current, paramsValue.previous);
+                if (form) {
+                    form.checkBinding(paramsValue);
+                }
+                this.previousValue = this.getValue();
             }
-            if (form && form.onChangeCallback
-                && this.model.get("value") != this.previousValue) {
-                form.onChangeCallback(this.model.get("id"), this.model.get("value"), this.previousValue);
+        },
+        /**
+         * Updates data and value
+         * @param event
+         * @returns {TextView}
+         */
+        onChange: function (event) {
+            if (event.type === "change") {
+                this.updateDataModel(event);
+            } else {
+                this.updateValueInput();
             }
+            this.onTextTransform(this.tagControl.val());
+            this.validate(event);
+            this.clicked = false;
+            return this;
         },
         /**
          * Updates the values in the inputs controls nodes
          * @returns {TextView}
          */
         updateValueInput: function () {
-            var textInput, hiddenInput;
-            textInput = this.$el.find("input[type='text']");
-            hiddenInput = this.$el.find("input[type='hidden']");
-            if (this.model.get("data")) {
-                textInput.val(this.model.get("data")["label"]);
-                hiddenInput.val(this.model.get("data")["label"]);
-            }
+            var currentLabel = this.getText(),
+                textInput = this.getControl(),
+                hiddenInput = this.$el.find("input[type='hidden']");
+            textInput.val(currentLabel);
+            hiddenInput.val(currentLabel);
             return this;
         },
-        updateDataModel: function () {
-            var data;
-            data = {
-                value: this.tagControl.val(),
-                label: this.tagControl.val()
-            };
-            this.setValue(this.tagControl.val());
-            this.model.attributes.text = this.tagControl.val();
-            this.model.set("data", data);
-            this.$el.find(".content-print").text(data.label);
+        /**
+         * Update model (data and value)
+         * @returns {TextView}
+         */
+        updateDataModel: function (event) {
+            var controlHtml = this.getControl(),
+                valueControl = controlHtml.val() || "";
+            this.setValue(valueControl);
             return this;
         },
         findKeyValue: function (value) {
@@ -10086,13 +10451,6 @@ xCase.extendNamespace = function (path, newClass) {
                 event.stopPropagation();
             }
             this.keyPressed = true;
-            return this;
-        },
-        onChange: function (event) {
-            this.updateValueInput();
-            this.onTextTransform(this.tagControl.val());
-            this.validate(event);
-            this.clicked = false;
             return this;
         },
         mergeOptions: function (remoteOptions, click) {
@@ -10135,6 +10493,10 @@ xCase.extendNamespace = function (path, newClass) {
             this.model.set("value", inputVal);
             return this;
         },
+        /**
+         * Executes formula associated
+         * @returns {TextView}
+         */
         onFieldAssociatedHandler: function () {
             var i,
                 fieldsAssoc = this.formulaFieldsAssociated;
@@ -10148,6 +10510,11 @@ xCase.extendNamespace = function (path, newClass) {
             }
             return this;
         },
+        /**
+         * Turns text value to uppercase or lowercase
+         * @param val
+         * @returns {TextView}
+         */
         onTextTransform: function (val) {
             var transformed,
                 transform = this.model.get("textTransform"),
@@ -10174,54 +10541,43 @@ xCase.extendNamespace = function (path, newClass) {
             }
             return this;
         },
-        /*
-         This function verify the fields valids for formulas and return a array of valid fields
-         [Text, Label, suggest, dropdown, radio]
+        /**
+         * Validates fields supported on formula
+         * @param fields
+         * @returns {{}}
          */
-        checkFieldsValidForFormula: function (allViews) {
-            var indexFields = 0,
-                responseArray = {},
-                fieldsValidForFormula = [
-                    "text",
-                    "label",
-                    "dropdown",
-                    "suggest",
-                    "textarea",
-                    "radio",
-                ],
-                indexViews;
-
-            for (indexViews = 0; indexViews < allViews.length; indexViews++) {
-                for (indexFields = 0; indexFields < fieldsValidForFormula.length; indexFields += 1) {
-                    if (allViews[indexViews].model.get("type") === fieldsValidForFormula[indexFields]) {
-                        responseArray[allViews[indexViews].model.get("id")] = allViews[indexViews];
-                    }
+        checkFieldsValidForFormula: function (fields) {
+            var validFields = ["text", "label", "dropdown", "suggest", "textarea", "radio"],
+                responseObject = {},
+                itemField,
+                i;
+            for (i = 0; i < fields.length; i += 1) {
+                itemField = fields[i];
+                if (validFields.indexOf(itemField.model.get("type")) > -1) {
+                    responseObject[itemField.model.get("id")] = itemField;
                 }
             }
-            return responseArray;
+            return responseObject;
         },
-
+        /**
+         * Event to process the formula
+         * @param rows
+         * @returns {TextView}
+         */
         onFormula: function (rows) {
             var fieldsList,
                 that = this,
                 allFieldsView,
-                formulaField,
+                formulaField = this.model.get("formula"),
                 idFields = {},
                 fieldFormula,
-                fieldAdded = [];
-            if (this.model.get("group") == "grid") {
-                fieldsList = rows;
-            } else {
-                fieldsList = this.parent.items;
-            }
-            //All Fields from the FORM
+                fieldAdded = [],
+                group = this.model.get("group");
+            fieldsList = group === "grid" ? rows : this.parent.items;
             allFieldsView = (fieldsList instanceof Array) ? fieldsList : fieldsList.asArray();
-
             idFields = this.checkFieldsValidForFormula(allFieldsView);
-            //Fields from the Formula PROPERTY
-            formulaField = this.model.get("formula");
-            fieldFormula = formulaField.split(/[\-(,|+*/\)]+/);
-            if (this.model.get("group") == "grid") {
+            fieldFormula = formulaField.replace(/\s/g, '').split(/[\-(,|+*/\)]+/);
+            if (this.model.get("group") === "grid") {
                 for (var k = 0; k < rows.length; k += 1) {
                     if (fieldFormula.indexOf(rows[k].model.get("id")) > -1) {
                         rows[k].onFieldAssociatedHandler();
@@ -10240,7 +10596,7 @@ xCase.extendNamespace = function (path, newClass) {
             for (var obj = 0; obj < this.fieldValid.length; obj += 1) {
                 this.model.addFormulaFieldName(this.fieldValid[obj]);
                 idFields[this.fieldValid[obj]].formulaFieldsAssociated.push(that);
-                if (this.model.get("group") == "grid") {
+                if (this.model.get("group") === "grid") {
                     if (idFields.hasOwnProperty(this.fieldValid[obj])) {
                         this.formulaFieldsAssociated.push(idFields[this.fieldValid[obj]]);
                     }
@@ -10248,10 +10604,12 @@ xCase.extendNamespace = function (path, newClass) {
             }
             return this;
         },
+        /**
+         * Gets HTML input of the control
+         */
         getHTMLControl: function () {
             return this.$el.find("input");
         },
-
         render: function () {
             var hidden,
                 name;
@@ -10259,7 +10617,7 @@ xCase.extendNamespace = function (path, newClass) {
             if (this.model.get("hint") !== "") {
                 this.enableTooltip();
             }
-            this.previousValue = this.model.get("value");
+
             if (this.model.get("group") === "grid") {
                 hidden = this.$el.find("input[type = 'hidden']")[0];
                 name = this.model.get("name");
@@ -10274,7 +10632,7 @@ xCase.extendNamespace = function (path, newClass) {
                 this.$el.find("input[type='text']").attr("name", "");
                 this.$el.find("input[type='hidden']").attr("name", "");
             }
-            this.$el.find(".content-print").text(this.model.get("data")["label"]);
+            this.$el.find(".content-print").text(this.getText());
             this.tagControl = this.$el.find("input[type='text']");
             this.tagHiddenToLabel = this.$el.find("input[type='hidden']");
             this.keyLabelControl = this.$el.find("input[type='hidden']");
@@ -10282,31 +10640,42 @@ xCase.extendNamespace = function (path, newClass) {
             PMDynaform.view.Field.prototype.render.apply(this, arguments);
             return this;
         },
+        /**
+         * Sets value and updates previousValue
+         * @param value {string}
+         * @returns {TextView}
+         */
         setValue: function (value) {
             if (value !== undefined) {
                 this.previousValue = this.getValue();
-                this.model.set("value", value);
+                this.model.setValue(value);
             }
             return this;
         },
+        /**
+         * Gets label of data
+         * @returns {null}
+         */
         getText: function () {
             var data = this.model.get("data");
             return data ? data["label"] : null;
         },
-        updateFromView: function () {
-            this.updateDataModel();
-            return this;
-        },
+        /**
+         * Gets value of data
+         */
         getValue: function () {
             return this.model.getValue();
         },
+        /**
+         * Gets HTML control
+         */
         getControl: function () {
-            var htmlControl = this.$el.find("input[type='text']");
-            return htmlControl;
+            return this.$el.find(":input:not([type=hidden])") //hidden is not considered
         }
     });
     PMDynaform.extendNamespace("PMDynaform.view.Text", TextView);
 }());
+
 (function () {
     var File = PMDynaform.view.Field.extend({
         item: null,
@@ -10317,12 +10686,12 @@ xCase.extendNamespace = function (path, newClass) {
             "click .pmdynaform-file-container .form-control": "onClickButton"
         },
         /**
-         * Init function onChange
+         * Default function
          */
         onChange: function () {
         },
         initialize: function (options) {
-            var auxiliarValue = this.model.getValue();
+            var auxiliarValue = this.getText();
             this.form = options.form ? options.form : null;
             this.model.addLabelToStack(auxiliarValue.length > 0 ? auxiliarValue[0] : "");
             if (_.isArray(this.model.get("value"))) {
@@ -10341,7 +10710,7 @@ xCase.extendNamespace = function (path, newClass) {
             return this;
         },
         /**
-         * Set the callback onChange function
+         * Sets the callback onChange function
          * @param callback
          */
         setOnChange: function (callback) {
@@ -10557,7 +10926,7 @@ xCase.extendNamespace = function (path, newClass) {
             if (fileControl) {
                 fileControl.on("change", function (event) {
                     file = event.target;
-                    if (that.isValid(file)) {
+                    if (file.value && that.isValid(file)) {
                         that.changeFile(file.files);
                     }
                 });
@@ -10605,14 +10974,14 @@ xCase.extendNamespace = function (path, newClass) {
                 id = "form[" + this.model.get("name") + "_label]";
                 hidden = this.$el.find("input[type='hidden'][id='" + id + "']");
                 if (hidden) {
-                    nameFile = "[" + nameFileLoad + "]";
+                    nameFile = "[" + '"' + nameFileLoad + '"' + "]";
                     $(hidden).val(nameFile);
                 }
             }
             return this;
         },
         /**
-         * updates the values of the value of the model
+         * Updates the values of the value of the model
          * @param  {string} pathFile the new path to update
          * @return {this}
          */
@@ -10630,22 +10999,21 @@ xCase.extendNamespace = function (path, newClass) {
             return this;
         },
         /**
-         * Get Text File
+         * Gets Text File
          * @returns {null}
          */
         getText: function () {
-            var data = this.model.get("data");
-            return data ? data["label"] : null;
+            return this.model.getText();
         },
         /**
-         * Get Value File
+         * Gets Value File
          * @returns {*}
          */
         getValue: function () {
             return this.model.getValue();
         },
         /**
-         * Get Html Control of the File
+         * Gets Html Control of the File
          * @returns {*}
          */
         getControl: function () {
@@ -10717,18 +11085,21 @@ xCase.extendNamespace = function (path, newClass) {
             return varName;
         },
         /**
-         * Checkbinding in function onChange
-         * @returns {File}
+         * Executes onChange function
          */
         checkBinding: function () {
-            var form = this.form;
-            if (_.isFunction(this.onChange)) {
-                this.onChange(this.model.getCurrentNameFile(), this.model.getPreviousNameFile());
+            var form = this.form,
+                paramsValue = {
+                    idField: this.model.get("id"),
+                    current: this.model.getCurrentNameFile(),
+                    previous: this.model.getPreviousNameFile()
+                };
+            if (paramsValue.current !== paramsValue.previous) {
+                this.onChange(paramsValue.current, paramsValue.previous);
+                if (form) {
+                    form.checkBinding(paramsValue);
+                }
             }
-            if (form && form.onChangeCallback) {
-                form.onChangeCallback(this.model.get("id"), this.model.getCurrentNameFile(), this.model.getPreviousNameFile());
-            }
-            return this;
         }
     });
 
@@ -10750,14 +11121,26 @@ xCase.extendNamespace = function (path, newClass) {
             "change input": "eventListener",
             "keydown input": "preventEvents"
         },
+        /**
+         * Default function
+         */
         onChangeCallback: function () {
         },
+        /**
+         * Sets onChangeCallback function
+         * @param fn {function}
+         * @returns {CheckGroupView}
+         */
         setOnChange: function (fn) {
             if (typeof fn === "function") {
                 this.onChangeCallback = fn;
             }
             return this;
         },
+        /**
+         * Initializes properties
+         * @param options
+         */
         initialize: function (options) {
             this.form = options.form ? options.form : null;
             this.model.on("change:value", this.eventListener, this);
@@ -10772,21 +11155,25 @@ xCase.extendNamespace = function (path, newClass) {
             this.onChange(event, value);
             this.checkBinding(event, value);
         },
+        /**
+         * Executes onChangeCallback function
+         * @returns {CheckGroupView}
+         */
         checkBinding: function () {
-            var form = this.form;
-            if (typeof this.onChangeCallback === 'function'
-                && this.getValue() != this.previousValue) {
-                this.onChangeCallback(this.getValue(), JSON.stringify(this.previousValue));
+            var form = this.form,
+                paramsValue = {
+                    idField: this.model.get("id"),
+                    current: JSON.stringify(this.getValue()),
+                    previous: JSON.stringify(this.previousValue)
+                };
+
+            if (paramsValue.current !== paramsValue.previous) {
+                this.onChangeCallback(paramsValue.current, paramsValue.previous);
+                if (form) {
+                    form.checkBinding(paramsValue);
+                }
+                this.previousValue = this.getValue();
             }
-            if (form && form.onChangeCallback && !this.firstLoad) {
-                this.firstLoad = true;
-                form.onChangeCallback(this.model.get("id"), JSON.stringify(this.model.get("value")), JSON.stringify(this.previousValue));
-            }
-            if (this.firstLoad) {
-                this.firstLoad = false;
-            }
-            this.previousValue = this.getValue();
-            return this;
         },
         preventEvents: function (event) {
             //Validation for the Submit event
@@ -10844,7 +11231,6 @@ xCase.extendNamespace = function (path, newClass) {
         onChange: function (event, value) {
             this.updateValues(event, value);
             this.validate();
-
         },
         updateValues: function (event, values) {
             var i,
@@ -10874,7 +11260,6 @@ xCase.extendNamespace = function (path, newClass) {
                 dataChecked = this.getDataChecked();
             }
             this.model.set("labelsSelected", dataChecked.labels);
-            this.previousValue = this.model.get("value");
             this.model.attributes.value = dataChecked.values;
             this.updateDataModel(dataChecked.values, dataChecked.labels);
             this.$el.find("input[type='hidden']").val(JSON.stringify(dataChecked.labels));
@@ -10929,11 +11314,16 @@ xCase.extendNamespace = function (path, newClass) {
             $(control).val(JSON.stringify(this.model.get("labelsSelected")));
             return this;
         },
+        /**
+         * Sets value and update previousValue
+         * @param value
+         * @returns {CheckGroupView}
+         */
         setValue: function (value) {
             if (value && $.isArray(value)) {
+                this.previousValue = this.getValue();
                 this.model.set("value", value);
             }
-            this.firstLoad = false;
             return this;
         },
         getText: function () {
@@ -10997,6 +11387,7 @@ xCase.extendNamespace = function (path, newClass) {
     });
     PMDynaform.extendNamespace("PMDynaform.view.CheckGroup", CheckGroupView);
 }());
+
 (function () {
     var CheckBoxView = PMDynaform.view.Field.extend({
         item: null,
@@ -11011,47 +11402,60 @@ xCase.extendNamespace = function (path, newClass) {
             "keydown input": "preventEvents"
         },
         firstLoad: false,
+        /**
+         * Default function
+         */
         onChangeCallback: function () {
         },
+        /**
+         * Sets onChangeCallback function
+         * @param fn
+         * @returns {CheckBoxView}
+         */
         setOnChange: function (fn) {
             if (typeof fn === "function") {
                 this.onChangeCallback = fn;
             }
             return this;
         },
+        /**
+         * Initializes properties
+         * @param options
+         */
         initialize: function (options) {
             this.form = options.form ? options.form : null;
+            this.previousValue = this.getValue();
             this.model.on("change:value", this.eventListener, this);
             this.model.on("change:toDraw", this.render, this);
         },
         /**
-         * events triggered "change" and "validate when the field undergoes a change,
-         * this method is llamdo by the set function or action
+         * Listens to change event
+         * @param event
+         * @param value
          */
         eventListener: function (event, value) {
             this.onChange(event, value);
             this.checkBinding(event, value);
         },
+        /**
+         * Executes onChangeCallback function
+         * @returns {CheckBoxView}
+         */
         checkBinding: function () {
-            var form = this.form;
+            var form = this.form,
+                paramsValue = {
+                    idField: this.model.get("id"),
+                    current: JSON.stringify(this.getValue()),
+                    previous: JSON.stringify(this.previousValue)
+                };
 
-            try {
-                if (typeof this.onChangeCallback === 'function'
-                    && this.getValue() != this.previousValue) {
-                    this.onChangeCallback(JSON.stringify(this.getValue()), JSON.stringify(this.previousValue));
-                }
-                if (form && form.onChangeCallback && !this.firstLoad) {
-                    this.firstLoad = true;
-                    form.onChangeCallback(this.model.get("id"), JSON.stringify(this.model.get("value")), JSON.stringify(this.previousValue));
-                }
-                if (this.firstLoad) {
-                    this.firstLoad = false;
+            if (paramsValue.current !== paramsValue.previous) {
+                this.onChangeCallback(paramsValue.current, paramsValue.previous);
+                if (form) {
+                    form.checkBinding(paramsValue);
                 }
                 this.previousValue = this.getValue();
-            } catch (e) {
-                console.error(e);
             }
-            return this;
         },
         preventEvents: function (event) {
             //Validation for the Submit event
@@ -11088,8 +11492,6 @@ xCase.extendNamespace = function (path, newClass) {
                 });
             }
             this.setValueHideControl();
-            this.previousValue = this.model.get("value");
-
             if (this.model.get("name").trim().length === 0) {
                 this.$el.find("input[type='checkbox']").attr("name", "");
                 this.$el.find("input[type='hidden']").attr("name", "");
@@ -11126,15 +11528,12 @@ xCase.extendNamespace = function (path, newClass) {
          * @param value: is the change model when use set method
          */
         onChange: function (event, value) {
-            this.previousValue = this.model.get("value");
             this.updateValues(event, value);
             if (!this.firstLoad) {
                 this.validate();
             }
             return this;
         },
-
-
         getHTMLControl: function () {
             return this.$el.find(".pmdynaform-control-checkbox-list");
         },
@@ -11154,79 +11553,54 @@ xCase.extendNamespace = function (path, newClass) {
             return this;
         },
         updateValues: function (event, value) {
-            var options,
-                newValue,
-                newLabel,
-                element,
-                element2,
-                isChecked = false;
-            options = this.model.get("options");
-            if (event.type === "change") {
-                element = event.target;
-                if (element.checked) {
-                    this.$el.find("input[type='checkbox']").eq(1).prop("checked", false);
-                    isChecked = true;
+            var controlHtml = this.$el.find("input[type='checkbox']"),
+                firstCheckbox = controlHtml.eq(0),
+                secondCheckbox = controlHtml.eq(1),
+                newValue = "0",
+                valuesForTrue = [1, true, "1", "true"],
+                data;
+            if (!value) {
+                if (firstCheckbox.prop("checked")) {
+                    secondCheckbox.prop("checked", false);
+                    newValue = "1";
                 } else {
-                    this.$el.find("input[type='checkbox']").eq(1).prop("checked", true);
-                    isChecked = false;
+                    secondCheckbox.prop("checked", true);
+                    newValue = "0";
                 }
+                this.model.set({value: newValue}, {silent: true});
             } else {
-                element = this.$el.find("input[type='checkbox']").eq(0);
-                element2 = this.$el.find("input[type='checkbox']").eq(1);
-                if (value === 1 || value === "1" || value === true) {
-                    element.prop("checked", true);
-                    element2.prop("checked", false);
-                    isChecked = true;
+                newValue = value;
+                if (valuesForTrue.indexOf(newValue) !== -1) {
+                    firstCheckbox.prop("checked", true);
+                    secondCheckbox.prop("checked", false);
                 } else {
-                    element.prop("checked", false);
-                    element2.prop("checked", true);
-                    isChecked = false;
+                    firstCheckbox.prop("checked", false);
+                    secondCheckbox.prop("checked", true);
                 }
             }
-            if (isChecked) {
-                newValue = options[0]["value"];
-                newLabel = options[0]["label"];
-            } else {
-                newValue = options[1]["value"];
-                newLabel = options[1]["label"];
-            }
-            this.model.attributes.value = newValue;
-            this.updateDataModel(newValue, newLabel);
-            this.$el.find("input[type='hidden']").val(newLabel);
-            return this;
-        },
-        updateDataModel: function (value, label) {
-            var data;
-            data = {
-                value: value,
-                label: label
-            };
-            this.model.set({
-                data: data
-            });
+            this.updateDataModel(newValue);
+            data = this.model.get("data");
             this.$el.find(".content-print").text(data.label);
+            this.$el.find("input[type='hidden']").val(data.label);
             return this;
         },
+        /**
+         * Update data of checkbox model
+         * @param value
+         * @returns {CheckBoxView}
+         */
+        updateDataModel: function (value) {
+            this.model.setData(value);
+            return this;
+        },
+        /**
+         * Call to setValue of Model
+         * @param value
+         * @returns {CheckBoxView}
+         */
         setValue: function (value) {
-            var valuesForTrue,
-                valuesForFalse;
-            valuesForTrue = [1, true, "1", "true"];
-            valuesForFalse = [0, false, "0", "false"];
-            value = (_.isArray(value) && value.length > 0) ? value[0] : value;
-            if (value !== undefined) {
-                if (valuesForTrue.indexOf(value) > -1) {
-                    this.model.set({
-                        value: 1,
-                        silent: true
-                    });
-                }
-                if (valuesForFalse.indexOf(value) > -1) {
-                    this.model.set({
-                        value: 0,
-                        silent: true
-                    });
-                }
-            }
+            this.previousValue = this.getValue();
+            this.model.setValue(value);
             this.firstLoad = false;
             return this;
         },
@@ -11315,14 +11689,26 @@ xCase.extendNamespace = function (path, newClass) {
             }
             clearTimeout(this.timeoutHandler);
         },
+        /**
+         * Default function
+         */
         onChangeCallback: function () {
         },
+        /**
+         * Sets onChangeCallback function
+         * @param fn {function}
+         * @returns {SuggestView}
+         */
         setOnChange: function (fn) {
             if (typeof fn === "function") {
                 this.onChangeCallback = fn;
             }
             return this;
         },
+        /**
+         * Initializes properties
+         * @param options
+         */
         initialize: function (options) {
             this.form = options.form ? options.form : null;
             this.formulaFieldsAssociated = [];
@@ -11371,6 +11757,11 @@ xCase.extendNamespace = function (path, newClass) {
             }
             return clickInList;
         },
+        /**
+         * Listens to change event
+         * @param event
+         * @param value
+         */
         eventListener: function (event, value) {
             if (event instanceof Backbone.Model) {
                 this.onChange(event, value);
@@ -11386,7 +11777,7 @@ xCase.extendNamespace = function (path, newClass) {
                         }
                     }
                 } else {
-                    if (this.clickedIsInSuggestList(event)) {
+                    if (this.clickedIsInSuggestList(event) || this.$el.find(event.target).length) {
                         this.onChange(event, value);
                     } else {
                         this.onChange(event, this.model.get("data"));
@@ -11441,8 +11832,7 @@ xCase.extendNamespace = function (path, newClass) {
                 if (code === 13) {
                     event.preventDefault();
                     event.stopPropagation();
-                }
-                if (code === 9) {
+                } else if (code === 9) {
                     this.pressedKeyTab(event);
                     this.keyNavigatorPress = false;
                     this.destroySuggest(event);
@@ -11488,6 +11878,7 @@ xCase.extendNamespace = function (path, newClass) {
             if (this.containerOpened && ((this.stackRow - 1) >= 0)) {
                 itemSelected = this.containerList.find('li').eq(this.stackRow - 1);
                 if (itemSelected.length) {
+                    itemSelected.find('a').focus();
                     this.stackRow = this.stackRow - 1;
                     this.toggleItemSelected(itemSelected);
                 }
@@ -11502,6 +11893,7 @@ xCase.extendNamespace = function (path, newClass) {
                 if ((this.stackRow + 1) <= this.containerList.find('li').length) {
                     itemSelected = this.containerList.find('li').eq(this.stackRow + 1);
                     if (itemSelected.length) {
+                        itemSelected.find('a').focus();
                         this.stackRow = this.stackRow + 1;
                         this.toggleItemSelected(itemSelected);
                     }
@@ -11522,6 +11914,7 @@ xCase.extendNamespace = function (path, newClass) {
                 };
                 this.triggerDependency(event, data);
                 this.hideSuggest();
+                this.controlSuggest.focus();
             }
             return this;
         },
@@ -11537,6 +11930,7 @@ xCase.extendNamespace = function (path, newClass) {
             var target = event.target,
                 element,
                 data;
+
             if (this.containerList.find(target).length) {
                 element = $(event.currentTarget).find("a");
                 data = this.getListData(element);
@@ -11547,22 +11941,33 @@ xCase.extendNamespace = function (path, newClass) {
                 }
             }
             this.triggerDependency(event, data);
+            this.controlSuggest.focus();
             return this;
         },
-        checkBinding: function (event) {
+        /**
+         * Executes onChangeCallBack function
+         */
+        checkBinding: function () {
             //If the key is not pressed, executes the render method
-            var form = this.form;
-            if (typeof this.onChangeCallback === 'function'
-                && this.getValue() != this.previousValue) {
-                this.onChangeCallback(this.getValue(), this.previousValue);
+            var form = this.form,
+                paramsValue = {
+                    idField: this.model.get("id"),
+                    current: this.getValue(),
+                    previous: this.previousValue
+                };
+            if (paramsValue.current !== paramsValue.previous) {
+                this.onChangeCallback(paramsValue.current, paramsValue.previous);
+                if (form) {
+                    form.checkBinding(paramsValue);
+                }
+                this.previousValue = this.getValue();
+                this.previousLabel = this.getText();
             }
-            if (form && form.onChangeCallback
-                && this.model.get("value") != this.previousValue) {
-                form.onChangeCallback(this.model.get("id"), this.model.get("value"), this.previousValue);
-            }
-            this.previousValue = this.getValue();
-            this.previousLabel = this.model.get('data').label;
         },
+        /**
+         * Updates value dom
+         * @returns {SuggestView}
+         */
         updateValueInput: function () {
             var textInput,
                 hiddenInput;
@@ -11594,19 +11999,21 @@ xCase.extendNamespace = function (path, newClass) {
                 position,
                 leftListElement,
                 topListElement,
-                fullHeight;
+                listHeight;
             element = this.$el.find("input[type='suggest']");
             if (element[0].getBoundingClientRect) {
-                position = element[0] ? element[0].getBoundingClientRect() : {};
+                position = element[0].getBoundingClientRect();
                 if (position["top"] !== undefined) {
                     document.body.appendChild(this.containerList[0]);
                     leftListElement = position.left;
                 }
-                fullHeight = position.top + $(element).outerHeight() + this.containerList.outerHeight();
-                if (fullHeight > $(window).outerHeight()) {
+
+                listHeight = this.containerList.outerHeight();
+
+                if (listHeight <= position.top) {
                     topListElement = position.top + this._getScrollOffsets() - this.containerList.outerHeight();
                 } else {
-                    topListElement = position.top + this._getScrollOffsets() + element.outerHeight();
+                    topListElement = position.bottom + this._getScrollOffsets();
                 }
                 this.containerList.css({
                     position: "absolute",
@@ -11625,14 +12032,26 @@ xCase.extendNamespace = function (path, newClass) {
                 $(document).on("click." + this.cid, $.proxy(this.triggerDependency, this));
             }
         },
+        /**
+         * Updates data and value
+         * @param event
+         * @param value
+         * @returns {SuggestView}
+         */
         onChange: function (event, value) {
             this.removeLoadingIcon();
             this.updateValues(event, value);
-            this.checkBinding(event);
+            this.checkBinding();
             this.validate(event);
             this.clicked = false;
             return this;
         },
+        /**
+         * Updates model's data
+         * @param event
+         * @param value
+         * @returns {SuggestView}
+         */
         updateValues: function (event, value) {
             var hiddenInput, label, newValue, suggestControl;
             hiddenInput = this.$el.find("input[type='hidden']");
@@ -11968,7 +12387,6 @@ xCase.extendNamespace = function (path, newClass) {
                     this.selectedListItem = selectedItem;
                     this.deselectItems();
                     selectedItem.addClass("pmdynaform-suggest-list-keyboard");
-                    selectedItem.find("a").focus();
                 }
             }
             return this;
@@ -12008,9 +12426,15 @@ xCase.extendNamespace = function (path, newClass) {
             }
             return this;
         },
+        /**
+         * Sets value and updates previousValue
+         * @param value {string}
+         * @returns {SuggestView}
+         */
         setValue: function (value) {
             if (value !== undefined) {
-                this.model.set("value", value);
+                this.previousValue = this.getValue();
+                this.model.setValue(value);
             }
             return this;
         },
@@ -12122,6 +12546,7 @@ xCase.extendNamespace = function (path, newClass) {
 
     PMDynaform.extendNamespace("PMDynaform.view.Suggest", SuggestView);
 }());
+
 (function () {
     var LinkView = PMDynaform.view.Field.extend({
         template: _.template($("#tpl-link").html()),
@@ -12189,8 +12614,9 @@ xCase.extendNamespace = function (path, newClass) {
         fieldValid: [],
         formulaFieldsAssociated: [],
         initialize: function () {
-            this.model.on("change:value", this.eventListener, this);
+            this.formulaFieldsAssociated = [];
             this.specialHiddens = ["dropdown", "radio", "suggest", "checkbox", "datetime"];
+            this.model.on("change:value", this.eventListener, this);
             this.model.on("change:fullOptions", this.updateViewControls, this);
             this.model.on("change:toDraw", this.render, this);
         },
@@ -12220,19 +12646,53 @@ xCase.extendNamespace = function (path, newClass) {
         },
         eventListener: function (event) {
             this.onChange(event);
-            this.render();
+            this.onFieldAssociatedHandler();
             return this;
         },
         onChange: function (event) {
             var data;
             data = this.model.get("data");
             if (data["label"] !== undefined && data["label"] !== null) {
-                this.setFullOptions(data["label"]);
+                this.model.setFullOptions(data["label"]);
+            }
+            return this;
+        },
+        /**
+         * Set the default option or first option.
+         * @returns {Label}
+         */
+        setFirstOption: function () {
+            var data = this.model.get("data"),
+                optionsArray = this.model.get("options"),
+                defaultValue = this.model.get("defaultValue"),
+                fullOptions = this.model.get("fullOptions"),
+                optionDefault = data,
+                auxiliarOption,
+                index = 0;
+            if (fullOptions.length && !fullOptions[index]) {
+                if (_.isArray(optionsArray) && optionsArray.length) {
+                    if (defaultValue) {
+                        auxiliarOption = this.model.findOption(defaultValue, "value");
+                        optionDefault = {
+                            value: auxiliarOption.value,
+                            label: auxiliarOption.label
+                        };
+                    } else {
+                        optionDefault = {
+                            value: optionsArray[index].value,
+                            label: optionsArray[index].label
+                        }
+                    }
+                }
+                this.model.set({"data": optionDefault}, {silent: true});
+                this.model.set({"value": optionDefault.value}, {silent: true});
+                this.model.set("fullOptions", [optionDefault.label]);
             }
             return this;
         },
         render: function () {
             var hidden, name, newDateTime, $textAreaContent, msie;
+            this.setFirstOption();
             this.$el.html(this.template(this.model.toJSON()));
             if (this.model.get("hint") !== "") {
                 this.enableTooltip();
@@ -12252,8 +12712,9 @@ xCase.extendNamespace = function (path, newClass) {
                 name = this.model.get("name");
                 name = name.substring(0, name.length - 1).concat("_label]");
                 hidden.name = hidden.id = "form" + name;
+            } else {
+                this.onFormula();
             }
-
             this.tagControl = this.$el.find("input[type='hidden']").eq(0);
             this.keyLabelControl = this.$el.find("input[type='hidden']").eq(1);
             if (newDateTime) {
@@ -12263,12 +12724,7 @@ xCase.extendNamespace = function (path, newClass) {
 
             $textAreaContent = this.$el.find("span.label-textarea");
             if ($textAreaContent.length) {
-                $textAreaContent.html($textAreaContent.html().replace(/(?:\r\n|\r|\n)/g, "<br />"));
-
-                msie = window.navigator.userAgent.indexOf("MSIE ");
-                if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
-                    $textAreaContent.parent().css("display", "inline-table");
-                }
+                $textAreaContent.html(this.model.get('value').replace(/(?:\r\n|\r|\n)/g, "<br />"));
             }
             PMDynaform.view.Field.prototype.render.apply(this, arguments);
 
@@ -12304,6 +12760,10 @@ xCase.extendNamespace = function (path, newClass) {
             }
             return this;
         },
+        /**
+         * Executes formula associated
+         * @returns {Label}
+         */
         onFieldAssociatedHandler: function () {
             var i,
                 fieldsAssoc = this.formulaFieldsAssociated;
@@ -12344,38 +12804,43 @@ xCase.extendNamespace = function (path, newClass) {
             }
             return this;
         },
+        /**
+         * Validates fields supported on formula
+         * @param fields
+         * @returns {{}}
+         */
+        checkFieldsValidForFormula: function (fields) {
+            var validFields = ["text", "label", "dropdown", "suggest", "textarea", "radio"],
+                responseObject = {},
+                itemField,
+                i;
+            for (i = 0; i < fields.length; i += 1) {
+                itemField = fields[i];
+                if (validFields.indexOf(itemField.model.get("type")) > -1) {
+                    responseObject[itemField.model.get("id")] = itemField;
+                }
+            }
+            return responseObject;
+        },
+        /**
+         * Event to process formula
+         * @param rows
+         * @returns {Label}
+         */
         onFormula: function (rows) {
             var fieldsList,
                 that = this,
                 allFieldsView,
-                index,
-                formulaField,
+                formulaField = this.model.get("formula"),
                 idFields = {},
                 fieldFormula,
                 fieldAdded = [],
-                fieldSelected;
-            if (this.model.get("group") == "grid") {
-                fieldsList = rows;
-            } else {
-                fieldsList = this.parent.items;
-            }
-            //All Fields from the FORM
+                group = this.model.get("group");
+            fieldsList = group === "grid" ? rows : this.parent.items;
             allFieldsView = (fieldsList instanceof Array) ? fieldsList : fieldsList.asArray();
-
-            for (index = 0; index < allFieldsView.length; index += 1) {
-                if (allFieldsView[index] instanceof PMDynaform.view.Text) {
-                    idFields[allFieldsView[index].model.get("id")] = allFieldsView[index];
-                }
-                if (allFieldsView[index] instanceof PMDynaform.view.Label) {
-                    idFields[allFieldsView[index].model.get("id")] = allFieldsView[index];
-                }
-            }
-
-            fieldSelected = {};
-            //Fields from the Formula PROPERTY
-            formulaField = this.model.get("formula");
-            fieldFormula = formulaField.split(/[\-(,|+*/\)]+/);
-            if (this.model.get("group") == "grid") {
+            idFields = this.checkFieldsValidForFormula(allFieldsView);
+            fieldFormula = formulaField.replace(/\s/g, '').split(/[\-(,|+*/\)]+/);
+            if (this.model.get("group") === "grid") {
                 for (var k = 0; k < rows.length; k += 1) {
                     if (fieldFormula.indexOf(rows[k].model.get("id")) > -1) {
                         rows[k].onFieldAssociatedHandler();
@@ -12394,7 +12859,7 @@ xCase.extendNamespace = function (path, newClass) {
             for (var obj = 0; obj < this.fieldValid.length; obj += 1) {
                 this.model.addFormulaFieldName(this.fieldValid[obj]);
                 idFields[this.fieldValid[obj]].formulaFieldsAssociated.push(that);
-                if (this.model.get("group") == "grid") {
+                if (group === "grid") {
                     if (idFields.hasOwnProperty(this.fieldValid[obj])) {
                         this.model.attributes.formulaAssociatedObject.push(idFields[this.fieldValid[obj]]);
                     }
@@ -12406,55 +12871,19 @@ xCase.extendNamespace = function (path, newClass) {
             return this.model.getValue();
         },
         setValue: function (value) {
-            var originalType, value, newData;
-            originalType = this.model.get("originalType");
-            switch (originalType) {
-                case "textarea":
-                    newData = this.setTextareaValue(value);
-                    break;
-                case "suggest":
-                    newData = this.setSuggestValue(value);
-                    break;
-                case "dropdown":
-                    newData = this.setDropdownValue(value);
-                    break;
-                case "checkgroup":
-                    newData = this.setChekgroupValue(value);
-                    break;
-                case "checkbox":
-                    newData = this.setCheckboxValue(value);
-                    break;
-                case "radio":
-                    newData = this.setRadioValue(value);
-                    break;
-                case "datetime":
-                    newData = this.setDatetimeValue(value);
-                    break;
-                default :
-                    newData = this.setTextValue(value);
-                    break;
-            }
-            if (!newData) {
-                newData = {
-                    value: "",
-                    label: ""
-                }
-            }
-            this.setNewData(newData);
+            this.model.setValue(value);
             return this;
         },
         setText: function (text) {
-            var originalType, value, newData;
-            originalType = this.model.get("originalType");
+            var originalType = this.model.get("originalType"),
+                newData;
             switch (originalType) {
                 case "text":
-                    newData = this.setTextValue(text);
-                    break;
                 case "textarea":
-                    newData = this.setTextareaValue(text);
+                    newData = this.model.getTextBoxData(text);
                     break;
                 case "suggest":
-                    newData = this.setSuggestValue(text);
+                    newData = this.model.getSuggestData(text);
                     break;
                 case "dropdown":
                     newData = this.setDropdownText(text);
@@ -12469,113 +12898,13 @@ xCase.extendNamespace = function (path, newClass) {
                     newData = this.setRadioText(text);
                     break;
                 case "datetime":
-                    newData = this.setDatetimeValue(text);
+                    newData = this.model.getDateTimeData(text);
                     break;
             }
             if (newData) {
-                this.setNewData(newData);
+                this.model.setNewData(newData);
             }
             return this;
-        },
-        setDatetimeValue: function (value) {
-            var format = 'YYYY-MM-DD HH:mm:ss';
-            value = value.replace(/-/g, "/");
-            if (new Date(value).toString() !== "Invalid Date") {
-                return {
-                    value: moment(value).format(format),
-                    label: moment(value).format(this.model.get('format'))
-                }
-            }
-            return this;
-        },
-        setTextValue: function (value) {
-            var dataObject;
-            dataObject = {
-                value: value,
-                label: value
-            };
-            return dataObject;
-        },
-        setSuggestValue: function (data) {
-            var dataObject;
-            if (typeof data === "object") {
-                dataObject = {
-                    value: data['value'] !== undefined ? data['value'] : "",
-                    label: data['label'] !== undefined ? data['label'] : ""
-                }
-            } else {
-                dataObject = {
-                    value: data,
-                    label: data
-                }
-            }
-            return dataObject;
-        },
-        setTextareaValue: function (value) {
-            var dataObject;
-            dataObject = {
-                value: value,
-                label: value
-            }
-            return dataObject;
-        },
-        setDropdownValue: function (value) {
-            var data;
-            data = this.model.findOption(value, "value");
-            if (!data){
-                data = this.model.get("data");
-            }
-            return data ? data : {label: "", value: ""};
-        },
-        setRadioValue: function (value) {
-            var data;
-            data = this.model.findOption(value, "value");
-            return data ? data : {label: "", value: ""};
-        },
-        setChekgroupValue: function (values) {
-            var data,
-                resp = {
-                    value: [],
-                    label: JSON.stringify([])
-                },
-                resultOptions;
-            if (_.isString(values)) {
-                values = values.split(",");
-            }
-            if (_.isArray(values)) {
-                resultOptions = this.model.findOptions(values, "value");
-                data = this.model.returnOptionsData(resultOptions);
-                resp = {
-                    value: data["value"],
-                    label: JSON.stringify(data["label"])
-                };
-            }
-            return resp;
-        },
-        setCheckboxValue: function (value) {
-            var valuesfortrue,
-                valuesforFalse,
-                dataObject,
-                options;
-
-            options = this.model.get("options");
-            value = (_.isArray(value) && value.length === 1) ? value[0] : value;
-            dataObject = {};
-            valuesfortrue = [1, true, "1", "true"];
-            valuesforFalse = [0, false, "0", "false"];
-            if (valuesfortrue.indexOf(value) > -1) {
-                dataObject = {
-                    value: options[0]["value"],
-                    label: options[0]["label"]
-                };
-            }
-            if (valuesforFalse.indexOf(value) > -1) {
-                dataObject = {
-                    value: options[1]["value"],
-                    label: options[1]["label"]
-                };
-            }
-            return dataObject;
         },
         setRadioText: function (text) {
             var data;
@@ -12584,7 +12913,7 @@ xCase.extendNamespace = function (path, newClass) {
         },
         setDropdownText: function (text) {
             var data;
-            data = this.model.findOption("text", "label");
+            data = this.model.findOption(text, "label");
             return data ? data : {label: "", value: ""};
         },
         setChekgroupTexts: function (texts) {
@@ -12603,30 +12932,6 @@ xCase.extendNamespace = function (path, newClass) {
             var data;
             data = this.model.findOption(text, "label");
             return data ? data : {label: "", value: ""};
-        },
-        setFullOptions: function (items) {
-            var options,
-                element,
-                showLabels = [];
-            if (_.isArray(items)) {
-                this.model.set("fullOptions", items);
-            } else {
-                try {
-                    options = JSON.parse(items);
-                    if (_.isArray(options)) {
-                        this.model.set("fullOptions", options);
-                    } else {
-                        element = options;
-                        showLabels.push(element);
-                        this.model.set("fullOptions", showLabels);
-                    }
-                } catch (e) {
-                    element = items;
-                    showLabels.push(element);
-                    this.model.set("fullOptions", showLabels);
-                }
-            }
-            return this;
         },
         updateTextData: function (data) {
             if (data && data.hasOwnProperty("value")) {
@@ -12757,12 +13062,6 @@ xCase.extendNamespace = function (path, newClass) {
             }
             return this;
         },
-        setNewData: function (newData) {
-            this.model.set("data", newData);
-            this.model.set("value", newData["value"]);
-            this.setFullOptions(newData["label"]);
-            return this;
-        },
         setData: function (data) {
             var value;
             this.model.set("data", data);
@@ -12783,34 +13082,33 @@ xCase.extendNamespace = function (path, newClass) {
 }());
 
 (function () {
-
     var Title = PMDynaform.view.Field.extend({
         template: null,
         validator: null,
-        etiquete: {
+        etiquette: {
             title: _.template($("#tpl-label-title").html()),
             subtitle: _.template($("#tpl-label-subtitle").html())
         },
+        tagControl: null,
+        tagLabel: null,
         initialize: function () {
-            var type = this.model.get("type");
-            this.template = this.etiquete[type];
-
-            this.model.on("change", this.render, this);
+            this.template = this.etiquette[this.model.get("type")];
         },
         render: function () {
             this.$el.html(this.template(this.model.toJSON()));
             if (this.model.get("type") === "title") {
-                this.tagControl = this.tagHiddenToLabel = this.$el.find("h4").find("span[class='textlabel']");
+                this.tagControl = this.$el.find("h4");
             } else {
-                this.tagControl = this.tagHiddenToLabel = this.$el.find("h5").find("span[class='textlabel']");
+                this.tagControl = this.$el.find("h5");
             }
+            this.tagLabel = this.tagControl.find("p span");
             PMDynaform.view.Field.prototype.render.apply(this, arguments);
             return this;
         },
         setValue: function (text) {
             if (text !== undefined) {
-                this.$el.find(".textlabel").text(text);
                 this.model.set("label", text);
+                this.tagLabel.text(text);
             }
         },
         getText: function () {
@@ -12840,6 +13138,41 @@ xCase.extendNamespace = function (path, newClass) {
 (function () {
     var HiddenView = PMDynaform.view.Field.extend({
         template: _.template($("#tpl-hidden").html()),
+        onChangeCallback: null,
+        initialize: function (options) {
+            this.model.on("change:value", this.eventListener, this);
+        },
+        /**
+         *
+         * @param fn
+         * @returns {HiddenView}
+         */
+        setOnChange: function (fn) {
+            if (typeof fn === "function") {
+                this.onChangeCallback = fn;
+            }
+            return this;
+        },
+        /**
+         * Listener change value
+         */
+        eventListener: function () {
+            this.checkBinding();
+        },
+        /**
+         * Execute onchangecallback
+         * @returns {HiddenView}
+         */
+        checkBinding: function () {
+            var form = this.parent;
+            if (typeof this.onChangeCallback === "function") {
+                this.onChangeCallback(this.getValue(), this.model.previous("value"));
+            }
+            if (form && typeof form.onChangeCallback === "function") {
+                form.onChangeCallback(this.model.get("id"), this.getValue(), this.model.previous("value"));
+            }
+            return this;
+        },
         render: function (isConsole) {
             var data = {},
                 hidden;
@@ -12959,6 +13292,19 @@ xCase.extendNamespace = function (path, newClass) {
         defaultElement: "empty",
         availableElements: null,
         parent: null,
+        /**
+         * Sets Onchange function of the subForm.
+         * @param callback
+         * @returns {SubFormView}
+         */
+        setOnChange: function (callback) {
+            this.formView.setOnChange(callback);
+            return this;
+        },
+        /**
+         * Initialize sproperties
+         * @param options
+         */
         initialize: function (options) {
             var availableElements = [
                 "text",
@@ -13043,43 +13389,62 @@ xCase.extendNamespace = function (path, newClass) {
         getItems: function () {
             return this.formView.items.asArray();
         },
+        /**
+         * Returns all the fields in the subformform including the ones in any nested subform.
+         * @returns {Array.<T>PMDynaform.view.Field}
+         */
+        getAllFields: function () {
+            var items = this.getItems(),
+                subformFields = [],
+                fields;
+
+            fields = items.filter(function (i) {
+                // The second expression is necessary since Grid for Mobile doesn't inherit from PMDynaform.view.Field.
+                if (i instanceof PMDynaform.view.Field
+                    || (PMDynaform.view.GridMobile && i instanceof PMDynaform.view.GridMobile)) {
+                    return true;
+                } else if (i instanceof PMDynaform.view.SubForm) {
+                    subformFields = subformFields.concat(i.getAllFields());
+                }
+                return false;
+            });
+
+            return fields.concat(subformFields);
+        },
+        /**
+         * Validate and set the subform valid property.
+         * @param event
+         * @returns {boolean}
+         */
         isValid: function (event) {
             var i,
                 formValid = true,
-                itemsField = this.formView.items.asArray(),
+                formItems = this.formView.getFields(),
+                item,
                 itemField;
-            if (itemsField.length > 0) {
-                for (i = 0; i < itemsField.length; i += 1) {
-                    if (itemsField[i].validate) {
-                        if (itemsField[i].firstLoad) {
-                            itemsField[i].firstLoad = false;
+
+            if (_.isArray(formItems)) {
+                for (i = 0; i < formItems.length; i += 1) {
+                    item = formItems[i];
+                    if (item.validate) {
+                        if (item.firstLoad) {
+                            item.firstLoad = false;
                         }
-                        if (event) {
-                            itemsField[i].validate(event);
-                            if (!itemsField[i].model.get("valid")) {
-                                formValid = itemsField[i].model.get("valid");
-                                if (itemField === undefined) {
-                                    itemField = itemsField[i];
-                                }
-                            }
-                        } else {
-                            itemsField[i].validate();
-                            formValid = itemsField[i].model.get("valid");
-                            if (!formValid) {
-                                if (itemsField[i].model.get("type") !== "grid") {
-                                    itemsField[i].setFocus();
-                                }
-                                this.model.attributes.valid = false;
-                            }
+                        // Validate field
+                        item.validate(event);
+                        if (!item.model.get("valid")) {
+                            formValid = item.model.get("valid");
+                            // Save the first field to set the focus, that field must be distinct to grid
+                            itemField = (itemField === undefined && item.model.get("type") !== "grid") ? item: itemField;
                         }
                     }
                 }
+                if (itemField) {
+                    itemField.setFocus();
+                }
             }
-            if (itemField && itemField.model.get("type") !== "grid") {
-                itemField.setFocus();
-            }
+            // Finally set valid value to data model
             this.model.set("valid", formValid);
-
             return formValid;
         },
         setData: function (data) {
@@ -13088,20 +13453,25 @@ xCase.extendNamespace = function (path, newClass) {
 
             return this;
         },
+        /**
+         * Gets data of the form.
+         * @returns {{}}
+         */
         getData: function () {
-            var k,
-                fieldDt,
-                fields,
-                formData = {};
-            fields = this.formView.items.asArray();
-            for (k = 0; k < fields.length; k += 1) {
-                if (fields[k].model.get("type") === "grid") {
-                    grid = fields[k].model;
-                    data[grid.get("name")] = fields[k].getData2();
+            var formView = this.getFormView(),
+                fields = formView.getFields(),
+                formData = {},
+                item,
+                dataField,
+                i;
+            for (i = 0; i < fields.length; i += 1) {
+                item = fields[i];
+                if (item.model.get("type") === "grid") {
+                    dataField[item.model.get("name")] = item.getData2();
                 } else {
-                    fieldDt = fields[k].model.getAppData();
-                    $.extend(true, formData, fieldDt);
+                    dataField = item.model.getAppData();
                 }
+                $.extend(true, formData, dataField);
             }
             return formData;
         },
@@ -13114,6 +13484,21 @@ xCase.extendNamespace = function (path, newClass) {
         afterRender: function () {
             this.formView.afterRender();
             return this;
+        },
+        /**
+         * Calls to running formulator method
+         * @returns {SubFormView}
+         */
+        runningFormulator: function () {
+            this.formView.runningFormulator();
+            return this;
+        },
+        /**
+         * Gets the formView(FormPanel View) related to SubForm.
+         * @returns {null}
+         */
+        getFormView: function () {
+            return this.formView;
         }
     });
 
@@ -13226,6 +13611,9 @@ xCase.extendNamespace = function (path, newClass) {
                     }
                 });
             }
+            if (this.model.get("hint")) {
+                this.enableTooltip();
+            }
             PMDynaform.view.Field.prototype.render.apply(this, arguments);
             return this;
         },
@@ -13286,22 +13674,27 @@ xCase.extendNamespace = function (path, newClass) {
     var Annotation = PMDynaform.view.Field.extend({
         validator: null,
         template: _.template($("#tpl-annotation").html()),
+        tagControl: null,
+        tagLabel: null,
         initialize: function () {
-            this.model.on("change", this.render, this);
+            this.model.set("type", "label");
         },
         render: function () {
-            this.model.set("type", "label");
             this.$el.html(this.template(this.model.toJSON()));
-            this.tagControl = this.tagHiddenToLabel = this.$el.find("span span");
+            this.tagControl = this.$el.find("span");
+            this.tagLabel = this.tagControl.find("p span");
             PMDynaform.view.Field.prototype.render.apply(this, arguments);
             return this;
         },
         setValue: function (text) {
             if (text !== undefined) {
                 this.model.set("label", text);
-                this.$el.find('p span').text(text);
+                this.tagLabel.text(text);
             }
             return this;
+        },
+        setText: function (text) {
+            this.setValue(text);
         },
         getText: function () {
             var label = this.model.get("label");
@@ -13323,93 +13716,126 @@ xCase.extendNamespace = function (path, newClass) {
         validator: null,
         keyPressed: false,
         previousValue: null,
+        changedValue: null,
         datepickerObject: null,
         firstLoad: false,
+        hasValue: false,
+        datetimeIsoFormat: "YYYY-MM-DD HH:mm:ss",
+        dateIsoFormat: "YYYY-MM-DD",
+        timeFormatRegEx: /[hHmsSaAZ]/,
+        oldDate: null,
         navigatorKeys: [37, 38, 39, 40],
         events: {
+            "blur input": "onBlurInput",
             "keydown input": "refreshBinding",
             'focus .form-control': 'onFieldFocus'
         },
         outFocus: false,
+        /**
+         * Initializes properties
+         * @param options
+         */
         initialize: function (options) {
             this.form = options.form ? options.form : null;
             this.model.on("change:value", this.eventListener, this);
             this.model.on("change:toDraw", this.render, this);
+            this.previousValue = this.getValue();
         },
         /**
-         * events triggered "change" and "validate when the field undergoes a change,
-         * this method is called by the set function or actions
+         * onBlurInput helper to force to update the hidden with the real data
+         * @param event
+         */
+        onBlurInput: function () {
+            if (this.datepickerObject.date()) {
+                this.tagHiddenToLabel.val(this.prepareFormatValue(this.datepickerObject.date()));
+            }
+        },
+        /**
+         * Listens to change event
+         * @param event
+         * @param value
          */
         eventListener: function (event, value) {
             this.onChange(event, value);
             this.checkBinding();
         },
-
         /**
-         * Fire onChangeCallback if the Field has his dependent field implemented
+         * Executes onChangeCallback function
          * @returns {DatetimeView}
          */
         checkBinding: function () {
-            var form = this.form;
-            if (typeof this.onChangeCallback === 'function'
-                && this.getValue() != this.previousValue) {
-                // fires onChange Helper functions
-                this.onChangeCallback(this.getValue(), this.previousValue);
+            var form = this.form,
+                paramsValue = {
+                    idField: this.model.get("id"),
+                    current: this.getValue(),
+                    previous: this.previousValue
+                };
+            if (paramsValue.current !== paramsValue.previous) {
+                this.onChangeCallback(paramsValue.current, paramsValue.previous);
+                if (form) {
+                    form.checkBinding(paramsValue);
+                }
+                this.previousValue = this.getValue();
             }
-            if (form && form.onChangeCallback && !this.firstLoad) {
-                this.firstLoad = true;
-                // fires form onchange Helper functions
-                form.onChangeCallback(this.model.get("id"), this.model.get("value"), this.previousValue);
-            }
-            this.previousValue = this.getValue();
-            return this;
         },
+        /**
+         * Default function
+         */
         onChangeCallback: function () {
         },
+        /**
+         * Sets the setOnchange helper function to a property
+         * @param fn
+         * @returns {DatetimeView}
+         */
         setOnChange: function (fn) {
             if (typeof fn === "function") {
                 this.onChangeCallback = fn;
             }
             return this;
         },
-        getDateControl: function () {
-            var dataBaseValue;
-            if (this.tagControl.length) {
-                dataBaseValue = this.formatData(this.tagControl);
-            }
-            return dataBaseValue;
-        },
+        /**
+         * Updates data and value
+         * @param event
+         * @param value
+         */
         onChange: function (event, value) {
-            this.updateValues(event, value);
+            this.updateValue(value);
             this.validate(event);
         },
-        updateValues: function (event, value) {
-            var newValue,
-                label,
-                hidden;
-            if (value) {
-                this.$el.find("#datetime-container-control").data()["DateTimePicker"].date(new Date(value));
+        /**
+         * Update the value in DOM and update it's model
+         * @param event
+         * @param value
+         * @returns {DatetimeView}
+         */
+        updateValue: function (value) {
+            var newData = this.formatData(value);
+            if (newData) {
+                this.updateDataModel(newData);
+                this.tagHiddenToLabel.val(newData.value);
             }
-            newValue = this.getDateControl();
-            label = this.tagControl.val();
-            hidden = this.$el.find("input[type='hidden']");
-            this.updateDataModel(newValue, label);
-            hidden.val(newValue);
-            this.model.attributes.value = newValue;
-        },
-        updateDataModel: function (value, label) {
-            var data;
-            data = {
-                value: value,
-                label: label
-            };
-            this.model.set({
-                "data": data,
-                "silent": true
-            });
-            this.$el.find(".content-print").text(this.model.get("data")["label"]);
             return this;
         },
+        /**
+         * Update the data model with an formatted data whit contains a
+         * value and label attributes.
+         * @param data
+         * @returns {DatetimeView}
+         */
+        updateDataModel: function (data) {
+            if (data) {
+                this.model.set({"data": data}, {silent: true});
+                this.model.set({"value": data.value}, {silent: true});
+                this.$el.find(".content-print").text(data.label);
+            }
+            return this;
+        },
+        /**
+         * Validate if the field is required or has an RegEx
+         * @param event
+         * @returns {DatetimeView}
+         */
         validate: function (event) {
             this.model.set({validate: true});
             this.model.validate();
@@ -13430,6 +13856,11 @@ xCase.extendNamespace = function (path, newClass) {
             }
             return this;
         },
+        /**
+         * prevent default events
+         * @param event
+         * @returns {DatetimeView}
+         */
         refreshBinding: function (event) {
             //Validation for the Submit event
             if (event.which === 13) {
@@ -13439,14 +13870,19 @@ xCase.extendNamespace = function (path, newClass) {
             this.keyPressed = true;
             return this;
         },
+        /**
+         * Render main method to represent the component in the page
+         * @returns {DatetimeView}
+         */
         render: function () {
             var hidden,
                 name,
                 dateInput,
                 control,
-                value,
+                defaultDate,
                 that = this,
                 windowResizeHandler;
+
             this.$el.html(this.template(this.model.toJSON()));
             if (this.model.get("hint") !== "") {
                 this.enableTooltip();
@@ -13484,24 +13920,15 @@ xCase.extendNamespace = function (path, newClass) {
                 }
                 that.recalculateWidgetPosition();
                 $(window).on('resize', windowResizeHandler);
-
             }).on('dp.hide', function () {
                 that.$el.find('input.form-control').eq(0).blur();
             }).on('dp.change', function (event) {
-                //for setOnchange  purposes
-                if (!moment(event.date).isSame(event.oldDate)) {
-                    that.firstLoad = false;
-                    that.eventListener(event, event.date);
-                }
+                that.dpOnChange(event.date);
             }).find('.form-control').attr('readonly', this.project.isMobile());
-            
             this.datepickerObject = this.$el.find('#datetime-container-control').data()["DateTimePicker"];
             this.tagControl = this.$el.find("input[type='text']");
-            this.keyLabelControl = this.$el.find("input[type='hidden']");
             this.tagHiddenToLabel = this.$el.find("input[type='hidden']");
-            if (!this.model.get("defaultDate")) {
-                this.setValue(this.model.get("value"));
-            }
+            this.valueReader();
             if (this.model.get("group") === "grid") {
                 dateInput = this.$el.find("input[type = 'text']")[0];
                 name = this.model.get("name");
@@ -13512,12 +13939,63 @@ xCase.extendNamespace = function (path, newClass) {
                 this.$el.find("input[type='text']").attr("name", "");
                 this.$el.find("input[type='hidden']").attr("name", "");
             }
-            this.updateValues();
-            this.previousValue = this.model.get("value");
+
             this.keysNavigatorDefineEvents();
             this.$el.find(".content-print").text(this.model.get("data")["label"]);
             PMDynaform.view.Field.prototype.render.apply(this, arguments);
             return this;
+        },
+        /**
+         * Prepare the value because many formats is allowed in Datetime field
+         * suported types: "08102017", "2017-10-23" or "2017-10-23 04:00:00"
+         * @returns {DatetimeView}
+         */
+        valueReader: function () {
+            var value = this.model.get("value"),
+                data = this.model.get("data"),
+                formatedDate;
+            // I use the value instead of data because in an specific format
+            // "dddd, Do-MMM-YYYY", the data property arrives empty from the server.
+            // Data is not reliable.
+            if (value) {
+                // Need formated the value because from server arrives in the next way
+                // "08102017" or
+                // "2017-10-23" or
+                // "2017-10-23 04:00:00"
+                formatedDate = moment(value, [
+                    this.datetimeIsoFormat,
+                    this.dateIsoFormat,
+                    this.model.get("format")
+                ]);
+
+                if (formatedDate.isValid()) {
+                    this.setValue(this.prepareFormatValue(formatedDate));
+                    this.tagHiddenToLabel.val(this.prepareFormatValue(formatedDate));
+                }
+            }
+        },
+
+        /**
+         * Datetime picker onChange handler.
+         * Set The changed value to datetime model.
+         * @param date
+         * @returns {DatetimeView}
+         */
+        dpOnChange: function (date) {
+            this.model.set("value", date ? this.prepareFormatValue(date) : "");
+            return this;
+        },
+        /**
+         * Prepares the value in the required format.
+         * if has time we will use "datetimeIsoFormat" format
+         * if has not we will use "dateIsoFormat" format
+         * @param userValue
+         * @returns {*}
+         */
+        prepareFormatValue: function (userValue) {
+            return !this.timeFormatRegEx.test(this.model.get('format')) ?
+                userValue.format(this.dateIsoFormat) :
+                userValue.format(this.datetimeIsoFormat);
         },
         /**
          * navigation event handler Time control
@@ -13540,19 +14018,28 @@ xCase.extendNamespace = function (path, newClass) {
             }
             return this;
         },
-        formatData: function (control) {
-            var valueDB,
-                data,
-                originalFormat = this.model.get("format"),
-                formatDB = "YYYY-MM-DD HH:mm:ss";
-            data = this.$el.find('#datetime-container-control').data();
-            valueDB = data.date;
-            if (!valueDB) {
-                valueDB = "";
-            } else {
-                valueDB = moment(data.date, originalFormat).format(formatDB);
+        /**
+         * Parse the all formats to the user format
+         * @param value
+         * @returns {{value: string, label: string}}
+         */
+        formatData: function (value) {
+            var originalFormat = this.model.get("format"),
+                newData = {
+                    value: "",
+                    label: ""
+                };
+            if (value) {
+                newData = {
+                    value: value,
+                    label: moment(value, [
+                        this.datetimeIsoFormat,
+                        this.dateIsoFormat,
+                        originalFormat
+                    ]).format(originalFormat)
+                };
             }
-            return valueDB;
+            return newData;
         },
         /**
          * Sets a valid date, here we validate if is a correct dateTime value
@@ -13560,16 +14047,10 @@ xCase.extendNamespace = function (path, newClass) {
          * @returns {DatetimeView}
          */
         setValue: function (value) {
-            if (value !== undefined) {
-                value = value.replace(/-/g, "/");
-                if (moment(value).format() !== "Invalid date") {
-                    this.model.set({
-                            "value": value,
-                            "silent": true
-                        });
-                } else if (!value) {
-                    this.clear();
-                }
+            if (value !== undefined && value !== null) {
+                this.previousValue = this.getValue();
+                value === "" ? this.clear() :
+                    this.datepickerObject.date(this.formatData(value).label);
             }
             return this;
         },
@@ -13580,7 +14061,7 @@ xCase.extendNamespace = function (path, newClass) {
          */
         clear: function () {
             this.datepickerObject.clear();
-            this.model.set("value", "");
+            this.tagHiddenToLabel.val("");
             return this;
         },
         /**
@@ -13605,51 +14086,55 @@ xCase.extendNamespace = function (path, newClass) {
                 controlDatePicker = this.$el.find(".datetime-container"),
                 widgetCalendar = this.$el.find(".bootstrap-datetimepicker-widget"),
                 picker = controlDatePicker.get(index),
-                controlSpace = picker ? picker.getBoundingClientRect(): null,
-                //widgetRect is read only
-                widgetRect = widgetCalendar.get(index).getBoundingClientRect(),
+                controlSpace = picker ? picker.getBoundingClientRect() : null,
+                mainContainer = this.getParentElementForFloatingElements(),
+                factorAlign = 2,
+                isMobile = this.project.isMobile(),
+                widgetRect,
+                widgetSpace;
+
+            //widgetRect is read only
+            widgetRect = !_.isEmpty(widgetCalendar.get(index)) ? widgetCalendar.get(index).getBoundingClientRect() : null;
+            if (widgetRect) {
                 // widgetRect' clone
                 widgetSpace = {
                     position: fixedPosition,
                     top: widgetRect.top,
                     left: widgetRect.left,
                     height: widgetRect.height
-                },
-                mainContainer = this.getParentElementForFloatingElements(),
-                factorAlign = 2,
-                isMobile = this.project.isMobile();
-
-            // Update the arrows's widget
-            this.updateArrowsToRTL(widgetCalendar);
-            // Check if the available space is short up and down
-            if (this.spaceIsShort("up_down", controlSpace, widgetSpace)) {
-                widgetSpace = this.setWidgetPosition(widgetSpace, "top");
-            } else {
-                //Check widget's initial position
-                if (this.positionWidgetIsUp(widgetSpace.top, controlSpace.top)) {
-                    if (!this.existSpaceAvailable("up", controlSpace, widgetSpace)) {
-                        widgetSpace = this.setWidgetPosition(widgetSpace, "under");
-                    } else {
-                        widgetSpace.top = widgetSpace.top - factorAlign;
-                    }
+                };
+                // Update the arrows's widget
+                this.updateArrowsToRTL(widgetCalendar);
+                // Check if the available space is short up and down
+                if (this.spaceIsShort("up_down", controlSpace, widgetSpace)) {
+                    widgetSpace = this.setWidgetPosition(widgetSpace, "top");
                 } else {
-                    if (!this.existSpaceAvailable("down", controlSpace, widgetSpace)) {
-                        widgetSpace = this.setWidgetPosition(widgetSpace, "over");
+                    //Check widget's initial position
+                    if (this.positionWidgetIsUp(widgetSpace.top, controlSpace.top)) {
+                        if (!this.existSpaceAvailable("up", controlSpace, widgetSpace)) {
+                            widgetSpace = this.setWidgetPosition(widgetSpace, "under");
+                        } else {
+                            widgetSpace.top = widgetSpace.top - factorAlign;
+                        }
                     } else {
-                        widgetSpace.top = widgetSpace.top - factorAlign;
+                        if (!this.existSpaceAvailable("down", controlSpace, widgetSpace)) {
+                            widgetSpace = this.setWidgetPosition(widgetSpace, "over");
+                        } else {
+                            widgetSpace.top = widgetSpace.top - factorAlign;
+                        }
                     }
                 }
-            }
-            //If is mobile set properties and add scroll
-            if (mainContainer && isMobile) {
-                widgetSpace.position = absolutePosition;
-                widgetSpace.top += mainContainer.scrollTop;
-                widgetSpace.left += mainContainer.scrollLeft;
-            }
-            //Append widget calendar to main container
-            if (mainContainer && widgetCalendar.get(index)) {
-                mainContainer.appendChild(widgetCalendar.get(index));
-                this.applyPosition(widgetCalendar, widgetSpace);
+                //If is mobile set properties and add scroll
+                if (mainContainer && isMobile) {
+                    widgetSpace.position = absolutePosition;
+                    widgetSpace.top += mainContainer.scrollTop;
+                    widgetSpace.left += mainContainer.scrollLeft;
+                }
+                //Append widget calendar to main container
+                if (mainContainer && widgetCalendar.get(index)) {
+                    mainContainer.appendChild(widgetCalendar.get(index));
+                    this.applyPosition(widgetCalendar, widgetSpace);
+                }
             }
             return this;
         },
@@ -13737,7 +14222,7 @@ xCase.extendNamespace = function (path, newClass) {
             return this;
         },
         /**
-         * Set Widget Position
+         * Sets Widget Position
          * @param widgetSpace
          * @param position TOP, BOTTOM, OVER, UNDER and MIDDLE
          */
@@ -13832,7 +14317,6 @@ xCase.extendNamespace = function (path, newClass) {
     });
     PMDynaform.extendNamespace("PMDynaform.view.Datetime", DatetimeView);
 }());
-
 (function () {
     var PanelField = PMDynaform.view.Field.extend({
         validator: null,
@@ -14225,22 +14709,22 @@ xCase.extendNamespace = function (path, newClass) {
         boxPlus: null,
         viewsFiles: [],
         mediaVideos: [],
-        events: {
-            "click buttonImage": "onClickButtonMobile",
-            "click .pmdynaform-file-container .form-control": "onClickButton",
-            "click div[name='button-all'] .pmdynaform-file-buttonup": "onUploadAll",
-            "click div[name='button-all'] .pmdynaform-file-buttoncancel": "onCancelAll",
-            "click div[name='button-all'] .pmdynaform-file-buttonremove": "onRemoveAll"
-        },
         validator: null,
         messageRequired: "This field is required",
+        events: {
+            "click buttonImage": "onClickButtonMobile"
+        },
         initialize: function () {
             return this;
         },
+        /**
+         * Listen OnclickEvent for Mobile Controls
+         * @param event
+         * @returns {FileMobile}
+         */
         onClickButtonMobile: function (event) {
-            var model;
-            model = this.model;
-            switch (model.get("type")) {
+            var type = this.model.get("type");
+            switch (type) {
                 case "imageMobile":
                     this.onClickButtonImage(event);
                     break;
@@ -14250,15 +14734,19 @@ xCase.extendNamespace = function (path, newClass) {
                 case "videoMobile":
                     this.onClickButtonVideo(event);
                     break;
-                default:
-                    this.$el.find("input").trigger("click");
             }
             event.preventDefault();
             event.stopPropagation();
             return this;
         },
+        /**
+         * Listen OnclickEvent for Image Control
+         * @param event
+         * @returns {FileMobile}
+         */
         onClickButtonImage: function (event) {
-            var respData;
+            var respData,
+                project = this.model.get("project");
             respData = {
                 idField: this.model.get("name"),
                 docUid: this.model.get("inp_doc_uid"),
@@ -14266,9 +14754,14 @@ xCase.extendNamespace = function (path, newClass) {
                 galleryEnabled: this.model.get("galleryEnabled"),
                 cameraEnabled: this.model.get("cameraEnabled")
             };
-            this.model.get("project").requestManager.getImage(respData);
+            project.requestManager.getImage(respData);
             return this;
         },
+        /**
+         * Listen OnclickEvent for Audio Control
+         * @param event
+         * @returns {FileMobile}
+         */
         onClickButtonAudio: function (event) {
             var respData;
             respData = {
@@ -14279,6 +14772,11 @@ xCase.extendNamespace = function (path, newClass) {
             this.model.get("project").requestManager.getAudio(respData);
             return this;
         },
+        /**
+         * Listen OnclickEvent for Video Control
+         * @param event
+         * @returns {FileMobile}
+         */
         onClickButtonVideo: function (event) {
             var respData;
             respData = {
@@ -14306,7 +14804,7 @@ xCase.extendNamespace = function (path, newClass) {
                 this.validator = new PMDynaform.view.Validator({
                     model: new Backbone.Model({
                         message: {
-                            required: this.messageRequired
+                            required: this.model.get("requiredFieldErrorMessage") || this.messageRequired
                         }
                     })
                 });
@@ -14335,214 +14833,8 @@ xCase.extendNamespace = function (path, newClass) {
             this.$el.find(".pmdynaform-file-droparea-ext").removeClass("file-mobile-error");
             return this;
         },
-        removeItem: function (event) {
-            var items = this.model.get("items"),
-                index = $(event.target).data("index");
-
-            items.splice(index, 1);
-            this.model.set("items", items);
-            this.render();
-            return this;
-        },
-        onClosePreview: function () {
-            return this;
-        },
-        onPreviewItem: function (event) {
-            var file,
-                reader,
-                shadow = document.createElement("div"),
-                background = document.createElement("div"),
-                preview = document.createElement("img"),
-                index = $(event.target).data("index"),
-                closeItem = document.createElement("span");
-            closeItem.className = "glyphicon glyphicon-remove";
-            closeItem.title = "close";
-            $(closeItem).tooltip().click(function (e) {
-                $(this).tooltip('toggle');
-            });
-            heightContainer = document.documentElement.clientHeight;
-
-            shadow.className = "pmdynaform-file-shadow";
-            shadow.style.height = heightContainer + "px";
-            background.className = "pmdynaform-file-preview-image"
-            background.style.height = heightContainer + "px";
-            background.appendChild(closeItem);
-            $(background).on('click', function (event) {
-                document.body.removeChild(shadow);
-                document.body.removeChild(background);
-            });
-            file = this.model.get("items")[index].file;
-            reader = new FileReader();
-            reader.onloadend = function () {
-                preview.src = reader.result;
-            };
-
-            if (file) {
-                reader.readAsDataURL(file);
-            } else {
-                preview.src = "";
-            }
-            background.appendChild(preview);
-            document.body.appendChild(shadow);
-            document.body.appendChild(background);
-            return this;
-        },
-        renderFiles: function () {
-            var i,
-                that = this,
-                items = this.model.get("items");
-
-            for (i = 0; i < items.length; i += 1) {
-                if (that.model.get("preview")) {
-                    that.createBox(i, items[i].event, items[i].file);
-                } else {
-                    that.createListBox(i, items[i].event, items[i].file);
-                }
-            }
-
-            return this;
-        },
-        createButtonsHTML: function (index) {
-            var that = this,
-                buttonGroups = document.createElement("div"),
-                buttonGroupUp = document.createElement("div"),
-                buttonGroupCancel = document.createElement("div"),
-                buttonGroupRemove = document.createElement("div"),
-                buttonGroupView = document.createElement("div");
-            buttonUp = document.createElement("button"),
-                buttonCancel = document.createElement("button"),
-                buttonRemove = document.createElement("button"),
-                buttonView = document.createElement("button");
-
-            /*
-             * Adding Options buttons to file
-             **/
-            buttonGroups.className = "btn-group btn-group-justified";
-
-            buttonGroupUp.className = "pmdynaform-file-buttonup btn-group";
-            buttonGroupCancel.className = "pmdynaform-file-buttoncancel btn-group";
-            buttonGroupCancel.style.display = "none";
-            buttonGroupRemove.className = "pmdynaform-file-buttonremove btn-group";
-            buttonGroupView.className = "pmdynaform-file-buttonview btn-group";
-
-            buttonUp.className = "glyphicon glyphicon-upload btn btn-success btn-sm";
-            buttonCancel.className = "glyphicon glyphicon-remove btn btn-danger btn-sm";
-            buttonRemove.className = "glyphicon glyphicon-trash btn btn-danger btn-sm";
-            buttonView.className = "glyphicon glyphicon-zoom-in btn btn-primary btn-sm";
-
-            $(buttonUp).data("index", index);
-            $(buttonCancel).data("index", index);
-            $(buttonRemove).data("index", index);
-            $(buttonView).data("index", index);
-
-            $(buttonUp).on("click", function (event) {
-                that.onToggleButtonUpload(event, "up");
-                that.onUploadItem(event);
-                event.stopPropagation();
-                event.preventDefault();
-            });
-            $(buttonCancel).on("click", function (event) {
-                that.onToggleButtonUpload(event, "cancel");
-                that.onCancelUploadItem(event);
-                event.stopPropagation();
-                event.preventDefault();
-            });
-            $(buttonRemove).on("click", function (event) {
-                that.removeItem(event);
-                event.stopPropagation();
-                event.preventDefault();
-            });
-            $(buttonView).on("click", function (event) {
-                that.onPreviewItem(event);
-                event.stopPropagation();
-                event.preventDefault();
-            });
-
-            buttonGroupUp.appendChild(buttonUp);
-            buttonGroupCancel.appendChild(buttonCancel);
-            buttonGroupRemove.appendChild(buttonRemove);
-            buttonGroupView.appendChild(buttonView);
-
-            buttonGroups.appendChild(buttonGroupUp);
-            buttonGroups.appendChild(buttonGroupCancel);
-            buttonGroups.appendChild(buttonGroupView);
-            buttonGroups.appendChild(buttonGroupRemove);
-
-            return buttonGroups;
-        },
-        createBox: function (index, e, file) {
-            var buttonGroups,
-                rand = Math.floor((Math.random() * 100000) + 3),
-                src = e.target.result,
-                template = document.createElement("div"),
-                resizeImage = document.createElement("div"),
-                preview = document.createElement("span"),
-                progress = document.createElement("div"),
-                imgPreview = document.createElement("img"),
-                spanOverlay = document.createElement("span"),
-                spanUpDone = document.createElement("span"),
-                typeClasses = {
-                    video: {
-                        Classes: "pmdynaform-file-boxpreview-video",
-                        icon: "glyphicon glyphicon-facetime-video"
-                    },
-                    audio: {
-                        Classes: "pmdynaform-file-boxpreview-audio",
-                        icon: "glyphicon glyphicon-music"
-                    },
-                    file: {
-                        Classes: "pmdynaform-file-boxpreview-file",
-                        icon: "glyphicon glyphicon-book"
-                    }
-                },
-                fileName = file.name.split(/\./)[1].toUpperCase();
-
-            template.id = rand;
-            template.className = "pmdynaform-file-containerimage";
-
-            resizeImage.className = "pmdynaform-file-resizeimage";
-            if (file.type.match(/image.*/)) {
-                imgPreview.src = src;
-                resizeImage.appendChild(imgPreview);
-            } else if (file.type.match(/audio.*/)) {
-                resizeImage.innerHTML = '<div class="' + typeClasses['audio'].Classes + ' thumbnail ' + typeClasses['audio'].icon + '"><div>' + fileName + '</div></div>';
-            } else if (file.type.match(/video.*/)) {
-                resizeImage.innerHTML = '<div class="' + typeClasses['video'].Classes + ' thumbnail ' + typeClasses['video'].icon + '"><div>' + fileName + '</div></div>';
-            } else {
-                resizeImage.innerHTML = '<div class="' + typeClasses['file'].Classes + ' thumbnail ' + typeClasses['file'].icon + '"><div>' + fileName + '</div></div>';
-            }
-            spanOverlay.className = "pmdynaform-file-overlay";
-            spanUpDone.className = "pmdynaform-file-updone";
-            spanOverlay.appendChild(spanUpDone);
-            resizeImage.appendChild(spanOverlay);
-
-            preview.id = rand;
-            preview.className = "pmdynaform-file-preview";
-            preview.appendChild(resizeImage);
-
-            progress.id = rand;
-            progress.className = "pmdynaform-file-progress";
-            progress.innerHTML = "<span></span>";
-
-            template.appendChild(preview);
-            buttonGroups = this.createButtonsHTML(index);
-            template.appendChild(buttonGroups);
-            template.appendChild(progress);
-            this.$el.find(".pmdynaform-file-droparea").append(template);
-
-            return this;
-
-        },
-        toggleButtonsAll: function () {
-            //Select the name="button-all" for show the buttons
-            return this;
-        },
         render: function () {
-            var that = this,
-                oprand,
-                fileContainer,
-                fileControl,
-                dataFiles,
+            var dataFiles,
                 nameField;
 
             if (PMDynaform.core.ProjectMobile) {
@@ -14551,20 +14843,7 @@ xCase.extendNamespace = function (path, newClass) {
                 if (this.model.get("hint")) {
                     this.enableTooltip();
                 }
-                this.renderFiles();
-                this.toggleButtonsAll();
-                oprand = {
-                    dragClass: "pmdynaform-file-active",
-                    dnd: this.model.get("dnd"),
-                    on: {
-                        load: function (e, file) {
-                            that.addNewItem(e, file);
-                        }
-                    }
-                };
-                fileContainer = this.$el.find(".pmdynaform-file-droparea-ext")[0];
                 this.$el.find(".pmdynaform-file-droparea-ext").append(this.boxPlus);
-                fileControl = this.$el.find("input")[0];
             } else {
                 this.$el.html(this.template(this.model.toJSON()));
                 dataFiles = this.project.mobileDataControls;
@@ -14572,7 +14851,6 @@ xCase.extendNamespace = function (path, newClass) {
                 if (dataFiles.hasOwnProperty(nameField)) {
                     this.renderingWeb(dataFiles[nameField]);
                 }
-
             }
             PMDynaform.view.Field.prototype.render.apply(this, arguments);
             return this;
@@ -14617,75 +14895,134 @@ xCase.extendNamespace = function (path, newClass) {
                 container.append(viewFiles);
             }
         },
-        renderFile: function () {
-            var model;
-            model = this.model;
-            switch (model.get("type")) {
+        setFilesRFC: function (arrayFiles) {
+            var type = this.model.get("type");
+            switch (type) {
                 case "imageMobile":
-                    this.renderImage();
+                    this.loadMixingSourceImages(arrayFiles);
                     break;
                 case "audioMobile":
-                    this.renderAudio();
-                    break;
                 case "videoMobile":
-                    this.renderVideo();
+                    this.loadMixingSourceMedia(arrayFiles);
                     break;
-                default:
-                    this.renderDefault();
             }
         },
-        renderImage: function () {
+        loadMixingSourceImages: function (arrayFiles) {
+            var max = arrayFiles.length ? arrayFiles.length : 0,
+                i,
+                response;
 
+            if (max) {
+                response = this.model.remoteProxyData(arrayFiles);
+            }
+            if (response && response.length) {
+                for (i = 0; i < response.length; i += 1) {
+                    this.updateFiles(response[i]);
+                }
+            }
         },
-        createBoxImage: function (file) {
-            var src,
-                newsrc,
-                rand = Math.floor((Math.random() * 100000) + 3);
-            //imgName = file.name,
-            // not used, Irand just in case if user wanrand to print it.
-            if (file.filePath) {
-                src = file.filePath;
-                newsrc = src;
+        loadMixingSourceMedia: function (arrayFiles) {
+            var itemMedia,
+                item;
+            for (var i = 0; i < arrayFiles.length; i++) {
+                item = arrayFiles[i];
+                if (typeof item === "string") {
+                    itemMedia = this.model.urlFileStreaming(item);
+                    this.createBoxFile(itemMedia);
+                    this.model.addItemFile(itemMedia);
+                }
+                if (item.filePath) {
+                    this.createBoxFile(item);
+                    this.model.addItemFile(item);
+                }
             }
-            if (file["base64"]) {
-                src = file["base64"];
-                newsrc = this.model.makeBase64Image(src);
+        },
+        /**
+         * Create box and update array of files
+         * @param item
+         * @returns {FileMobile}
+         */
+        updateFiles: function (item) {
+            if (_.isObject(item) && !_.isEmpty(item)) {
+                this.model.addItemFile(item);
+                this.createBoxFile(item);
             }
-            //src = file["thumbnails"];
-
-            var template = document.createElement("div");
-            var resizeImage = document.createElement("div");
-            var preview = document.createElement("span");
-            var progress = document.createElement("div");
-
-            template.id = rand;
-            template.className = "pmdynaform-file-containerimage";
-
-            resizeImage.className = "pmdynaform-file-resizeimage";
-            resizeImage.innerHTML = '<img class="pmdynaform-image-ext" src="' + newsrc + '"><span class="pmdynaform-file-overlay"><span class="pmdynaform-file-updone"></span></span>';
-            preview.id = rand;
-            preview.className = "pmdynaform-file-preview";
-            preview.appendChild(resizeImage);
-            progress.id = rand;
-            progress.className = "pmdynaform-file-progress";
-            progress.innerHTML = "<span></span>";
-            template.appendChild(preview);
-            template.setAttribute("data-toggle", "modal");
-            template.setAttribute("data-target", "#myModal");
-            this.viewsFiles.push({
-                "id": file.id,
-                "data": template
-            });
-            this.$el.find(".pmdynaform-file-droparea-ext").prepend(template);
             return this;
         },
-        renderAudio: function () {
+        /**
+         * [setFiles Function for set files images, video and audio from a interface to mobile]
+         * @param {[type]} arrayFiles [description]
+         */
+        setFiles: function (arrayFiles) {
+            var i;
+            for (i = 0; i < arrayFiles.length; i += 1) {
+                this.updateFiles(arrayFiles[i]);
+            }
+            this.validate();
+        },
+        setData: function (data) {
+            this.setFilesRFC(data["value"]);
+            return this;
+        },
+        /**
+         * Create Box of Mobile Controls
+         * @param file
+         */
+        createBoxFile: function (file) {
+            var type = this.model.get("type");
+            switch (type) {
+                case "imageMobile":
+                    this.createBoxImage(file);
+                    break;
+                case "audioMobile":
+                    this.createBoxAudio(file);
+                    break;
+                case "videoMobile":
+                    this.createBoxVideo(file);
+                    break;
+            }
+        },
+        createBoxImage: function (file) {
+            var newSrc,
+                rand = Math.floor((Math.random() * 100000) + 3),
+                template = document.createElement("div"),
+                resizeImage = document.createElement("div"),
+                preview = document.createElement("span"),
+                progress = document.createElement("div");
 
+            if (file["filePath"]) {
+                newSrc = file["filePath"];
+            }
+            if (file["base64"]) {
+                newSrc = this.model.makeBase64Image(file["base64"]);
+            }
+
+            if (newSrc) {
+                template.id = rand;
+                template.className = "pmdynaform-file-containerimage";
+
+                resizeImage.className = "pmdynaform-file-resizeimage";
+                resizeImage.innerHTML = '<img class="pmdynaform-image-ext" src="' + newSrc + '"><span class="pmdynaform-file-overlay"><span class="pmdynaform-file-updone"></span></span>';
+                preview.id = rand;
+                preview.className = "pmdynaform-file-preview";
+                preview.appendChild(resizeImage);
+                progress.id = rand;
+                progress.className = "pmdynaform-file-progress";
+                progress.innerHTML = "<span></span>";
+                template.appendChild(preview);
+                template.setAttribute("data-toggle", "modal");
+                template.setAttribute("data-target", "#myModal");
+                this.viewsFiles.push({
+                    "id": file.id,
+                    "data": template
+                });
+                this.$el.find(".pmdynaform-file-droparea-ext").prepend(template);
+            }
+            return this;
         },
         createBoxAudio: function (file) {
             var model,
                 tplContainerAudio,
-                tplContainer,
                 tplMediaAudio,
                 mediaElement;
             model = {
@@ -14710,26 +15047,16 @@ xCase.extendNamespace = function (path, newClass) {
             });
             return this;
         },
-        renderVideo: function () {
-
-        },
-        /**
-         * [createBoxVideo Create a html of a video]
-         * @param  {[type]} file [description]
-         * @return {[type]}      [description]
-         */
         createBoxVideo: function (file) {
             var model,
                 tplContainerVideo,
-                tplContainer,
                 tplMediaVideo,
                 mediaElement,
-                urlVideo;
-            // The url for streaming consume a endpoint of a project
-            model = {
-                src: file.filePath ? file.filePath : file,
-                name: file.name
-            };
+
+                model = {
+                    src: file.filePath ? file.filePath : file,
+                    name: file.name
+                };
             tplMediaVideo = this.templateMediaVideo(model);
             mediaElement = new PMDynaform.core.MediaElement({
                 el: $(tplMediaVideo),
@@ -14747,115 +15074,9 @@ xCase.extendNamespace = function (path, newClass) {
             });
             return this;
         },
-        renderDefault: function () {
-
-        },
-
-        setFilesRFC: function (arrayFiles) {
-            var array, model, item;
-            model = this.model;
-            switch (model.get("type")) {
-                case "imageMobile":
-                    this.loadMixingSourceImages(arrayFiles);
-                    break;
-                case "audioMobile":
-                    this.loadMixingSourceMedia(arrayFiles);
-                    break;
-                case "videoMobile":
-                    this.loadMixingSourceMedia(arrayFiles);
-                    break;
-                default:
-            }
-        },
-
-        loadMixingSourceImages: function (arrayFiles) {
-            var arrayRemoteData = [],
-                arrayFilePath = [],
-                array,
-                sw = false,
-                item;
-            for (var i = 0; i < arrayFiles.length; i++) {
-                item = arrayFiles[i];
-                if (item.filePath) {
-                    this.validateFiles(item);
-                    this.model.attributes.files.push(item);
-                } else {
-                    arrayRemoteData.push(item);
-                }
-            }
-
-            if (arrayRemoteData.length != 0) {
-                for (var index = 0; index < arrayRemoteData.length; index++) {
-                    var arrayI = [];
-                    arrayI.push(arrayRemoteData[index]);
-                    array = this.model.remoteProxyData(arrayI);
-                    if (array) {
-                        for (var i = 0; i < array.length; i++) {
-                            this.validateFiles(array[i]);
-                            this.model.attributes.files.push(array[i]);
-                        }
-                    }
-                }
-            }
-        },
-
-        loadMixingSourceMedia: function (arrayFiles) {
-            var arrayRemoteData = [],
-                arrayFilePath = [],
-                array,
-                itemMedia,
-                sw = false,
-                item;
-            for (var i = 0; i < arrayFiles.length; i++) {
-                item = arrayFiles[i];
-                if (typeof item == "string") {
-                    itemMedia = this.model.urlFileStreaming(item);
-                    this.validateFiles(itemMedia);
-                    this.model.attributes.files.push(itemMedia);
-                }
-                if (item.filePath) {
-                    this.validateFiles(item);
-                    this.model.attributes.files.push(item);
-                }
-            }
-        },
-        /**
-         * [setFiles Function for set files images, video and audio from a interface to mobile]
-         * @param {[type]} arrayFiles [description]
-         */
-        setFiles: function (arrayFiles) {
-            var array;
-            for (var i = 0; i < arrayFiles.length; i++) {
-                this.validateFiles(arrayFiles[i]);
-                this.model.attributes.files.push(arrayFiles[i]);
-            }
-            this.validate();
-        },
-        validateFiles: function (file) {
-            this.createBoxFile(file);
-            return this;
-        },
-        createBoxFile: function (file) {
-            var model,
-                response;
-            model = this.model;
-            switch (model.get("type")) {
-                case "imageMobile":
-                    this.createBoxImage(file);
-                    break;
-                case "audioMobile":
-                    this.createBoxAudio(file);
-                    break;
-                case "videoMobile":
-                    this.createBoxVideo(file);
-                    break;
-                default:
-            }
-        },
         createBoxPlus: function () {
-            var model;
-            model = this.model;
-            switch (model.get("type")) {
+            var type = this.model.get("type");
+            switch (type) {
                 case "imageMobile":
                     this.boxPlus = $(this.templatePlusImage());
                     break;
@@ -14870,7 +15091,7 @@ xCase.extendNamespace = function (path, newClass) {
             return this;
         },
         changeID: function (arrayNew) {
-            var array = this.model.attributes.files,
+            var array = this.model.getFiles(),
                 itemNew,
                 itemOld;
             for (var i = 0; i < arrayNew.length; i++) {
@@ -14889,10 +15110,6 @@ xCase.extendNamespace = function (path, newClass) {
                     }
                 }
             }
-        },
-        setData: function (data) {
-            this.setFilesRFC(data["value"]);
-            return this;
         },
         afterRender: function () {
             var data = this.model.get("data"),
@@ -14928,6 +15145,17 @@ xCase.extendNamespace = function (path, newClass) {
                 }
                 this.hideRequire();
             }
+            return this;
+        },
+
+        /**
+         * Exchange the file ids.
+         * @param oldId
+         * @param newId
+         * @returns {FileMobile}
+         */
+        exchangeMobileDataId: function (oldId, newId){
+            this.model.exchangeMobileDataId(oldId, newId);
             return this;
         }
     });
@@ -14966,40 +15194,54 @@ xCase.extendNamespace = function (path, newClass) {
         makeBase64Image: function (base64) {
             return "data:image/png;base64," + base64;
         },
+        /**
+         * Create Box Geo Map
+         * @param data
+         * @returns {GeoMobile}
+         */
         createBox: function (data) {
             var rand,
                 newsrc,
                 template,
                 resizeImage,
-                preview,
-                progress;
+                preview;
 
             if (data.base64) {
+                this.clearBox();
                 newsrc = this.makeBase64Image(data.base64);
+                rand = Math.floor((Math.random() * 100000) + 3);
+                template = document.createElement("div");
+                resizeImage = document.createElement("div");
+                preview = document.createElement("span");
+
+                template.id = rand;
+                template.className = "pmdynaform-file-containergeo";
+                resizeImage.className = "pmdynaform-file-resizeimage";
+                resizeImage.innerHTML = '<img src="' + newsrc + '">';
+
+                preview.id = rand;
+                preview.className = "pmdynaform-file-preview";
+                preview.appendChild(resizeImage);
+                template.appendChild(preview);
+                this.$el.find(".pmdynaform-ext-geo").prepend(template);
+                this.hideButton();
             }
-            if (data.filePath) {
-                newsrc = data.filePath;
-            }
-
-            rand = Math.floor((Math.random() * 100000) + 3);
-            template = document.createElement("div"),
-                resizeImage = document.createElement("div"),
-                preview = document.createElement("span"),
-                progress = document.createElement("div");
-
-            template.id = rand;
-            template.className = "pmdynaform-file-containergeo";
-
-            resizeImage.className = "pmdynaform-file-resizeimage";
-            resizeImage.innerHTML = '<img src="' + newsrc + '">';
-            preview.id = rand;
-            preview.className = "pmdynaform-file-preview";
-            preview.appendChild(resizeImage);
-            template.appendChild(preview);
-            this.$el.find(".pmdynaform-ext-geo").prepend(template);
-            this.hideButton();
             return this;
         },
+        /**
+         * Clear Box Geo Map
+         * @returns {GeoMobile}
+         */
+        clearBox: function () {
+            var htmlBox = this.$el.find(".pmdynaform-ext-geo");
+            if (htmlBox.length) {
+                htmlBox.empty();
+            }
+            return this;
+        },
+        /**
+         * Hide Button Map
+         */
         hideButton: function () {
             var button;
             button = this.$el.find("button");
@@ -15020,9 +15262,6 @@ xCase.extendNamespace = function (path, newClass) {
                 altitude;
             if (PMDynaform.core.ProjectMobile) {
                 this.$el.html(this.template(this.model.toJSON()));
-                if (this.model.get("hint")) {
-                    this.enableTooltip();
-                }
                 fileContainer = this.$el.find(".pmdynaform-file-droparea-ext")[0];
                 fileControl = this.$el.find("input")[0];
             } else {
@@ -15073,46 +15312,36 @@ xCase.extendNamespace = function (path, newClass) {
                 script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&callback=pmd.load';
                 document.body.appendChild(script);
             }
+            if (this.model.get("hint")) {
+                this.enableTooltip();
+            }
             PMDynaform.view.Field.prototype.render.apply(this, arguments);
             return this;
         },
+        /**
+         * Set Location
+         * @param location
+         */
         setLocation: function (location) {
-            var model, obj = {},
-                response;
-            model = this.model;
-            model.set("geoData", location);
-            if (this.model.get("interactive") && location != null) {
-                if (location.id == "" || location.id == null) {
-                    obj = {
-                        location: {
-                            altitude: location.altitude,
-                            latitude: location.latitude,
-                            longitude: location.longitude
-                        }
-                    };
-                    response = model.remoteGenerateLocation(obj);
-                    if (response) {
-                        if (response.success == true) {
-                            obj["imageId"] = response.imageId;
-                            response = model.remoteProxyData(response);
-                            obj["data"] = response.data;
-                            this.createBox(response);
-                            model.set("geoData", obj);
-                        }
-                    }
-                    else {
-                        this.createImageOffLine(location);
-                    }
-                } else {
-                    if (location.base64) {
-                        this.createBox(location);
-                    } else {
-                        response = model.remoteProxyData(location.id);
-                        response.altitude = location.altitude;
-                        response.latitude = location.latitude;
-                        response.longitude = location.longitude;
-                        model.set("geoData", response);
-                        this.createBox(response);
+            var newLocation = {},
+                imageResponse,
+                render;
+            if (location && typeof location === "object" && !_.isEmpty(location)) {
+                render = location.hasOwnProperty("render") && !location.render? location.render : true;
+                newLocation = {
+                    idField: location.idField,
+                    id: location.id,
+                    base64: null,
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                    altitude: location.altitude
+                };
+                this.setGeoData(newLocation);
+                if (render) {
+                    imageResponse = this.model.remoteProxyData(newLocation.id);
+                    if (imageResponse) {
+                        newLocation.base64 = imageResponse.base64;
+                        this.createBox(newLocation);
                     }
                 }
             }
@@ -15139,11 +15368,28 @@ xCase.extendNamespace = function (path, newClass) {
                 this.setLocation(data.value);
             }
             return this;
+        },
+        /**
+         * Get Geo Data from View
+         * @returns {*}
+         */
+        getGeoData: function () {
+            return this.model.getGeoData();
+        },
+        /**
+         * Set Geo Data Model From View
+         * @param data
+         * @returns {GeoMobile}
+         */
+        setGeoData: function (data) {
+            this.model.setGeoData(data);
+            return this;
         }
     });
 
     PMDynaform.extendNamespace("PMDynaform.view.GeoMobile", GeoMobile);
 }());
+
 (function () {
     var MediaElement = function (settings) {
         this.el = settings.el;
@@ -15684,6 +15930,9 @@ xCase.extendNamespace = function (path, newClass) {
                 }
                 this.$el.find("button").detach();
             }
+            if (this.model.get("hint")) {
+                this.enableTooltip();
+            }
             PMDynaform.view.Field.prototype.render.apply(this, arguments);
             return this;
         },
@@ -15733,6 +15982,7 @@ xCase.extendNamespace = function (path, newClass) {
     });
     PMDynaform.extendNamespace("PMDynaform.view.Qrcode_mobile", Qrcode_mobile);
 }());
+
 (function () {
     var Signature_mobile = PMDynaform.view.Field.extend({
         item: null,
@@ -15806,9 +16056,6 @@ xCase.extendNamespace = function (path, newClass) {
                 itemElement;
             if (PMDynaform.core.ProjectMobile) {
                 this.$el.html(this.template(this.model.toJSON()));
-                if (this.model.get("hint")) {
-                    this.enableTooltip();
-                }
                 fileContainer = this.$el.find(".pmdynaform-file-droparea-ext")[0];
                 fileControl = this.$el.find("input")[0];
             } else {
@@ -15824,6 +16071,9 @@ xCase.extendNamespace = function (path, newClass) {
                         fileContainer.append(itemElement);
                     }
                 }
+            }
+            if (this.model.get("hint")) {
+                this.enableTooltip();
             }
             PMDynaform.view.Field.prototype.render.apply(this, arguments);
             return this;
@@ -15891,6 +16141,7 @@ xCase.extendNamespace = function (path, newClass) {
     });
     PMDynaform.extendNamespace("PMDynaform.view.Signature_mobile", Signature_mobile);
 }());
+
 (function () {
 
     var Validator = Backbone.Model.extend({
@@ -15903,6 +16154,7 @@ xCase.extendNamespace = function (path, newClass) {
             valid: true,
             maxLength: null,
             required: false,
+            requiredFieldErrorMessage: "",
             domain: false,
             options: [],
             factory: {},
@@ -15971,7 +16223,8 @@ xCase.extendNamespace = function (path, newClass) {
                 if (PMDynaform.core.Validators[validator].fn(value) === false) {
                     this.set("valid", false);
                     this.set("message", {
-                        validator: PMDynaform.core.Validators[validator].message
+                        validator: this.get("requiredFieldErrorMessage") ||
+                            PMDynaform.core.Validators[validator].message
                     });
                     return this;
                 }
@@ -16021,7 +16274,8 @@ xCase.extendNamespace = function (path, newClass) {
                 if (PMDynaform.core.Validators["requiredGrid"].fn(this.get("rowsNumber")) === false) {
                     this.set("valid", false);
                     this.set("message", {
-                        validator: PMDynaform.core.Validators["requiredGrid"].message
+                        validator: this.get("requiredFieldErrorMessage") ||
+                            PMDynaform.core.Validators["requiredGrid"].message
                     });
                 } else {
                     this.set('valid', true);
@@ -16321,10 +16575,33 @@ xCase.extendNamespace = function (path, newClass) {
                 }
             }
             return item;
+        },
+        /**
+         * Validates if a subForm exists into of the mainForm
+         * @param id
+         * @returns {boolean}
+         */
+        isSubForm: function (id) {
+            var i,
+                view,
+                response = false,
+                subForms = this.get("subForms"),
+                size = subForms.getSize();
+            if (id) {
+                for (i = 0; i < size; i += 1) {
+                    view = subForms.get(i);
+                    if (view.model.get("id") === id) {
+                        response = true;
+                        break;
+                    }
+                }
+            }
+            return response;
         }
     });
     PMDynaform.extendNamespace("PMDynaform.model.FormPanel", FormPanel);
 }());
+
 (function () {
     var FieldModel = Backbone.Model.extend({
         defaults: {
@@ -16400,9 +16677,7 @@ xCase.extendNamespace = function (path, newClass) {
         },
         defineModelEvents: function () {
             this.on("change:text", this.onChangeText, this);
-            this.on("change:value", this.onChangeValue, this);
             this.on("change:options", this.onChangeOptions, this);
-            this.on("change:label", this.onChangeLabel, this);
             this.on("change:data", this.onChangeData, this);
             return this;
         },
@@ -16938,7 +17213,7 @@ xCase.extendNamespace = function (path, newClass) {
         mergeRemoteOptions: function (remoteOptions) {
             var k,
                 remoteOpt = [],
-                localOpt,
+                localOpt = this.get("localOptions") || [],
                 options;
             for (k = 0; k < remoteOptions.length; k += 1) {
                 remoteOpt.push({
@@ -16946,7 +17221,6 @@ xCase.extendNamespace = function (path, newClass) {
                     label: remoteOptions[k].text || remoteOptions[k].label || ""
                 });
             }
-            localOpt = this.get("localOptions");
             this.set("optionsSql", remoteOpt);
             options = localOpt.concat(remoteOpt);
             this.set("options", options);
@@ -17039,6 +17313,7 @@ xCase.extendNamespace = function (path, newClass) {
     });
     PMDynaform.extendNamespace("PMDynaform.model.Field", FieldModel);
 }());
+
 (function () {
     var GridModel = PMDynaform.model.Field.extend({
         defaults: {
@@ -17093,7 +17368,8 @@ xCase.extendNamespace = function (path, newClass) {
             this.set("validator", new PMDynaform.model.Validator({
                 type: this.get("type"),
                 required: this.get("required"),
-                rowsNumber: this.get("rows")
+                rowsNumber: this.get("rows"),
+                requiredFieldErrorMessage: this.get("requiredFieldErrorMessage")
             }));
             return this;
         },
@@ -17415,23 +17691,23 @@ xCase.extendNamespace = function (path, newClass) {
 
     PMDynaform.extendNamespace("PMDynaform.model.GridPanel", GridModel);
 }());
+
 (function () {
     var ButtonModel = PMDynaform.model.Field.extend({
         defaults: {
-            colSpan: 12,
-            disabled: false,
-            namespace: "pmdynaform",
             id: PMDynaform.core.Utils.generateID(),
             name: PMDynaform.core.Utils.generateName("button"),
             label: "untitled label",
-            type: "button"
+            type: "button",
+            namespace: "pmdynaform",
+            disabled: false,
+            colSpan: 12
         },
         getValue: function () {
             var label = this.get("label");
             return label ? label : "";
         }
     });
-
     PMDynaform.extendNamespace("PMDynaform.model.Button", ButtonModel);
 }());
 (function () {
@@ -17494,7 +17770,8 @@ xCase.extendNamespace = function (path, newClass) {
         },
         initValidators: function () {
             this.set("validator", new PMDynaform.model.Validator({
-                domain: true
+                domain: true,
+                requiredFieldErrorMessage: this.get("requiredFieldErrorMessage")
             }));
             return this;
         },
@@ -17641,6 +17918,26 @@ xCase.extendNamespace = function (path, newClass) {
             return data ? data["value"] : null;
         },
         /**
+         * Set value
+         * @param value
+         * @returns {DropdownModel}
+         */
+        setValue: function (value) {
+            var dataOption,
+                criteria = "value";
+            if (value !== undefined && value !== null) {
+                dataOption = this.findOption(value, criteria);
+                if (dataOption && dataOption.hasOwnProperty("value") && dataOption.hasOwnProperty("label")) {
+                    this.set("value", value);
+                    this.set("data", {
+                        value: dataOption.value || "",
+                        label: dataOption.label || ""
+                    });
+                }
+            }
+            return this;
+        },
+        /**
          * afterExecuteQuery: After executing the dependent field service,
          * it retrieves a data array, here it handles the new data
          * @param response {array}: response data set
@@ -17656,10 +17953,12 @@ xCase.extendNamespace = function (path, newClass) {
          */
         setFirstOptionInData: function() {
             var options = this.get("options"),
-                defaultData = {"value": '', "label": ''};
-            this.set({"data": options[0] || defaultData}, {silent: true});
-            this.set({'value':  options[0] ? options[0].value: ''}, {silent: true});
-            
+                defaultData = {"value": '', "label": ''},
+                index = 0;
+            if (options.length) {
+                this.set('value', (options[index] && options[index].value) || '');
+                this.set("data", options[index] || defaultData);
+            }
             if (this.get('view')) {
                 this.get('view').onChangeData();
                 this.get('view').checkBinding();
@@ -17722,6 +18021,7 @@ xCase.extendNamespace = function (path, newClass) {
     PMDynaform.extendNamespace("PMDynaform.model.Dropdown", DropdownModel);
 
 }());
+
 (function () {
     var RadioboxModel = PMDynaform.model.Field.extend({
         defaults: {
@@ -17767,7 +18067,8 @@ xCase.extendNamespace = function (path, newClass) {
             this.set("label", this.get("label"));
             this.set("dataForDependent", {});
             this.set("validator", new PMDynaform.model.Validator({
-                domain: true
+                domain: true,
+                requiredFieldErrorMessage: this.get("requiredFieldErrorMessage")
             }));
             this.verifyControl();
             this.setLocalOptions();
@@ -17933,22 +18234,22 @@ xCase.extendNamespace = function (path, newClass) {
     });
     PMDynaform.extendNamespace("PMDynaform.model.Radio", RadioboxModel);
 }());
+
 (function () {
     var SubmitModel = PMDynaform.model.Field.extend({
         defaults: {
-            type: "submit",
-            namespace: "pmdynaform",
-            placeholder: "untitled",
-            label: "untitled label",
             id: PMDynaform.core.Utils.generateID(),
             name: PMDynaform.core.Utils.generateName("submit"),
+            label: "untitled label",
+            type: "submit",
+            namespace: "pmdynaform",
             disabled: false,
             colSpan: 12
         },
         getValue: function () {
             var label = this.get("label");
             return label ? label : "";
-        },
+        }
     });
     PMDynaform.extendNamespace("PMDynaform.model.Submit", SubmitModel);
 }()); 
@@ -18015,6 +18316,7 @@ xCase.extendNamespace = function (path, newClass) {
                 "type": this.get("type"),
                 "required": this.get("required"),
                 "maxLength": this.get("maxLength"),
+                "requiredFieldErrorMessage": this.get("requiredFieldErrorMessage"),
                 "dataType": this.get("dataType") || "string",
                 "regExp": {
                     validate: this.get("validate"),
@@ -18083,6 +18385,21 @@ xCase.extendNamespace = function (path, newClass) {
             return data ? data["value"] : null;
         },
         /**
+         * Set value
+         * @param value
+         */
+        setValue: function (value) {
+            if (value !== undefined) {
+                this.set("value", value);
+                this.set("text", value);
+                this.set("data", {
+                    value: value,
+                    label: value
+                });
+            }
+            return this;
+        },
+        /**
          * afterExecuteQuery: After executing the dependent field service,
          * it retrieves a data array, here it handles the new data
          * @param response {array}: response data set
@@ -18108,6 +18425,7 @@ xCase.extendNamespace = function (path, newClass) {
     });
     PMDynaform.extendNamespace("PMDynaform.model.TextArea", TextAreaModel);
 }());
+
 (function () {
 
     var TextModel = PMDynaform.model.Field.extend({
@@ -18155,7 +18473,6 @@ xCase.extendNamespace = function (path, newClass) {
         defineModelEvents: function () {
             this.on("change:text", this.onChange, this);
             this.on("change:value", this.onChange, this);
-            this.on("change:label", this.onChangeLabel, this);
             this.on("change:data", this.onChangeData, this);
             return this;
         },
@@ -18169,6 +18486,7 @@ xCase.extendNamespace = function (path, newClass) {
             this.set("validator", new PMDynaform.model.Validator({
                 "type": this.get("type"),
                 "required": this.get("required"),
+                "requiredFieldErrorMessage": this.get("requiredFieldErrorMessage"),
                 "maxLength": this.get("maxLength"),
                 "dataType": this.get("dataType") || "string",
                 "regExp": {
@@ -18198,7 +18516,7 @@ xCase.extendNamespace = function (path, newClass) {
                         label: data["value"]
                     };
                 }
-                this.set("data", data)
+                this.set("data", data);
                 this.set("value", data["value"]);
                 this.set("defaultValue", data["value"]);
                 this.set("keyLabel", data["value"]);
@@ -18303,8 +18621,8 @@ xCase.extendNamespace = function (path, newClass) {
             return this;
         },
         setValue: function (value) {
-            this.attributes.value = value;
-            this.attributes.text = value;
+            this.set({"text": value}, {silent: true});
+            this.set({"value": value}, {silent: true});
             this.set("data", {
                 value: value,
                 label: value
@@ -18360,6 +18678,7 @@ xCase.extendNamespace = function (path, newClass) {
     });
     PMDynaform.extendNamespace("PMDynaform.model.Text", TextModel);
 }());
+
 (function () {
     var File = PMDynaform.model.Field.extend({
         defaults: {
@@ -18413,7 +18732,8 @@ xCase.extendNamespace = function (path, newClass) {
             this.set("proxy", []);
             this.set("validator", new PMDynaform.model.Validator({
                 "type": "file",
-                "required": this.get("required")
+                "required": this.get("required"),
+                "requiredFieldErrorMessage": this.get("requiredFieldErrorMessage")
             }));
             this.formatData(properties.data);
             this.setSizeAndUnity(properties.size, properties.sizeUnity);
@@ -18495,25 +18815,32 @@ xCase.extendNamespace = function (path, newClass) {
          * @returns {File}
          */
         setSizeAndUnity: function (size, unity) {
-            var defaultSize = 9999,
-                defaultUnity = "MB";
-            if (size && unity) {
-                defaultSize = size;
-                defaultUnity = unity;
-            }
+            var defaultSize = parseInt(size) || 999999,
+                defaultUnity = parseInt(size) ? unity : "MB";
             this.set("size", defaultSize);
             this.set("sizeUnity", defaultUnity);
             return this;
         },
         /**
-         * Get array of labels from file control
+         * Get name file (text).
+         * @returns {Array}
+         */
+        getText: function () {
+            var data = this.get("data"),
+                label = [];
+            if (_.isArray(data.label) && data.label.length) {
+                label = data.label;
+            } else if (this.getCurrentNameFile()) {
+                label = [this.getCurrentNameFile()];
+            }
+            return label;
+        },
+        /**
+         * Get Doc UID (value).
          * @returns {Array}
          */
         getValue: function () {
-            var data = this.get("data"),
-                label = [];
-            label = data && data["label"] ? data["label"] : label;
-            return label;
+            return this.getAppDocUID() || [];
         },
         /**
          * Add Label File To stackLabels
@@ -18584,6 +18911,7 @@ xCase.extendNamespace = function (path, newClass) {
 
     PMDynaform.extendNamespace("PMDynaform.model.File", File);
 }());
+
 (function () {
     var CheckGroupModel = PMDynaform.model.Field.extend({
         defaults: {
@@ -18622,7 +18950,8 @@ xCase.extendNamespace = function (path, newClass) {
             var data;
             this.set("validator", new PMDynaform.model.Validator({
                 type: this.get("type"),
-                required: this.get("required")
+                required: this.get("required"),
+                requiredFieldErrorMessage: this.get("requiredFieldErrorMessage")
             }));
             this.set("dataForDependent",{});
             if (this.get("optionsSql") || this.get("options")) {
@@ -18887,6 +19216,7 @@ xCase.extendNamespace = function (path, newClass) {
     });
     PMDynaform.extendNamespace("PMDynaform.model.CheckGroup", CheckGroupModel);
 }());
+
 (function () {
     var CheckBoxModel = PMDynaform.model.Field.extend({
         defaults: {
@@ -18930,10 +19260,12 @@ xCase.extendNamespace = function (path, newClass) {
          */
         initialize: function (attrs) {
             var data;
+            this.on("change:data", this.updateValue, this);
             this.on("change:value", this.updateItemSelected, this);
             this.set("validator", new PMDynaform.model.Validator({
                 type: this.get("type"),
-                required: this.get("required")
+                required: this.get("required"),
+                requiredFieldErrorMessage: this.get("requiredFieldErrorMessage")
             }));
             if (_.isArray(this.get("options")) && !this.get("options").length) {
                 this.attributes.options = [
@@ -18950,7 +19282,7 @@ xCase.extendNamespace = function (path, newClass) {
             }
             if (this.get("data") || this.get("value") || this.get("defaultValue")) {
                 data = this.initData(this.get("defaultValue"), this.get("value"), this.get("data"), this.get("variable"));
-                this.set("data", data);
+                this.set({data: data}, {silent: true});
                 this.attributes.value = this.get("data")["value"];
             } else {
                 this.attributes.data["value"] = "";
@@ -19036,24 +19368,77 @@ xCase.extendNamespace = function (path, newClass) {
         isValid: function () {
             return this.get("valid");
         },
+        /**
+         * Update data with the current value
+         * @returns {CheckBoxModel}
+         */
         updateItemSelected: function () {
+            var currValue = this.get("value"),
+                currData = this.get("data");
             if (!this.attributes.disabled) {
                 this.get("validator").set({
-                    valueDomain: this.get("value"),
+                    valueDomain: currValue,
                     options: this.get("options")
-
                 });
                 this.get("validator").set("value", this.get("selected").length);
                 this.get("validator").verifyValue();
             }
-            if (this.attributes.data) {
-                this.attributes.data["value"] = this.get("value");
+            if (currValue && currData) {
+                this.setData(currValue);
             }
             return this;
         },
+        /**
+         * Update value with the current data
+         * @returns {CheckBoxModel}
+         */
+        updateValue: function () {
+            var currentData = this.get("data");
+            if (currentData && currentData.value) {
+                this.set({value: currentData.value}, {silent: true});
+            }
+            return this;
+        },
+        /**
+         * Get Value from data
+         * @returns {null}
+         */
         getValue: function () {
             var data = this.get("data");
             return data ? data["value"] : null;
+        },
+        /**
+         * Set Value
+         * @param value
+         * @returns {CheckBoxModel}
+         */
+        setValue: function (value) {
+            var valuesForTrue = [1, true, "1", "true"],
+                valuesForFalse = [0, false, "0", "false"];
+            value = (_.isArray(value) && value.length > 0) ? value[0] : value;
+            if (value !== undefined) {
+                if (valuesForTrue.indexOf(value) > -1) {
+                    this.set("value", "1");
+                } else if (valuesForFalse.indexOf(value) > -1) {
+                    this.set("value", "0");
+                }
+            }
+            return this;
+        },
+        /**
+         * Set Data
+         * @param value
+         * @returns {CheckBoxModel}
+         */
+        setData: function (value) {
+            var data = this.findOption(value, "value");
+            if (data) {
+                this.set('data', {
+                    value: data.value || '',
+                    label: data.label || ''
+                });
+            }
+            return this;
         },
         /**
          * setAppData: Sets the corresponding data that is obtained from the 
@@ -19074,6 +19459,7 @@ xCase.extendNamespace = function (path, newClass) {
     });
     PMDynaform.extendNamespace("PMDynaform.model.CheckBox", CheckBoxModel);
 }());
+
 (function () {
     var DatetimeModel = PMDynaform.model.Field.extend({
         defaults: {
@@ -19124,7 +19510,9 @@ xCase.extendNamespace = function (path, newClass) {
             text: "",
             variable: "",
             type: "datetime",
-            label: "untitled label"
+            label: "untitled label",
+            datetimeIsoFormat: "YYYY-MM-DD HH:mm:ss",
+            dateIsoFormat: "YYYY-MM-DD"
         },
         getData: function () {
             if (this.get("group") == "grid") {
@@ -19267,7 +19655,8 @@ xCase.extendNamespace = function (path, newClass) {
             this.set("validator", new PMDynaform.model.Validator({
                 required: this.get("required"),
                 type: this.get("type"),
-                dataType: this.get("dataType")
+                dataType: this.get("dataType"),
+                requiredFieldErrorMessage: this.get("requiredFieldErrorMessage")
             }));
 
             if (this.get("variable").trim().length === 0) {
@@ -19364,6 +19753,22 @@ xCase.extendNamespace = function (path, newClass) {
             return data ? data["value"] : null;
         },
         /**
+         * Set value
+         * @param value
+         * @returns {DatetimeModel}
+         */
+        setValue: function (value) {
+            if (value !== undefined && value !== null) {
+                this.set("value", value);
+                this.set("text", value);
+                this.set("data",{
+                    value: value,
+                    label: value
+                });
+            }
+            return this;
+        },
+        /**
          * setAppData: Sets the corresponding data that is obtained from the
          * service to the component
          * @param data {string} valid data for this component
@@ -19383,6 +19788,7 @@ xCase.extendNamespace = function (path, newClass) {
 
     PMDynaform.extendNamespace("PMDynaform.model.Datetime", DatetimeModel);
 }());
+
 (function () {
 
     var SuggestModel = PMDynaform.model.Field.extend({
@@ -19437,7 +19843,9 @@ xCase.extendNamespace = function (path, newClass) {
             this.set("label", this.get("label"));
             this.set("dataForDependent",{});
             this.set("defaultValue", this.get("defaultValue"));
-            this.set("validator", new PMDynaform.model.Validator());
+            this.set("validator", new PMDynaform.model.Validator({
+                requiredFieldErrorMessage: this.get("requiredFieldErrorMessage")
+            }));
             this.initControl();
             this.setLocalOptions();
             this.setRemoteOptions();
@@ -19544,6 +19952,21 @@ xCase.extendNamespace = function (path, newClass) {
             return data ? data["value"] : null;
         },
         /**
+         * Set Value
+         * @param value
+         * @returns {SuggestModel}
+         */
+        setValue: function (value) {
+            if (value !== undefined) {
+                this.set("value", value);
+                this.set("data", {
+                    value: value,
+                    label: value
+                });
+            }
+            return this;
+        },
+        /**
          * setAppData: Sets the corresponding data that is obtained from the 
          * service to the component
          * @param data {object} valid data for this component
@@ -19559,6 +19982,7 @@ xCase.extendNamespace = function (path, newClass) {
     });
     PMDynaform.extendNamespace("PMDynaform.model.Suggest", SuggestModel);
 }());
+
 (function () {
 
     var LinkModel = PMDynaform.model.Field.extend({
@@ -19782,20 +20206,201 @@ xCase.extendNamespace = function (path, newClass) {
                     }
                 }
                 this.set("data", data);
-                this.attributes.value = data["value"];
+                this.set({"value": data["value"]}, {silent: true});
             } else {
                 this.set("data", this.getDataWithDefaultValue());
             }
             this.set("fullOptions", this.obtainingLabelsToShow());
             return this;
         },
-        getValue: function () {
+        setValue: function (value) {
             var originalType = this.get("originalType"),
-                data,
-                value;
-            data = this.get("data");
-            value = data ? data.value : null;
-            return value;
+                newData;
+            switch (originalType) {
+                case "checkbox":
+                    newData = this.getCheckBoxData(value);
+                    break;
+                case "checkgroup":
+                    newData = this.getCheckGroupData(value);
+                    break;
+                case "dropdown":
+                    newData = this.getDropDownData(value);
+                    break;
+                case "datetime":
+                    newData = this.getDateTimeData(value);
+                    break;
+                case "radio":
+                    newData = this.getRadioData(value);
+                    break;
+                case "suggest":
+                    newData = this.getSuggestData(value);
+                    break;
+                default:
+                    newData = this.getTextBoxData(value);
+                    break;
+            }
+            this.setNewData(newData);
+            return this;
+        },
+        /**
+         * Gets checkbox's data
+         * @param value
+         * @returns {{}}
+         */
+        getCheckBoxData: function (value) {
+            var valuesForTrue = [1, true, "1", "true"],
+                valuesForFalse = [0, false, "0", "false"],
+                options = this.get("options"),
+                valueDefault = (_.isArray(value) && value.length) ? value[0] : value,
+                dataObject = {};
+            if (valuesForTrue.indexOf(valueDefault) > -1) {
+                dataObject = {
+                    value: options[0]["value"],
+                    label: options[0]["label"]
+                };
+            } else if (valuesForFalse.indexOf(valueDefault) > -1) {
+                dataObject = {
+                    value: options[1]["value"],
+                    label: options[1]["label"]
+                };
+            }
+            return dataObject;
+        },
+        /**
+         * Gets checkgroup's data
+         * @param values
+         * @returns {{value: Array, label}}
+         */
+        getCheckGroupData: function (values) {
+            var data,
+                dataObject = {
+                    value: [],
+                    label: "[]"
+                },
+                resultOptions;
+            if (_.isString(values)) {
+                values = values.split(",");
+            }
+            if (_.isArray(values)) {
+                resultOptions = this.findOptions(values, "value");
+                data = this.returnOptionsData(resultOptions);
+                dataObject = {
+                    value: data["value"],
+                    label: JSON.stringify(data["label"])
+                };
+            }
+            return dataObject;
+        },
+        /**
+         * Gets dropdown's data
+         * @param value
+         * @returns {*|boolean|Object|{value: string, label: string}}
+         */
+        getDropDownData: function (value) {
+            var defaultData = {
+                    value: "",
+                    label: ""
+                },
+                dataObject = this.findOption(value, "value");
+            if (!dataObject) {
+                dataObject = this.get("data");
+            }
+            return dataObject || defaultData;
+        },
+        /**
+         * Gets datetime's data
+         * @param value
+         * @returns {{value: string, label: string}}
+         */
+        getDateTimeData: function (value) {
+            var format = 'YYYY-MM-DD HH:mm:ss',
+                dataObject = {value: "", label: ""};
+            value = value.replace(/-/g, "/");
+            if (new Date(value).toString() !== "Invalid Date") {
+                dataObject = {
+                    value: moment(value).format(format),
+                    label: moment(value).format(this.get('format'))
+                }
+            }
+            return dataObject;
+        },
+        /**
+         * Gets radio's data
+         * @param value
+         * @returns {*|boolean|Object|{value: string, label: string}}
+         */
+        getRadioData: function (value) {
+            return this.findOption(value, "value") || {value: "", label: ""};
+        },
+        /**
+         * Gets suggest's data
+         * @param data
+         * @returns {{value: *, label: *}}
+         */
+        getSuggestData: function (data) {
+            var dataObject = {
+                value: data,
+                label: data
+            };
+            if (data && _.isObject(data) && data.hasOwnProperty("value") && data.hasOwnProperty("label")) {
+                dataObject = {
+                    value: data.value !== undefined ? data['value'] : "",
+                    label: data.label !== undefined ? data['label'] : ""
+                }
+            }
+            return dataObject;
+        },
+        /**
+         * Gets textbox and textarea's data
+         * @param value
+         * @returns {{value: *, label: *}}
+         */
+        getTextBoxData: function (value) {
+            return {value: value, label: value}
+        },
+        /**
+         * Sets new data getted
+         * @param dataObject
+         * @returns {Label}
+         */
+        setNewData: function (dataObject) {
+            this.set("data", dataObject);
+            this.set("value", dataObject.value);
+            this.setFullOptions(dataObject.label);
+            return this;
+        },
+        /**
+         * Gets full options
+         * @param items
+         * @returns {Label}
+         */
+        setFullOptions: function (items) {
+            var options,
+                element,
+                showLabels = [];
+            if (_.isArray(items)) {
+                this.set("fullOptions", items);
+            } else {
+                try {
+                    options = JSON.parse(items);
+                    if (_.isArray(options)) {
+                        this.set("fullOptions", options);
+                    } else {
+                        element = options;
+                        showLabels.push(element);
+                        this.set("fullOptions", showLabels);
+                    }
+                } catch (e) {
+                    element = items;
+                    showLabels.push(element);
+                    this.set("fullOptions", showLabels);
+                }
+            }
+            return this;
+        },
+        getValue: function () {
+            var data = this.get("data");
+            return (data && data.value) || "";
         },
         getDataWithDefaultValue: function () {
             var data,
@@ -20031,8 +20636,8 @@ xCase.extendNamespace = function (path, newClass) {
     });
     PMDynaform.extendNamespace("PMDynaform.model.Label", Label);
 }());
-(function () {
 
+(function () {
     var Title = PMDynaform.model.Field.extend({
         defaults: {
             type: "title",
@@ -20049,7 +20654,6 @@ xCase.extendNamespace = function (path, newClass) {
         },
         initialize: function () {
             this.set("label", this.get("label"));
-            this.on("change:label", this.onChangeLabel, this);
         },
         getValue: function () {
             var data = this.get("label");
@@ -20162,6 +20766,7 @@ xCase.extendNamespace = function (path, newClass) {
 
     PMDynaform.extendNamespace("PMDynaform.model.Hidden", HiddenModel);
 }());
+
 (function () {
     var ImageModel = PMDynaform.model.Field.extend({
         defaults: {
@@ -20330,7 +20935,6 @@ xCase.extendNamespace = function (path, newClass) {
         },
         initialize: function () {
             this.set("label", this.get("label"));
-            this.on("change:label", this.onChangeLabel, this);
         },
         getValue: function () {
             var data = this.get("label");
@@ -20424,24 +21028,34 @@ xCase.extendNamespace = function (path, newClass) {
          * @return {[type]} [description]
          */
         configurateAnimation: function () {
-            var offsetTarget, target;
+            var offsetTarget,
+                target,
+                animation,
+                duration = this.model.get('duration');
+
             target = this.model.get('appendTo');
             if (!(target instanceof jQuery)) {
                 target = jQuery(target);
             }
             offsetTarget = this.calculateContainerPosition(target);
             this.fixPosition(offsetTarget);
-            this.$el.finish().css({
+
+            animation = this.$el.finish().css({
                 'top': offsetTarget.top - 50
             }).fadeTo(1, 0).animate({
                 top: offsetTarget.top,
                 opacity: 1
-            }, this.model.get('startAnimation'), 'swing').delay(this.model.get('duration'))
-                .animate({
-                    top: this.model.get("absoluteTop") ? 0 : offsetTarget.top,
-                    opacity: 0,
-                    zIndex: '0'
-                });
+            }, this.model.get('startAnimation'), 'swing');
+
+            if (duration) {
+                animation.delay(duration)
+                    .animate({
+                        top: this.model.get("absoluteTop") ? 0 : offsetTarget.top,
+                        opacity: 0,
+                        zIndex: '0'
+                    });
+            }
+
             $(document.body).append(this.$el);
         },
         /**
@@ -20527,6 +21141,10 @@ xCase.extendNamespace = function (path, newClass) {
             validator: null,
             value: "",
             files: [],
+            data: {
+                value: [],
+                label: null
+            },
             enableValidate: true
         },
 
@@ -20539,31 +21157,13 @@ xCase.extendNamespace = function (path, newClass) {
             }
         },
         getAppData: function () {
-            var data = {},
-                respData = [];
-            for (var i = 0; i < this.attributes.files.length; i++) {
-                if (this.attributes.files[i].id) {
-                    respData.push(this.attributes.files[i].id);
-                } else {
-                    respData.push(this.attributes.files[i]);
-                }
-            }
-            data[this.get("name")] = respData;
-            return data;
-        },
-        getDataComplete: function () {
-            var respData = [];
-            for (var i = 0; i < this.attributes.files.length; i++) {
-                if (this.attributes.files[i]["base64"]) {
-                    respData.push(this.attributes.files[i].id);
-                } else {
-                    respData.push(this.attributes.files[i]);
-                }
-            }
-            return {
-                name: this.get("name"),
-                value: respData
-            };
+            var data,
+                idFiles = [],
+                respData = {};
+            data = this.get("data");
+            idFiles = _.isObject(data) && !_.isEmpty(data) && data.value ? data.value : idFiles;
+            respData[this.get("id")] = idFiles;
+            return respData;
         },
         /**
          * Validate a file mobile
@@ -20594,56 +21194,63 @@ xCase.extendNamespace = function (path, newClass) {
         makeBase64Image: function (base64) {
             return "data:image/png;base64," + base64;
         },
+        /**
+         * Request Array Image Data
+         * @param arrayImages
+         * @returns [{id:"123456789...", base64: "sdhfg%4hd/f24g.."}] || []
+         */
         remoteProxyData: function (arrayImages) {
-            var prj = this.get("project"),
-                respData,
+            var project = this.get("project"),
+                response,
+                requestManager = project && PMDynaform.core.ProjectMobile ? project.getRequestManager() : null,
+                respData = [],
                 data;
             data = this.formatArrayImagesToSend(arrayImages);
-            respData = this.formatArrayImages(prj.webServiceManager.imagesInfo(data));
+            response = requestManager ? requestManager.imagesInfo(data) : project.webServiceManager.imagesInfo(data);
+            respData = this.formatArrayImages(response);
             return respData;
         },
+        /**
+         * Format structure of the array of objects(files)
+         * @param arrayImages
+         * @returns {Array}
+         */
         formatArrayImagesToSend: function (arrayImages) {
-            var imageId,
-                dataToSend = [],
-                item = {};
-
-            for (var i = 0; i < arrayImages.length; i++) {
+            var i,
+                item,
+                imageId,
+                defaultSize = 100,
+                dataToSend = [];
+            for (i = 0; i < arrayImages.length; i += 1) {
                 imageId = arrayImages[i];
+                item = {};
+                item.fileId = imageId;
+                item.version =  1;
                 if (PMDynaform.core.ProjectMobile) {
-                    item = {
-                        fileId: imageId,
-                        width: "100",
-                        version: 1
-                    };
-                } else {
-                    item = {
-                        fileId: imageId,
-                        version: 1
-                    };
+                    item.width = defaultSize;
                 }
                 dataToSend.push(item);
             }
             return dataToSend;
         },
+        /**
+         * Format response array
+         * @param arrayImages
+         * @returns {*}
+         */
         formatArrayImages: function (arrayImages) {
-            var imageReceive,
-                dataToSend = [],
-                item = {};
-
-            for (var i = 0; i < arrayImages.length; i++) {
-                imageReceive = arrayImages[i];
-                item = {
-                    id: imageReceive.fileId,
-                    base64: imageReceive.fileContent
-                };
-                dataToSend.push(item);
+            var i;
+            for (i = 0; i < arrayImages.length; i += 1) {
+                arrayImages[i].id = arrayImages[i]['fileId'];
+                arrayImages[i].base64 = arrayImages[i]['fileContent'];
+                delete arrayImages[i].fileId;
+                delete arrayImages[i].fileContent;
             }
-            return dataToSend;
+            return arrayImages;
         },
         remoteProxyDataMedia: function (id) {
             var prj = this.get("project"),
-                url,
-                endpoint;
+                url;
             url = prj.webServiceManager.getFullURLStreaming(id);
             return url;
         },
@@ -20685,11 +21292,81 @@ xCase.extendNamespace = function (path, newClass) {
                 view.setFilesRFC(data);
             }
             return this;
+        },
+        /**
+         * Get Array Files Image Control
+         */
+        getFiles: function () {
+            return this.get("files");
+        },
+        /**
+         * Set Array Files
+         * @param arrayFiles
+         * @returns {FileMobile}
+         */
+        setFiles: function (arrayFiles) {
+            if (arrayFiles.length) {
+                this.set("files", arrayFiles);
+            }
+            return this;
+        },
+        /**
+         * Update data
+         * @param arrayFiles
+         * @returns {FileMobile}
+         */
+        updateData: function (arrayFiles) {
+            var i,
+                data,
+                idFiles = [],
+                max = _.isArray(arrayFiles) ? arrayFiles.length : 0;
+            for (i = 0; i < max; i += 1) {
+                idFiles.push(arrayFiles[i].id);
+            }
+            this.set("data", {
+                value: idFiles,
+                label: null
+            });
+            return this;
+        },
+        /**
+         * Add Item to Array Files
+         * @param item
+         */
+        addItemFile: function (item) {
+            var arrayFiles = this.getFiles();
+            if (item) {
+                arrayFiles.push(item);
+            }
+            this.setFiles(arrayFiles);
+            this.updateData(arrayFiles);
+            return this;
+        },
+        /**
+         * Change the file id with a "newID". Using the "oldId" to do that used only for offline purposes
+         * @param oldId
+         * @param newId
+         */
+        exchangeMobileDataId: function (oldId, newId){
+            var dataArray = this.get('data').value,
+                filesArray = this.get('files'),
+                index = dataArray.indexOf(oldId);
+            if (index >= 0) {
+                dataArray[index] = newId;
+                // force to update files id
+                if (_.isArray(filesArray) && filesArray[index]) {
+                   filesArray[index].id = newId;
+                }
+            }
+            this.setFiles(filesArray);
+            this.updateData(filesArray);
+            return this;
         }
     });
 
     PMDynaform.extendNamespace("PMDynaform.model.FileMobile", FileMobile);
 }());
+
 (function () {
     var GeoMobile = PMDynaform.model.Field.extend({
         defaults: {
@@ -20759,10 +21436,17 @@ xCase.extendNamespace = function (path, newClass) {
             return data;
         },
         validate: function (attrs) {
-
         },
+        /**
+         * Get Image in Base64
+         * @param id
+         * @returns {*}
+         */
         remoteProxyData: function (id) {
-            return this.get("project").webServiceManager.imageInfo(id, 600);
+            var project = this.get("project");
+            if (id) {
+                return project.webServiceManager.imageInfo(id, 600);
+            }
         },
         getImagesNetwork: function (location) {
             var prj = this.get("project"),
@@ -20786,40 +21470,6 @@ xCase.extendNamespace = function (path, newClass) {
                     width: "600",
                     version: 1
                 },
-                keys: prj.token,
-                successCallback: function (xhr, response) {
-                    respData = response;
-                }
-            });
-            this.set("proxy", restClient);
-            return respData;
-        },
-        remoteGenerateLocation: function (location) {
-            var prj = this.get("project"),
-                url,
-                restClient,
-                endpoint,
-                dataToSend = new FormData(),
-                respData = {};
-
-            dataToSend.append("tas_uid", location);
-            dataToSend.append("tas_uid", prj.keys.taskID);
-            dataToSend.append("app_doc_comment", "");
-            dataToSend.append("latitude", location.latitude);
-            dataToSend.append("longitude", location.longitude);
-
-            endpoint = this.getEndpointVariable({
-                type: "generateImageGeo",
-                keys: {
-                    "{caseID}": prj.keys.caseID
-                }
-            });
-            url = prj.getFullURL(endpoint);
-
-            restClient = new PMDynaform.core.Proxy({
-                url: url,
-                method: 'POST',
-                data: dataToSend,
                 keys: prj.token,
                 successCallback: function (xhr, response) {
                     respData = response;
@@ -20858,11 +21508,30 @@ xCase.extendNamespace = function (path, newClass) {
                 }
             }
             return this;
+        },
+        /**
+         * Get GeoData
+         * @returns {*}
+         */
+        getGeoData: function () {
+            return this.get("geoData");
+        },
+        /**
+         * Set Geo Data
+         * @param data
+         * @returns {GeoMobile}
+         */
+        setGeoData: function (data) {
+            if (data && typeof data === "object") {
+                this.set("geoData", data);
+            }
+            return this;
         }
     });
 
     PMDynaform.extendNamespace("PMDynaform.model.GeoMobile", GeoMobile);
 }());
+
 (function () {
     var Qrcode_mobile = PMDynaform.model.Field.extend({
         defaults: {
@@ -20947,6 +21616,7 @@ xCase.extendNamespace = function (path, newClass) {
     });
     PMDynaform.extendNamespace("PMDynaform.model.Qrcode_mobile", Qrcode_mobile);
 }());
+
 (function () {
     var Signature_mobile = PMDynaform.model.Field.extend({
         defaults: {
@@ -21069,6 +21739,7 @@ xCase.extendNamespace = function (path, newClass) {
 
     PMDynaform.extendNamespace("PMDynaform.model.Signature_mobile", Signature_mobile);
 }());
+
 (function () {
     var MultipleFileModel = PMDynaform.model.Field.extend({
         defaults: {
@@ -21276,9 +21947,7 @@ xCase.extendNamespace = function (path, newClass) {
             fileCollection: null,
             formData: null,
             fileArray: [],
-            messageValidations: {
-                required: "Required"
-            },
+            messageValidations: "This field is required",
             enableValidate: true
         },
         initialize: function (options) {
@@ -21294,7 +21963,9 @@ xCase.extendNamespace = function (path, newClass) {
             this.listenTo(this.get("fileCollection"), 'destroy', this.destroyModel);
             this.listenTo(this.get("fileCollection"), 'add', this.addModel);
             this.set("validator", new Backbone.Model({
-                message: this.get("messageValidations")
+                message: {
+                    required: this.get("requiredFieldErrorMessage") || this.get("messageValidations")
+                }
             }));
             return this;
         },
@@ -21387,6 +22058,7 @@ xCase.extendNamespace = function (path, newClass) {
         addFileModel: function (file) {
             var files = this.get("fileCollection"),
                 fileSize,
+                fileExtension,
                 fileModel;
 
             fileModel = files.add(new PMDynaform.file.FileModel({
@@ -21396,12 +22068,20 @@ xCase.extendNamespace = function (path, newClass) {
                 project: this.get("project"),
                 form: this.get("form"),
                 size: this.get("size"),
-                sizeUnity: this.get("sizeUnity")
+                sizeUnity: this.get("sizeUnity"),
+                extensions: this.get("extensions")
             }));
 
-            fileSize = fileModel.validateFileSize();
+            fileSize = fileModel._isFileSizeValid(file, this.get("size"), this.get("sizeUnity"));
+            fileExtension = fileModel._isFileExtensionValid(file, this.get("extensions"));
+
             if (!fileSize) {
                 fileModel.set("isValid", fileSize);
+                fileModel.set("errorSize", true);
+            }
+            if (!fileExtension) {
+                fileModel.set("isValid", fileExtension);
+                fileModel.set("errorType", true);
             }
             files.updateIndex();
             return fileModel;
@@ -21530,6 +22210,7 @@ xCase.extendNamespace = function (path, newClass) {
     });
     PMDynaform.extendNamespace("PMDynaform.file.MultipleFileModel", MultipleFileModel);
 }());
+
 (function () {
     var MultipleFileView = PMDynaform.view.Field.extend({
         template: _.template($("#tpl-multiplefile").html()),
@@ -21582,7 +22263,7 @@ xCase.extendNamespace = function (path, newClass) {
             return this;
         },
         openFileWizardWeb: function (event) {
-            this.$el.find("input:file").trigger("click");
+            this.$el.find(".pmdynaform-multiplefile-control input:file").trigger("click");
             return this;
         },
         /**
@@ -21659,7 +22340,6 @@ xCase.extendNamespace = function (path, newClass) {
          */
         setData: function (data) {
             var value,
-                box = this.$el.find(".pmdynaform-file-box"),
                 index;
             try {
                 value = _.isString(data.value) ? JSON.parse(data.value) : data.value;
@@ -21688,7 +22368,8 @@ xCase.extendNamespace = function (path, newClass) {
                 box = this.$el.find(".pmdynaform-multiplefile-box");
             model = this.model.addFileModelByJSON(options[index]);
             view = new PMDynaform.file.FileView({
-                model: model
+                model: model,
+                versionable: this.model.get("enableVersioning")
             });
             view.render();
             view.createHiddenForProperty();
@@ -21790,6 +22471,7 @@ xCase.extendNamespace = function (path, newClass) {
                 event.stopPropagation();
                 files = event.target.files;
                 that.processFiles(files);
+                event.target.value = "";
                 that.$el.find(that.hiddenFile).remove();
                 return false;
             };
@@ -21832,7 +22514,9 @@ xCase.extendNamespace = function (path, newClass) {
                     fileModel = this.model.addFileModel(files[index], "edit");
                     //create an instance of a file
                     fileView = new PMDynaform.file.FileView({
-                        model: fileModel
+                        versionable: this.model.get("enableVersioning"),
+                        model: fileModel,
+                        loading: true
                     });
                     //fire wizard flag
                     fileModel.set('fromWizard', true);
@@ -22017,6 +22701,7 @@ xCase.extendNamespace = function (path, newClass) {
 
     PMDynaform.extendNamespace("PMDynaform.file.MultipleFileView", MultipleFileView);
 }());
+
 "use strict";
 (function () {
     var FileModel = Backbone.Model.extend({
@@ -22031,176 +22716,9 @@ xCase.extendNamespace = function (path, newClass) {
             isValid: true,
             fromWizard: false,
             urlBase: "{server}/sys{ws}/en/{skin}/cases/cases_ShowDocument?a={docUID}&v=1",
-            types: {
-                "bmp": "file-image-o",
-                "dib": "file-image-o",
-                "dng": "file-image-o",
-                "dt2": "file-image-o",
-                "emf": "file-image-o",
-                "gif": "file-image-o",
-                "ico": "file-image-o",
-                "icon": "file-image-o",
-                "jpeg": "file-image-o",
-                "jpg": "file-image-o",
-                "pcx": "file-image-o",
-                "pic": "file-image-o",
-                "png": "file-image-o",
-                "psd": "file-image-o",
-                "raw": "file-image-o",
-                "tga": "file-image-o",
-                "thm": "file-image-o",
-                "tif": "file-image-o",
-                "tiff": "file-image-o",
-                "wbmp": "file-image-o",
-                "wdp": "file-image-o",
-                "webp": "file-image-o",
-                "7z": "file-zip-o",
-                "7zip": "file-zip-o",
-                "arc": "file-zip-o",
-                "arj": "file-zip-o",
-                "bin": "file-zip-o",
-                "cab": "file-zip-o",
-                "cbr": "file-zip-o",
-                "cbz": "file-zip-o",
-                "cso": "file-zip-o",
-                "dlc": "file-zip-o",
-                "gz": "file-zip-o",
-                "gzip": "file-zip-o",
-                "jar": "file-zip-o",
-                "rar": "file-zip-o",
-                "tar": "file-zip-o",
-                "tar.gz": "file-zip-o",
-                "tgz": "file-zip-o",
-                "zip": "file-zip-o",
-                "3ga": "file-audio-o",
-                "amr": "file-audio-o",
-                "ape": "file-audio-o",
-                "asf": "file-audio-o",
-                "asx": "file-audio-o",
-                "cda": "file-audio-o",
-                "dvf": "file-audio-o",
-                "flac": "file-audio-o",
-                "gp4": "file-audio-o",
-                "gp5": "file-audio-o",
-                "gpx": "file-audio-o",
-                "logic": "file-audio-o",
-                "m4a": "file-audio-o",
-                "m4b": "file-audio-o",
-                "m4p": "file-audio-o",
-                "midi": "file-audio-o",
-                "mp3": "file-audio-o",
-                "ogg": "file-audio-o",
-                "aac": "file-audio-o",
-                "pcm": "file-audio-o",
-                "snd": "file-audio-o",
-                "uax": "file-audio-o",
-                "wav": "file-audio-o",
-                "wma": "file-audio-o",
-                "wpl": "file-audio-o",
-                "numbers": "file-excel-o",
-                "ods": "file-excel-o",
-                "sdc": "file-excel-o",
-                "sxc": "file-excel-o",
-                "xls": "file-excel-o",
-                "xlsm": "file-excel-o",
-                "xlsx": "file-excel-o",
-                "pdf": "file-pdf-o",
-                "1st": "file-text",
-                "alx": "file-text",
-                "asp": "file-text",
-                "csv": "file-text",
-                "eng": "file-text",
-                "htm": "file-text",
-                "html": "file-text",
-                "log": "file-text",
-                "lrc": "file-text",
-                "lst": "file-text",
-                "nfo": "file-text",
-                "opml": "file-text",
-                "plist": "file-text",
-                "pts": "file-text",
-                "reg": "file-text",
-                "rep": "file-text",
-                "srt": "file-text",
-                "sub": "file-text",
-                "tbl": "file-text",
-                "text": "file-text",
-                "txt": "file-text",
-                "xml": "file-text",
-                "xsd": "file-text",
-                "xsl": "file-text",
-                "xslt": "file-text",
-                "odp": "file-powerpoint-o",
-                "pot": "file-powerpoint-o",
-                "potx": "file-powerpoint-o",
-                "pps": "file-powerpoint-o",
-                "ppsx": "file-powerpoint-o",
-                "ppt": "file-powerpoint-o",
-                "pptm": "file-powerpoint-o",
-                "pptx": "file-powerpoint-o",
-                "sdd": "file-powerpoint-o",
-                "key": "file-powerpoint-o",
-                "keynote": "file-powerpoint-o",
-                "xps": "file-powerpoint-o",
-                "264": "file-video-o",
-                "3g2": "file-video-o",
-                "3gp": "file-video-o",
-                "avi": "file-video-o",
-                "bik": "file-video-o",
-                "dash": "file-video-o",
-                "dat": "file-video-o",
-                "dvr": "file-video-o",
-                "flv": "file-video-o",
-                "h264": "file-video-o",
-                "m2t": "file-video-o",
-                "m2ts": "file-video-o",
-                "m4v": "file-video-o",
-                "mkv": "file-video-o",
-                "mod": "file-video-o",
-                "mov": "file-video-o",
-                "mp4": "file-video-o",
-                "mpeg": "file-video-o",
-                "mpg": "file-video-o",
-                "mswmm": "file-video-o",
-                "mts": "file-video-o",
-                "ogv": "file-video-o",
-                "prproj": "file-video-o",
-                "rec": "file-video-o",
-                "rmvb": "file-video-o",
-                "swf": "file-video-o",
-                "tod": "file-video-o",
-                "tp": "file-video-o",
-                "ts": "file-video-o",
-                "vob": "file-video-o",
-                "webm": "file-video-o",
-                "wmv": "file-video-o",
-                "abw": "file-word-o",
-                "aww": "file-word-o",
-                "cnt": "file-word-o",
-                "doc": "file-word-o",
-                "docm": "file-word-o",
-                "docx": "file-word-o",
-                "dot": "file-word-o",
-                "dotm": "file-word-o",
-                "dotx": "file-word-o",
-                "epub": "file-word-o",
-                "ind": "file-word-o",
-                "indd": "file-word-o",
-                "odf": "file-word-o",
-                "odt": "file-word-o",
-                "ott": "file-word-o",
-                "oxps": "file-word-o",
-                "pages": "file-word-o",
-                "pmd": "file-word-o",
-                "pub": "dofile-word-oc",
-                "pwi": "file-word-o",
-                "rtf": "file-word-o",
-                "wpd": "file-word-o",
-                "wps": "file-word-o",
-                "wri": "file-word-o",
-                "default": "file-text"
-            },
-            linkService: "showDocument"
+            linkService: "showDocument",
+            errorSize: false,
+            errorType: false
         },
         initialize: function (options) {
             return this;
@@ -22292,11 +22810,13 @@ xCase.extendNamespace = function (path, newClass) {
         fileUploadMultipart: function () {
             var project = this.get("project"),
                 xhr,
-                formData;
+                formData,
+                that = this;
 
             formData = this.prepareDataToUploadMultipart(this.get("file"));
             if (_.isFunction(project.webServiceManager.uploadMultipart)) {
                 xhr = project.webServiceManager.uploadMultipart(this.get("appDocUid"), formData, function (err, data) {
+                    that.trigger("upload_complete");
                 }, this.progressValue());
                 this.set("xhr", xhr);
             }
@@ -22328,50 +22848,6 @@ xCase.extendNamespace = function (path, newClass) {
             return name;
         },
         /**
-         * Return a object to render
-         * @returns {{ext: *, icon: *, name: *}|*}
-         */
-        getDataFile: function () {
-            var obj, ext, icon, name,
-                file = _.extend({}, this.get("file"));
-
-            ext = this.parseExtension(file.name);
-            icon = this.get("types")[ext];
-            name = this.parseName(file.name);
-            obj = {
-                "ext": ext,
-                "icon": icon ? icon : this.get("types")["default"],
-                "name": name
-            };
-            return obj;
-        },
-        /**
-         * Return a object to render with a url
-         * @returns {{ext: *, icon: *, name: *, href: *}|*}
-         */
-        getDataFileLink: function () {
-            var obj,
-                ext,
-                icon,
-                name,
-                file = _.extend({}, this.get("file")),
-                data = {
-                    uid: this.get("appDocUid"),
-                    type: this.get("linkService")
-                };
-
-            ext = this.parseExtension(file.name);
-            icon = this.get("types")[ext];
-            name = this.parseName(file.name);
-            obj = {
-                "ext": ext,
-                "icon": icon ? icon : "txt",
-                "name": name,
-                "href": this.get("project").webServiceManager.showDocument(data)
-            };
-            return obj;
-        },
-        /**
          * Update the percentage upload
          * @returns {Function}
          */
@@ -22395,31 +22871,93 @@ xCase.extendNamespace = function (path, newClass) {
             return this.get("parent").get("name");
         },
         /**
-         * Validate the file size in file
-         * @returns {*}
+         * Perform a file extension validation.
+         * @param file
+         * @param {String} extensions A bunch of extensions separated by comma.
+         * @returns {boolean}
+         * @private
          */
-        validateFileSize: function () {
-            var limit, unit, size, total, resp;
-            limit = this.get("size");
-            unit = this.get("sizeUnity");
-            size = this.get("file")["size"];
-            limit = _.isString(limit) ? parseFloat(limit) : limit;
-            total = limit;
-            switch (unit) {
-                case "MB":
-                    total = limit * 1024 * 1024;
-                    break;
-                default :
-                    total = limit * 1024;
-                    break;
+        _isFileExtensionValid: function (file, extensions) {
+            var allowedExtensions = extensions.trim().toLowerCase(),
+                fileExtension;
+
+            if (allowedExtensions === "" || allowedExtensions === "*") {
+                return true;
             }
 
-            if (size <= total || total === 0) {
-                resp = true;
-            } else {
-                resp = false
+            allowedExtensions = allowedExtensions.split(",").map(function (i) {
+                return i.replace(/\./, "").trim();
+            });
+
+            fileExtension =  file.name.split(".").pop().toLowerCase();
+
+            return allowedExtensions.indexOf(fileExtension) >= 0;
+        },
+        /**
+         * Returns the amount in bytes of a value in another unit.
+         * @param {Number} amount
+         * @param {String} units A string that specifies the input amount is in, it only supports 'MB' and 'KB'.
+         * @returns {*}
+         * @private
+         */
+        _getSizeInBytes: function (amount, units) {
+            switch (units) {
+                case 'MB':
+                    amount *= 1024;
+                case 'KB':
+                    amount *= 1024;
+                    break;
+                default:
+                    throw new Error('_getSizeInBytes(): Invalid \"units\" parameter');
             }
-            return resp;
+
+            return amount;
+        },
+        /**
+         * Verifies if the file accomplish the size limit.
+         * @param {File} file The file to be verified.
+         * @param {Number} maxAllowedSize The amount size.
+         * @param {String} unit The unit the amount is in, at the moment it only supports 'MB' and 'KB'.
+         * @returns {boolean}
+         * @private
+         */
+        _isFileSizeValid: function (file, maxAllowedSize, unit) {
+            var maxAllowedSize = this._getSizeInBytes(maxAllowedSize, unit);
+
+            return maxAllowedSize === 0 || file.size <= maxAllowedSize;
+        },
+        /**
+         * Convert bytes to other unit rounded to two decimals
+         * @param qBytes
+         * @param unit
+         * @returns {number}
+         */
+        convertTo: function (qBytes, unit) {
+            var units = ["bytes", "KB", "MB", "GB"],
+                constant = 1024,
+                factor = 1,
+                exponent = 0,
+                decimals = 2,
+                result = 0;
+            if (qBytes && unit) {
+                exponent = units.indexOf(unit.toUpperCase());
+                factor = Math.pow(constant, exponent);
+                result = Number((qBytes/factor).toFixed(decimals));
+            }
+            return result;
+        },
+        /**
+         * Parse de Allow Extensions
+         * @returns {*}
+         */
+        parseAllowExtensions: function () {
+            var extensions = this.get("extensions").trim(),
+                allowExtension;
+            if (extensions) {
+                extensions = extensions.replace(/\s*\./g, '');
+                allowExtension = extensions.split(",");
+            }
+            return allowExtension;
         },
         /**
          * Return a object to render with a url
@@ -22431,47 +22969,237 @@ xCase.extendNamespace = function (path, newClass) {
             if (proj && proj.webServiceManager && proj.webServiceManager.showDocument) {
                 resp = proj.webServiceManager.showDocument({
                     uid: this.get("appDocUid"),
-                    type: this.get("linkService")
+                    type: this.get("linkService"),
+                    version: this.get("version")
                 });
             }
             return resp;
+        },
+        /**
+         * Calls to endpoint of download
+         * @param version {string}
+         * @param callback {function}
+         * @returns {FileModel}
+         */
+        downloadFileVersion: function (version, callback) {
+            var project = this.get("project"),
+                webServiceManager = project.webServiceManager,
+                dataFile = {
+                    docUID: this.get("appDocUid"),
+                    version: version
+                };
+            webServiceManager.downloadFile(dataFile, function (data) {
+                callback(data);
+            });
+            return this;
         }
     });
 
     PMDynaform.extendNamespace("PMDynaform.file.FileModel", FileModel);
 }());
+
 (function () {
     var FileView = Backbone.View.extend({
         template: _.template($("#tpl-multiplefile-file").html()),
-        templateIcon: _.template($("#tpl-multiplefile-icon").html()),
-        templateButtons: _.template($("#tpl-multiplefile-buttons").html()),
-        templateDownload: _.template($("#tpl-multiplefile-download").html()),
-        col: 12,
-        progressBar: null,
-        colProgressBar: 10,
-        colIcon: 1,
-        colButtons: 1,
-        colDefault: 12,
+        loaderTemplate: _.template($("#tpl-multiplefile-version-loader").html()),
         $hiddens: [],
-        maxPercentage: 100,
-        messageFail: "Failed",
         events: {
-            "click .multiplefile-button-delete": "onClickDelete"
+            "click .pmdynaform-mfile > .pmdynaform-mfile-actions li[data-action=delete] a": "onClickDelete",
+            "click .pmdynaform-mfile > .pmdynaform-mfile-actions li[data-action=abort] a": "onClickCancelUpload",
+            "click .pmdynaform-mfile > .pmdynaform-mfile-actions li[data-action=upload] a": "_fireUploadDialog",
+            "click .pmdynaform-mfile > .pmdynaform-mfile-actions li[data-action=list] a": "_listVersions",
+            "click .pmdynaform-mfile > .pmdynaform-mfile-actions li[data-action=unlist] a": "_unlistVersions",
+            "click .pmdynaform-mfile-versions li[data-action=download] a": "_downloadVersion",
+            "change .pmdynaform-mfile > .pmdynaform-mfile-input": "_startUpload"
         },
-        $buttonDelete: null,
-        $buttonDownload: null,
+        iconsMap: {
+            "bmp": "file-image-o",
+            "dib": "file-image-o",
+            "dng": "file-image-o",
+            "dt2": "file-image-o",
+            "emf": "file-image-o",
+            "gif": "file-image-o",
+            "ico": "file-image-o",
+            "icon": "file-image-o",
+            "jpeg": "file-image-o",
+            "jpg": "file-image-o",
+            "pcx": "file-image-o",
+            "pic": "file-image-o",
+            "png": "file-image-o",
+            "psd": "file-image-o",
+            "raw": "file-image-o",
+            "tga": "file-image-o",
+            "thm": "file-image-o",
+            "tif": "file-image-o",
+            "tiff": "file-image-o",
+            "wbmp": "file-image-o",
+            "wdp": "file-image-o",
+            "webp": "file-image-o",
+            "7z": "file-zip-o",
+            "7zip": "file-zip-o",
+            "arc": "file-zip-o",
+            "arj": "file-zip-o",
+            "bin": "file-zip-o",
+            "cab": "file-zip-o",
+            "cbr": "file-zip-o",
+            "cbz": "file-zip-o",
+            "cso": "file-zip-o",
+            "dlc": "file-zip-o",
+            "gz": "file-zip-o",
+            "gzip": "file-zip-o",
+            "jar": "file-zip-o",
+            "rar": "file-zip-o",
+            "tar": "file-zip-o",
+            "tar.gz": "file-zip-o",
+            "tgz": "file-zip-o",
+            "zip": "file-zip-o",
+            "3ga": "file-audio-o",
+            "amr": "file-audio-o",
+            "ape": "file-audio-o",
+            "asf": "file-audio-o",
+            "asx": "file-audio-o",
+            "cda": "file-audio-o",
+            "dvf": "file-audio-o",
+            "flac": "file-audio-o",
+            "gp4": "file-audio-o",
+            "gp5": "file-audio-o",
+            "gpx": "file-audio-o",
+            "logic": "file-audio-o",
+            "m4a": "file-audio-o",
+            "m4b": "file-audio-o",
+            "m4p": "file-audio-o",
+            "midi": "file-audio-o",
+            "mp3": "file-audio-o",
+            "ogg": "file-audio-o",
+            "aac": "file-audio-o",
+            "pcm": "file-audio-o",
+            "snd": "file-audio-o",
+            "uax": "file-audio-o",
+            "wav": "file-audio-o",
+            "wma": "file-audio-o",
+            "wpl": "file-audio-o",
+            "numbers": "file-excel-o",
+            "ods": "file-excel-o",
+            "sdc": "file-excel-o",
+            "sxc": "file-excel-o",
+            "xls": "file-excel-o",
+            "xlsm": "file-excel-o",
+            "xlsx": "file-excel-o",
+            "pdf": "file-pdf-o",
+            "1st": "file-text-o",
+            "alx": "file-text-o",
+            "asp": "file-text-o",
+            "csv": "file-text-o",
+            "eng": "file-text-o",
+            "htm": "file-text-o",
+            "html": "file-text-o",
+            "log": "file-text-o",
+            "lrc": "file-text-o",
+            "lst": "file-text-o",
+            "nfo": "file-text-o",
+            "opml": "file-text-o",
+            "plist": "file-text-o",
+            "pts": "file-text-o",
+            "reg": "file-text-o",
+            "rep": "file-text-o",
+            "srt": "file-text-o",
+            "sub": "file-text-o",
+            "tbl": "file-text-o",
+            "text": "file-text-o",
+            "txt": "file-text-o",
+            "xml": "file-text-o",
+            "xsd": "file-text-o",
+            "xsl": "file-text-o",
+            "xslt": "file-text-o",
+            "odp": "file-powerpoint-o",
+            "pot": "file-powerpoint-o",
+            "potx": "file-powerpoint-o",
+            "pps": "file-powerpoint-o",
+            "ppsx": "file-powerpoint-o",
+            "ppt": "file-powerpoint-o",
+            "pptm": "file-powerpoint-o",
+            "pptx": "file-powerpoint-o",
+            "sdd": "file-powerpoint-o",
+            "key": "file-powerpoint-o",
+            "keynote": "file-powerpoint-o",
+            "xps": "file-powerpoint-o",
+            "264": "file-video-o",
+            "3g2": "file-video-o",
+            "3gp": "file-video-o",
+            "avi": "file-video-o",
+            "bik": "file-video-o",
+            "dash": "file-video-o",
+            "dat": "file-video-o",
+            "dvr": "file-video-o",
+            "flv": "file-video-o",
+            "h264": "file-video-o",
+            "m2t": "file-video-o",
+            "m2ts": "file-video-o",
+            "m4v": "file-video-o",
+            "mkv": "file-video-o",
+            "mod": "file-video-o",
+            "mov": "file-video-o",
+            "mp4": "file-video-o",
+            "mpeg": "file-video-o",
+            "mpg": "file-video-o",
+            "mswmm": "file-video-o",
+            "mts": "file-video-o",
+            "ogv": "file-video-o",
+            "prproj": "file-video-o",
+            "rec": "file-video-o",
+            "rmvb": "file-video-o",
+            "swf": "file-video-o",
+            "tod": "file-video-o",
+            "tp": "file-video-o",
+            "ts": "file-video-o",
+            "vob": "file-video-o",
+            "webm": "file-video-o",
+            "wmv": "file-video-o",
+            "abw": "file-word-o",
+            "aww": "file-word-o",
+            "cnt": "file-word-o",
+            "doc": "file-word-o",
+            "docm": "file-word-o",
+            "docx": "file-word-o",
+            "dot": "file-word-o",
+            "dotm": "file-word-o",
+            "dotx": "file-word-o",
+            "epub": "file-word-o",
+            "ind": "file-word-o",
+            "indd": "file-word-o",
+            "odf": "file-word-o",
+            "odt": "file-word-o",
+            "ott": "file-word-o",
+            "oxps": "file-word-o",
+            "pages": "file-word-o",
+            "pmd": "file-word-o",
+            "pub": "dofile-word-oc",
+            "pwi": "file-word-o",
+            "rtf": "file-word-o",
+            "wpd": "file-word-o",
+            "wps": "file-word-o",
+            "wri": "file-word-o"
+        },
+        /**
+         * Initialize the view.
+         * @param options
+         * @returns {FileView}
+         */
         initialize: function (options) {
             this.$hiddens = [];
-            this.progressBar = new PMDynaform.ui.ProgressBar({
-                percentage: 0,
-                title: this.model.get("file").name,
-                col: this.colProgressBar,
-                type: "file",
-                striped: false,
-                animate: false
-            });
-            this.listenTo(this.model, 'change:percentage', this.updatePercentage);
+            this._versionable = options.versionable || false;
+            this._versions = [];
+            this._initLoading = options.loading;
+            this.listenTo(this.model, 'change:percentage', this._updatePercentage);
             this.listenTo(this.model, 'change:appDocUid', this.createHiddenForProperty);
+            this._project = this.model.get('project');
+            this._parent = this.model.get("parent");
+
+            if (this._initLoading) {
+                this.listenTo(this.model, 'upload_complete', this._onComplete);
+            }
+
+            this._dom = {};
             return this;
         },
         /**
@@ -22479,165 +23207,203 @@ xCase.extendNamespace = function (path, newClass) {
          * @param e
          * @returns {FileView}
          */
-        onClickCancel: function (e) {
+        onClickCancelUpload: function (e) {
             var xhr;
             e.preventDefault();
             e.stopPropagation();
-            xhr = this.model.get("xhr");
-            if (xhr && xhr.abort) {
-                xhr.abort();
-                if (_.isFunction(this.progressBar.setType)) {
-                    this.progressBar.setType("danger");
+
+            if (this._initLoading) {
+                xhr = this.model.get("xhr");
+                if (xhr && xhr.abort) {
+                    xhr.abort();
+                    this.onClickDelete(e);
                 }
+            } else if (this._xhr) {
+                this._xhr.abort();
+                this._onComplete();
             }
+
             return this;
+        },
+        /**
+         * Resets and displays the file uploading progress bar.
+         * @private
+         */
+        _showProgressBar: function () {
+            var progressBar,
+                progressBarContainer;
+            if (!this._dom.progressBar) {
+                progressBarContainer = document.createElement('div');
+                progressBarContainer.className = "progress";
+
+                progressBar = document.createElement('div');
+                progressBar.className = "progress-bar progress-bar-success";
+
+                progressBarContainer.appendChild(progressBar);
+
+                this._dom.progressBar = progressBar;
+                this._dom.progressBarContainer = progressBarContainer;
+            }
+
+            this._dom.progressBar.textContent = "";
+            this._dom.progressBar.style.width = "0%";
+            this._dom.$fileInfo.append(this._dom.progressBarContainer);
+            this._hideButtonsFromActionList('abort');
+            this._dom.$fileActions.show();
         },
         /**
          * Render only file view
          * @returns {FileView}
          */
         render: function () {
-            switch (this.model.get('parent').get("mode")) {
-                case "disabled":
-                case "view":
-                    this.renderView();
-                    break;
-                case "edit":
-                    this.renderEdit();
-                    break;
-                default:
-                    this.renderEdit();
-                    break;
+            var mode = this._parent.get("mode"),
+                filename = this.model.get("file").name,
+                ext = this.model.parseExtension(filename),
+                versionList;
+
+            this.setElement(this.template({
+                downloadLink: '#',
+                viewid: this.cid,
+                filename: filename,
+                fileversion: '',
+                versionable: this._versionable,
+                mode: mode,
+                iconClass: this._getIconClass(ext),
+                details: '',
+                extensions: this._parent.get("extensions")
+            }));
+
+            versionList = document.createElement('ul');
+            versionList.className = "pmdynaform-mfile-versions";
+            this.el.appendChild(versionList);
+
+            this._dom.$fileTitle = this.$el.find('> .pmdynaform-mfile .pmdynaform-mfile-title');
+            this._dom.$fileName = this.$el.find('> .pmdynaform-mfile .pmdynaform-mfile-name');
+            this._dom.$fileVersion = this.$el.find('> .pmdynaform-mfile .pmdynaform-mfile-version');
+            this._dom.$fileInfo = this.$el.find('> .pmdynaform-mfile .pmdynaform-mfile-details');
+            this._dom.$fileActions = this.$el.find('> .pmdynaform-mfile .pmdynaform-mfile-actions');
+            this._dom.$buttonList = this._dom.$fileActions.find('li[data-action=list]');
+            this._dom.fileInput = this.$el.find('#pmdynaform-input-' + this.cid);
+            this._dom.$versionList = $(versionList);
+            this._dom.$listLoaderMessage = $(this.loaderTemplate());
+
+            if (mode === 'edit') {
+                if (this._initLoading) {
+                    this._showProgressBar();
+                } else {
+                    this._onComplete();
+                }
+
+                if (!this.model.get("isValid")) {
+                    this.showMessageError();
+                }
+            } else {
+                this._onComplete();
             }
+        },
+        /**
+         * Set Message Error
+         */
+        showMessageError: function () {
+            $(this._dom.progressBar).removeClass('progress-bar-success')
+                .addClass('progress-bar-danger')
+                .css("width", '100%')
+                .text(this.model.get("errorSize") ? this.constructMessageError("size")
+                    : this.constructMessageError("type"));
+
+            this._hideButtonsFromActionList('delete');
+            this._dom.$fileActions.show();
+
             return this;
         },
         /**
-         * Render mode edit - preogressbar, buttons etc
+         * Displays a Flash Message in error mode.
+         * @param message
          * @returns {FileView}
+         * @private
          */
-        renderEdit: function () {
-            var obj = this.model.getDataFile(),
-                container,
-                enableButtonDownload = this.model.get('fromWizard') ? false : true,
-                newConfig = this.calculateColsView({
-                    mode: "edit",
-                    buttons: enableButtonDownload ? 2 : 1
-                });
-
-            this.setElement(this.template({
-                col: this.col
-            }));
-            container = this.$el.find(".multiplefile-container");
-            obj["col"] = newConfig.colIcon;
-            container.append(this.templateIcon(obj));
-
-            if (this.model.get('fromWizard')) {
-                this.progressBar.render();
-                container.append(this.progressBar.$el);
-            } else {
-                container.append(this.templateDownload({
-                    title: obj.name,
-                    col: newConfig.colName,
-                    href: this.model.getLinkDownload()
-                }));
-            }
-            container.append(this.templateButtons({
-                col: newConfig.colButtons,
-                colButton: newConfig.colButton,
-                href: this.model.getLinkDownload()
-            }));
-            this.$buttonDownload = this.$el.find(".multiplefile-button-download");
-            this.$buttonDelete = this.$el.find(".multiplefile-button-delete");
-
-            if (!enableButtonDownload) {
-                this.$buttonDownload.hide();
-            }
-            if (!this.model.get("isValid")) {
-                this.progressBar.setPercentage(100);
-                this.progressBar.setType("danger");
-            }
-            return this;
-        },
-        /**
-         * Calculate the cols
-         * @param config
-         * @returns {{colIcon: number, colButtons: number, colName: number, colButton: number}}
-         */
-        calculateColsView: function (config) {
-            var configNew = {
-                colIcon: 1,
-                colButtons: 1,
-                colName: 11,
-                colButton: 12
-            };
-            if (config.mode === "edit") {
-                configNew.colButtons = config.buttons === 1 ? configNew.colButtons : config.buttons + 1;
-                configNew.colName = config.buttons === 1 ? configNew.colName : configNew.colName - config.buttons - 1;
-                configNew.colButton = (configNew.colButton / config.buttons) - 1;
-            } else {
-                configNew.colButton = configNew.colButton - 1;
-                configNew.colName = configNew.colName - 1;
-            }
-            return configNew;
-        },
-        /**
-         * Render in mode view
-         * @returns {FileView}
-         */
-        renderView: function () {
-            var obj = this.model.getDataFile(),
-                container,
-                enableButtonDownload = this.model.get('fromWizard') ? false : true,
-                newConfig = this.calculateColsView({
-                    mode: "view",
-                    buttons: enableButtonDownload ? 2 : 1
-                });
-
-            this.setElement(this.template({
-                col: this.col
-            }));
-            container = this.$el.find(".multiplefile-container");
-            obj["col"] = newConfig.colIcon;
-            container.append(this.templateIcon(obj));
-            container.append(this.templateDownload({
-                title: obj.name,
-                col: newConfig.colName,
-                href: this.model.getLinkDownload()
-            }));
-            container.append(this.templateButtons({
-                col: newConfig.colButtons,
-                colButton: newConfig.colButton,
-                href: this.model.getLinkDownload()
-            }));
-            container.find(".multiplefile-title").tooltip({
-                title: obj.name
+        _showFlashErrorMessage: function (message) {
+            this._project.flashMessage({
+                message: message,
+                duration: 0,
+                type: 'danger',
+                emphasisMessage: 'Error:'
             });
-            this.$buttonDownload = this.$el.find(".multiplefile-button-download");
-            this.$buttonDelete = this.$el.find(".multiplefile-button-delete");
-            this.$buttonDelete.hide();
+
             return this;
         },
         destroy: function () {
             this.model.destroy();
         },
         /**
+         * Construct the message error
+         * @param value
+         * @returns {string}
+         */
+        constructMessageError: function (value, file) {
+            var sizeUnity = this._parent.get("sizeUnity"),
+                sizeAllow = this._parent.get("size") + sizeUnity,
+                typeAllow = this._parent.get("extensions"),
+                message = "";
+
+            switch (value) {
+                case "size":
+                    message = (file ? "\"" + file.name + "\"" : 'File') + " size exceeds the allowable limit of {" + sizeAllow + "}";
+                    break;
+                case "type":
+                    message = "Invalid file format " + (file ? 'for "' + file.name + '"': '') + ", please upload a file with one of the following formats {" + typeAllow + "}";
+                    break;
+            }
+            return message;
+        },
+        /**
          * update the percentage of progressbar
          * @returns {FileView}
          */
-        updatePercentage: function () {
-            var per = this.model.get("percentage");
-            per = Math.floor(per);
-            if (_.isFunction(this.progressBar.setPercentage)) {
-                this.progressBar.setPercentage(per);
-                this.progressBar.setMessage(per + "%");
-            }
+        _updatePercentage: function (model, value) {
+            value = Math.floor(value);
+            this._dom.progressBar.textContent = this._dom.progressBar.style.width = value + '%';
+
             return this;
         },
+        /**
+         * Sets the view in its final mode.
+         * @returns {FileView}
+         * @private
+         */
+        _onComplete: function () {
+            var that = this,
+                file = this.model.get("file");
 
-        setPercentageToProgressBar: function (value) {
-            if (_.isFunction(this.progressBar.setPercentage)) {
-                this.progressBar.setPercentage(value);
-            }
+            setTimeout(function () {
+                var buttons = ['download'],
+                    mode = that.model.get('parent').get("mode");
+
+                that._dom.fileInput.val("");
+                that._initLoading = false;
+                that._dom.$fileName.text(file.name);
+                that._dom.$fileTitle.attr("title", file.name);
+                // TODO: Set the file details in the format "Created by John Doe on 2017-03-03"
+                that._dom.$fileInfo.empty().text("");
+                that._dom.$fileActions.find('[data-action=download] a').attr('href', that.model.getLinkDownload());
+
+                if (mode === 'edit') {
+                    buttons.push('delete');
+                }
+
+                if (that._versionable) {
+                    buttons.push('list', 'unlist');
+
+                    if (mode === 'edit') {
+                        buttons.push('upload');
+                    }
+                }
+
+                that._hideButtonsFromActionList(buttons);
+                that._dom.$fileActions.show();
+                that._renderVersions(that._versions);
+            }, 300);
+
             return this;
         },
 
@@ -22647,23 +23413,291 @@ xCase.extendNamespace = function (path, newClass) {
                 parentView.createAllHiddens('add');
             }
         },
-
         /**
-         * FinishLoad the file & update the view
-         * @returns {FileView}
+         * Returns the icon class for the file
+         * @param ext
+         * @returns {*|string}
+         * @private
          */
-        finishLoad: function () {
-            if (this.progressBar) {
-                this.progressBar.disableAnimation();
-                this.progressBar.setStriped(false);
+        _getIconClass: function (ext) {
+            return this.iconsMap[ext] || "file-o";
+        },
+        /**
+         * Hide all action buttons, except by the especified ones.
+         * @param [exceptions] An array of strings with the exceptions.
+         * @returns {FileView}
+         * @private
+         */
+        _hideButtonsFromActionList: function (exceptions) {
+            var exceptionSelector = [],
+                itemWidth = 29; // TODO: find a way to find this width dinamically
+
+            if (typeof exceptions === 'string') {
+                exceptions = [exceptions];
             }
+
+            if (_.isArray(exceptions)) {
+                exceptions.forEach(function (item) {
+                    exceptionSelector.push('[data-action="' + item + '"]');
+                });
+                exceptionSelector = exceptionSelector.join(',');
+            } else {
+                exceptionSelector = null;
+            }
+
+            if (exceptionSelector) {
+                this._dom.$fileActions.find('li').css("display", "").not(exceptionSelector).hide();
+            } else {
+                this._dom.$fileActions.find('li').hide();
+            }
+
+            this._dom.$fileTitle.css('width', 'calc(100% - '
+                + (this._dom.$fileActions.find(exceptionSelector || "li").size() * itemWidth) + 'px)');
+
             return this;
+        },
+        /**
+         * Render the supplied version in list.
+         * @param version
+         *
+         * @returns {FileView}
+         * @private
+         */
+        _renderVersionInList: function (version) {
+            var versionItem = $(this.template({
+                downloadLink: "#",
+                viewid: this.cid + "_v" + version.app_doc_version,
+                filename: version.app_doc_filename,
+                fileversion: version.app_doc_version,
+                versionable: false,
+                mode: "view",
+                details: "Uploaded by " + version.app_doc_create_user + " on " + version.app_doc_create_date,
+                iconClass: this._getIconClass(this.model.parseExtension(version.app_doc_filename))
+            }));
+
+            this._dom.$listLoaderMessage.remove();
+
+            versionItem.find('a').attr("data-version-number", version.app_doc_version);
+            versionItem.find('a').attr("data-file-name", version.app_doc_filename);
+            versionItem.find('.pmdynaform-mfile-action-item').not('[data-action=download]').remove()
+                 .end().end().find('.pmdynaform-mfile-actions').show();
+
+            this._dom.$versionList.append(versionItem);
+
+            return this;
+        },
+        /**
+         * Renders the supplied versions on the versions list.
+         * @param {Array} versions
+         * @private
+         */
+        _renderVersions: function (versions) {
+            var that = this;
+
+            if (versions.length) {
+                this._dom.$versionList.empty();
+
+                versions.forEach(function (version) {
+                   that._renderVersionInList(version);
+                });
+
+            } else {
+                this._dom.$listLoaderMessage.text("0 items");
+            }
+        },
+        /**
+         * Collapse the versions list.
+         * @param {Event} e
+         * @private
+         */
+        _unlistVersions: function (e) {
+            e.preventDefault();
+            this._dom.$versionList.stop().slideUp();
+            this._dom.$buttonList.attr("data-action", "list").find('a').get(0).className = 'fa fa-chevron-circle-down';
+        },
+        /**
+         * Displays the versions list.
+         * @param {Event} e
+         * @returns {FileView}
+         * @private
+         */
+        _listVersions: function (e) {
+            var appDocUID = this.model.get("appDocUid"),
+                that = this;
+
+            e.preventDefault();
+
+            this._dom.$versionList.empty().append(this._dom.$listLoaderMessage.text("loading...")).stop().slideDown();
+            this._dom.$buttonList.attr("data-action", "unlist").find('a').get(0).className = 'fa fa-chevron-circle-up';
+
+            this._project.webServiceManager.getFileVersions(appDocUID, function (err, resp) {
+                if (err) {
+                    that._showFlashErrorMessage(err.status);
+                } else {
+                    that._versions = resp.data.sort(function (a, b) {
+                        return parseInt(a.app_doc_version, 10) < parseInt(b.app_doc_version, 10) ? 1 : -1;
+                    });
+
+                    that._renderVersions(that._versions);
+                }
+            });
+
+            return this;
+        },
+        /**
+         * Uploads the the supplied file.
+         * @param {Object} data The details of the file to be uploaded.
+         * @param {File} file The file to be uploaded.
+         * @private
+         */
+        _uploadFile: function (data, file) {
+            var formData = new FormData(),
+                that = this;
+
+            formData.append("form[]", file);
+
+            this._xhr = this._project.webServiceManager.uploadMultipart(data.appDocUid, formData, function (err) {
+                var newVersion;
+
+                if (err) {
+                    that._showFlashErrorMessage(err.status);
+                    return that._onComplete();
+                }
+
+                newVersion = {
+                    app_doc_uid: data.appDocUid,
+                    app_doc_filename: data.appDocFilename,
+                    doc_uid: data.appDocUid,
+                    app_doc_version: data.docVersion,
+                    app_doc_create_date: data.appDocCreateDate,
+                    app_doc_create_user: data.appDocCreateUser,
+                    app_doc_type: data.appDocType,
+                    app_doc_index: data.appDocIndex
+                },
+                oldAppDocUid = that.model.get("appDocUid");
+
+                that._xhr = null;
+                that._versions.unshift(newVersion);
+
+                that.model.set({
+                    file: {
+                        name: newVersion.app_doc_filename
+                    },
+                    version: newVersion.app_doc_version
+                }).set("appDocUid", newVersion.app_doc_uid);
+                //The appDocUid update is not being performed in the first call due it is necessary to ensure
+                // it is called after the name and version update, in order to updsate the hidden fields.
+
+                if (oldAppDocUid === newVersion.app_doc_uid) {
+                    that.createHiddenForProperty();
+                }
+
+                that._onComplete();
+            }, function (e) {
+                if (e.lengthComputable) {
+                    that._updatePercentage(null, (e.loaded * 100) / e.total);
+                }
+            });
+        },
+        /**
+         * Start the upload process.
+         * @param {Event} e
+         * @private
+         */
+        _startUpload: function (e) {
+            var files = e.target.files,
+                that = this,
+                errorMessage,
+                file,
+                data;
+
+            e.preventDefault();
+
+            if (files.length === 1) {
+                file = files.item(0);
+
+                if (!this.model._isFileExtensionValid(file, this._parent.get("extensions"))) {
+                    errorMessage = this.constructMessageError('type', file);
+                } else if (!this.model._isFileSizeValid(file, this._parent.get("size"), this._parent.get("sizeUnity"))) {
+                    errorMessage = this.constructMessageError('size', file);
+                }
+
+                if (errorMessage) {
+                    return this._showFlashErrorMessage(errorMessage);
+                }
+
+                data = {
+                    name: file.name,
+                    fieldName: this.model.get("parent").get("var_name"),
+                    docUid: this.model.get("parent").get("inp_doc_uid"),
+                    appDocType: "INPUT",
+                    appDocUid: this.model.get("appDocUid")
+                };
+
+                this._dom.$fileName.text(data.name);
+                this._showProgressBar();
+
+                this._xhr = this._project.webServiceManager.upload([data], function (err, data) {
+                    if (err) {
+                        that._showFlashErrorMessage(err.status);
+                        return that._onComplete();
+                    }
+                    that._uploadFile(data.data[0], file);
+                });
+            } else if (files.length > 1) {
+                this._showFlashErrorMessage("Only one version per file can be uploaded.");
+            }
+
+        },
+        /**
+         * Get data and create link of download
+         * @param e
+         * @private
+         */
+        _downloadVersion: function (e) {
+            var that = this,
+                item = e.target,
+                version = item.getAttribute("data-version-number"),
+                nameFile = item.getAttribute("data-file-name"),
+                url;
+            this.model.downloadFileVersion(version, function (data) {
+                if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                    window.navigator.msSaveOrOpenBlob(data, nameFile);
+                } else {
+                    url = URL.createObjectURL(data);
+                    that._executeFakeLink(url, nameFile);
+                    window.URL.revokeObjectURL(url);
+                }
+            });
+            e.preventDefault();
+        },
+        /**
+         * Execute download
+         * @param url {string}
+         * @param nameFile {string}
+         * @returns {FileView}
+         * @private
+         */
+        _executeFakeLink: function (url, nameFile) {
+            var fakeLink = $("<a/>", {
+                    "id": "fakeDownloadLink",
+                    "href": url,
+                    "download": nameFile
+                }).hide();
+            fakeLink.appendTo("body");
+            fakeLink[0].click();
+            fakeLink.remove();
+            return this;
+        },
+        _fireUploadDialog: function (e) {
+            e.preventDefault();
+            this._dom.fileInput.click();
         },
         /**
          * Delete a file handler
          * @returns {FileView}
          */
-        onClickDelete: function () {
+        onClickDelete: function (e) {
             var parentView = this.model.get('parent').get('view');
             if (this.model.get("parent").get("mode") === "edit" && parentView) {
                 this.model.destroy();
@@ -22673,12 +23707,16 @@ xCase.extendNamespace = function (path, newClass) {
                 }
                 this.model.get('parent').resetInputFile();
             }
+
+            e.preventDefault();
+
             return this;
         }
     });
 
     PMDynaform.extendNamespace("PMDynaform.file.FileView", FileView);
 }());
+
 (function () {
     var FileCollection = Backbone.Collection.extend({
         model: PMDynaform.file.FileModel,
@@ -22769,6 +23807,7 @@ xCase.extendNamespace = function (path, newClass) {
 
     PMDynaform.extendNamespace("PMDynaform.file.FileCollection", FileCollection);
 }());
+
 (function () {
     var ProgressBar = Backbone.View.extend({
         template: _.template($("#tpl-progressbar").html()),
@@ -22892,22 +23931,33 @@ xCase.extendNamespace = function (path, newClass) {
          * @returns {*}
          */
         addFileModel: function (file) {
-            var files = this.get('parent').get('fileCollection'),
+            var parentFile = this.get('parent'),
+                files = parentFile.get('fileCollection'),
                 fileSize,
+                fileExtension,
                 fileModel;
 
             fileModel = new PMDynaform.file.FileModel({
                 file: file,
                 mode: "edit",
-                parent: this.get('parent'),
-                project: this.get('parent').get('project'),
-                form: this.get('parent').get('form'),
-                size: this.get('parent').get('size'),
-                sizeUnity: this.get('parent').get('sizeUnity')
+                parent: parentFile,
+                project: parentFile.get('project'),
+                form: parentFile.get('form'),
+                size: parentFile.get('size'),
+                sizeUnity: parentFile.get('sizeUnity'),
+                extensions: parentFile.get("extensions")
             });
-            fileSize = fileModel.validateFileSize();
+
+            fileSize = fileModel._isFileSizeValid(file, parentFile.get("size"), parentFile.get("sizeUnity"));
+            fileExtension = fileModel._isFileExtensionValid(file, parentFile.get("extensions"));
+
             if (!fileSize) {
                 fileModel.set("isValid", fileSize);
+                fileModel.set("errorSize", true);
+            }
+            if (!fileExtension) {
+                fileModel.set("isValid", fileExtension);
+                fileModel.set("errorType", true);
             }
             if (fileModel.get("isValid")) {
                 fileModel = files.add(fileModel);
@@ -22964,12 +24014,13 @@ xCase.extendNamespace = function (path, newClass) {
             this.modal.find('.btn-uploadfile').on('click', function (e) {
                 that.onClickUploadButton(e);
             });
-            box = this.modal.find(".pmdynaform-file-box");
+            box = this.modal.find(".pmdynaform-multiplefile-box");
             if (collection instanceof Backbone.Collection) {
                 for (i = 0; i < collection.length; i += 1) {
                     model = collection.at(i);
                     view = new PMDynaform.file.FileView({
-                        model: model
+                        model: model,
+                        versionable: this.model.get("parent").get("enableVersioning")
                     });
                     view.render();
                     box.append(view.$el);
@@ -23031,6 +24082,7 @@ xCase.extendNamespace = function (path, newClass) {
             event.stopPropagation();
             files = event.target.files;
             this.processFiles(files);
+            event.target.value = "";
             return false;
         },
         /**
@@ -23043,13 +24095,15 @@ xCase.extendNamespace = function (path, newClass) {
             var index = 0,
                 fileView,
                 fileModel,
-                box = this.modal.find(".pmdynaform-file-box");
+                box = this.modal.find(".pmdynaform-multiplefile-box");
             if (files.length) {
                 for (index = 0; index < files.length; index += 1) {
                     fileModel = this.model.addFileModel(files[index], "edit", this);
 
                     fileView = new PMDynaform.file.FileView({
-                        model: fileModel
+                        model: fileModel,
+                        loading: true,
+                        versionable: this.model.get("parent").get("enableVersioning")
                     });
                     fileModel.set('fromWizard', true);
                     fileView.render();
@@ -23088,3 +24142,4 @@ xCase.extendNamespace = function (path, newClass) {
     });
     PMDynaform.extendNamespace("PMDynaform.file.UploadModalView", UploadModal);
 }());
+

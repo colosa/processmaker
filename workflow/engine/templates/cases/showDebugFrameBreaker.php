@@ -1,5 +1,5 @@
 <?php
-G::LoadSystem('inputfilter');
+
 $filter = new InputFilter();
 if (isset($_POST['NextStep'])) {
     $nextStep = $filter->xssFilterHard($_POST['NextStep'], "url"); ?>

@@ -30,8 +30,6 @@ $_POST['action'] = $_REQUEST['action'];
 
 switch ($_POST['action']) {
     case 'calendarList':
-        G::LoadClass( 'configuration' );
-        G::LoadClass( 'calendar' );
 
         $co = new Configurations();
         $config = $co->getConfiguration( 'calendarList', 'pageSize', '', $_SESSION['USER_LOGGED'] );
@@ -41,7 +39,7 @@ switch ($_POST['action']) {
         $limit = isset( $_REQUEST['limit'] ) ? $_REQUEST['limit'] : $limit_size;
         $filter = isset( $_REQUEST['textFilter'] ) ? $_REQUEST['textFilter'] : '';
 
-        $calendar = new calendar();
+        $calendar = new Calendar();
         $CRI = $calendar->getCalendarCriterias( $filter, $start, $limit );
 
         $aUsers = $calendar->getAllCounterByCalendar( 'USER' );
@@ -64,7 +62,6 @@ switch ($_POST['action']) {
         echo '{cals: ' . G::json_encode( $aCals ) . ', total_cals: ' . $total_cals . '}';
         break;
     case 'updatePageSize':
-        G::LoadClass( 'configuration' );
         $c = new Configurations();
         $arr['pageSize'] = $_REQUEST['size'];
         $arr['dateSave'] = date( 'Y-m-d H:i:s' );
@@ -76,8 +73,7 @@ switch ($_POST['action']) {
         break;
     case 'canDeleteCalendar':
         $cal_uid = $_POST['CAL_UID'];
-        G::LoadClass( 'calendar' );
-        $cal = new calendar();
+        $cal = new Calendar();
         $total = 0;
         $u = $cal->getAllCounterByCalendar( 'USER' );
         $t_u = isset( $u[$cal_uid] ) ? $u[$cal_uid] : 0;
@@ -91,8 +87,7 @@ switch ($_POST['action']) {
         break;
     case 'deleteCalendar':
         $CalendarUid = $_POST['CAL_UID'];
-        G::LoadClass( 'calendar' );
-        $calendarObj = new calendar();
+        $calendarObj = new Calendar();
         $calendarObj->deleteCalendar( $CalendarUid );
         echo '{success: true}';
         break;

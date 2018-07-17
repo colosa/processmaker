@@ -51,15 +51,22 @@ CriteriaField.prototype.setControls = function () {
 };
 
 CriteriaField.prototype.createCallBack = function () {
-    var that = this, oldValue, newValue, init = 0;
+    var that = this,
+        newValue,
+        init = 0,
+        index = 0;
     return {
         success: function (variable) {
-            init = that.controls[0].html.selectionStart;
-            prevText = that.controls[0].html.value.substr(0, init);
-            lastText = that.controls[0].html.value.substr(that.controls[0].html.selectionEnd, that.controls[0].html.value.length);
+            var prevText,
+                lastText,
+                htmlControl = that.controls[index].html;
+            init = htmlControl.selectionStart;
+            prevText = htmlControl.value.substr(index, init);
+            lastText = htmlControl.value.substr(htmlControl.selectionEnd, htmlControl.value.length);
             newValue = prevText + variable + lastText;
             that.setValue(newValue);
-            that.controls[0].html.selectionEnd = init + variable.length;
+            that.isValid();
+            htmlControl.selectionEnd = init + variable.length;
         }
     };
 };
@@ -90,7 +97,7 @@ CriteriaField.prototype.createHTML = function () {
     });
 
     this.buttonHTML = button;
-    $(this.helper.html).before(button.getHTML())
+    $(this.helper.html).before(button.getHTML());
     this.buttonHTML.style.addProperties({"margin-left": "10px"});
     this.buttonHTML.html.tabIndex = -1;
 

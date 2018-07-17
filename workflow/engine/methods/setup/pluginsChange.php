@@ -23,51 +23,44 @@
  */
 
 // lets display the items
+use ProcessMaker\Plugins\PluginRegistry;
+
 $pluginFile = $_GET['id'];
 $pluginStatus = $_GET['status'];
 
 $items = array ();
-G::LoadClass( 'plugin' );
 //here we are enabling or disabling the plugin and all related options registered.
-G::LoadSystem('inputfilter');
 $filter = new InputFilter();
 $path = PATH_PLUGINS . $pluginFile;
 $path = $filter->validateInput($path, 'path');
 
-$oPluginRegistry = & PMPluginRegistry::getSingleton();
+$oPluginRegistry = PluginRegistry::loadSingleton();
 
-if ($handle = opendir( PATH_PLUGINS )) {
-    while (false !== ($file = readdir( $handle ))) {
-        if (strpos( $file, '.php', 1 ) && $file == $pluginFile) {
-
+if ($handle = opendir(PATH_PLUGINS)) {
+    while (false !== ($file = readdir($handle))) {
+        if (strpos($file, '.php', 1) && $file == $pluginFile) {
             if ($pluginStatus == '1') {
-                //print "change to disable";
-                $details = $oPluginRegistry->getPluginDetails( $pluginFile );
-                $oPluginRegistry->disablePlugin( $details->sNamespace );
-                $size = file_put_contents( PATH_DATA_SITE . 'plugin.singleton', $oPluginRegistry->serializeInstance() );
-                G::auditLog("DisablePlugin", "Plugin Name: ".$details->sNamespace);
-                //print "size saved : $size  <br>";
+                // change to disable
+                $details = $oPluginRegistry->getPluginDetails($pluginFile);
+                $oPluginRegistry->disablePlugin($details->getNamespace());
+                $oPluginRegistry->savePlugin($details->getNamespace());
+                G::auditLog("DisablePlugin", "Plugin Name: " . $details->getNamespace());
             } else {
                 $pluginName = str_replace(".php", "", $pluginFile);
 
                 if (is_file(PATH_PLUGINS . $pluginName . ".php") && is_dir(PATH_PLUGINS . $pluginName)) {
                     /*----------------------------------********---------------------------------*/
 
-                    //print "change to ENABLED";
+                    // change to ENABLED
                     require_once($path);
                     $details = $oPluginRegistry->getPluginDetails($pluginFile);
-                    $oPluginRegistry->enablePlugin($details->sNamespace);
+                    $oPluginRegistry->enablePlugin($details->getNamespace());
                     $oPluginRegistry->setupPlugins(); //get and setup enabled plugins
-                    $size = file_put_contents(PATH_DATA_SITE . "plugin.singleton", $oPluginRegistry->serializeInstance());
-                    G::auditLog("EnablePlugin", "Plugin Name: " . $details->sNamespace);
-                    //print "size saved : $size  <br>";
+                    $oPluginRegistry->savePlugin($details->getNamespace());
+                    G::auditLog("EnablePlugin", "Plugin Name: " . $details->getNamespace());
                 }
             }
         }
     }
-    closedir( $handle );
+    closedir($handle);
 }
-
-  //$oPluginRegistry->showArrays();
-  //G::Header('location: pluginsList');
-

@@ -14,6 +14,7 @@
 //
 // License: LGPL, see LICENSE
 ////////////////////////////////////////////////////
+use ProcessMaker\Core\System;
 
 
 /**
@@ -40,7 +41,6 @@
  * @return string | $result | Response |
  *
  */
-include_once PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'api' . PATH_SEP . "class.zimbraApi.php";
 
 function getZimbraFolder($ServerUrl, $username, $preAuthKey, $folderName, $protocol = 'http')
 {

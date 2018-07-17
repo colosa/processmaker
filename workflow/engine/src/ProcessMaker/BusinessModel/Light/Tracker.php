@@ -2,6 +2,7 @@
 
 namespace ProcessMaker\BusinessModel\Light;
 
+use PmDynaform;
 
 class Tracker
 {
@@ -13,14 +14,14 @@ class Tracker
     }
 
     /**
-     * authenticaction for case tracker
+     * Authentication for case tracker
      *
-     * @param $case numbre case
-     * @param $pin code pin access for case tracek
+     * @param int $case number case
+     * @param int $pin code pin access for case track
      * @return array
      * @throws \Exception
      */
-    public function authentication($case, $pin)
+    public static function authentication($case, $pin)
     {
         $cases = new \Cases();
         $response = array();
@@ -192,7 +193,7 @@ class Tracker
 
     public function objects($idProcess, $appUid)
     {
-        $oProcessMap = new \processMap();
+        $oProcessMap = new \ProcessMap();
 
         $oCase = new \Cases();
 
@@ -262,12 +263,11 @@ class Tracker
                 $arrayDynaFormData = $dynaForm->Load($obj_uid);
 
                 if (isset($arrayDynaFormData["DYN_VERSION"]) && $arrayDynaFormData["DYN_VERSION"] == 2) {
-                    \G::LoadClass("pmDynaform");
 
                     $Fields["PRO_UID"] = $pro_uid;
                     $Fields["CURRENT_DYNAFORM"] = $obj_uid;
 
-                    $pmDynaForm = new \pmDynaform($Fields);
+                    $pmDynaForm = new PmDynaform($Fields);
 
 //                    if ($pmDynaForm->isResponsive()) {
 //                        $pmDynaForm->printTracker();
@@ -276,7 +276,7 @@ class Tracker
                 }
                 break;
             case 'INPUT_DOCUMENT':
-                //G::LoadClass( 'case' );
+
                 $oCase = new \Cases();
                 $c = $oCase->getAllUploadedDocumentsCriteriaTracker( $pro_uid, $app_uid, $obj_uid );
 
@@ -297,7 +297,7 @@ class Tracker
                 break;
 
             case 'OUTPUT_DOCUMENT':
-                //G::LoadClass( 'case' );
+
                 $oCase = new \Cases();
                 $c = $oCase->getAllGeneratedDocumentsCriteriaTracker( $pro_uid, $app_uid, $obj_uid );
                 $response = $c;

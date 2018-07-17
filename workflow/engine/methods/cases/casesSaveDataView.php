@@ -32,8 +32,6 @@ if (!isset($_SESSION['USER_LOGGED'])) {
 //$oForm->validatePost ();
 
 /* @author Alvaro Campos Sanchez */
-/* Includes */
-G::LoadClass( 'case' );
 
 if (!is_array($_POST['form'])) {
     $_POST['form'] = array();

@@ -123,7 +123,7 @@ class UsersMapBuilder
 
         $tMap->addColumn('USR_UNIT_COST', 'UsrUnitCost', 'string', CreoleTypes::VARCHAR, false, 50);
 
-        $tMap->addColumn('USR_PMDRIVE_FOLDER_UID', 'UsrPmdriveFolderUid', 'string', CreoleTypes::VARCHAR, false, 32);
+        $tMap->addColumn('USR_PMDRIVE_FOLDER_UID', 'UsrPmdriveFolderUid', 'string', CreoleTypes::VARCHAR, false, 128);
 
         $tMap->addColumn('USR_BOOKMARK_START_CASES', 'UsrBookmarkStartCases', 'string', CreoleTypes::LONGVARCHAR, false, null);
 

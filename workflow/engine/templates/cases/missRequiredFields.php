@@ -30,7 +30,7 @@
  * @LastModification 30/05/2008
  */
 
-G::LoadSystem('inputfilter');
+
 $filter = new InputFilter();
 $_POST = $filter->xssFilterHard($_POST);
 $ID_ERROR = $filter->xssFilterHard(G::LoadTranslation('ID_ERROR'));

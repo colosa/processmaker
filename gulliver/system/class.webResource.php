@@ -68,7 +68,7 @@ class WebResource
             }
             
             $paramsRef = implode( ',', $paramsRef );
-            G::LoadSystem('inputfilter');
+
             $filter = new InputFilter();
             $post['function'] = $filter->validateInput($post['function']);
             $paramsRef = $filter->validateInput($paramsRef);
@@ -89,7 +89,7 @@ class WebResource
      */
     function _encode ()
     {
-        G::LoadSystem('inputfilter');
+
         $filter = new InputFilter();
         header( 'Content-Type: text/json' );
         $methods = get_class_methods( get_class( $this ) );
@@ -122,7 +122,7 @@ class WebResource
 /* end class WebResource */
 
 /*if (! function_exists( 'json_encode' )) {
-    G::LoadThirdParty( 'pear/json', 'class.json' );
+
 
     function json_encode (&$value)
     {
@@ -132,7 +132,7 @@ class WebResource
 }
 
 if (! function_exists( 'json_decode' )) {
-    G::LoadThirdParty( 'pear/json', 'class.json' );
+
 
     function json_decode (&$value)
     {

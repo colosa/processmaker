@@ -61,7 +61,7 @@ a.krumo-name {
 </style>
 <?php
 
-G::LoadSystem('inputfilter');
+
 $filter = new InputFilter();
 $_POST = $filter->xssFilterHard($_POST);
 $_SESSION = $filter->xssFilterHard($_SESSION);

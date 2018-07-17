@@ -6,6 +6,7 @@ var SuggestField = function (settings) {
     this.value = settings["value"] || "";
     this.form = settings["form"] || null;
     this.required = settings["required"] || null;
+    this.disabled = settings["disabled"] || false;
     this.maxLength = settings["maxLength"] || null;
     this.mode = settings["mode"] || "edit";
     this.options = settings["options"] || [];
@@ -13,14 +14,79 @@ var SuggestField = function (settings) {
     this.width = settings.width || "auto";
     this.messageRequired = null;
     this.searchLoad = null;
-    this.helper = settings.helper || null
+    this.helper = settings.helper || null;
     this.html = null;
     this.responseAjax;
     this.data = null;
     this.separatingText = settings.separatingText || null;
     this.setDynamicLoad(settings.dynamicLoad);
+    this.dom = {};
+    this.dom.fieldRequired = null
 
 };
+/**
+ * Disables the field. Notice that when a field is disabled it is not validated and it is not returned when its
+ * form's getData() method is invoked.
+ * @chainable
+ */
+SuggestField.prototype.disable = function () {
+
+    this.disabled = true;
+    this.inputField.prop('disabled', true);
+
+    return this;
+};
+/**
+ * Enables the field. Notice that when a field is disabled it is not validated and it is not returned when its
+ * form's getData() method is invoked.
+ * @chainable
+ */
+SuggestField.prototype.enable = function () {
+
+    this.disabled = false;
+    this.inputField[0].disabled = false;
+
+    return this;
+};
+
+SuggestField.prototype.hideRequired = function (){
+    this.dom.fieldRequired.style.display = 'none';
+    return this;
+};
+/**
+ * Disables the field. Notice that when a field is disabled it is not validated and it is not returned when its
+ * form's getData() method is invoked.
+ * @chainable
+ */
+SuggestField.prototype.disable = function () {
+    this.disabled = true;
+    this.inputField[0].disabled = true;
+
+    return this;
+};
+
+SuggestField.prototype.showRequired = function (){
+    this.dom.fieldRequired.style.display = 'inline-block';
+    return this;
+};
+/**
+ * Sets if the fields is required or not.
+ * @param {Boolean} required
+ * @chainable
+ */
+SuggestField.prototype.setRequired = function (required) {
+    this.required = !!required;
+    if (this.dom.fieldRequired) {
+        if (this.required) {
+            this.showRequired();
+        } else {
+            this.hideRequired();
+        }
+    }
+    return this;
+};
+
+
 SuggestField.prototype.setDynamicLoad = function (dynamicLoad) {
     this.dynamicLoad = !!dynamicLoad ? dynamicLoad : false;
     if (this.dynamicLoad.hasOwnProperty("keys")) {
@@ -69,6 +135,9 @@ SuggestField.prototype.createHTML = function () {
     this.colonTag = $(document.createElement("span"));
 
     this.inputField = $(document.createElement("input"));
+    if (this.disabled) {
+        this.disable();
+    }
     this.inputLabel = $(document.createElement("label"));
 
     this.inputLabel[0].textContent = this.label || "unlabel :";
@@ -80,6 +149,7 @@ SuggestField.prototype.createHTML = function () {
     this.containerLabel[0].appendChild(this.inputLabel[0]);
     if (this.required) {
         this.containerLabel[0].appendChild(this.requiredTag[0]);
+        this.dom.fieldRequired = this.requiredTag[0];
     }
     this.containerLabel[0].appendChild(this.colonTag[0]);
     this.html = $(document.createElement("div"));
@@ -234,9 +304,11 @@ SuggestField.prototype.createItems = function (items) {
         $(span).css({
             width: "auto",
             display: "block",
-            marginLeft: "20px",
-            height: "100%",
-            padding: "2px"
+            paddingLeft: "10px",
+            paddingTop: "2px",
+            paddingBottom: "2px",
+            paddingRight: "2px",
+            height: "100%"
         });
         span.innerHTML = items[i].label;
         span.setAttribute("data-value", items[i].value);
@@ -354,7 +426,7 @@ SuggestField.prototype.hideMessageRequired = function () {
 };
 
 SuggestField.prototype.isValid = function () {
-    if (this.html.find("input").val() == "") {
+    if (this.required && this.html.find("input").val() === "") {
         return false
     }
     return true;

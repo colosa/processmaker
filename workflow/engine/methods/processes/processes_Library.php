@@ -67,7 +67,6 @@ function parseItemArray ($array)
 }
 
 try {
-    G::LoadClass( 'processes' );
     $oProcess = new Processes();
     $oProcess->ws_open_public();
 
@@ -84,7 +83,6 @@ try {
     $_DBArray['processes'] = $processes;
     $_SESSION['_DBArray'] = $_DBArray;
 
-    G::LoadClass( 'ArrayPeer' );
     $c = new Criteria( 'dbarray' );
     $c->setDBArrayTable( 'processes' );
 

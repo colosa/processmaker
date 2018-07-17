@@ -70,11 +70,19 @@ class ProjectUsers extends Api
     }
 
     /**
+     * Return the user that can start a task.
+     * 
+     * @url POST /:prj_uid/ws/user/can-start-task
+     * 
      * @param string $prj_uid {@min 32} {@max 32}
      * @param string $act_uid {@min 32} {@max 32}
      * @param wsUserCanStartTaskStructure $request_data
-     *
-     * @url POST /:prj_uid/ws/user/can-start-task
+     * 
+     * @return array
+     * @throws RestException
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPostProjectWsUserCanStartTask($prj_uid, $act_uid = null, wsUserCanStartTaskStructure $request_data =  null)
     {

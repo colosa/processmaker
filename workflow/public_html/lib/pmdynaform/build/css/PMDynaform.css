@@ -11,13 +11,12 @@
 @media all and (max-width: 2000px) and (min-width: 1600px) {
   .form-control {
     display: inline-block;
-    width: 95%;
+    width: 100%;
     padding: 6px 5px;
     font-size: 14px;
     line-height: 1.42857143;
     color: #555;
     background-color: #fff;
-    background-image: none;
     border: 1px solid #ccc;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
@@ -31,7 +30,7 @@
 
   .pmdynaform-control-image .control {
     display: inline-block;
-    width: 93%;
+    width: 100%;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     -ms-border-radius: 2px;
@@ -44,7 +43,7 @@
   }
 
   .datetime-container {
-    width: 93%;
+    width: 100%;
     display: inline-block;
   }
 
@@ -84,13 +83,12 @@
 @media all and (max-width: 1600px) and (min-width: 980px) {
   .form-control {
     display: inline-block;
-    width: 93%;
+    width: 100%;
     padding: 6px 5px;
     font-size: 14px;
     line-height: 1.42857143;
     color: #555;
     background-color: #fff;
-    background-image: none;
     border: 1px solid #ccc;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
@@ -104,7 +102,7 @@
 
   .pmdynaform-control-image .control {
     display: inline-block;
-    width: 93%;
+    width: 100%;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     -ms-border-radius: 2px;
@@ -117,7 +115,7 @@
   }
 
   .datetime-container {
-    width: 93%;
+    width: 100%;
     display: inline-block;
   }
 
@@ -155,20 +153,14 @@
   }
 }
 @media all and (max-width: 980px) and (min-width: 550px) {
-  .tpl-empty {
-    display: none;
-  }
-
   .form-control {
     display: inline-block;
-    width: 93%;
-    min-width: 70px;
+    width: 98%;
     padding: 6px 5px;
     font-size: 14px;
     line-height: 1.42857143;
     color: #555;
     background-color: #fff;
-    background-image: none;
     border: 1px solid #ccc;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
@@ -182,7 +174,7 @@
 
   .pmdynaform-control-image .control {
     display: inline-block;
-    width: 93%;
+    width: 98%;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     -ms-border-radius: 2px;
@@ -196,7 +188,7 @@
 
   .pmdynaform-control-link {
     display: inline-block;
-    width: 93%;
+    width: 98%;
     text-align: left;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
@@ -209,12 +201,12 @@
   }
 
   .datetime-container {
-    width: 93%;
+    width: 98%;
     display: inline-block;
   }
 
   .pmdynaform-field .pmdynaform-checkbox-items {
-    width: 93%;
+    width: 98%;
   }
 
   .pmdynaform-edit-grid.responsive .form-control {
@@ -243,19 +235,14 @@
   }
 }
 @media all and (max-width: 550px) and (min-width: 300px) {
-  .tpl-empty {
-    display: none;
-  }
-
   .form-control {
     display: inline-block;
-    width: 93%;
+    width: 95%;
     padding: 6px 5px;
     font-size: 14px;
     line-height: 1.42857143;
     color: #555;
     background-color: #fff;
-    background-image: none;
     border: 1px solid #ccc;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
@@ -269,7 +256,7 @@
 
   .pmdynaform-control-image .control {
     display: inline-block;
-    width: 91%;
+    width: 95%;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     -ms-border-radius: 2px;
@@ -282,12 +269,12 @@
   }
 
   .datetime-container {
-    width: 91%;
+    width: 95%;
     display: inline-block;
   }
 
   .pmdynaform-field .pmdynaform-checkbox-items {
-    width: 91%;
+    width: 95%;
   }
 
   .pmdynaform-edit-grid.responsive .form-control {
@@ -316,19 +303,14 @@
   }
 }
 @media all and (max-width: 300px) {
-  .tpl-empty {
-    display: none;
-  }
-
   .form-control {
     display: inline-block;
-    width: 89%;
+    width: 93%;
     padding: 6px 5px;
     font-size: 14px;
     line-height: 1.42857143;
     color: #555;
     background-color: #fff;
-    background-image: none;
     border: 1px solid #ccc;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
@@ -342,7 +324,7 @@
 
   .pmdynaform-control-image .control {
     display: inline-block;
-    width: 89%;
+    width: 93%;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     -ms-border-radius: 2px;
@@ -355,12 +337,12 @@
   }
 
   .datetime-container {
-    width: 89%;
+    width: 93%;
     display: inline-block;
   }
 
   .pmdynaform-field .pmdynaform-checkbox-items {
-    width: 89%;
+    width: 93%;
   }
 
   .pmdynaform-edit-grid.responsive .form-control {
@@ -515,8 +497,60 @@
 .col-sm-12,
 .col-md-12,
 .col-lg-1 {
-  padding-right: 2px;
+  padding-right: 4px;
   padding-left: 10px;
+}
+
+.pmdynaform-grid .col-xs-1,
+.pmdynaform-grid .col-sm-1,
+.pmdynaform-grid .col-md-1,
+.pmdynaform-grid .col-lg-1,
+.pmdynaform-grid .col-xs-2,
+.pmdynaform-grid .col-sm-2,
+.pmdynaform-grid .col-md-2,
+.pmdynaform-grid .col-lg-2,
+.pmdynaform-grid .col-xs-3,
+.pmdynaform-grid .col-sm-3,
+.pmdynaform-grid .col-md-3,
+.pmdynaform-grid .col-lg-3,
+.pmdynaform-grid .col-xs-4,
+.pmdynaform-grid .col-sm-4,
+.pmdynaform-grid .col-md-4,
+.pmdynaform-grid .col-lg-4,
+.pmdynaform-grid .col-xs-5,
+.pmdynaform-grid .col-sm-5,
+.pmdynaform-grid .col-md-5,
+.pmdynaform-grid .col-lg-5,
+.pmdynaform-grid .col-xs-6,
+.pmdynaform-grid .col-sm-6,
+.pmdynaform-grid .col-md-6,
+.pmdynaform-grid .col-lg-6,
+.pmdynaform-grid .col-xs-7,
+.pmdynaform-grid .col-sm-7,
+.pmdynaform-grid .col-md-7,
+.pmdynaform-grid .col-lg-7,
+.pmdynaform-grid .col-xs-8,
+.pmdynaform-grid .col-sm-8,
+.pmdynaform-grid .col-md-8,
+.pmdynaform-grid .col-lg-8,
+.pmdynaform-grid .col-xs-9,
+.pmdynaform-grid .col-sm-9,
+.pmdynaform-grid .col-md-9,
+.pmdynaform-grid .col-lg-9,
+.pmdynaform-grid .col-xs-10,
+.pmdynaform-grid .col-sm-10,
+.pmdynaform-grid .col-md-10,
+.pmdynaform-grid .col-lg-10,
+.pmdynaform-grid .col-xs-11,
+.pmdynaform-grid .col-sm-11,
+.pmdynaform-grid .col-md-11,
+.pmdynaform-grid .col-lg-11,
+.pmdynaform-grid .col-xs-12,
+.pmdynaform-grid .col-sm-12,
+.pmdynaform-grid .col-md-12,
+.pmdynaform-grid .col-lg-1 {
+  padding-right: 0;
+  padding-left: 0;
 }
 
 .bootstrap-datetimepicker-widget.dropdown-menu:before,
@@ -532,8 +566,8 @@
 }
 
 .form-horizontal .form-group {
-  margin-left: 0px;
-  margin-right: 0px;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 button[disabled], html input[disabled] {
@@ -625,15 +659,12 @@ a.form-control {
 
 textarea {
   resize: vertical;
+  margin-bottom: -7px;
 }
 
 .pmdynaform-message-error {
   color: white;
   display: inline-block;
-  /*background-color: #C73434;*/
-  /*box-shadow: 0 0 2px #570808;
-  -webkit-box-shadow: 0 0 2px #570808;
-  -moz-box-shadow: 0 0 2px #570808;*/
   position: relative;
   z-index: 10;
   -webkit-border-radius: 0px;
@@ -642,7 +673,6 @@ textarea {
   border-radius: 0px;
   font-size: 80%;
   font-family: helvetica;
-  text-align: center;
 }
 
 .pmdynaform-message-error .alert {
@@ -833,7 +863,7 @@ textarea {
 .pmdynaform-label-options {
   padding: 7px 10px;
   color: #777777;
-  height: auto;
+  word-wrap: break-word;
 }
 
 .pmdynaform-label-options span {
@@ -1163,11 +1193,6 @@ textarea {
   background: #ffffff;
 }
 
-.pmdynaform-grid-fields {
-  /*display: inline-table;
-  width: 96%;*/
-}
-
 .pmdynaform-grid-thead-static {
   overflow-x: hidden;
 }
@@ -1233,14 +1258,13 @@ textarea {
 }
 
 .pmdynaform-grid-removerow-static.remove-row .btn-danger {
+  margin: 2px 4px 2px 4px;
+  padding: 4px;
+  right: 2px;
   top: 5px;
-  margin-right: 8px;
-  right: 3px;
-  padding: 3px 4px 3px 4px;
 }
 
 .pmdynaform-grid-field-static {
-  /*position: relative;*/
   min-height: 1px;
   box-sizing: border-box;
   display: table-cell;
@@ -1258,22 +1282,13 @@ textarea {
   border: none;
 }
 
-/*.pmdynaform-grid .pmdynaform-grid-row .index-row,
-.pmdynaform-grid .pmdynaform-grid-row .remove-row,
-.pmdynaform-grid .wildcard{
-	width : 50px;
-}*/
 .pmdynaform-grid .pmdynaform-grid-row .index-row {
   float: left;
 }
 
-/*
-.pmdynaform-grid .pmdynaform-grid-row .remove-row{
-	float : rigth
-}*/
 @media all and (max-width: 1600px) and (min-width: 980px) {
   .pmdynaform-field-grid.form .pmdynaform-label-options {
-    text-align: center;
+    text-align: inherit;
   }
 
   .col-lg-6.form .pmdynaform-label-options,
@@ -1461,7 +1476,8 @@ textarea {
 }
 
 .pmdynaform-field-grid.responsive .remove-row button {
-  padding: 3px;
+  padding: 4px;
+  margin: 2px;
   top: 5px;
 }
 
@@ -1477,15 +1493,13 @@ textarea {
   display: none;
 }
 
-/*.row.pmdynaform-grid-thead{
-	padding: 5px 20px 5px 20px;
-}*/
 .pmdynaform-grid-thead .glyphicon-info-sign {
   right: initial;
 }
 
 .pmdynaform-grid .pmdynaform-label-options {
-  text-align: center;
+  text-align: initial;
+  word-wrap: break-word;
 }
 
 .pmdynaform-grid .pmdynaform-checkbox-items {
@@ -1500,11 +1514,9 @@ textarea {
 
 .pmdynaform-grid-field-static {
   box-sizing: border-box;
-  text-aling: center;
 }
 
 .pmdynaform-view-grid .pmdynaform-grid-tbody .pmdynaform-grid-field-static {
-  border-left: 1px solid #DADADA;
   text-align: center;
 }
 
@@ -1659,7 +1671,7 @@ textarea {
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   border-radius: 5px;
-  text-align: center;
+  text-align: inherit;
 }
 
 .pmdynaform-file-resizeimage {
@@ -2484,7 +2496,9 @@ textarea {
 }
 
 .pmdynaform-multiplefile-box {
-  padding-top: 15px;
+  padding: 15px 0 0 0;
+  list-style: none;
+  margin: 0;
 }
 
 .pmdynaform-field-multipleFile {
@@ -2514,11 +2528,6 @@ textarea {
   padding: 8px;
   display: inline-block;
   font-size: 12px;
-  border-radius: 4px;
-}
-
-.pmdynaform-file-box {
-  margin-top: 8px;
   border-radius: 4px;
 }
 
@@ -2563,6 +2572,171 @@ textarea {
   width: 100%;
   color: #555151;
   background: #f1f1f1;
+}
+
+ul.pmdynaform-multiplefile-box > .pmdynaform-mfile-wrapper:first-child,
+ul.pmdynaform-multiplefile-box > .pmdynaform-mfile-wrapper:first-child > .pmdynaform-mfile {
+  border-top-width: 1px;
+}
+
+.pmdynaform-mfile-wrapper,
+.pmdynaform-mfile {
+  border-color: #E8E8E8;
+  border-width: 0 1px 1px 1px;
+  border-style: solid;
+  font-size: 14px;
+}
+
+.pmdynaform-mfile-title,
+.pmdynaform-mfile-icon,
+.pmdynaform-mfile-actions,
+.pmdynaform-mfile-action-item {
+  display: inline-block;
+}
+
+.pmdynaform-mfile-title,
+.pmdynaform-mfile-info,
+.pmdynaform-mfile-actions,
+.pmdynaform-mfile-action-item {
+  height: inherit;
+}
+
+.pmdynaform-mfile,
+.pmdynaform-mfile-title,
+.pmdynaform-mfile-header,
+.pmdynaform-mfile-details {
+  overflow: hidden;
+}
+
+.pmdynaform-mfile,
+.pmdynaform-mfile-header,
+.pmdynaform-mfile-details {
+  white-space: nowrap;
+}
+
+.pmdynaform-mfile {
+  box-sizing: content-box;
+  font-family: 'Source Sans Pro', sans-serif;
+  height: 38px;
+  background: #FFFFFF;
+  color: #484848;
+  padding: 15px;
+}
+
+.pmdynaform-mobile .pmdynaform-mfile {
+  padding: 8px;
+}
+
+.pmdynaform-mfile-title {
+  width: calc(100% - 110px);
+}
+
+.pmdynaform-mfile-icon {
+  color: #d6d6d6;
+  text-align: center;
+  width: 40px;
+  float: left;
+  margin-right: 10px;
+}
+
+.pmdynaform-mobile .pmdynaform-mfile-icon {
+  margin-right: 3px;
+}
+
+.pmdynaform-mfile-icon:before {
+  font-size: 36px;
+}
+
+.pmdynaform-mfile-info {
+  display: inline-block;
+  width: calc(100% - 50px);
+}
+
+.pmdynaform-mobile .pmdynaform-mfile-info {
+  width: calc(100% - 43px);
+}
+
+.pmdynaform-mfile-header,
+.pmdynaform-mfile-details {
+  height: 50%;
+  text-overflow: ellipsis;
+}
+
+.pmdynaform-mfile-header {
+  font-weight: 600;
+  color: #5E5E5E;
+}
+
+.pmdynaform-mfile-details,
+.pmdynaform-mfile-version {
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+.pmdynaform-mfile-details .progress {
+  height: 100%;
+}
+
+.pmdynaform-mfile-version {
+  margin-left: 5px;
+}
+
+.pmdynaform-mfile-actions {
+  display: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  float: right;
+  width: auto;
+  text-align: right;
+}
+
+.pmdynaform-mfile-action-item {
+  width: 29px;
+  overflow: hidden;
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.pmdynaform-mfile-actions a {
+  font-size: 22px;
+  color: #c0c0c0;
+  margin: 0 0 0 8px;
+  text-decoration: none;
+  line-height: 22px;
+}
+
+.pmdynaform-mfile-actions a:hover {
+  color: #666;
+}
+
+.pmdynaform-mfile .progress-bar-success {
+  background-color: #1ca385;
+}
+
+input[type=file].pmdynaform-mfile-input {
+  display: none;
+}
+
+.pmdynaform-mfile-versions {
+  display: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 200px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.pmdynaform-mfile-versions .pmdynaform-mfile {
+  background: #f9f9f9;
+  border-width: 1px 0 0 0;
+}
+
+.pmdynaform-mfile.pmdynaform-mfile-loading-message {
+  height: auto;
+  padding: 8px;
+  text-align: center;
 }
 
 .file-upload-box {

@@ -69,7 +69,7 @@
             case 1:
                 tableName.failed();
 
-                if(confirm("The table name already exists\n\nDo you want to overwrite the table?")) {
+                if(confirm("@G::LoadTranslation(ID_BATCH_ROUTING_TABLE_ALREADY_EXISTS)")) {
                     conSaveProperties(1);
                 }
                 break;

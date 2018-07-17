@@ -22,14 +22,15 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
 
-$pluginFile = $_GET['id'];
-G::LoadClass( 'plugin' );
+use ProcessMaker\Plugins\PluginRegistry;
 
-$oPluginRegistry = & PMPluginRegistry::getSingleton();
+$pluginFile = $_GET['id'];
+
+$oPluginRegistry = PluginRegistry::loadSingleton();
 
 $details = $oPluginRegistry->getPluginDetails( $pluginFile );
 try {
-    $Fields = $oPluginRegistry->updateFieldsForPageSetup( $details->sNamespace, $_POST );
+    $Fields = $oPluginRegistry->updateFieldsForPageSetup( $details->getNamespace(), $_POST );
     $str = "$Fields fields saved successfully!";
     G::SendTemporalMessage( $str, 'info', 'string', 3, 100 );
     G::Header( "location: pluginsSetup?id=$pluginFile" );

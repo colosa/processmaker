@@ -50,9 +50,6 @@ $params = array ('userid' => $user,'password' => $pass);
 $result = $client->__SoapCall( 'login', array ($params) );
 
 if ($result->status_code == 0) {
-    if (! class_exists( 'Users' )) {
-        require ("classes/model/UsersPeer.php");
-    }
     $oCriteria = new Criteria( 'workflow' );
     $oCriteria->addSelectColumn( 'USR_UID' );
     $oCriteria->add( UsersPeer::USR_USERNAME, $sWS_USER );
@@ -61,7 +58,6 @@ if ($result->status_code == 0) {
     $user_id = $resultSet->getRow();
     $result->message = $user_id[0];
 
-    G::LoadClass( 'case' );
     $caseInstance = new Cases();
     if (! $caseInstance->canStartCase( $result->message, $_REQUEST['PRO_UID'] )) {
         $result->status_code = - 1000;

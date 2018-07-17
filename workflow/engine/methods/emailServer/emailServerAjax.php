@@ -1,8 +1,8 @@
 <?php
 $option = (isset($_POST["option"]))? $_POST["option"] : "";
-
 $response = array();
 
+$RBAC->allows(basename(__FILE__), $option);
 switch ($option) {
     case "INS":
         $arrayData = array();

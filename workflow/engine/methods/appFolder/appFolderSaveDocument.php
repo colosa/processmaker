@@ -23,6 +23,9 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  *
  */
+
+use ProcessMaker\Plugins\PluginRegistry;
+
 try {
     $docUid     = $_POST['form']['DOC_UID'];
     $appDocUid  = $_POST['form']['APP_DOC_UID'];
@@ -33,10 +36,6 @@ try {
     $docType = isset($_GET['docType']) ? $_GET['docType'] : "";
 
     //save info
-
-    require_once ("classes/model/AppDocument.php");
-    require_once ('classes/model/AppFolder.php');
-    require_once ('classes/model/InputDocument.php');
 
     $oInputDocument = new InputDocument();
     if ($_GET['UID'] != -1) {
@@ -128,7 +127,7 @@ try {
             G::uploadFile($_FILES['form']['tmp_name']['APP_DOC_FILENAME'], $sPathName, $sFileName);
 
             //Plugin Hook PM_UPLOAD_DOCUMENT for upload document
-            $oPluginRegistry = & PMPluginRegistry::getSingleton();
+            $oPluginRegistry = PluginRegistry::loadSingleton();
             if ($oPluginRegistry->existsTrigger(PM_UPLOAD_DOCUMENT) && class_exists('uploadDocumentData')) {
 
                 $oData['APP_UID'] = $appId;

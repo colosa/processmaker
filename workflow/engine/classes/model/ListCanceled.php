@@ -99,6 +99,9 @@ class ListCanceled extends BaseListCanceled
 
         $oListInbox = new ListInbox();
         $oListInbox->removeAll($data['APP_UID']);
+        //We need to remove the cancelled case from unassigned list if the record exists
+        $unassigned = new ListUnassigned();
+        $unassigned->remove($data['APP_UID'], $data['DEL_INDEX']);
 
         //Update - WHERE
         $criteriaWhere = new Criteria("workflow");

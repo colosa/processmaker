@@ -167,8 +167,8 @@
             },
             {
                 "name": "editor",
-                "full": "gulliver/thirdparty/htmlarea/editor.js",
-                "mini": "gulliver/thirdparty/htmlarea/editor.js",
+                "full": "thirdparty/htmlarea/editor.js",
+                "mini": "thirdparty/htmlarea/editor.js",
                 "minify": true
             }
         ],

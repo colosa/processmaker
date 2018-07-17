@@ -39,7 +39,7 @@
  * @return object | $result | Response |
  *
  */
-G::LoadSystem('restClient');
+
 
 // Validation left
 function cancelCheckout($alfrescoServerUrl, $docUid, $user = "", $pwd = "")

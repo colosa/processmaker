@@ -1,5 +1,8 @@
 <?php
 global $G_FORM;
+
+use ProcessMaker\Core\System;
+
 $sPRO_UID = $oData->PRO_UID;
 $sTASKS = $oData->TASKS;
 $sDYNAFORM = $oData->DYNAFORM;
@@ -10,8 +13,6 @@ $sWS_ROUNDROBIN = $oData->WS_ROUNDROBIN;
 $sWE_USR = $oData->WE_USR;
 
 $withWS = $sWE_TYPE == 'WS';
-
-G::LoadClass( "system" );
 
 try {
     $pathProcess = PATH_DATA_SITE . 'public' . PATH_SEP . $sPRO_UID . PATH_SEP;
@@ -24,7 +25,6 @@ try {
         throw (new Exception( "The task '" . $TaskFields['TAS_TITLE'] . "' doesn't have a valid assignment type. The task needs to have a 'Cyclical Assignment'." ));
     }
 
-    G::LoadClass( 'tasks' );
     $oTask = new Tasks();
     $user = $oTask->assignUsertoTask( $sTASKS );
 
@@ -60,6 +60,10 @@ try {
         $sContent .= "\$G_PUBLISH->AddContent('dynaform', 'xmlform', '" . $sPRO_UID . '/' . $sDYNAFORM . "', '', array(), '" . $dynTitle . 'Post.php' . "');\n";
         $sContent .= "G::RenderPage('publish', 'blank');";
         file_put_contents( $pathProcess . $dynTitle . '.php', $sContent );
+        
+        //Create file to display information and prevent resubmission data (Post/Redirect/Get).
+        \ProcessMaker\BusinessModel\WebEntry::createFileInfo($pathProcess . $dynTitle . "Info.php");
+
         //creating the second file, the  post file who receive the post form.
         $pluginTpl = PATH_CORE . 'templates' . PATH_SEP . 'processes' . PATH_SEP . 'webentryPost.tpl';
         $template = new TemplatePower( $pluginTpl );
@@ -72,6 +76,7 @@ try {
         $template->assign( 'wsUser', $sWS_USER );
         $template->assign( 'wsPass', Bootstrap::hashPassword($sWS_PASS, '', true) );
         $template->assign( 'wsRoundRobin', $sWS_ROUNDROBIN );
+        $template->assign( 'weTitle', $dynTitle);
 
         G::auditLog('WebEntry','Generate web entry with web services ('.$dynTitle.'.php) in process "'.$resultProcess['PRO_TITLE'].'"');
 

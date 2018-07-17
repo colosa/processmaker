@@ -414,23 +414,23 @@ class DataBaseMaintenance
         if (isset($aHost[1])) {
             $dbPort = $aHost[1];
             $command = 'mysqldump'
-                    . ' --user=' . $this->user
-                    . ' --password=' . $password
-                    . ' --host=' . $dbHost
-                    . ' --port=' . $dbPort
-                    . ' --opt'
-                    . ' --skip-comments'
-                    . ' ' . $this->dbName
-                    . ' > ' . $outfile;
+                . ' --user=' . $this->user
+                . ' --password=' . $password
+                . ' --host=' . $dbHost
+                . ' --port=' . $dbPort
+                . ' --opt'
+                . ' --skip-comments'
+                . ' ' . $this->dbName
+                . ' > ' . $outfile;
         } else {
             $command = 'mysqldump'
-                    . ' --host=' . $dbHost
-                    . ' --user=' . $this->user
-                    . ' --opt'
-                    . ' --skip-comments'
-                    . ' --password=' . $password
-                    . ' ' . $this->dbName
-                    . ' > ' . $outfile;
+                . ' --host=' . $dbHost
+                . ' --user=' . $this->user
+                . ' --opt'
+                . ' --skip-comments'
+                . ' --password=' . $password
+                . ' ' . $this->dbName
+                . ' > ' . $outfile;
         }
         shell_exec($command);
     }

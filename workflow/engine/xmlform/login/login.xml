@@ -27,7 +27,7 @@ SELECT LANG_ID, LANG_NAME FROM langOptions
   <JS type="javascript"><![CDATA[
 
 //validate iframe login
-if(inIframe()) {
+if(inIframe() && (window.location.search.indexOf("inIFrame=1")===-1)) {
   if (PM.Sessions.getCookie('PM-TabPrimary') !== '101010010'
       && (window.location.pathname.indexOf("login/login") !== -1
       || window.location.pathname.indexOf("sysLogin") !== -1)) {
@@ -48,15 +48,6 @@ if(flagForgotPassword == 'on' || flagForgotPassword == '1') {
 }
 
 var panel;
-
-function processHbInfo() {
-  ajax_server = "../services/processHeartBeat_Ajax.php";
-  parameters = "action=processInformation";
-  method = "POST";
-  callback = "";
-  asynchronous = true;
-  ajax_post(ajax_server, parameters, method, callback, asynchronous);
-};
 
 function showGettingStarted() {
   panel = new leimnud.module.panel();
@@ -95,9 +86,6 @@ var saveConfig = function() {
 
 var dynaformOnload = function() {
   setFocus(getField('USR_USERNAME'));
-  if (flagHeartBeat) {
-    processHbInfo();
-  }
   if (flagGettingStarted) {
     showGettingStarted();
   }

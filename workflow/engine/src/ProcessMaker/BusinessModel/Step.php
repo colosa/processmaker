@@ -1,6 +1,9 @@
 <?php
 namespace ProcessMaker\BusinessModel;
 
+use ProcessMaker\Plugins\Interfaces\StepDetail;
+use ProcessMaker\Plugins\PluginRegistry;
+
 class Step
 {
     private $formatFieldNameInUppercase = true;
@@ -528,7 +531,7 @@ class Step
 
             //Get data
             //Call plugin
-            $pluginRegistry = &\PMPluginRegistry::getSingleton();
+            $pluginRegistry = PluginRegistry::loadSingleton();
             $externalSteps = $pluginRegistry->getSteps();
 
             $criteria = new \Criteria("workflow");
@@ -579,9 +582,10 @@ class Step
                     $titleObj = "unknown " . $row["STEP_UID"];
 
                     if (is_array($externalSteps) && count($externalSteps) > 0) {
-                        foreach ($externalSteps as $key => $value) {
-                            if ($value->sStepId == $row["STEP_UID_OBJ"]) {
-                                $titleObj = $value->sStepTitle;
+                        /** @var StepDetail $value */
+                        foreach ($externalSteps as $value) {
+                            if ($value->equalStepIdTo($row["STEP_UID_OBJ"])) {
+                                $titleObj = $value->getStepTitle();
                             }
                         }
                     }

@@ -505,16 +505,22 @@ PMFlow.prototype.showMoveHandlers = function () {
  * @returns {Number}
  */
 PMFlow.prototype.getSegmentHeight = function (index) {
-    return Math.abs(this.lineSegments.get(index).endPoint.y
-        - this.lineSegments.get(index).startPoint.y);
+    if (this.lineSegments.getSize()) {
+        return Math.abs(this.lineSegments.get(index).endPoint.y
+            - this.lineSegments.get(index).startPoint.y);
+    }
+    return 0;
 };
 /**
  * Get Segment Width
  * @returns {Number}
  */
 PMFlow.prototype.getSegmentWidth = function (index) {
-    return Math.abs(this.lineSegments.get(index).endPoint.x
-        - this.lineSegments.get(index).startPoint.x);
+    if (this.lineSegments.getSize()) {
+        return Math.abs(this.lineSegments.get(index).endPoint.x
+            - this.lineSegments.get(index).startPoint.x);
+    }
+    return 0;
 };
 /**
  * Get Label Coordinates
@@ -522,26 +528,33 @@ PMFlow.prototype.getSegmentWidth = function (index) {
  */
 PMFlow.prototype.getLabelCoordinates = function () {
     var x, y, index = 0, diffX, diffY, i, max;
-    max = (this.getSegmentWidth(0) > this.getSegmentHeight(0)) ?
-        this.getSegmentWidth(0) : this.getSegmentHeight(0);
 
-    for (i = 1; i < this.lineSegments.getSize(); i += 1) {
-        diffX = this.getSegmentWidth(i);
-        diffY = this.getSegmentHeight(i);
-        if (diffX > max + 1) {
-            max = diffX;
-            index = i;
-        } else if (diffY > max + 1) {
-            max = diffY;
-            index = i;
+    if (this.lineSegments.getSize()) {
+        max = (this.getSegmentWidth(0) > this.getSegmentHeight(0)) ?
+            this.getSegmentWidth(0) : this.getSegmentHeight(0);
+
+        for (i = 1; i < this.lineSegments.getSize(); i += 1) {
+            diffX = this.getSegmentWidth(i);
+            diffY = this.getSegmentHeight(i);
+            if (diffX > max + 1) {
+                max = diffX;
+                index = i;
+            } else if (diffY > max + 1) {
+                max = diffY;
+                index = i;
+            }
         }
+        diffX = (this.lineSegments.get(index).endPoint.x
+            - this.lineSegments.get(index).startPoint.x) / 2;
+        diffY = (this.lineSegments.get(index).endPoint.y
+            - this.lineSegments.get(index).startPoint.y) / 2;
+        x = this.lineSegments.get(index).startPoint.x + diffX;
+        y = this.lineSegments.get(index).startPoint.y + diffY;
+    } else {
+        x = this.srcPort.getAbsoluteX();
+        y = this.srcPort.getAbsoluteY();
     }
-    diffX = (this.lineSegments.get(index).endPoint.x
-        - this.lineSegments.get(index).startPoint.x) / 2;
-    diffY = (this.lineSegments.get(index).endPoint.y
-        - this.lineSegments.get(index).startPoint.y) / 2;
-    x = this.lineSegments.get(index).startPoint.x + diffX;
-    y = this.lineSegments.get(index).startPoint.y + diffY;
+
     return new PMUI.util.Point(x, y);
 };
 /**

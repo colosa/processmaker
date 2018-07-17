@@ -24,7 +24,6 @@
 
 $USR_UID = $_GET['USR_UID'];
 
-G::LoadClass( 'case' );
 $oProcessMap = new Cases();
 
 $c = $oProcessMap->getCriteriaUsersCases( 'TO_DO', $USR_UID );

@@ -8,8 +8,6 @@
   //if (($RBAC_Response = $RBAC->userCanAccess("PM_CASES"))!=1) return $RBAC_Response;
 
   /* Includes */
-  G::LoadClass('case');
-  G::LoadClass('configuration');
 
   /* GET , POST & $_SESSION Vars */
   $conf = new Configurations();
@@ -29,7 +27,6 @@
   $xmlfile = '{className}/{className}OnTransitList';
   /* Render page */
 
-  //require_once ( 'classes/class.extendGulliver.php' );
   $G_PUBLISH = new Publisher;
   $G_PUBLISH->AddContent( 'propeltable', '{className}/paged-table', '{className}/{className}OnTransitList', $Criteria );
   G::RenderPage( "publish" );

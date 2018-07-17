@@ -24,8 +24,6 @@
 if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1)
     return $RBAC_Response;
 
-G::LoadClass( 'groups' );
-
 $dbc = new DBConnection();
 $ses = new DBSession( $dbc );
 

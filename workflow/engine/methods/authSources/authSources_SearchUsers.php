@@ -42,7 +42,7 @@ if (file_exists( PATH_XMLFORM . 'ldapAdvanced/' . $fields['AUTH_SOURCE_PROVIDER'
        $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'login/showMessage', '', array ('MESSAGE' => G::LoadTranslation( 'ID_AUTH_SOURCE_FEATURE_MISSING' ) ) );
        G::RenderPage( 'publish', 'blank' );
     } else {
-        G::LoadClass('configuration');
+
         $c = new Configurations();
         $configPage = $c->getConfiguration('additionalTablesList', 'pageSize','',$_SESSION['USER_LOGGED']);
         $Config['pageSize'] = isset($configPage['pageSize']) ? $configPage['pageSize'] : 20;

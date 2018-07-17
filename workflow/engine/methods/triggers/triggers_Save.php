@@ -42,14 +42,13 @@ if (isset( $sfunction ) && $sfunction == 'lookforNameTrigger') {
     echo $oTrigger->verifyNameTrigger($sPRO_UID, $snameTrigger);
 
 } else {
-    G::LoadClass("processMap");
 
     $response = array();
 
     try {
         $oTrigger = new Triggers();
 
-        $oProcessMap = new processMap( new DBConnection() );
+        $oProcessMap = new ProcessMap( new DBConnection() );
         if (isset( $_POST['form'] )) {
             $value = $_POST['form'];
         } else {

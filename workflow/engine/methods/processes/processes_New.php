@@ -21,6 +21,9 @@
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
+
+use ProcessMaker\Plugins\PluginRegistry;
+
 $access = $RBAC->userCanAccess( 'PM_FACTORY' );
 if ($access != 1) {
     switch ($access) {
@@ -43,7 +46,7 @@ if ($access != 1) {
 }
 
 //call plugins
-$oPluginRegistry = & PMPluginRegistry::getSingleton();
+$oPluginRegistry = PluginRegistry::loadSingleton();
 $oPluginRegistry->executeTriggers( PM_NEW_PROCESS_LIST, NULL );
 
 $aFields['MESSAGE1'] = G::LoadTranslation( 'ID_MSG_ERROR_PRO_TITLE' );

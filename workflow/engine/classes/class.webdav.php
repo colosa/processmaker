@@ -5,8 +5,10 @@
  *
  * @package workflow.engine.classes
  */
+
+use ProcessMaker\Core\System;
+
 require_once "HTTP/WebDAV/Server.php";
-require_once "System.php";
 
 /**
  * ProcessMaker Filesystem access using WebDAV
@@ -123,9 +125,8 @@ class ProcessMakerWebDav extends HTTP_WebDAV_Server
         //list all active processes
         if (count($paths) == 1 && $paths[0] == 'processes' && is_dir($pathProcesses)) {
             // try to get the process directory list
-            G::LoadClass('processMap');
-            G::LoadClass('model/Process');
-            $oProcessMap = new processMap();
+
+            $oProcessMap = new ProcessMap();
             $oProcess = new Process();
             $c = $oProcessMap->getConditionProcessList();
             $oDataset = ProcessPeer::doSelectRS($c);
@@ -398,7 +399,7 @@ class ProcessMakerWebDav extends HTTP_WebDAV_Server
      */
     public function GET(&$options)
     {
-        G::LoadSystem('inputfilter');
+
         $filter = new InputFilter();
         $options = $filter->xssFilterHard($options);
         $paths = $filter->xssFilterHard($this->paths);
@@ -743,7 +744,7 @@ class ProcessMakerWebDav extends HTTP_WebDAV_Server
         if (is_dir($path)) {
             $query = "DELETE FROM properties WHERE path LIKE '" . $this->_slashify($options["path"]) . "%'";
             mysql_query($query);
-            System::rm("-rf $path");
+            PearSystem::rm("-rf $path");
         } else {
             unlink($path);
         }
@@ -846,7 +847,7 @@ class ProcessMakerWebDav extends HTTP_WebDAV_Server
             mysql_query($query);
         } else {
             if (is_dir($source)) {
-                $files = System::find($source);
+                $files = PearSystem::find($source);
                 $files = array_reverse($files);
             } else {
                 $files = array($source
@@ -945,7 +946,7 @@ class ProcessMakerWebDav extends HTTP_WebDAV_Server
      */
     public function checkLock($path)
     {
-        G::LoadSystem('inputfilter');
+
         $filter = new InputFilter();
         $path = $filter->validateInput($path, 'nosql');
         $result = false;

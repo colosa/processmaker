@@ -25,14 +25,6 @@ try {
     global $RBAC;
     $RBAC->requirePermissions( 'PM_USERS' );
 
-    // deprecated the class XmlForm_Field_Image is currently part of the class.xmlform.php package
-    // the use of the external xmlfield_Image is highly discouraged
-    if (! class_exists( 'XmlForm_Field_Image' )) {
-        G::LoadClass( 'xmlfield_Image' );
-    }
-    require_once 'classes/model/Users.php';
-    require_once 'classes/model/Department.php';
-
     $_SESSION['CURRENT_USER'] = $_GET['USR_UID'];
     $oUser = new Users();
     $aFields = $oUser->load( $_GET['USR_UID'] );
@@ -80,7 +72,7 @@ try {
     }
 
     //Load Calendar options and falue for this user
-    G::LoadClass( 'calendar' );
+
     $calendar = new Calendar();
     $calendarObj = $calendar->getCalendarList( true, true );
     global $_DBArray;
@@ -105,7 +97,7 @@ try {
     $oDataset = UsersPeer::doSelectRS( $oCriteria );
     $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
     ///////////////////////
-    G::loadClass( 'configuration' );
+
     $oConf = new Configurations();
     $oConf->loadConfig( $obj, 'ENVIRONMENT_SETTINGS', '' );
 

@@ -5,7 +5,6 @@ global $RBAC;
 if ($RBAC->userCanAccess('PM_FACTORY') == 1) {
     if (isset($_SESSION['processes_upload'])) {
         $form = $_SESSION['processes_upload'];
-        G::LoadClass('processes');
         $app = new Processes();
         if (!$app->processExists($form['PRO_UID'])) {
             $result = 0;

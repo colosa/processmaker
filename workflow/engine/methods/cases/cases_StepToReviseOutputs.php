@@ -23,7 +23,7 @@
  */
 
 /* Permissions */
-G::LoadSystem('inputfilter');
+
 $filter = new InputFilter();
 $_GET = $filter->xssFilterHard($_GET,"url");
 switch ($RBAC->userCanAccess( 'PM_SUPERVISOR' )) {
@@ -39,8 +39,6 @@ switch ($RBAC->userCanAccess( 'PM_SUPERVISOR' )) {
         break;
 }
 $_SESSION = $filter->xssFilterHard($_SESSION,"url");
-/* Includes */
-G::LoadClass( 'case' );
 
 /* Menues */
 $G_MAIN_MENU = 'processmaker';

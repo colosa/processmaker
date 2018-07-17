@@ -25,10 +25,7 @@
  * @package workflow-engine-bin-tasks
  */
 
-G::LoadClass("system");
-G::LoadClass("wsTools");
-G::LoadSystem("dbMaintenance");
-G::LoadClass("cli");
+use ProcessMaker\Core\System;
 
 CLI::taskName('upgrade');
 CLI::taskDescription("Upgrade workspaces.\n\n This command should be run after upgrading ProcessMaker to a new version so that all workspaces are also upgraded to the\n  new version.");
@@ -141,6 +138,11 @@ function run_upgrade($command, $args)
             $errors = true;
         }
     }
+
+    //Verify the information of the singleton ServConf by changing the name of the class if is required.
+    CLI::logging("\nCheck/Fix serialized instance in serverConf.singleton file\n\n");
+    $serverConf = ServerConf::getSingleton();
+    $serverConf->updateClassNameInFile();
 
     // SAVE Upgrades/Patches
     $arrayPatch = glob(PATH_TRUNK . 'patch-*');

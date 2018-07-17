@@ -23,6 +23,9 @@
  */
 
 global $RBAC;
+
+use ProcessMaker\Plugins\PluginRegistry;
+
 $resultRbac  = $RBAC->requirePermissions('PM_SETUP_ADVANCE', 'PM_SETUP_LOGS');
 if (!$resultRbac) {
     G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
@@ -30,7 +33,6 @@ if (!$resultRbac) {
     die();
 }
 
-G::LoadClass('configuration');
 $c = new Configurations();
 $configPage = $c->getConfiguration('eventList', 'pageSize', '', $_SESSION['USER_LOGGED']);
 $Config['pageSize'] = isset($configPage['pageSize']) ? $configPage['pageSize'] : 20;
@@ -48,9 +50,8 @@ $status = array(
     array("pending", G::LoadTranslation('ID_PENDING'))
 );
 
-$pluginRegistry = PMPluginRegistry::getSingleton();
-$statusER = $pluginRegistry->getStatusPlugin('externalRegistration');
-$flagER = (preg_match('/^enabled$/', $statusER))? 1 : 0;
+$pluginRegistry = PluginRegistry::loadSingleton();
+$flagER = $pluginRegistry->isEnable('externalRegistration') ? 1 : 0;
 
 $processes = getProcessArray($userUid);
 

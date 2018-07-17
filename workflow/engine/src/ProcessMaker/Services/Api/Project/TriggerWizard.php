@@ -66,14 +66,21 @@ class TriggerWizard extends Api
     }
 
     /**
+     * Create Trigger for a Process
+     * 
      * @url POST /:prj_uid/trigger-wizard/:lib_name/:fn_name
-     *
+     * @status 201
+     * 
      * @param string $prj_uid      {@min 32}{@max 32}
      * @param string $lib_name
      * @param string $fn_name
      * @param array  $request_data
-     *
-     * @status 201
+     * 
+     * @return array
+     * @throws RestException
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPostTriggerWizard($prj_uid, $lib_name, $fn_name, $request_data)
     {
@@ -93,6 +100,8 @@ class TriggerWizard extends Api
     }
 
     /**
+     * Update trigger wizard.
+     *
      * @url PUT /:prj_uid/trigger-wizard/:lib_name/:fn_name/:tri_uid
      *
      * @param string $prj_uid      {@min 32}{@max 32}
@@ -100,6 +109,11 @@ class TriggerWizard extends Api
      * @param string $fn_name
      * @param string $tri_uid      {@min 32}{@max 32}
      * @param array  $request_data
+     *
+     * @throws RestException
+     *
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPutTriggerWizard($prj_uid, $lib_name, $fn_name, $tri_uid, $request_data)
     {

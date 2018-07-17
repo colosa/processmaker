@@ -1,9 +1,8 @@
 <?php
-G::LoadClass( "system" );
-G::LoadClass( "wsTools" );
-G::LoadClass( "configuration" );
 
 global $RBAC;
+
+use ProcessMaker\Core\System;
 
 if ($RBAC->userCanAccess("PM_SETUP") != 1) {
     G::SendTemporalMessage("ID_USER_HAVENT_RIGHTS_PAGE", "error", "labels");

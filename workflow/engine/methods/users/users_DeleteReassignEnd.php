@@ -37,7 +37,7 @@ try {
             die();
             break;
     }
-    G::LoadClass( 'case' );
+
     $oCase = new Cases();
     $aCases = array ();
     $aUsers = array ();
@@ -54,7 +54,7 @@ try {
             }
         }
     }
-    G::LoadClass( 'case' );
+
     $oCase = new Cases();
     require_once 'classes/model/Users.php';
     $oUser = new Users();

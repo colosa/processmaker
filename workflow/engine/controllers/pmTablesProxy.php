@@ -6,6 +6,9 @@
  * @inherits HttpProxyController
  * @access public
  */
+
+use ProcessMaker\Core\System;
+
 header("Content-type: text/html;charset=utf-8");
 require_once 'classes/model/AdditionalTables.php';
 
@@ -25,11 +28,8 @@ class pmTablesProxy extends HttpProxyController
      */
     public function getList ($httpData)
     {
-        G::LoadClass( 'configuration' );
-        G::LoadClass( 'processMap' );
-        G::LoadClass( 'pmTable' );
         $configurations = new Configurations();
-        $processMap = new processMap();
+        $processMap = new ProcessMap();
 
         // setting parameters
         $config = $configurations->getConfiguration( 'additionalTablesList', 'pageSize', '', $_SESSION['USER_LOGGED'] );
@@ -72,7 +72,7 @@ class pmTablesProxy extends HttpProxyController
 
         foreach ($addTables['rows'] as $i => $table) {
             try {
-                $con = Propel::getConnection( pmTable::resolveDbSource( $table['DBS_UID'] ) );
+                $con = Propel::getConnection( PmTable::resolveDbSource( $table['DBS_UID'] ) );
                 $stmt = $con->createStatement();
                 $rs = $stmt->executeQuery( 'SELECT COUNT(*) AS NUM_ROWS from ' . $table['ADD_TAB_NAME'] );
                 if ($rs->next()) {
@@ -113,12 +113,11 @@ class pmTablesProxy extends HttpProxyController
         if (! isset( $_SESSION['PROCESS'] )) {
             $_SESSION['PROCESS'] = $_POST['PRO_UID'];
         }
-        G::LoadClass( 'dbConnections' );
         $proUid = $_POST['PRO_UID'];
         $dbConn = new DbConnections();
         $dbConnections = $dbConn->getConnectionsProUid( $proUid, array('mysql') );
 
-        $workSpace = new workspaceTools(SYS_SYS);
+        $workSpace = new WorkspaceTools(SYS_SYS);
         $workspaceDB = $workSpace->getDBInfo();
 
         if ($workspaceDB['DB_NAME'] == $workspaceDB['DB_RBAC_NAME']) {
@@ -142,7 +141,6 @@ class pmTablesProxy extends HttpProxyController
      */
     public function getDynafields ($httpData)
     {
-        G::LoadClass( 'reportTables' );
 
         $aFields['FIELDS'] = array ();
         $aFields['PRO_UID'] = $httpData->PRO_UID;
@@ -272,8 +270,7 @@ class pmTablesProxy extends HttpProxyController
                 }
 
                 if ($row->type == 'CLASSIC') {
-                    G::LoadClass( 'reportTables' );
-                    $rp = new reportTables();
+                    $rp = new ReportTables();
                     $rp->deleteReportTable( $row->id );
                     $count ++;
                 } else {
@@ -321,9 +318,6 @@ class pmTablesProxy extends HttpProxyController
      */
     public function dataView ($httpData)
     {
-        require_once 'classes/model/AdditionalTables.php';
-
-        G::LoadClass( 'configuration' );
         $co = new Configurations();
         $config = $co->getConfiguration( 'additionalTablesData', 'pageSize', '', $_SESSION['USER_LOGGED'] );
         $limit_size = isset( $config['pageSize'] ) ? $config['pageSize'] : 20;
@@ -460,32 +454,32 @@ class pmTablesProxy extends HttpProxyController
         $this->message = $this->success ? G::loadTranslation( 'ID_DELETED_SUCCESSFULLY' ) : G::loadTranslation( 'ID_DELETE_FAILED' );
     }
 
-        public function importCSV ($httpData)
+    /**
+     * Import pmTable from CSV file
+     * @param $httpData
+     */
+    public function importCSV($httpData)
     {
-        G::LoadClass('pmFunctions');
-        G::LoadSystem('inputfilter');
         $filter = new InputFilter();
         $countRow = 250;
         $tmpfilename = $_FILES['form']['tmp_name']['CSV_FILE'];
-        //$tmpfilename = $filter->xssFilterHard($tmpfilename, 'path');
-        if (preg_match( '/[\x00-\x08\x0b-\x0c\x0e\x1f]/', file_get_contents( $tmpfilename ) ) === 0) {
+        if (preg_match('/[\x00-\x08\x0b-\x0c\x0e\x1f]/', file_get_contents($tmpfilename)) === 0) {
             $filename = $_FILES['form']['name']['CSV_FILE'];
-            //$filename = $filter->xssFilterHard($filename, 'path');
-            if ($oFile = fopen( $filter->xssFilterHard($tmpfilename, 'path'), 'r' )) {
+            if ($oFile = fopen($filter->xssFilterHard($tmpfilename, 'path'), 'r')) {
                 require_once 'classes/model/AdditionalTables.php';
                 $oAdditionalTables = new AdditionalTables();
-                $aAdditionalTables = $oAdditionalTables->load( $_POST['form']['ADD_TAB_UID'], true );
+                $aAdditionalTables = $oAdditionalTables->load($_POST['form']['ADD_TAB_UID'], true);
                 $sErrorMessages = '';
                 $i = 1;
                 $conData = 0;
                 $insert = 'REPLACE INTO ' . $aAdditionalTables['ADD_TAB_NAME'] . ' (';
                 $query = '';
                 $swHead = false;
-                while (($aAux = fgetcsv( $oFile, 4096, $_POST['form']['CSV_DELIMITER'] )) !== false) {
-                    if (! is_null( $aAux[0] )) {
-                        if (count( $aAdditionalTables['FIELDS'] ) > count( $aAux )) {
+                while (($aAux = fgetcsv($oFile, 4096, $_POST['form']['CSV_DELIMITER'], '"', '"')) !== false) {
+                    if (!is_null($aAux[0])) {
+                        if (count($aAdditionalTables['FIELDS']) > count($aAux)) {
                             $this->success = false;
-                            $this->message = G::LoadTranslation( 'INVALID_FILE' );
+                            $this->message = G::LoadTranslation('INVALID_FILE');
                             return 0;
                         }
                         if ($i == 1) {
@@ -495,7 +489,7 @@ class pmTablesProxy extends HttpProxyController
                                 if ($aField['FLD_NAME'] === $aAux[$j]) {
                                     $swHead = true;
                                 }
-                                $j ++;
+                                $j++;
                             }
                             $insert = substr($insert, 0, -2);
                             $insert .= ') VALUES ';
@@ -506,8 +500,11 @@ class pmTablesProxy extends HttpProxyController
                             $j = 0;
                             foreach ($aAdditionalTables['FIELDS'] as $aField) {
                                 $conData++;
-                                $temp = (array_key_exists($j, $aAux))? '"' . addslashes(stripslashes(utf8_encode($aAux[$j]))) . '"' : '""';
-
+                                if (array_key_exists($j, $aAux)) {
+                                    $temp = '"' . addslashes(G::is_utf8($aAux[$j]) ? $aAux[$j] : utf8_encode($aAux[$j])) . '"';
+                                } else {
+                                    $temp = '""';
+                                }
                                 if ($temp == '') {
                                     switch ($aField['FLD_TYPE']) {
                                         case 'DATE':
@@ -516,7 +513,7 @@ class pmTablesProxy extends HttpProxyController
                                             break;
                                     }
                                 }
-                                $j ++;
+                                $j++;
                                 $queryRow .= $temp . ',';
                             }
                             $query .= substr($queryRow, 0, -1) . '),';
@@ -528,15 +525,15 @@ class pmTablesProxy extends HttpProxyController
                                     $conData = 0;
                                 }
                             } catch (Exception $oError) {
-                                $sErrorMessages .= G::LoadTranslation( 'ID_ERROR_INSERT_LINE' ) . ': ' . G::LoadTranslation( 'ID_LINE' ) . ' ' . $i . '. ';
+                                $sErrorMessages .= G::LoadTranslation('ID_ERROR_INSERT_LINE') . ': ' . G::LoadTranslation('ID_LINE') . ' ' . $i . '. ';
                             }
                         } else {
                             $swHead = false;
                         }
-                        $i ++;
+                        $i++;
                     }
                 }
-                fclose( $oFile );
+                fclose($oFile);
                 if ($conData > 0) {
                     $query = substr($query, 0, -1);
                     executeQuery($insert . $query . ';', $aAdditionalTables['DBS_UID']);
@@ -547,12 +544,12 @@ class pmTablesProxy extends HttpProxyController
                 $this->message = $sErrorMessages;
             } else {
                 $this->success = true;
-                $this->message = G::loadTranslation( 'ID_FILE_IMPORTED_SUCCESSFULLY', array ($filename
-                ) );
+                $this->message = G::loadTranslation('ID_FILE_IMPORTED_SUCCESSFULLY', array($filename
+                ));
                 G::auditLog("ImportTable", $filename);
             }
         } else {
-            $sMessage = G::LoadTranslation( 'ID_UPLOAD_VALID_CSV_FILE' );
+            $sMessage = G::LoadTranslation('ID_UPLOAD_VALID_CSV_FILE');
             $this->success = false;
             $this->message = $sMessage;
         }
@@ -565,7 +562,7 @@ class pmTablesProxy extends HttpProxyController
      */
     public function importCSVDeprecated ($httpData)
     {
-        G::LoadSystem('inputfilter');
+
         $filter = new InputFilter();
         $tmpfilename = $_FILES['form']['tmp_name']['CSV_FILE'];
         //$tmpfilename = $filter->xssFilterHard($tmpfilename, 'path');
@@ -643,11 +640,11 @@ class pmTablesProxy extends HttpProxyController
     }
 
     /**
-     * export a pm tables record to CSV
-     *
-     * @param string $httpData->id
+     * Export pmTable to CSV format
+     * @param $httpData
+     * @return StdClass
      */
-    public function exportCSV ($httpData)
+    public function exportCSV($httpData)
     {
         $result = new StdClass();
         try {
@@ -659,50 +656,30 @@ class pmTablesProxy extends HttpProxyController
 
             require_once 'classes/model/AdditionalTables.php';
             $oAdditionalTables = new AdditionalTables();
-            $aAdditionalTables = $oAdditionalTables->load( $_POST['ADD_TAB_UID'], true );
+            $aAdditionalTables = $oAdditionalTables->load($_POST['ADD_TAB_UID'], true);
             $sErrorMessages = '';
             $sDelimiter = $_POST['CSV_DELIMITER'];
 
-            $resultData = $oAdditionalTables->getAllData( $_POST['ADD_TAB_UID'], null, null, false );
+            $resultData = $oAdditionalTables->getAllData($_POST['ADD_TAB_UID'], null, null, false);
             $rows = $resultData['rows'];
             $count = $resultData['count'];
 
             $PUBLIC_ROOT_PATH = PATH_DATA . 'sites' . PATH_SEP . SYS_SYS . PATH_SEP . 'public' . PATH_SEP;
-            $filenameOnly = strtolower( $aAdditionalTables['ADD_TAB_NAME'] . "_" . date( "Y-m-d" ) . '_' . date( "Hi" ) . ".csv" );
+            $filenameOnly = strtolower($aAdditionalTables['ADD_TAB_NAME'] . "_" . date("Y-m-d") . '_' . date("Hi") . ".csv");
             $filename = $PUBLIC_ROOT_PATH . $filenameOnly;
-            $fp = fopen( $filename, "wb" );
-
+            $fp = fopen($filename, "wb");
             $swColumns = true;
             foreach ($rows as $keyCol => $cols) {
-                $SDATA = "";
-                $header = "";
-                $cnt = $cntC = count( $cols );
-                foreach ($cols as $key => $val) {
-                    if($swColumns){
-                        $header .= $key;
-                        if (-- $cntC > 0) {
-                           $header .= $sDelimiter;
-                        } else {
-                            $header .= "\n";
-                            $bytesSaved += fwrite( $fp, $header );
-                            $swColumns = false;
-                        }
-                    }
-                    $SDATA .= addslashes($val);
-                    if (-- $cnt > 0) {
-                        $SDATA .= $sDelimiter;
-                    }
+                if ($swColumns) {
+                    fputcsv($fp, array_keys($cols), $sDelimiter, '"', "\\");
+                    $swColumns = false;
                 }
-                $SDATA .= "\n";
-                $bytesSaved += fwrite( $fp, $SDATA );
+                fputcsv($fp, $cols, $sDelimiter, '"');
             }
 
-            fclose( $fp );
-
-            // $filenameLink = "pmTables/streamExported?f=$filenameOnly";
+            fclose($fp);
             $filenameLink = "streamExported?f=$filenameOnly";
-            $size = round( ($bytesSaved / 1024), 2 ) . " Kb";
-            $filename = $filenameOnly;
+            $size = filesize($filename);
             $link = $filenameLink;
 
             $result->success = true;
@@ -944,10 +921,7 @@ class pmTablesProxy extends HttpProxyController
 
         try {
             $result = new stdClass();
-            G::LoadCLass( 'net' );
-            $net = new NET( G::getIpAddress() );
-
-            G::LoadClass( "system" );
+            $net = new Net( G::getIpAddress() );
 
             $META = " \n-----== ProcessMaker Open Source Private Tables ==-----\n" . " @Ver: 1.0 Oct-2009\n" . " @Processmaker version: " . System::getVersion() . "\n" . " -------------------------------------------------------\n" . " @Export Date: " . date( "l jS \of F Y h:i:s A" ) . "\n" . " @Server address: " . getenv( 'SERVER_NAME' ) . " (" . getenv( 'SERVER_ADDR' ) . ")\n" . " @Client address: " . $net->hostname . "\n" . " @Workspace: " . SYS_SYS . "\n" . " @Export trace back:\n\n";
 
@@ -1179,15 +1153,14 @@ class pmTablesProxy extends HttpProxyController
     public function genDataReport ($httpData)
     {
         $result = new stdClass();
-        G::loadClass( 'pmTable' );
-        require_once 'classes/model/AdditionalTables.php';
+
         $result->message = '';
         $result->success = true;
 
         $additionalTables = new AdditionalTables();
         $table = $additionalTables->load( $httpData->id );
         if ($table['PRO_UID'] != '') {
-            $additionalTables->populateReportTable( $table['ADD_TAB_NAME'], pmTable::resolveDbSource( $table['DBS_UID'] ), $table['ADD_TAB_TYPE'], $table['PRO_UID'], $table['ADD_TAB_GRID'], $table['ADD_TAB_UID'] );
+            $additionalTables->populateReportTable( $table['ADD_TAB_NAME'], PmTable::resolveDbSource( $table['DBS_UID'] ), $table['ADD_TAB_TYPE'], $table['PRO_UID'], $table['ADD_TAB_GRID'], $table['ADD_TAB_UID'] );
             $result->message = 'generated for table ' . $table['ADD_TAB_NAME'];
         }
 
@@ -1248,7 +1221,6 @@ class pmTablesProxy extends HttpProxyController
 
     public function _getDynafields ($proUid, $type = 'xmlform', $start = null, $limit = null, $filter = null)
     {
-        G::LoadClass('pmDynaform');
 
         $cache = 1;
         if (! isset( $_SESSION['_cache_pmtables'] ) || (isset( $_SESSION['_cache_pmtables'] ) && $_SESSION['_cache_pmtables']['pro_uid'] != $proUid) || (isset( $_SESSION['_cache_pmtables'] ) && $_SESSION['_cache_pmtables']['dyn_uid'] != $this->dynUid)) {
@@ -1275,12 +1247,12 @@ class pmTablesProxy extends HttpProxyController
             );
 
             $labelFieldsTypeList = array ('dropdown','radiogroup');
-            G::loadSystem( 'dynaformhandler' );
+
             $index = 0;
 
             while ($aRow = $oDataset->getRow()) {
                 if (file_exists( PATH_DYNAFORM . PATH_SEP . $aRow['DYN_FILENAME'] . '.xml' )) {
-                    $dynaformHandler = new dynaformHandler( PATH_DYNAFORM . $aRow['DYN_FILENAME'] . '.xml' );
+                    $dynaformHandler = new DynaformHandler( PATH_DYNAFORM . $aRow['DYN_FILENAME'] . '.xml' );
                     $nodeFieldsList = $dynaformHandler->getFields();
 
                     foreach ($nodeFieldsList as $node) {
@@ -1396,7 +1368,7 @@ class pmTablesProxy extends HttpProxyController
                         $arrayDynaFormData = $dynaForm->getDynaFormRecordByPk($dynaFormUid, [], false);
 
                         if ($arrayDynaFormData !== false) {
-                            $arrayGrid = pmDynaform::getGridsAndFields($arrayDynaFormData['DYN_CONTENT']);
+                            $arrayGrid = PmDynaform::getGridsAndFields($arrayDynaFormData['DYN_CONTENT']);
 
                             if ($arrayGrid !== false && isset($arrayGrid[$gridId])) {
                                 $grid = $arrayGrid[$gridId];
@@ -1551,7 +1523,6 @@ class pmTablesProxy extends HttpProxyController
     public function _getGridFields ($proUid)
     {
         try {
-            G::LoadClass('pmDynaform');
 
             $bpmn = new \ProcessMaker\Project\Bpmn();
             $flagIsBpmn = $bpmn->exists($proUid);
@@ -1577,7 +1548,7 @@ class pmTablesProxy extends HttpProxyController
                 $record = $rsCriteria->getRow();
 
                 if ($flagIsBpmn) {
-                    $arrayGrid = pmDynaform::getGridsAndFields($record['DYN_CONTENT']);
+                    $arrayGrid = PmDynaform::getGridsAndFields($record['DYN_CONTENT']);
 
                     if ($arrayGrid !== false) {
                         foreach ($arrayGrid as $value) {
@@ -1591,7 +1562,7 @@ class pmTablesProxy extends HttpProxyController
                         }
                     }
                 } else {
-                    $dynaformHandler = new dynaformHandler(PATH_DYNAFORM . $record['DYN_FILENAME'] . '.xml');
+                    $dynaformHandler = new DynaformHandler(PATH_DYNAFORM . $record['DYN_FILENAME'] . '.xml');
                     $nodeFieldsList = $dynaformHandler->getFields();
 
                     foreach ($nodeFieldsList as $node) {

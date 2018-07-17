@@ -22,7 +22,7 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
  
-G::LoadSystem('inputfilter');
+
 $filter = new InputFilter();
 $_POST = $filter->xssFilterHard($_POST);
 $_GET = $filter->xssFilterHard($_GET);
@@ -34,11 +34,7 @@ if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1) {
  * Created on 21/12/2007
  *
  */
-G::LoadClass( 'dynaformEditor' );
-G::LoadClass( 'toolBar' );
-G::LoadClass( 'dynaFormField' );
 
-//G::LoadClass('configuration');
 $G_MAIN_MENU = 'processmaker';
 $G_SUB_MENU = 'processes';
 $G_ID_MENU_SELECTED = 'PROCESSES';
@@ -63,7 +59,7 @@ if ($process->exists( $PRO_UID )) {
     print ("$PRO_UID doesn't exist, continue? yes") ;
 }
 
-$dynaform = new dynaform();
+$dynaform = new Dynaform();
 
 if ($dynaform->exists( $DYN_UID )) {
     $dynaform->load( $DYN_UID );
@@ -84,7 +80,7 @@ if (isset( $_GET['bpmn'] ) && $_GET['bpmn'] == '1') {
     $_SESSION['dynaform_editor'] = 'processmap';
 }
 
-$editor = new dynaformEditor( $_POST );
+$editor = new DynaformEditor( $_POST );
 $editor->file = $dynaform->getDynFilename();
 $editor->home = PATH_DYNAFORM;
 $editor->title = $dynaform->getDynTitle();

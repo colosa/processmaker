@@ -24,8 +24,6 @@
 if (($RBAC_Response = $RBAC->userCanAccess( "PM_SETUP" )) != 1)
     return $RBAC_Response;
 G::ForceLogin( 'WF_PROCESS' );
-G::LoadInclude( 'ajax' );
-
 $G_HELP_PAGE = "setup-environment-time-controls-weekend";
 
 $G_MAIN_MENU = "processmaker";

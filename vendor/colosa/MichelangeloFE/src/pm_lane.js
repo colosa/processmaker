@@ -413,15 +413,16 @@ PMLane.prototype.stringify = function () {
 
 PMLane.prototype.createBpmn = function (type) {
     var bpmnLaneset;
-    if (this.parent.businessObject.elem) {
-    } else {
-        this.parent.createBusinesObject();
+    if (!this.businessObject.elem) {
+        if (!this.parent.businessObject.elem) {
+            this.parent.createBusinesObject();
+        }
+        bpmnLaneset = this.createLaneset();
+        this.createWithBpmn('bpmn:Lane', 'businessObject');
+        this.updateBounds(this.businessObject.di);
+        this.updateSemanticParent(this.businessObject, {elem: bpmnLaneset});
+        this.updateDiParent(this.businessObject.di, this.parent.parent.businessObject.di);
     }
-    bpmnLaneset = this.createLaneset();
-    this.createWithBpmn('bpmn:Lane', 'businessObject');
-    this.updateBounds(this.businessObject.di);
-    this.updateSemanticParent(this.businessObject, {elem: bpmnLaneset});
-    this.updateDiParent(this.businessObject.di, this.parent.parent.businessObject.di);
 };
 
 PMLane.prototype.createLaneset = function () {

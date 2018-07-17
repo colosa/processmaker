@@ -872,20 +872,27 @@ PMPool.prototype.createBpmn = function (type) {
     }
     if (!(_.findWhere(PMDesigner.businessObject.get('rootElements'), {$type: "bpmn:Collaboration"}))) {
         bpmnCollaboration = PMDesigner.moddle.create('bpmn:Collaboration', {id: 'pmui-' + PMUI.generateUniqueId()});
-        PMDesigner.businessObject.get('rootElements').push(bpmnCollaboration);
+        PMDesigner.businessObject.get('rootElements').unshift(bpmnCollaboration);
         this.parent.businessObject.di.bpmnElement = bpmnCollaboration;
         bpmnCollaboration.participants = [];
     } else {
         bpmnCollaboration = _.findWhere(PMDesigner.businessObject.get('rootElements'), {$type: "bpmn:Collaboration"});
     }
-    this.createWithBpmn(type, 'participantObject');
-    this.updateBounds(this.participantObject.di);
-    this.updateSemanticParent(this.participantObject, {elem: bpmnCollaboration});
-    this.updateDiParent(this.participantObject.di, this.parent.businessObject.di);
+    if (!this.businessObject.elem) {
+        this.createWithBpmn(type, 'participantObject');
+        this.updateBounds(this.participantObject.di);
+        this.updateSemanticParent(this.participantObject, {elem: bpmnCollaboration});
+        this.updateDiParent(this.participantObject.di, this.parent.businessObject.di);
+    }
 };
+/**
+ * update participant parent .bpmn file
+ * @param businessObject
+ * @param newParent
+ */
 PMPool.prototype.updateSemanticParent = function (businessObject, newParent) {
     var children;
-    if (businessObject.elem.$parent === newParent.elem) {
+    if (businessObject.elem.$parent && businessObject.elem.$parent === newParent.elem) {
         return;
     }
     if (businessObject.elem.$parent) {
@@ -950,6 +957,16 @@ PMPool.prototype.createBusinesObject = function () {
     this.businessObject.di = this.canvas.businessObject.di;
     participant.processRef = bpmnProcess;
 };
+/**
+ * @inheritDoc
+ */
+PMPool.prototype.dropBehaviorFactory = function (type, selectors) {
+    if (type === 'pmcontainer') {
+        this.pmConnectionDropBehavior = this.pmConnectionDropBehavior || new PMPoolDropBehavior(selectors);
+        return this.pmConnectionDropBehavior;
+    }
+    return PMShape.prototype.dropBehaviorFactory.apply(this, arguments);
+};
 
 PMPool.prototype.removeBpmn = function () {
     var coll, children, pros;
@@ -980,7 +997,8 @@ PMPool.prototype.removeBpmn = function () {
     this.updateSemanticParent(this.participantObject, {elem: null});
     this.updateDiParent(this.participantObject.di);
     if (this.businessObject.di
-        && this.businessObject.di.planeElement.length == 0) {
+        && this.businessObject.di.planeElement
+        && this.businessObject.di.planeElement.length === 0) {
         this.parent.removeBPMNDiagram();
     }
 };

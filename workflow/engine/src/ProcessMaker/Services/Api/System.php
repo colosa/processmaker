@@ -7,7 +7,6 @@ use \Luracast\Restler\RestException;
 /**
  * Pmtable Api Controller
  *
- * @protected
  */
 class System extends Api
 {
@@ -18,6 +17,7 @@ class System extends Api
      * @copyright Colosa - Bolivia
      *
      * @url GET /db-engines
+     * @protected
      */
     public function doGetDataBaseEngines()
     {
@@ -39,6 +39,7 @@ class System extends Api
      * @copyright Colosa - Bolivia
      *
      * @url GET /counters-lists
+     * @protected
      */
     public function doGetCountersLists()
     {
@@ -53,12 +54,32 @@ class System extends Api
     }
 
     /**
+     * Get a list of the installed languages.
+     *
+     * @category HOR-3209,PROD-181
+     * @return array
+     * @url GET /languages
+     * @public
+     */
+    public function doGetLanguages()
+    {
+        try {
+            $language = new \ProcessMaker\BusinessModel\Language;
+            $list = $language->getLanguageList();
+            return ["data" => $list];
+        } catch (\Exception $e) {
+            throw (new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage()));
+        }
+    }
+
+    /**
      * @return array
      *
      * @author Gustavo Cruz <gustavo.cruz@colosa.com>
      * @copyright Colosa - Bolivia
      *
      * @url GET /enabled-features
+     * @protected
      */
     public function doGetEnabledFeatures()
     {
@@ -70,4 +91,25 @@ class System extends Api
             throw (new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage()));
         }
     }
+
+    /**
+     * Get the list of installed skins.
+     *
+     * @url GET /skins
+     * @return array
+     * @access protected
+     * @class  AccessControl {@permission PM_FACTORY}
+     * @protected
+     */
+    public function doGetSkins()
+    {
+        try {
+            $model = new \ProcessMaker\BusinessModel\Skins();
+            $response = $model->getSkins();
+            return ["data" => $response];
+        } catch (\Exception $e) {
+            throw (new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage()));
+        }
+    }
+
 }

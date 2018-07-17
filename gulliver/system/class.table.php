@@ -151,11 +151,9 @@ class Table
      */
     public function GetSource ()
     {
-        global $HTTP_GET_VARS;
-        global $HTTP_SESSION_VARS;
         $stOrderByDir = $this->DefaultOrderDir;
-        if (isset( $HTTP_SESSION_VARS['OrderDir'] ) && ($HTTP_SESSION_VARS['OrderDir'] == 'DESC' || $HTTP_SESSION_VARS['OrderDir'] == 'ASC')) {
-            $stOrderByDir = $HTTP_SESSION_VARS['OrderDir'];
+        if (isset( $_SESSION['OrderDir'] ) && ($_SESSION['OrderDir'] == 'DESC' || $_SESSION['OrderDir'] == 'ASC')) {
+            $stOrderByDir = $_SESSION['OrderDir'];
         }
 
         $stQry = $this->_source;
@@ -164,18 +162,18 @@ class Table
         }
 
         if ($this->_ordered == true) {
-            $stOrderBy = (isset( $HTTP_GET_VARS[$this->orderprefix . 'order'] ) ? $HTTP_GET_VARS[$this->orderprefix . 'order'] : '');
-            $stOrderLb = (isset( $HTTP_GET_VARS[$this->orderprefix . 'label'] ) ? $HTTP_GET_VARS[$this->orderprefix . 'label'] : '');
+            $stOrderBy = (isset( $_GET[$this->orderprefix . 'order'] ) ? $_GET[$this->orderprefix . 'order'] : '');
+            $stOrderLb = (isset( $_GET[$this->orderprefix . 'label'] ) ? $_GET[$this->orderprefix . 'label'] : '');
 
-            //if( isset( $HTTP_SESSION_VARS['OrderDir'] ) && $HTTP_SESSION_VARS['OrderDir'] == $stOrderBy ) {
+            //if( isset( $_SESSION['OrderDir'] ) && $_SESSION['OrderDir'] == $stOrderBy ) {
             if ($stOrderLb) {
-                if ($HTTP_SESSION_VARS['OrderDir'] == 'ASC') {
+                if ($_SESSION['OrderDir'] == 'ASC') {
                     $stOrderByDir = 'DESC';
-                } elseif ($HTTP_SESSION_VARS['OrderDir'] == 'DESC') {
+                } elseif ($_SESSION['OrderDir'] == 'DESC') {
                     $stOrderByDir = 'ASC';
                 }
-            } elseif (isset( $HTTP_SESSION_VARS['OrderDir'] ) && $HTTP_SESSION_VARS['OrderDir'] != '') {
-                $stOrderByDir = $HTTP_SESSION_VARS['OrderDir'];
+            } elseif (isset( $_SESSION['OrderDir'] ) && $_SESSION['OrderDir'] != '') {
+                $stOrderByDir = $_SESSION['OrderDir'];
             } else {
                 $stOrderByDir = $this->DefaultOrderDir;
             }
@@ -202,12 +200,12 @@ class Table
         //print $stQry;
 
 
-        $HTTP_SESSION_VARS['OrderBy'] = isset( $stOrderBy ) ? $stOrderBy : '';
-        $HTTP_SESSION_VARS['OrderDir'] = $stOrderByDir;
+        $_SESSION['OrderBy'] = isset( $stOrderBy ) ? $stOrderBy : '';
+        $_SESSION['OrderDir'] = $stOrderByDir;
 
-        $page = (isset( $HTTP_GET_VARS["page"] ) ? $HTTP_GET_VARS["page"] : '');
+        $page = (isset( $_GET["page"] ) ? $_GET["page"] : '');
 
-        $tr = (isset( $HTTP_SESSION_VARS['TP'] ) ? $HTTP_SESSION_VARS['TP'] : '');
+        $tr = (isset( $_SESSION['TP'] ) ? $_SESSION['TP'] : '');
 
         $desde = 0;
 
@@ -240,15 +238,13 @@ class Table
      */
     public function TotalCount ()
     {
-        global $HTTP_GET_VARS;
-        global $HTTP_SESSION_VARS;
 
         $stQry = $this->_source;
         if ($this->WhereClause != "") {
             $stQry .= " WHERE " . $this->WhereClause;
         }
         if ($this->_ordered == true) {
-            $stOrderBy = (isset( $HTTP_GET_VARS[$this->orderprefix . 'order'] ) ? $HTTP_GET_VARS[$this->orderprefix . 'order'] : '');
+            $stOrderBy = (isset( $_GET[$this->orderprefix . 'order'] ) ? $_GET[$this->orderprefix . 'order'] : '');
             if ($stOrderBy == "") {
                 if ($this->DefaultOrder != "") {
                     $stQry .= " ORDER BY " . $this->DefaultOrder;
@@ -454,7 +450,6 @@ class Table
         if (! defined( 'ENABLE_ENCRYPT' )) {
             define( 'ENABLE_ENCRYPT', 'no' );
         }
-        global $HTTP_SESSION_VARS;
         $col = $this->Columns[$intPos];
         $order = ! ($col["Type"] == "image");
         if ($this->_ordered == true && $order) {
@@ -494,7 +489,6 @@ class Table
      */
     public function RenderTitle_ajax ($pa, $intPos = 1, $strClass = "tblHeader")
     {
-        global $HTTP_SESSION_VARS;
         $col = $this->Columns[$intPos];
         $order = ! (($col["Type"] == "image") || ($col["Type"] == "jsimglink"));
 
@@ -511,8 +505,8 @@ class Table
             $res .= "Javascript:changetableOrder('$_temp_var',$pa)";
             //$res .= $_SERVER['REDIRECT_URL'] . "?order=" . $this->Columns[$intPos]['Name']."&page=".$pa."&label=true";
             $res .= "\">" . $this->Labels[$intPos] . "</a>";
-            if ($HTTP_SESSION_VARS['OrderBy'] == $this->Columns[$intPos]['Name']) {
-                if ($HTTP_SESSION_VARS['OrderDir'] == 'DESC') {
+            if ($_SESSION['OrderBy'] == $this->Columns[$intPos]['Name']) {
+                if ($_SESSION['OrderDir'] == 'DESC') {
                     $res .= "&nbsp;<img src='/images/arrow_order_desc.gif' border=0>";
                 } else {
                     $res .= "&nbsp;<img src='/images/arrow_order_asc.gif' border=0>";
@@ -548,7 +542,6 @@ class Table
         if (! defined( 'ENABLE_ENCRYPT' )) {
             define( 'ENABLE_ENCRYPT', 'no' );
         }
-        global $HTTP_SESSION_VARS;
 
         if ($auxgetval == '') {
             $targ = SYS_TARGET . ".html";
@@ -895,7 +888,7 @@ class Table
                             break;
                         case "$":
                             $vname = substr( $col["Content"], 1, (strlen( $col["Content"] ) - 1) );
-                            $lval = $HTTP_SESSION_VARS[$vname];
+                            $lval = $_SESSION[$vname];
                             $res .= "<a class='$strClassLink' href=\"" . $col["Target"] . "/" . $lval . ".html\" " . $col['Extra'] . ">";
                             $res .= $val;
                             $res .= "</a" . $col['Extra'] . ">";
@@ -938,7 +931,7 @@ class Table
                             break;
                         case "$":
                             $vname = substr( $col["Content"], 1, (strlen( $col["Content"] ) - 1) );
-                            $lval = $HTTP_SESSION_VARS[$vname];
+                            $lval = $_SESSION[$vname];
                             $res .= "<a class='$strClassLink' href=\"" . $col["Target"] . "/" . $lval . ".html\" target=\"_new\"" . $col['Extra'] . ">";
                             $res .= $val;
                             $res .= "</a" . $col['Extra'] . ">";
@@ -969,7 +962,7 @@ class Table
                                 break;
                             case "$":
                                 $vname = substr( $col["Content"], 1, (strlen( $col["Content"] ) - 1) );
-                                $lval = $HTTP_SESSION_VARS[$vname];
+                                $lval = $_SESSION[$vname];
                                 $res .= "<a class='$strClassLink' href=\"" . $col["Target"] . "/" . $lval . ".html\" " . $col['Extra'] . ">";
                                 $res .= $val;
                                 $res .= "</a" . $col['Extra'] . ">";
@@ -1010,7 +1003,7 @@ class Table
                             break;
                         case "$":
                             $vname = substr( $col["Content"], 1, (strlen( $col["Content"] ) - 1) );
-                            $lval = $HTTP_SESSION_VARS[$vname];
+                            $lval = $_SESSION[$vname];
                             $res .= "<a class='$strClassLink' href=\"javascript:" . $col["Target"] . "('" . $lval . "')\"" . $col['Extra'] . ">";
                             $res .= $val;
                             $res .= "</a" . $col['Extra'] . ">";

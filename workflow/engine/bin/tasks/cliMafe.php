@@ -23,9 +23,6 @@
  *
  * @package workflow-engine-bin-tasks
  */
-G::LoadClass("system");
-G::LoadClass("wsTools");
-
 
 CLI::taskName('mafe-translation');
 CLI::taskDescription(<<<EOT
@@ -43,7 +40,7 @@ CLI::taskRun('run_create_translation');
 
 function run_create_translation($args, $opts)
 {
-    G::LoadSystem('inputfilter');
+
     $filter = new InputFilter();
     $opts = $filter->xssFilterHard($opts);
     $args = $filter->xssFilterHard($args);

@@ -28,7 +28,6 @@ if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1) {
     //G::genericForceLogin( 'WF_MYINFO' , 'login/noViewPage', $urlLogin = 'login/login' );
 
 
-G::LoadClass( 'dynaFormField' );
 
 if (! (isset( $_GET['A'] ) && $_GET['A'] !== '')) {
     return;
@@ -107,7 +106,6 @@ if ($type == 'suggest' || $type == 'checkgroup' || $type == 'dropdown' || $type 
 
     $aDefaultConnections = array ();
     $aDBConn = array ();
-    G::LoadClass( 'dbConnections' );
     $oDBConn = new DbConnections();
     $aDefaultConnections = array (array ('DBS_UID' => '','DBS_NAME' => ''
     ),array ('DBS_UID' => 'dbarray','DBS_NAME' => 'dbarray'
@@ -165,7 +163,7 @@ if (! (isset( $fields->Fields['XMLNODE_NAME'] ) && ($fields->Fields['XMLNODE_NAM
         $tableExists = true;
         $sDataBase = 'database_' . strtolower( DB_ADAPTER );
         if (G::LoadSystemExist( $sDataBase )) {
-            G::LoadSystem( $sDataBase );
+
             $oDataBase = new database();
             $dataBase = $Fields['PME_SQLCONNECTION'];
             if ($Fields['PME_SQLCONNECTION'] == 'workflow') {

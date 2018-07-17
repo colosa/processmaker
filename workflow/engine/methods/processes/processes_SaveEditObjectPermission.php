@@ -65,7 +65,7 @@ switch ($sValue['OP_OBJ_TYPE']) {
         $sObjectUID = $sValue['OUTPUTS'];
         break;
 }
-require_once 'classes/model/ObjectPermission.php';
+
 $oOP = new ObjectPermission();
 $aData = array ('OP_UID' => $sValue['OP_UID'],'PRO_UID' => $sValue['PRO_UID'],'TAS_UID' => $sValue['TAS_UID'] != '' ? $sValue['TAS_UID'] : '0','USR_UID' => (string) $sUserGroup,'OP_USER_RELATION' => $iRelation,'OP_TASK_SOURCE' => $sValue['OP_TASK_SOURCE'] != '' ? $sValue['OP_TASK_SOURCE'] : '0','OP_PARTICIPATE' => $sValue['OP_PARTICIPATE'] != '' ? $sValue['OP_PARTICIPATE'] : 0,'OP_OBJ_TYPE' => $sValue['OP_OBJ_TYPE'] != '' ? $sValue['OP_OBJ_TYPE'] : '0','OP_OBJ_UID' => $sObjectUID != '' ? $sObjectUID : '0','OP_ACTION' => $sValue['OP_ACTION'] != '' ? $sValue['OP_ACTION'] : '0','OP_CASE_STATUS' => $sValue['OP_CASE_STATUS'] != '' ? $sValue['OP_CASE_STATUS'] : '0'
 );
@@ -73,6 +73,5 @@ $aData = array ('OP_UID' => $sValue['OP_UID'],'PRO_UID' => $sValue['PRO_UID'],'T
 $oObj = new ObjectPermission();
 $oObj->update( $aData );
 
-G::LoadClass( 'processMap' );
 $oProcessMap = new ProcessMap();
 $oProcessMap->getObjectsPermissionsCriteria( $sValue['PRO_UID'] );

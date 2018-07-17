@@ -22,9 +22,6 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
 
-require_once 'classes/model/AppDelegation.php';
-
-G::LoadClass( 'dates' );
 $oDates = new dates();
 
 $oCriteria = new Criteria( 'workflow' );

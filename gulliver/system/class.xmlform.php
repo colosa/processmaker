@@ -1,37 +1,14 @@
 <?php
+
+use ProcessMaker\Plugins\PluginRegistry;
+
 /**
- * class.xmlform.php
+ * Class XmlFormField
  *
- * @package gulliver.system
- *
- * ProcessMaker Open Source Edition
- * Copyright (C) 2004 - 2011 Colosa Inc.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
- * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
- */
-/**
- * Class XmlForm_Field
- *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field
+class XmlFormField
 {
     public $name = '';
     public $type = 'field';
@@ -79,16 +56,15 @@ class XmlForm_Field
     public $modeForGrid = '';
 
     /**
-     * Function XmlForm_Field
+     * Function XmlFormField
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string xmlNode
      * @param string lang
      * @param string home
      * @return string
      */
-    public function XmlForm_Field ($xmlNode, $lang = 'en', $home = '', $owner = null)
+    public function __construct ($xmlNode, $lang = 'en', $home = '', $owner = null)
     {
         //Loads any attribute that were defined in the xmlNode
         //except name and label.
@@ -138,7 +114,6 @@ class XmlForm_Field
         }
         $this->options = (isset( $this->option )) ? $this->option : array ();
         //Sql Options : cause warning because values are not setted yet.
-        //if ($this->sql!=='') $this->executeSQL();
         if (isset( $owner )) {
             if (isset( $owner->mode )) {
                 $ownerMode = $owner->mode;
@@ -312,7 +287,6 @@ class XmlForm_Field
     /**
      * Function executeSQL
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string owner
      * @return string
@@ -395,7 +369,6 @@ class XmlForm_Field
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @return string
@@ -409,7 +382,6 @@ class XmlForm_Field
     /**
      * Function renderGrid
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string values
      * @return string
@@ -443,7 +415,6 @@ class XmlForm_Field
     /**
      * Function dependentOf
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @return array
      */
@@ -469,7 +440,6 @@ class XmlForm_Field
     /**
      * Function mask
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string format
      * @param string value
@@ -531,7 +501,6 @@ class XmlForm_Field
     /**
      * Function getAttributes
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @return string
      */
@@ -563,7 +532,6 @@ class XmlForm_Field
     /**
      * Function getEvents
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @return string
      */
@@ -587,7 +555,6 @@ class XmlForm_Field
      * Function attachEvents: Attaches events to a control using
      * leimnud.event.add
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @param $elementRef
      * @access public
      */
@@ -605,7 +572,6 @@ class XmlForm_Field
      * Function createXmlNode: Creates an Xml_Node object storing
      * the data of $this Xml_Field.
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @return Xml_Node
      */
@@ -636,7 +602,6 @@ class XmlForm_Field
      * Function updateXmlNode: Updates and existing Xml_Node
      * with the data of $this Xml_Field.
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @return Xml_Node
@@ -669,7 +634,6 @@ class XmlForm_Field
      * Function getXmlAttributes: Returns an associative array
      * with the attributes of $this Xml_field (only the modified ones).
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param boolean includeDefaultValues Includes attributes
      * with default values.
@@ -733,7 +697,7 @@ class XmlForm_Field
         if (isset( $oOwner->fields[$this->pmconnection] )) {
             if (defined( 'PATH_CORE' )) {
                 if (file_exists( PATH_CORE . 'classes' . PATH_SEP . 'model' . PATH_SEP . 'AdditionalTables.php' )) {
-                    require_once PATH_CORE . 'classes' . PATH_SEP . 'model' . PATH_SEP . 'AdditionalTables.php';
+
                     $oAdditionalTables = new AdditionalTables();
                     try {
                         $aData = $oAdditionalTables->load( $oOwner->fields[$this->pmconnection]->pmtable, true );
@@ -758,7 +722,6 @@ class XmlForm_Field
                     				// check if a case are running in order to prevent that preview is
                     				// erroneous rendered.
                     				if (isset( $_SESSION['APPLICATION'] )) {
-                    					G::LoadClass( 'case' );
                     					$oApp = new Cases();
                     					if ($oApp->loadCase( $_SESSION['APPLICATION'] ) != null) {
                     						$aFields = $oApp->loadCase( $_SESSION['APPLICATION'] );
@@ -923,19 +886,17 @@ class XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_Title
+ * Class XmlFormFieldTitle
  *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_Title extends XmlForm_Field
+class XmlFormFieldTitle extends XmlFormField
 {
 
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @return string
@@ -959,19 +920,17 @@ class XmlForm_Field_Title extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_Subtitle
+ * Class XmlFormFieldSubtitle
  *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_Subtitle extends XmlForm_Field
+class XmlFormFieldSubtitle extends XmlFormField
 {
 
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @return string
@@ -994,13 +953,12 @@ class XmlForm_Field_Subtitle extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_SimpleText
+ * Class XmlFormFieldSimpleText
  *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_SimpleText extends XmlForm_Field
+class XmlFormFieldSimpleText extends XmlFormField
 {
     public $size = 15;
     public $maxLength = '';
@@ -1013,7 +971,6 @@ class XmlForm_Field_SimpleText extends XmlForm_Field
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @return string
@@ -1040,7 +997,6 @@ class XmlForm_Field_SimpleText extends XmlForm_Field
     /**
      * Function renderGrid
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string values
      * @param string owner
@@ -1086,13 +1042,12 @@ class XmlForm_Field_SimpleText extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_Text
+ * Class XmlFormFieldText
  *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_Text extends XmlForm_Field_SimpleText
+class XmlFormFieldText extends XmlFormFieldSimpleText
 {
     public $size = 15;
     public $maxLength = 64;
@@ -1120,7 +1075,6 @@ class XmlForm_Field_Text extends XmlForm_Field_SimpleText
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @param string owner
@@ -1213,7 +1167,6 @@ class XmlForm_Field_Text extends XmlForm_Field_SimpleText
     /**
      * Function renderGrid
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string values
      * @param string owner
@@ -1280,13 +1233,12 @@ class XmlForm_Field_Text extends XmlForm_Field_SimpleText
 }
 
 /**
- * Class XmlForm_Field_Suggest
+ * Class XmlFormFieldSuggest
  *
- * @author Erik Amaru Ortiz <erik@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
+class XmlFormFieldSuggest extends XmlFormFieldSimpleText
 {
     public $size = 15;
     public $maxLength = 64;
@@ -1367,7 +1319,7 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
 
         $formVariableValue = '';
         $formVariableKeyValue = '';
-        G::LoadClass( 'case' );
+
         $oApp = new Cases();
         if (isset( $_SESSION['APPLICATION'] ) && ($_SESSION['APPLICATION'] != null && $oApp->loadCase( $_SESSION['APPLICATION'] ) != null)) {
             $aFields = $oApp->loadCase( $_SESSION['APPLICATION'] );
@@ -1402,8 +1354,7 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
                 } else {
                     $sCallBack = '';
                 }
-
-                $hash = str_rot13( base64_encode( $this->sql . '@|' . $this->sqlConnection ) );
+                
                 $sSQL = $this->sql;
                 $nCount = preg_match_all( '/\@(?:([\@\%\#\!Qq])([a-zA-Z\_]\w*)|([a-zA-Z\_][\w\-\>\:]*)\(((?:[^\\\\\)]*?)*)\))/', $sSQL, $match, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE );
 
@@ -1453,8 +1404,8 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
                 $sOptions = 'script: function (input) { ';
                 $sOptions .= '  var inputValue = base64_encode(getField(\'' . $this->name . '_label\').value); ';
 
-                $sOptions .= '  return "' . $this->ajaxServer . '?request=suggest&json=true&limit=' . $this->maxresults;
-                $sOptions .= '&hash=' . $hash . '&dependentFieldsKeys=' . $sResultKeys . '&dependentFieldsValue="';
+                $sOptions .= '  return "' . $this->ajaxServer . '?request=suggest&type=form&form=' . $owner->id . '&variable=' . $this->name . '&json=true&limit=' . $this->maxresults;
+                $sOptions .= '&dependentFieldsKeys=' . $sResultKeys . '&dependentFieldsValue="';
 
                 $sOptions .= $depValues . '"&input="+inputValue+"&inputEnconde64=enable&searchType=' . $this->searchType . '";';
 
@@ -1571,7 +1522,7 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
 
         $formVariableValue = '';
         $formVariableKeyValue = '';
-        G::LoadClass( 'case' );
+
         $oApp = new Cases();
         if (isset( $_SESSION['APPLICATION'] ) && ($_SESSION['APPLICATION'] != null && $oApp->loadCase( $_SESSION['APPLICATION'] ) != null)) {
             $aFields = $oApp->loadCase( $_SESSION['APPLICATION'] );
@@ -1609,7 +1560,6 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
                     $sCallBack = '';
                 }
 
-                $hash = str_rot13( base64_encode( $this->sql . '@|' . $this->sqlConnection ) );
                 $sSQL = $this->sql;
                 $nCount = preg_match_all( '/\@(?:([\@\%\#\!Qq])([a-zA-Z\_]\w*)|([a-zA-Z\_][\w\-\>\:]*)\(((?:[^\\\\\)]*?)*)\))/', $sSQL, $match, PREG_PATTERN_ORDER | PREG_OFFSET_CAPTURE );
 
@@ -1650,8 +1600,8 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
 
                 $sOptions .= '  var inputValue = base64_encode(getField(\'' . $rowIdField . '[' . $this->name . '_label\').value); ';
 
-                $sOptions .= '  return "' . $this->ajaxServer . '?request=suggest&json=true&limit=' . $this->maxresults;
-                $sOptions .= '&hash=' . $hash . '&dependentFieldsKeys=' . $sResultKeys . '&dependentFieldsValue="';
+                $sOptions .= '  return "' . $this->ajaxServer . '?request=suggest&type=grid&form=' . $owner->id . '&grid=' . $owner->name . '&variable=' . $this->name . '&json=true&limit=' . $this->maxresults;
+                $sOptions .= '&dependentFieldsKeys=' . $sResultKeys . '&dependentFieldsValue="';
                 $sOptions .= $depValues . '"&input="+inputValue+"&inputEnconde64=enable&searchType=' . $this->searchType . '";';
 
                 $sOptions .= '},';
@@ -1732,7 +1682,6 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
     /**
      * Function renderGrid
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string values
      * @param string owner
@@ -1769,7 +1718,7 @@ class XmlForm_Field_Suggest extends XmlForm_Field_SimpleText //by neyek
  *
  * @package gulliver.system
  */
-class XmlForm_Field_Print extends XmlForm_Field_SimpleText //by neyek
+class XmlFormFieldPrint extends XmlFormFieldSimpleText //by neyek
 {
     //Instead of public --> link
     public $link = '';
@@ -1813,7 +1762,7 @@ class XmlForm_Field_Print extends XmlForm_Field_SimpleText //by neyek
  *
  * @package gulliver.system
  */
-class XmlForm_Field_Caption extends XmlForm_Field
+class XmlFormFieldCaption extends XmlFormField
 {
 
     public $defaultValue = '';
@@ -1842,7 +1791,6 @@ class XmlForm_Field_Caption extends XmlForm_Field
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @return string modified
@@ -1895,13 +1843,12 @@ class XmlForm_Field_Caption extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_Password
+ * Class XmlFormFieldPassword
  *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_Password extends XmlForm_Field
+class XmlFormFieldPassword extends XmlFormField
 {
     public $size = 15;
     public $maxLength = 15;
@@ -1912,7 +1859,6 @@ class XmlForm_Field_Password extends XmlForm_Field
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @return string
@@ -1946,13 +1892,12 @@ class XmlForm_Field_Password extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_Textarea
+ * Class XmlFormFieldTextarea
  *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_Textarea extends XmlForm_Field
+class XmlFormFieldTextarea extends XmlFormField
 {
     public $rows = 12;
     public $cols = 40;
@@ -1966,7 +1911,6 @@ class XmlForm_Field_Textarea extends XmlForm_Field
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @return string
@@ -2027,7 +1971,6 @@ class XmlForm_Field_Textarea extends XmlForm_Field
     /**
      * Function renderGrid
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @param string owner
@@ -2098,13 +2041,12 @@ class XmlForm_Field_Textarea extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_Currency
+ * Class XmlFormFieldCurrency
  *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_Currency extends XmlForm_Field_SimpleText
+class XmlFormFieldCurrency extends XmlFormFieldSimpleText
 {
     public $group = 0;
     public $size = 15;
@@ -2251,13 +2193,12 @@ class XmlForm_Field_Currency extends XmlForm_Field_SimpleText
  *
  * @package gulliver.system
  */
-class XmlForm_Field_CaptionCurrency extends XmlForm_Field
+class XmlFormFieldCaptionCurrency extends XmlFormField
 {
 
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @return string
@@ -2269,13 +2210,12 @@ class XmlForm_Field_CaptionCurrency extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_Percentage
+ * Class XmlFormFieldPercentage
  *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_Percentage extends XmlForm_Field_SimpleText
+class XmlFormFieldPercentage extends XmlFormFieldSimpleText
 {
     public $size = 15;
     public $required = false;
@@ -2398,7 +2338,7 @@ class XmlForm_Field_Percentage extends XmlForm_Field_SimpleText
  *
  * @package gulliver.system
  */
-class XmlForm_Field_CaptionPercentage extends XmlForm_Field
+class XmlFormFieldCaptionPercentage extends XmlFormField
 {
 
     public function render($value = null, $paramDummy2 = null)
@@ -2408,13 +2348,12 @@ class XmlForm_Field_CaptionPercentage extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_Date
+ * Class XmlFormFieldDate
  *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_Date2 extends XmlForm_Field_SimpleText
+class XmlFormFieldDate2 extends XmlFormFieldSimpleText
 {
     //Instead of size --> startDate
     public $startDate = '';
@@ -2675,7 +2614,7 @@ class XmlForm_Field_Date2 extends XmlForm_Field_SimpleText
  *
  * @package gulliver.system
  */
-class XmlForm_Field_DateView extends XmlForm_Field
+class XmlFormFieldDateView extends XmlFormField
 {
 
     public function render($value = null, $paramDummy2 = null)
@@ -2685,13 +2624,12 @@ class XmlForm_Field_DateView extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_YesNo
+ * Class XmlFormFieldYesNo
  *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_YesNo extends XmlForm_Field
+class XmlFormFieldYesNo extends XmlFormField
 {
     public $required = false;
     public $readonly = false;
@@ -2700,7 +2638,6 @@ class XmlForm_Field_YesNo extends XmlForm_Field
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @return string
@@ -2814,13 +2751,12 @@ class XmlForm_Field_YesNo extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_Link
+ * Class XmlFormFieldLink
  *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_Link extends XmlForm_Field
+class XmlFormFieldLink extends XmlFormField
 {
     //Instead of var --> link
     public $link = '';
@@ -2833,7 +2769,6 @@ class XmlForm_Field_Link extends XmlForm_Field
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @return string
@@ -2951,13 +2886,12 @@ class XmlForm_Field_Link extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_File
+ * Class XmlFormFieldFile
  *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_File extends XmlForm_Field
+class XmlFormFieldFile extends XmlFormField
 {
     public $required = false;
     public $input = null;
@@ -2966,7 +2900,6 @@ class XmlForm_Field_File extends XmlForm_Field
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @return string
@@ -2987,7 +2920,7 @@ class XmlForm_Field_File extends XmlForm_Field
 
         if (isset( $_SESSION["APPLICATION"] ) && isset( $_SESSION["USER_LOGGED"] ) && isset( $_SESSION["TASK"] ) && isset( $this->input ) && $this->input != null && $this->mode == "view") {
             require_once ("classes/model/AppDocument.php");
-            G::LoadClass( "case" );
+
 
             $case = new Cases();
             $arrayField = $case->loadCase( $_SESSION["APPLICATION"] );
@@ -3039,7 +2972,7 @@ class XmlForm_Field_File extends XmlForm_Field
         $inpDocMaxFilesize = "";
 
         if (isset($this->input) && $this->input != null) {
-            require_once ("classes" . PATH_SEP . "model" . PATH_SEP . "InputDocument.php");
+
 
             try {
                 $inputDocument = new InputDocument();
@@ -3088,14 +3021,13 @@ class XmlForm_Field_File extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_Dropdownpt
+ * Class XmlFormFieldDropdownpt
  * hook, dropdown field for Propel table
  *
- * @author Erik Amaru <erik@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_Dropdownpt extends XmlForm_Field
+class XmlFormFieldDropdownpt extends XmlFormField
 {
     public $value;
 
@@ -3124,14 +3056,13 @@ class XmlForm_Field_Dropdownpt extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_Checkboxpt
+ * Class XmlFormFieldCheckboxpt
  * checkbox field for Propel table
  *
- * @author Erik Amaru <erik@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_Checkboxpt extends XmlForm_Field
+class XmlFormFieldCheckboxpt extends XmlFormField
 {
     public $required = false;
     public $value = 'on';
@@ -3190,13 +3121,12 @@ class XmlForm_Field_Checkboxpt extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_Checkbox
+ * Class XmlFormFieldCheckbox
  *
- * @author Erik Amaru <erik@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_Checkbox extends XmlForm_Field
+class XmlFormFieldCheckbox extends XmlFormField
 {
     public $required = false;
     public $value = 'on';
@@ -3207,7 +3137,6 @@ class XmlForm_Field_Checkbox extends XmlForm_Field
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @return string
@@ -3302,7 +3231,7 @@ class XmlForm_Field_Checkbox extends XmlForm_Field
  *
  * @package gulliver.system
  */
-class XmlForm_Field_Checkbox2 extends XmlForm_Field
+class XmlFormFieldCheckbox2 extends XmlFormField
 {
     public $required = false;
 
@@ -3313,13 +3242,12 @@ class XmlForm_Field_Checkbox2 extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_Button
+ * Class XmlFormFieldButton
  *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_Button extends XmlForm_Field
+class XmlFormFieldButton extends XmlFormField
 {
     public $onclick = '';
     public $align = 'center';
@@ -3328,7 +3256,6 @@ class XmlForm_Field_Button extends XmlForm_Field
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @return string
@@ -3349,19 +3276,17 @@ class XmlForm_Field_Button extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_Reset
+ * Class XmlFormFieldReset
  *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_Reset extends XmlForm_Field
+class XmlFormFieldReset extends XmlFormField
 {
 
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @return string
@@ -3384,20 +3309,18 @@ class XmlForm_Field_Reset extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_Submit
+ * Class XmlFormFieldSubmit
  *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_Submit extends XmlForm_Field
+class XmlFormFieldSubmit extends XmlFormField
 {
     public $onclick = '';
 
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @return string
@@ -3426,13 +3349,12 @@ class XmlForm_Field_Submit extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_Hidden
+ * Class XmlFormFieldHidden
  *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_Hidden extends XmlForm_Field
+class XmlFormFieldHidden extends XmlFormField
 {
     public $sqlConnection = 0;
     public $sql = '';
@@ -3442,7 +3364,6 @@ class XmlForm_Field_Hidden extends XmlForm_Field
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @param string owner
@@ -3507,13 +3428,12 @@ class XmlForm_Field_Hidden extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_Dropdown
+ * Class XmlFormFieldDropdown
  *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_Dropdown extends XmlForm_Field
+class XmlFormFieldDropdown extends XmlFormField
 {
     public $defaultValue = '';
     public $required = false;
@@ -3537,7 +3457,6 @@ class XmlForm_Field_Dropdown extends XmlForm_Field
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @param string owner
@@ -3711,7 +3630,6 @@ class XmlForm_Field_Dropdown extends XmlForm_Field
     /**
      * Function renderGrid
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string values
      * @return string
@@ -3734,13 +3652,12 @@ class XmlForm_Field_Dropdown extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_Listbox
+ * Class XmlFormFieldListbox
  *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_Listbox extends XmlForm_Field
+class XmlFormFieldListbox extends XmlFormField
 {
     public $defaultValue = '';
     public $required = false;
@@ -3754,7 +3671,6 @@ class XmlForm_Field_Listbox extends XmlForm_Field
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @param string owner
@@ -3852,13 +3768,12 @@ class XmlForm_Field_Listbox extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_RadioGroup
+ * Class XmlFormFieldRadioGroup
  *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_RadioGroup extends XmlForm_Field
+class XmlFormFieldRadioGroup extends XmlFormField
 {
     public $defaultValue = '';
     public $required = false;
@@ -3872,7 +3787,6 @@ class XmlForm_Field_RadioGroup extends XmlForm_Field
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @param string owner
@@ -3931,7 +3845,7 @@ class XmlForm_Field_RadioGroup extends XmlForm_Field
  * @package gulliver.system
  *
  */
-class XmlForm_Field_RadioGroupView extends XmlForm_Field
+class XmlFormFieldRadioGroupView extends XmlFormField
 {
     public $defaultValue = '';
     public $required = false;
@@ -3943,7 +3857,6 @@ class XmlForm_Field_RadioGroupView extends XmlForm_Field
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @param string owner
@@ -3961,13 +3874,12 @@ class XmlForm_Field_RadioGroupView extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_CheckGroup
+ * Class XmlFormFieldCheckGroup
  *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_CheckGroup extends XmlForm_Field
+class XmlFormFieldCheckGroup extends XmlFormField
 {
     public $required = false;
     public $option = array ();
@@ -3982,7 +3894,6 @@ class XmlForm_Field_CheckGroup extends XmlForm_Field
     /**
     * Function render
     *
-    * @author David S. Callizaya S. <davidsantos@colosa.com>
     * @access public
     * @param string value
     * @param string owner
@@ -4085,7 +3996,7 @@ class XmlForm_Field_CheckGroup extends XmlForm_Field
  * @package gulliver.system
  *
  */
-class XmlForm_Field_CheckGroupView extends XmlForm_Field
+class XmlFormFieldCheckGroupView extends XmlFormField
 {
     public $option = array ();
     public $sqlConnection = 0;
@@ -4095,7 +4006,6 @@ class XmlForm_Field_CheckGroupView extends XmlForm_Field
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @return string
@@ -4111,13 +4021,12 @@ class XmlForm_Field_CheckGroupView extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_Grid
+ * Class XmlFormFieldGrid
  *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_Grid extends XmlForm_Field
+class XmlFormFieldGrid extends XmlFormField
 {
     public $xmlGrid = '';
     public $initRows = 1;
@@ -4133,25 +4042,23 @@ class XmlForm_Field_Grid extends XmlForm_Field
     public $id = '';
 
     /**
-     * Function XmlForm_Field_Grid
+     * Function XmlFormFieldGrid
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string xmlnode
      * @param string language
      * @param string home
      * @return string
      */
-    public function XmlForm_Field_Grid ($xmlnode, $language, $home)
+    public function __construct ($xmlnode, $language, $home)
     {
-        parent::XmlForm_Field( $xmlnode, $language );
+        parent::__construct( $xmlnode, $language );
         $this->parseFile( $home, $language );
     }
 
     /**
      * Function parseFile
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string home
      * @param string language
@@ -4189,7 +4096,6 @@ class XmlForm_Field_Grid extends XmlForm_Field
     /**
      * Function renderGrid
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string values
      * @return string
@@ -4385,28 +4291,26 @@ class XmlForm_Field_Grid extends XmlForm_Field
 }
 
 /**
- * Class XmlForm_Field_JavaScript
+ * Class XmlFormFieldJavaScript
  *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
-class XmlForm_Field_JavaScript extends XmlForm_Field
+class XmlFormFieldJavaScript extends XmlFormField
 {
     public $code = '';
     public $replaceTags = true;
 
     /**
-    * Function XmlForm_Field_JavaScript
+    * Function XmlFormFieldJavaScript
     *
-    * @author David S. Callizaya S. <davidsantos@colosa.com>
     * @access public
     * @param string xmlNode
     * @param string lang
     * @param string home
     * @return string
     */
-    public function XmlForm_Field_JavaScript ($xmlNode, $lang = 'en', $home = '')
+    public function __construct ($xmlNode, $lang = 'en', $home = '')
     {
         //Loads any attribute that were defined in the xmlNode
         //except name and label.
@@ -4430,7 +4334,6 @@ class XmlForm_Field_JavaScript extends XmlForm_Field
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @return string
@@ -4444,7 +4347,6 @@ class XmlForm_Field_JavaScript extends XmlForm_Field
     /**
      * Function renderGrid
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string value
      * @param string owner
@@ -4468,12 +4370,11 @@ class XmlForm_Field_JavaScript extends XmlForm_Field
 }
 
 /**
- *
- * @author Erik amaru Ortiz <erik@colosa.com>
  * Comment Working for after and before date attributes
+ *
  * @package gulliver.system
  */
-class XmlForm_Field_Date extends XmlForm_Field_SimpleText
+class XmlFormFieldDate extends XmlFormFieldSimpleText
 {
     public $required = false;
     public $readOnly = false;
@@ -4930,10 +4831,9 @@ class XmlForm_Field_Date extends XmlForm_Field_SimpleText
 /**
  * Calendar Widget with Javascript Routines
  *
- * @author Erik amaru Ortiz <aortiz@gmail.com, erik@colosa.com>
  * @package gulliver.system
  */
-class XmlForm_Field_Date5 extends XmlForm_Field_SimpleText
+class XmlFormFieldDate5 extends XmlFormFieldSimpleText
 {
     public $required = false;
     public $readOnly = false;
@@ -5343,11 +5243,8 @@ class XmlForm_Field_Date5 extends XmlForm_Field_SimpleText
 /**
  *
  * @package gulliver.system
- * AVOID TO ENTER HERE : EXPERIMENTAL !!!
- * by Caleeli.
- *
  */
-class XmlForm_Field_Xmlform extends XmlForm_Field
+class XmlFormFieldXmlform extends XmlFormField
 {
     public $xmlfile = '';
     public $initRows = 1;
@@ -5363,25 +5260,23 @@ class XmlForm_Field_Xmlform extends XmlForm_Field
     public $id = '';
 
     /**
-     * Function XmlForm_Field_Xmlform
+     * Function XmlFormFieldXmlform
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string xmlnode
      * @param string language
      * @param string home
      * @return string
      */
-    public function XmlForm_Field_Xmlform ($xmlnode, $language, $home)
+    public function __construct ($xmlnode, $language, $home)
     {
-        parent::XmlForm_Field( $xmlnode, $language );
+        parent::__construct( $xmlnode, $language );
         $this->parseFile( $home, $language );
     }
 
     /**
      * Function parseFile
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string home
      * @param string language
@@ -5401,7 +5296,6 @@ class XmlForm_Field_Xmlform extends XmlForm_Field
     /**
      * Function render
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string values
      * @return string
@@ -5429,7 +5323,6 @@ class XmlForm_Field_Xmlform extends XmlForm_Field
  * Class XmlForm
  * Main Class
  *
- * @author David S. Callizaya S. <davidsantos@colosa.com>
  * @package gulliver.system
  * @access public
  */
@@ -5466,9 +5359,88 @@ class XmlForm
     public $fieldContentWidth = 450;
 
     /**
+     * List of xmlform controls and its classes.
+     *
+     * @var string[] 
+     */
+    private static $controls = [
+        'button'            => XmlFormFieldButton::class,
+        'caption'           => XmlFormFieldCaption::class,
+        'captioncurrency'   => XmlFormFieldCaptionCurrency::class,
+        'captionpercentage' => XmlFormFieldCaptionPercentage::class,
+        'cellmark'          => XmlFormFieldCellMark::class,
+        'checkbox2'         => XmlFormFieldCheckbox2::class,
+        'checkbox'          => XmlFormFieldCheckbox::class,
+        'checkboxpt'        => XmlFormFieldCheckboxpt::class,
+        'checkboxtable'     => XmlFormFieldCheckBoxTable::class,
+        'checkgroup'        => XmlFormFieldCheckGroup::class,
+        'checkgroupview'    => XmlFormFieldCheckGroupView::class,
+        'currency'          => XmlFormFieldCurrency::class,
+        'date2'             => XmlFormFieldDate2::class,
+        'date5'             => XmlFormFieldDate5::class,
+        'date'              => XmlFormFieldDate::class,
+        'dateview'          => XmlFormFieldDateView::class,
+        'dropdown'          => XmlFormFieldDropdown::class,
+        'dropdownpt'        => XmlFormFieldDropdownpt::class,
+        'dveditor'          => XmlFormFieldDVEditor::class,
+        'fastsearch'        => XmlFormFieldFastSearch::class,
+        'file'              => XmlFormFieldFile::class,
+        'grid'              => XmlFormFieldGrid::class,
+        'hidden'            => XmlFormFieldHidden::class,
+        'hours'             => XmlFormFieldHours::class,
+        'html'              => XmlFormFieldHTML::class,
+        'image'             => XmlFormFieldImage::class,
+        'javascript'        => XmlFormFieldJavaScript::class,
+        'label'             => XmlFormFieldLabel::class,
+        'link'              => XmlFormFieldLink::class,
+        'listbox'           => XmlFormFieldListbox::class,
+        'password'          => XmlFormFieldPassword::class,
+        'percentage'        => XmlFormFieldPercentage::class,
+        'popupoption'       => XmlFormFieldPopupOption::class,
+        'print'             => XmlFormFieldPrint::class,
+        'radiogroup'        => XmlFormFieldRadioGroup::class,
+        'radiogroupview'    => XmlFormFieldRadioGroupView::class,
+        'reset'             => XmlFormFieldReset::class,
+        'simpletext'        => XmlFormFieldSimpleText::class,
+        'submit'            => XmlFormFieldSubmit::class,
+        'subtitle'          => XmlFormFieldSubtitle::class,
+        'suggest'           => XmlFormFieldSuggest::class,
+        'text'              => XmlFormFieldText::class,
+        'textarea'          => XmlFormFieldTextarea::class,
+        'textareapm'        => XmlFormFieldTextareaPm::class,
+        'textpm'            => XmlFormFieldTextPm::class,
+        'title'             => XmlFormFieldTitle::class,
+        'toolbar'           => XmlFormFieldToolBar::class,
+        'toolbutton'        => XmlFormFieldToolButton::class,
+        'wysiwyg_editor'    => XmlFormFieldWYSIWYGEditor::class,
+        'xmlform'           => XmlFormFieldXmlform::class,
+        'xmlmenu'           => XmlFormFieldXmlMenu::class,
+        'yesno'             => XmlFormFieldYesNo::class,
+    ];
+
+    /**
+     * Get xmlform control class by type.
+     *
+     * @param string $type
+     * @return string
+     */
+    private function getClassByControlType($type)
+    {
+        $key = strtolower($type);
+        if (isset(self::$controls[$key])) {
+            return self::$controls[$key];
+        } elseif (class_exists('XmlForm_Field_' . $type)) {
+            return 'XmlForm_Field_' . $type;
+        } elseif (class_exists('XmlForm_Field_' . $key)) {
+            return 'XmlForm_Field_' . $key;
+        } else {
+            return XmlFormField::class;
+        }
+    }
+
+    /**
      * Function xmlformTemplate
      *
-     * @author David S. Callizaya S. <davidsantos@colosa.com>
      * @access public
      * @param string form
      * @param string templateFile
@@ -5493,7 +5465,7 @@ class XmlForm
                 $aux[1] = $filename;
             }
             if (count( $aux ) == 2 && defined( 'G_PLUGIN_CLASS' )) {
-                $oPluginRegistry = & PMPluginRegistry::getSingleton();
+                $oPluginRegistry = PluginRegistry::loadSingleton();
                 if ($response = $oPluginRegistry->isRegisteredFolder( $aux[0] )) {
                     if ($response !== true) {
                         $sPath = PATH_PLUGINS . $response . PATH_SEP;
@@ -5565,14 +5537,8 @@ class XmlForm
 
             foreach ($xmlNode as $k => $v) {
                 if (($xmlNode[$k]->type !== 'cdata') && isset( $xmlNode[$k]->attributes['type'] )) {
-                    if (class_exists( 'XmlForm_Field_' . $xmlNode[$k]->attributes['type'] )) {
-                        $x = '$field = new XmlForm_Field_' . $xmlNode[$k]->attributes['type'] . '( $xmlNode[$k], $language, $this->home, $this);';
-
-                        eval( $x );
-                    } else {
-                        $field = new XmlForm_Field( $xmlNode[$k], $language, $this->home, $this );
-                    }
-
+                    $class = $this->getClassByControlType($xmlNode[$k]->attributes['type']);
+                    $field = new $class( $xmlNode[$k], $language, $this->home, $this );
                     $field->language = $this->language;
                     $this->fields[$field->name] = $field;
                 }
@@ -5728,9 +5694,9 @@ class XmlForm
 }
 
 /**
-* @package gulliver.system
-*/
-class XmlForm_Field_Image extends XmlForm_Field
+ * @package gulliver.system
+ */
+class XmlFormFieldImage extends XmlFormField
 {
     public $file         = '';
     public $home         = 'public_html';
@@ -5738,7 +5704,6 @@ class XmlForm_Field_Image extends XmlForm_Field
 
     /**
     * Function render
-    * @author David S. Callizaya S. <davidsantos@colosa.com>
     * @access public
     * @param string values
     * @return string

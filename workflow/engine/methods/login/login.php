@@ -22,13 +22,30 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  *
  */
+
+use ProcessMaker\Core\System;
+use ProcessMaker\Plugins\PluginRegistry;
+
 /*----------------------------------********---------------------------------*/
 $aFields = array();
 
-if (!isset($_GET['u'])) {
-    $aFields['URL'] = '';
-} else {
-    $aFields['URL'] = htmlspecialchars(addslashes(stripslashes(strip_tags(trim(urldecode($_GET['u']))))));
+//Validated redirect url
+$aFields['URL'] = '';
+if (!empty($_GET['u'])) {
+    //clean url with protocols
+    $flagUrl = true;
+    //Most used protocols
+    $protocols = ['https://', 'http://', 'ftp://', 'sftp://','smb://', 'file:', 'mailto:'];
+    foreach ($protocols as $protocol) {
+        if (strpos($_GET['u'], $protocol) !== false) {
+            $_GET['u'] = '';
+            $flagUrl = false;
+            break;
+        }
+    }
+    if ($flagUrl) {
+        $aFields['URL'] = htmlspecialchars(addslashes(stripslashes(strip_tags(trim(urldecode($_GET['u']))))));
+    }
 }
 
 if (!isset($_SESSION['G_MESSAGE'])) {
@@ -101,7 +118,7 @@ if (isset ($_SESSION['USER_LOGGED'])) {
     }
 } else {
     // Execute SSO trigger
-    $pluginRegistry =& PMPluginRegistry::getSingleton();
+    $pluginRegistry = PluginRegistry::loadSingleton();
     if (defined('PM_SINGLE_SIGN_ON')) {
         /*----------------------------------********---------------------------------*/
         if ($pluginRegistry->existsTrigger(PM_SINGLE_SIGN_ON)) {
@@ -174,9 +191,6 @@ foreach ($translationsTable as $locale) {
 global $_DBArray;
 $_DBArray ['langOptions'] = $availableLangArray;
 
-G::LoadClass('configuration');
-//BootStrap::LoadClass('configuration');
-
 $oConf = new Configurations();
 $oConf->loadConfig($obj, 'ENVIRONMENT_SETTINGS', '');
 
@@ -199,10 +213,8 @@ if ($version >= 3) {
     $G_PUBLISH->AddContent('xmlform', 'xmlform', 'login/login', '', $aFields, SYS_URI . 'login/authentication.php');
 }
 
-G::LoadClass('serverConfiguration');
-//Bootstrap::LoadClass('serverConfiguration');
 //get the serverconf singleton, and check if we can send the heartbeat
-$oServerConf = & serverConf::getSingleton();
+$oServerConf = & ServerConf::getSingleton();
 $partnerFlag = (defined('PARTNER_FLAG')) ? PARTNER_FLAG : false;
 if (!$partnerFlag) {
     $sflag = $oServerConf->getHeartbeatProperty('HB_OPTION', 'HEART_BEAT_CONF');

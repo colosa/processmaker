@@ -22,11 +22,6 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
 
-//call plugin
-//  $oPluginRegistry = &PMPluginRegistry::getSingleton();
-//  $existsDynaforms = $oPluginRegistry->existsTrigger(PM_NEW_DYNAFORM_LIST );
-
-
 //for now, we are going with the default list, because the plugin is not complete
 include ('dynaforms_Edit.php');
 die();
@@ -53,7 +48,7 @@ if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1) {
 require_once ('classes/model/Dynaform.php');
 
 $dynUid = (isset( $_GET['DYN_UID'] )) ? urldecode( $_GET['DYN_UID'] ) : '';
-$dynaform = new dynaform();
+$dynaform = new Dynaform();
 if ($dynUid == '') {
     $aFields['DYN_UID'] = $dynUid;
 } else {

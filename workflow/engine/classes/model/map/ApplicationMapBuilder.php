@@ -107,7 +107,7 @@ class ApplicationMapBuilder
 
         $tMap->addColumn('APP_DELAY_DURATION', 'AppDelayDuration', 'double', CreoleTypes::DOUBLE, false, null);
 
-        $tMap->addColumn('APP_DRIVE_FOLDER_UID', 'AppDriveFolderUid', 'string', CreoleTypes::VARCHAR, false, 32);
+        $tMap->addColumn('APP_DRIVE_FOLDER_UID', 'AppDriveFolderUid', 'string', CreoleTypes::VARCHAR, false, 128);
 
         $tMap->addColumn('APP_ROUTING_DATA', 'AppRoutingData', 'string', CreoleTypes::LONGVARCHAR, false, null);
 

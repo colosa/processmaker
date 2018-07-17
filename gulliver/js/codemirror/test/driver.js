@@ -44,23 +44,25 @@ function testCM(name, run, opts, expectedFail) {
 function runTests(callback) {
   var totalTime = 0;
   function step(i) {
-    if (i === tests.length){
-      running = false;
-      return callback("done");
-    } 
-    var test = tests[i], expFail = test.expectedFail, startTime = +new Date;
-    if (filters.length) {
-      for (var j = 0; j < filters.length; j++) {
-        if (test.name.match(filters[j])) {
-          break;
-        }
+    for (;;) {
+      if (i === tests.length) {
+        running = false;
+        return callback("done");
       }
-      if (j == filters.length) {      
+      var test = tests[i], skip = false;
+      if (filters.length) {
+        skip = true;
+        for (var j = 0; j < filters.length; j++)
+          if (test.name.match(filters[j])) skip = false;
+      }
+      if (skip) {
         callback("skipped", test.name, message);
-        return step(i + 1);
+        i++;
+      } else {
+        break;
       }
     }
-    var threw = false;
+    var expFail = test.expectedFail, startTime = +new Date, threw = false;
     try {
       var message = test.func();
     } catch(e) {
@@ -69,11 +71,12 @@ function runTests(callback) {
       else if (e instanceof Failure) callback("fail", test.name, e.message);
       else {
         var pos = /(?:\bat |@).*?([^\/:]+):(\d+)/.exec(e.stack);
+        if (pos) console["log"](e.stack);
         callback("error", test.name, e.toString() + (pos ? " (" + pos[1] + ":" + pos[2] + ")" : ""));
       }
     }
     if (!threw) {
-      if (expFail) callback("fail", test.name, message || "expected failure, but succeeded");
+      if (expFail) callback("fail", test.name, message || "expected failure, but passed");
       else callback("ok", test.name, message);
     }
     if (!quit) { // Run next test
@@ -99,12 +102,20 @@ function label(str, msg) {
 function eq(a, b, msg) {
   if (a != b) throw new Failure(label(a + " != " + b, msg));
 }
-function eqPos(a, b, msg) {
-  function str(p) { return "{line:" + p.line + ",ch:" + p.ch + "}"; }
+function near(a, b, margin, msg) {
+  if (Math.abs(a - b) > margin)
+    throw new Failure(label(a + " is not close to " + b + " (" + margin + ")", msg));
+}
+function eqCharPos(a, b, msg) {
+  function str(p) { return "{line:" + p.line + ",ch:" + p.ch + ",sticky:" + p.sticky + "}"; }
   if (a == b) return;
   if (a == null) throw new Failure(label("comparing null to " + str(b), msg));
   if (b == null) throw new Failure(label("comparing " + str(a) + " to null", msg));
   if (a.line != b.line || a.ch != b.ch) throw new Failure(label(str(a) + " != " + str(b), msg));
+}
+function eqCursorPos(a, b, msg) {
+  eqCharPos(a, b, msg);
+  if (a) eq(a.sticky, b.sticky, msg ? msg + ' (sticky)' : 'sticky');
 }
 function is(a, msg) {
   if (!a) throw new Failure(label("assertion failed", msg));

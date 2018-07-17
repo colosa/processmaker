@@ -31,7 +31,7 @@
  * @description This class is a Dynaform handler for modify directly into file
  * @package gulliver.system
  */
-class dynaFormHandler
+class DynaformHandler
 {
 
     private $xmlfile;

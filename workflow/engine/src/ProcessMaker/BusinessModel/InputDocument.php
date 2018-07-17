@@ -1,6 +1,8 @@
 <?php
 namespace ProcessMaker\BusinessModel;
 
+use PmDynaform;
+
 class InputDocument
 {
     private $arrayFieldDefinition = array(
@@ -377,9 +379,8 @@ class InputDocument
             $arrayData["INP_DOC_UID"] = $inputDocumentUid;
 
             $result = $inputDocument->update($arrayData);
-            
-            \G::LoadClass('pmDynaform');
-            $pmDynaform = new \pmDynaform();
+
+            $pmDynaform = new PmDynaform();
             $pmDynaform->synchronizeInputDocument($processUid, $arrayData);
 
             //Return

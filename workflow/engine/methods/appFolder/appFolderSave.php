@@ -8,9 +8,6 @@ try {
     $FolderCreateDate = 'now';
     $FolderUpdateDate = 'now';
 
-
-    require_once ( "classes/model/AppFolder.php" );
-
     //if exists the row in the database propel will update it, otherwise will insert.
     $tr = AppFolderPeer::retrieveByPK($FolderUid);
     if (!( is_object($tr) && get_class($tr) == 'AppFolder' )) {

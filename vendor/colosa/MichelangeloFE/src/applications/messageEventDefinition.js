@@ -1,6 +1,8 @@
 var MessageEventDefinition = function (bpmnEvent) {
     var that = this,
-        msgTypeVariableDefaultValueTitle = "";
+        msgNameField,
+        variableSelector;
+
     this.bpmnEvent = bpmnEvent;
     this.arrayMessageType = [];
     this.messageEventDefinitionOption = "";
@@ -12,11 +14,31 @@ var MessageEventDefinition = function (bpmnEvent) {
     this.dirtyGrid = false;
     this.myTitle = "";
 
-    if ((that.bpmnEvent.evn_type == "INTERMEDIATE" || that.bpmnEvent.evn_type == "START") && that.bpmnEvent.evn_marker == "MESSAGECATCH") {
-        msgTypeVariableDefaultValueTitle = "Store value in".translate();
-    } else {
-        msgTypeVariableDefaultValueTitle = "Get value from".translate();
-    }
+    variableSelector = new CriteriaField({
+        id: "txtMessageTypeVariableDefaultValue",
+        name: "txtMessageTypeVariableDefaultValue",
+        valueType: "string",
+        label: that.bpmnEvent.evn_marker == "MESSAGECATCH" ? "Store value in".translate() : "Get value from".translate(),
+        maxLength: 200,
+        labelWidth: "50%",
+        controlsWidth: 300,
+        proportion: 3.4,
+        required: false
+    });
+
+    msgNameField = {
+        pmType: "text",
+        id: "txtMessageTypeVariableName",
+        name: "txtMessageTypeVariableName",
+        label: (that.bpmnEvent.evn_marker === "MESSAGECATCH" ? "Value" : "Name").translate(),
+        labelWidth: "40%",
+        controlsWidth: 200,
+        proportion: 2.5,
+        valueType: "string",
+        maxLength: 255,
+        readOnly: true,
+        required: false
+    };
 
     this.cboMessageType = new PMUI.field.DropDownListField({
         id: "cboMessageType",
@@ -30,17 +52,17 @@ var MessageEventDefinition = function (bpmnEvent) {
             if (messageTypeData != null) {
                 that.gridCurrent.setDataItems(messageTypeData.msgt_variables);
 
-                that.resetFrmMessageEventDefinition2();
+                that._resetEditMessageForm();
             }
         }
     });
 
     this.isDirtyFormMessageEvent = function () {
-        if (that.frmMessageEventDefinition1.isDirty() || that.frmMessageEventDefinition4.isDirty() || that.dirtyGrid) {
+        if (that.frmMessageEventDefinition1.isDirty() || that.dirtyGrid) {
             var message_window = new PMUI.ui.MessageWindow({
                 id: "cancelMessageType",
                 width: 490,
-                title: myTitle.translate(),
+                title: that.myTitle.translate(),
                 windowMessageType: "warning",
                 bodyHeight: 'auto',
                 message: 'Are you sure you want to discard your changes?'.translate(),
@@ -68,20 +90,15 @@ var MessageEventDefinition = function (bpmnEvent) {
             that.winMessageEventDefinition.close();
         }
     };
-    this.frmMessageEventDefinition1 = new PMUI.form.Form({
-        id: "frmMessageEventDefinition1",
-        title: "",
-        width: DEFAULT_WINDOW_WIDTH - 70,
-        height: "100px",
-        visibleHeader: false,
-        items: [
-            that.cboMessageType
-        ],
-        style: {
-            cssProperties: {
-                marginBottom: '15px',
-            }
-        }
+
+    this.txtCorrelationValue = new CriteriaField({
+        id: "txtCorrelationValue",
+        name: "txtCorrelationValue",
+        valueType: "string",
+        label: "Correlation Value".translate(),
+        maxLength: 200,
+        value: "",
+        controlsWidth: 380
     });
 
     this.btnSaveVariable = new PMUI.field.ButtonField({
@@ -114,93 +131,36 @@ var MessageEventDefinition = function (bpmnEvent) {
         buttonType: "error"
     });
 
-    this.frmMessageEventDefinition2 = new PMUI.form.Form({
-        id: "frmMessageEventDefinition2",
+    this.frmMessageEventDefinition1 = new PMUI.form.Form({
+        id: "frmMessageEventDefinition1",
+        title: "",
         width: DEFAULT_WINDOW_WIDTH - 70,
-        height: "150px",
         visibleHeader: false,
-        visible: false,
         items: [
+            that.cboMessageType,
+            that.txtCorrelationValue,
             {
+                id: "edit-panel",
                 pmType: "panel",
                 legend: "Message content".translate(),
                 fieldset: true,
                 layout: "hbox",
                 items: [
-                    {
-                        pmType: "text",
-                        id: "txtMessageTypeVariableName",
-                        name: "txtMessageTypeVariableName",
-                        label: "Name".translate(),
-                        labelWidth: "40%",
-                        controlsWidth: 200,
-                        proportion: 2.5,
-                        valueType: "string",
-                        maxLength: 255,
-                        readOnly: true,
-                        required: false
-                    },
-                    new CriteriaField({
-                        id: "txtMessageTypeVariableDefaultValue",
-                        name: "txtMessageTypeVariableDefaultValue",
-                        valueType: "string",
-                        label: msgTypeVariableDefaultValueTitle,
-                        maxLength: 200,
-                        labelWidth: "50%",
-                        controlsWidth: 300,
-                        proportion: 3.4,
-                        required: false
-                    }),
+                    that.bpmnEvent.evn_marker === "MESSAGECATCH" ? variableSelector : msgNameField,
+                    that.bpmnEvent.evn_marker === "MESSAGECATCH" ? msgNameField : variableSelector,
                     that.btnCancelVariable,
                     that.btnSaveVariable
                 ]
             }
-        ]
+        ],
+        style: {
+            cssProperties: {
+                marginBottom: '15px'
+            }
+        }
     });
 
-    this.frmMessageEventDefinition3 = new PMUI.form.Form({
-        id: "frmMessageEventDefinition3",
-        width: DEFAULT_WINDOW_WIDTH - 70,
-        height: "150px",
-        visibleHeader: false,
-        visible: false,
-        items: [
-            {
-                pmType: "panel",
-                legend: "Message content".translate(),
-                fieldset: true,
-                layout: "hbox",
-                items: [
-                    new CriteriaField({
-                        id: "txtMessageTypeVariableDefaultValue",
-                        name: "txtMessageTypeVariableDefaultValue",
-                        valueType: "string",
-                        label: msgTypeVariableDefaultValueTitle,
-                        maxLength: 200,
-                        labelWidth: "50%",
-                        controlsWidth: 300,
-                        proportion: 3.4,
-                        required: false
-                    }),
-                    {
-                        pmType: "text",
-                        id: "txtMessageTypeVariableName",
-                        name: "txtMessageTypeVariableName",
-                        label: "Value".translate(),
-                        labelWidth: "40%",
-                        controlsWidth: 200,
-                        proportion: 2.5,
-                        valueType: "string",
-                        maxLength: 255,
-                        readOnly: true,
-                        required: false
-                    },
-                    that.btnSaveVariable,
-                    that.btnCancelVariable
-                ]
-            }
-        ]
-    });
+    this.editMessageForm = this.frmMessageEventDefinition1.getItem("edit-panel");
 
     this.grdPnlVariable3 = new PMUI.grid.GridPanel({
         id: "grdPnlVariable3",
@@ -291,26 +251,6 @@ var MessageEventDefinition = function (bpmnEvent) {
     });
 
     this.gridCurrent = this.grdPnlVariable3;
-    this.txtCorrelationValue = new CriteriaField({
-        id: "txtCorrelationValue",
-        name: "txtCorrelationValue",
-        valueType: "string",
-        label: "Correlation Value".translate(),
-        maxLength: 200,
-        value: "",
-        controlsWidth: 380
-    });
-
-    this.frmMessageEventDefinition4 = new PMUI.form.Form({
-        id: "frmMessageEventDefinition4",
-        title: "",
-        width: DEFAULT_WINDOW_WIDTH - 70,
-        height: "50px",
-        visibleHeader: false,
-        items: [
-            that.txtCorrelationValue
-        ]
-    });
 
     MessageEventDefinition.prototype.init.call(this);
 };
@@ -320,16 +260,13 @@ MessageEventDefinition.prototype.init = function () {
 
     that.createWindow();
     that.winMessageEventDefinition.addItem(that.frmMessageEventDefinition1);
-    that.winMessageEventDefinition.addItem(that.editMessageForm);
     that.winMessageEventDefinition.addItem(that.gridCurrent);
-    that.winMessageEventDefinition.addItem(that.frmMessageEventDefinition4);
 
     that.winMessageEventDefinition.open();
     this.editMessageForm.setVisible(false);
     this.applyStylesPost();
 
     that.load();
-    document.getElementById("winMessageEventDefinition").childNodes[1].style.overflow = "hidden";
     document.getElementById("requiredMessage").style.marginTop = "15px";
 };
 
@@ -345,40 +282,19 @@ MessageEventDefinition.prototype.applyStylesPost = function () {
 };
 
 MessageEventDefinition.prototype.createWindow = function () {
-    var that = this,
-        flag = 0;
+    var that = this;
 
-    if (that.bpmnEvent.evn_type == "START" && that.bpmnEvent.evn_marker == "MESSAGECATCH" && flag == 0) {
-        myTitle = "Start Message Event".translate();
-        flag = 1;
-        this.gridCurrent = this.grdPnlReceive;
-        this.editMessageForm = this.frmMessageEventDefinition3;
-    }
-
-    if (that.bpmnEvent.evn_type == "END" && that.bpmnEvent.evn_marker == "MESSAGETHROW" && flag == 0) {
-        myTitle = "End Message Event".translate();
-        flag = 1;
-        this.gridCurrent = this.grdPnlVariable3;
-        this.editMessageForm = this.frmMessageEventDefinition2;
-    }
-
-    if (that.bpmnEvent.evn_type == "INTERMEDIATE" && that.bpmnEvent.evn_marker == "MESSAGECATCH" && flag == 0) {
-        myTitle = "Intermediate Receive Message Event".translate();
-        flag = 1;
-        this.gridCurrent = this.grdPnlReceive;
-        this.editMessageForm = this.frmMessageEventDefinition3;
-    }
-
-    if (that.bpmnEvent.evn_type == "INTERMEDIATE" && that.bpmnEvent.evn_marker == "MESSAGETHROW" && flag == 0) {
-        myTitle = "Intermediate Send Message Event".translate();
-        flag = 1;
-        this.gridCurrent = this.grdPnlVariable3;
-        this.editMessageForm = this.frmMessageEventDefinition2;
+    if (that.bpmnEvent.evn_marker === "MESSAGECATCH") {
+        that.myTitle = (that.bpmnEvent.evn_type === "START" ? "Start Message Event" : "Intermediate Receive Message Event").translate();
+        that.gridCurrent = this.grdPnlReceive;
+    } else if (that.bpmnEvent.evn_marker === "MESSAGETHROW") {
+        that.myTitle = (that.bpmnEvent.evn_type == "END" ? "End Message Event" : "Intermediate Send Message Event").translate();
+        that.gridCurrent = this.grdPnlVariable3;
     }
 
     that.winMessageEventDefinition = new PMUI.ui.Window({
         id: "winMessageEventDefinition",
-        title: myTitle.translate(),
+        title: that.myTitle.translate(),
 
         height: DEFAULT_WINDOW_HEIGHT,
         width: DEFAULT_WINDOW_WIDTH,
@@ -405,7 +321,7 @@ MessageEventDefinition.prototype.createWindow = function () {
                     if (!that.frmMessageEventDefinition1.isValid()) {
                         return;
                     }
-                    correlationValueAux = getData2PMUI(that.frmMessageEventDefinition4.html);
+                    correlationValueAux = that.frmMessageEventDefinition1.getData();
                     data = {
                         evn_uid: that.bpmnEvent.evn_uid,
                         msgt_uid: that.cboMessageType.getValue(),
@@ -514,7 +430,7 @@ MessageEventDefinition.prototype.load = function () {
                 that.messageEventDefinitionOption = "PUT";
 
                 that.gridCurrent.setDataItems(that.getVariablesByObject(arrayMessageEventDefinitionData.msged_variables));
-                that.frmMessageEventDefinition4.getField("txtCorrelationValue").setValue(arrayMessageEventDefinitionData.msged_correlation);
+                that.frmMessageEventDefinition1.getField("txtCorrelationValue").setValue(arrayMessageEventDefinitionData.msged_correlation);
             }
         },
         functionFailure: function (xhr, response) {
@@ -537,27 +453,19 @@ MessageEventDefinition.prototype.setValueMessageEventDefinition = function (row)
     that.editMessageForm.setVisible(true);
 };
 
-MessageEventDefinition.prototype.resetFrmMessageEventDefinition2 = function () {
-    var that = this;
-
-    that.editMessageForm.getField("txtMessageTypeVariableName").setValue("");
-    that.editMessageForm.getField("txtMessageTypeVariableDefaultValue").setValue("");
-};
-
 MessageEventDefinition.prototype.addVariableInGrdPnlVariable3 = function () {
-    var that = this;
-    if (that.editRow == null) {
-        that.gridCurrent.addItem(new PMUI.grid.GridPanelRow({
-            data: {
-                msgtv_name: that.editMessageForm.getField("txtMessageTypeVariableName").getValue(),
-                msgtv_default_value: that.editMessageForm.getField("txtMessageTypeVariableDefaultValue").getValue()
-            }
-        }));
-    } else {
-        that.editRow.setData({
+    var that = this,
+        data = {
             msgtv_name: that.editMessageForm.getField("txtMessageTypeVariableName").getValue(),
             msgtv_default_value: that.editMessageForm.getField("txtMessageTypeVariableDefaultValue").getValue()
-        });
+        };
+
+    if (that.editRow == null) {
+        that.gridCurrent.addItem(new PMUI.grid.GridPanelRow({
+            data: data
+        }));
+    } else {
+        that.editRow.setData(data);
     }
 
     that.cancelAcceptedValue();
@@ -566,7 +474,7 @@ MessageEventDefinition.prototype.addVariableInGrdPnlVariable3 = function () {
 MessageEventDefinition.prototype.cancelAcceptedValue = function () {
     var that = this;
     that.editRow = null;
-    that.editMessageForm.reset();
+    that._resetEditMessageForm();
     that.editMessageForm.setVisible(false);
 };
 
@@ -672,4 +580,16 @@ MessageEventDefinition.prototype.messageEventDefintionPutRestProxy = function (d
 
     restProxy.executeRestClient();
 };
-
+/**
+ * Reset the fields from the form's Edit panel.
+ * @returns {MessageEventDefinition}
+ * @private
+ */
+MessageEventDefinition.prototype._resetEditMessageForm = function () {
+    if (this.editMessageForm) {
+        this.editMessageForm.getItems().map(function (i) {
+            i.setValue("");
+        });
+    }
+    return this;
+};

@@ -71,7 +71,7 @@ class NotificationDeviceMapBuilder
 
         $tMap->addColumn('SYS_LANG', 'SysLang', 'string', CreoleTypes::VARCHAR, false, 10);
 
-        $tMap->addColumn('DEV_REG_ID', 'DevRegId', 'string', CreoleTypes::VARCHAR, true, 150);
+        $tMap->addColumn('DEV_REG_ID', 'DevRegId', 'string', CreoleTypes::VARCHAR, true, 255);
 
         $tMap->addColumn('DEV_TYPE', 'DevType', 'string', CreoleTypes::VARCHAR, true, 50);
 

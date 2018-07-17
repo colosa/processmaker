@@ -23,7 +23,7 @@
  */
 //  die("first");
 /* Permissions */
-G::LoadSystem('inputfilter');
+
 $filter = new InputFilter();
 $_GET = $filter->xssFilterHard($_GET,"url");
 switch ($RBAC->userCanAccess( 'PM_SUPERVISOR' )) {
@@ -55,9 +55,6 @@ if ((int) $_SESSION['INDEX'] < 1) {
     G::header( 'location: ' . $_SERVER['HTTP_REFERER'] );
     die();
 }
-/* Includes */
-G::LoadClass( 'case' );
-G::LoadClass( 'derivation' );
 
 /* Menues */
 $G_MAIN_MENU = 'processmaker';
@@ -142,18 +139,17 @@ if (! isset( $_GET['ex'] )) {
     $_GET['ex'] = $_GET['position'];
 }
 
-G::LoadClass( 'dbConnections' );
-$oDbConnections = new dbConnections( $_SESSION['PROCESS'] );
+$oDbConnections = new DbConnections( $_SESSION['PROCESS'] );
 $oDbConnections->loadAdditionalConnections();
 
 $G_PUBLISH = new Publisher();
 if ($_GET['DYN_UID'] != '') {
     $_SESSION['CURRENT_DYN_UID'] = $_GET['DYN_UID'];
-    G::LoadClass('pmDynaform');
+
     $FieldsPmDynaform = $Fields;
     $FieldsPmDynaform["PRO_UID"] = $_SESSION['PROCESS'];
     $FieldsPmDynaform["CURRENT_DYNAFORM"] = $_GET['DYN_UID'];
-    $a = new pmDynaform($FieldsPmDynaform);
+    $a = new PmDynaform($FieldsPmDynaform);
     if ($a->isResponsive()) {
         $a->printEditSupervisor();
     }else{

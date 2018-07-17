@@ -46,14 +46,11 @@ if (($RBAC_Response = $RBAC->userCanAccess( "PM_FACTORY" )) != 1) {
 if (isset( $_SESSION['CURRENT_PAGE_INITILIZATION'] )) {
     eval( $_SESSION['CURRENT_PAGE_INITILIZATION'] );
 }
-    //G::LoadSystem('json');
-//require_once (PATH_THIRDPARTY . 'pear/json/class.json.php');
-//$json = new Services_JSON();
-$G_FORM = new form( G::getUIDName( urlDecode( $_POST['form'] ) ) );
+
+$G_FORM = new Form( G::getUIDName( urlDecode( $_POST['form'] ) ) );
 $G_FORM->id = urlDecode( $_POST['form'] );
 $G_FORM->values = $_SESSION[$G_FORM->id];
 
-G::LoadClass( 'xmlDb' );
 $file = G::decrypt( $G_FORM->values['PME_A'], URL_KEY );
 define( 'DB_XMLDB_HOST', PATH_DYNAFORM . $file . '.xml' );
 define( 'DB_XMLDB_USER', '' );

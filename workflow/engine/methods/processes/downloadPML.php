@@ -16,8 +16,6 @@ try {
     $downloadUrl = PML_DOWNLOAD_URL . '?id=' . $ObjUid . (isset( $_GET['s'] ) ? '&s=' . $_GET['s'] : '');
     //print "<hr>$downloadUrl<hr>";die;
 
-
-    G::LoadClass( 'processes' );
     $oProcess = new Processes();
     $oProcess->downloadFile( $downloadUrl, $localPath, $newfilename );
 
@@ -46,7 +44,7 @@ try {
     $oProcess->createProcessFromData( $oData, $localPath . $newfilename );
 
     //show the info after the imported process
-    G::LoadClass( 'processes' );
+
     $oProcess = new Processes();
     $oProcess->ws_open_public();
     $processData = $oProcess->ws_processGetData( $ObjUid );

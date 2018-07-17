@@ -25,10 +25,6 @@
  *
  */
 
-//require_once 'classes/model/om/BaseDynaform.php';
-//require_once 'classes/model/Content.php';
-//require_once ('classes/model/AdditionalTables.php');
-//G::LoadClass( 'dynaFormField' );
 
 /**
  * Skeleton subclass for representing a row from the 'DYNAFORM' table.
@@ -283,7 +279,7 @@ class Dynaform extends BaseDynaform
         // For a description of a table
         $sDataBase = 'database_' . strtolower( DB_ADAPTER );
         if (G::LoadSystemExist( $sDataBase )) {
-            G::LoadSystem( $sDataBase );
+
             $oDataBase = new database();
             $sql = $oDataBase->getTableDescription( $addTabName );
         } else {

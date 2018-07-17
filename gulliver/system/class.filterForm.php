@@ -32,7 +32,7 @@
  *
  */
 
-class filterForm extends form
+class filterForm extends Form
 {
     public $cols = 3;
     public $type = 'filterform';

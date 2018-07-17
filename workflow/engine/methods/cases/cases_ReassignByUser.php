@@ -63,7 +63,7 @@ try {
     $oDataset = UsersPeer::doSelectRS( $oCriteria );
     $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
     ///////////////////////
-    G::loadClass( 'configuration' );
+
     $oConf = new Configurations();
     $oConf->loadConfig( $obj, 'ENVIRONMENT_SETTINGS', '' );
 
@@ -88,8 +88,6 @@ try {
 
     if ($_GET['REASSIGN_USER'] != '') {
 
-        G::LoadClass( 'tasks' );
-        G::LoadClass( 'groups' );
         $oTasks = new Tasks();
         $oGroups = new Groups();
         $oUser = new Users();
@@ -129,7 +127,7 @@ try {
         global $_DBArray;
         $_DBArray['reassign_byuser'] = $aCasesList;
         $_SESSION['_DBArray'] = $_DBArray;
-        G::LoadClass( 'ArrayPeer' );
+
         $oCriteria = new Criteria( 'dbarray' );
         $oCriteria->setDBArrayTable( 'reassign_byuser' );
 

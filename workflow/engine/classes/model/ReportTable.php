@@ -153,7 +153,7 @@ class ReportTable extends BaseReportTable
 
             $sDataBase = 'database_' . strtolower( DB_ADAPTER );
             if (G::LoadSystemExist( $sDataBase )) {
-                G::LoadSystem( $sDataBase );
+
                 $oDataBase = new database();
                 $oValidate = $oDataBase->getValidate( $this->validate() );
             } else {

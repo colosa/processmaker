@@ -34,8 +34,6 @@
  * @param $_POST variables
  */
 
-G::LoadClass( 'xmlfield_InputPM' );
-G::LoadSystem('inputfilter');
 $filter = new InputFilter();
 $_POST = $filter->xssFilterHard($_POST);
 
@@ -75,13 +73,11 @@ $cssTabs = "<div id=\"" . strtolower( $_POST['type'] ) . "\">
             ";
 
 echo $cssTabs;
-G::LoadClass( 'ArrayPeer' );
 
 global $_DBArray;
 $_DBArray['dynavars'] = $aRows;
 $_SESSION['_DBArray'] = $_DBArray;
 
-G::LoadClass( 'ArrayPeer' );
 $oCriteria = new Criteria( 'dbarray' );
 $oCriteria->setDBArrayTable( 'dynavars' );
 

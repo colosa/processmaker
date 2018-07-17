@@ -246,11 +246,12 @@ PMParticipant.prototype.createBpmn = function (type) {
     } else {
         bpmnCollaboration = _.findWhere(PMDesigner.businessObject.get('rootElements'), {$type: "bpmn:Collaboration"});
     }
-
-    this.createWithBpmn(type, 'participantObject');
-    this.updateBounds(this.participantObject.di);
-    this.updateSemanticParent(this.participantObject, {elem: bpmnCollaboration});
-    this.updateDiParent(this.participantObject.di, this.parent.businessObject.di);
+    if (!this.businessObject.elem) {
+        this.createWithBpmn(type, 'participantObject');
+        this.updateBounds(this.participantObject.di);
+        this.updateSemanticParent(this.participantObject, {elem: bpmnCollaboration});
+        this.updateDiParent(this.participantObject.di, this.parent.businessObject.di);
+    }
 };
 PMParticipant.prototype.updateSemanticParent = function (businessObject, newParent) {
     var children;

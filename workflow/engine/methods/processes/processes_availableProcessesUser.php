@@ -32,10 +32,6 @@
 try {
     $sProUid = $oData->PRO_UID;
 
-    require_once 'classes/model/Users.php';
-    require_once 'classes/model/ProcessUser.php';
-
-    G::LoadClass('processMap');
     $oProcessMap = new ProcessMap();
     $c = $oProcessMap->listNoProcessesUser($sProUid);
     global $RBAC;

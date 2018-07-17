@@ -1,0 +1,40 @@
+{
+    "name": "typo3/class-alias-loader",
+    "type": "composer-plugin",
+    "license": "MIT",
+    "description": "Amends the composer class loader to support class aliases to provide backwards compatibility for packages",
+    "keywords": [
+        "composer", "autoloader", "classloader", "alias"
+    ],
+    "homepage": "http://github.com/TYPO3/class-alias-loader",
+    "authors": [
+        {
+            "name": "Helmut Hummel",
+            "email": "info@helhum.io"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "TYPO3\\ClassAliasLoader\\": "src/"}
+    },
+    "autoload-dev": {
+        "psr-4": { "TYPO3\\ClassAliasLoader\\Tests\\": "tests/"}
+    },
+    "require": {
+        "php": ">=5.3.7",
+        "composer-plugin-api": "^1.0"
+    },
+    "require-dev": {
+        "composer/composer": "dev-master",
+        "mikey179/vfsStream": "1.4.*@dev",
+        "phpunit/phpunit": "~4.7.0"
+    },
+    "replace": {
+        "helhum/class-alias-loader": "*"
+    },
+    "extra": {
+        "class": "TYPO3\\ClassAliasLoader\\Plugin",
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}

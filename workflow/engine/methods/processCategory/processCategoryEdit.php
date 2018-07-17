@@ -9,7 +9,6 @@ if ($RBAC->userCanAccess( 'PM_SETUP' ) != 1 && $RBAC->userCanAccess( 'PM_SETUP_A
 $aux = explode( '|', isset( $_GET['id'] ) ? $_GET['id'] : '' );
 $CategoryUid = str_replace( '"', '', $aux[0] );
 
-require_once ("classes/model/ProcessCategory.php");
 //if exists the row in the database propel will update it, otherwise will insert.
 $tr = ProcessCategoryPeer::retrieveByPK( $CategoryUid );
 

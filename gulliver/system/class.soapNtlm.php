@@ -30,6 +30,8 @@
  * to allow NTLM authentication throw soap connection
  */
 
+use ProcessMaker\Core\System;
+
 /**
  *
  * @package gulliver.system
@@ -184,7 +186,7 @@ class soapNtlm
      */
     private function createBuffer ($path)
     {
-        G::LoadSystem('inputfilter');
+
         $filter = new InputFilter();
         $path = $filter->xssFilterHard($path, "url");
         if ($this->buffer) {

@@ -1,34 +1,5 @@
 <?php
 /**
- * TaskUser.php
- *
- * @package workflow.engine.classes.model
- *
- * ProcessMaker Open Source Edition
- * Copyright (C) 2004 - 2011 Colosa Inc.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
- * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- *
- */
-
-//require_once 'classes/model/om/BaseTaskUser.php';
-//require_once 'classes/model/Content.php';
-
-/**
  * Skeleton subclass for representing a row from the 'GROUP_USER' table.
  *
  *
@@ -39,42 +10,59 @@
  *
  * @package workflow.engine.classes.model
  */
+
+use ProcessMaker\BusinessModel\WebEntry;
 class TaskUser extends BaseTaskUser
 {
 
     /**
-     * Create the application document registry
+     * Create the new record in the table TaskUser
      *
-     * @param array $aData
+     * @param array $requestData
      * @return string
+     * @throws Exception
      *
      */
-    public function create ($aData)
+    public function create ($requestData)
     {
-        $oConnection = Propel::getConnection( TaskUserPeer::DATABASE_NAME );
+        $connection = Propel::getConnection(TaskUserPeer::DATABASE_NAME);
         try {
-            $taskUser = TaskUserPeer::retrieveByPK( $aData['TAS_UID'], $aData['USR_UID'], $aData['TU_TYPE'], $aData['TU_RELATION'] );
-
-            if (is_object( $taskUser )) {
-                return - 1;
+            $bmWebEntry = new WebEntry;
+            //Check the usrUid value
+            if (RBAC::isGuestUserUid($requestData['USR_UID']) && !$bmWebEntry->isTaskAWebEntry($requestData['TAS_UID'])) {
+                throw new Exception(G::LoadTranslation("ID_USER_CAN_NOT_UPDATE", array($requestData['USR_UID'])));
+                return false;
             }
-            $oTaskUser = new TaskUser();
-            $oTaskUser->fromArray( $aData, BasePeer::TYPE_FIELDNAME );
-            if ($oTaskUser->validate()) {
-                $oConnection->begin();
-                $iResult = $oTaskUser->save();
-                $oConnection->commit();
-                return $iResult;
+
+            $taskUser = TaskUserPeer::retrieveByPK(
+                $requestData['TAS_UID'],
+                $requestData['USR_UID'],
+                $requestData['TU_TYPE'],
+                $requestData['TU_RELATION']
+            );
+
+            if (is_object($taskUser)) {
+                return -1;
+            }
+
+            $taskUser = new TaskUser();
+            $taskUser->fromArray($requestData, BasePeer::TYPE_FIELDNAME);
+            if ($taskUser->validate()) {
+                $connection->begin();
+                $result = $taskUser->save();
+                $connection->commit();
+
+                return $result;
             } else {
-                $sMessage = '';
-                $aValidationFailures = $oTaskUser->getValidationFailures();
+                $message = '';
+                $aValidationFailures = $taskUser->getValidationFailures();
                 foreach ($aValidationFailures as $oValidationFailure) {
-                    $sMessage .= $oValidationFailure->getMessage() . '<br />';
+                    $message .= $oValidationFailure->getMessage() . '<br />';
                 }
-                throw (new Exception( 'The registry cannot be created!<br />' . $sMessage ));
+                throw (new Exception('The registry cannot be created!<br />' . $message));
             }
         } catch (Exception $oError) {
-            $oConnection->rollback();
+            $connection->rollback();
             throw ($oError);
         }
     }

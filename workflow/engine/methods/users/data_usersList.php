@@ -22,19 +22,15 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
 
-require_once (PATH_RBAC . "model/RolesPeer.php");
-G::LoadClass( 'ArrayPeer' );
-
 isset( $_POST['textFilter'] ) ? $filter = $_POST['textFilter'] : $filter = '';
 
 $sDelimiter = DBAdapter::getStringDelimiter();
-require_once 'classes/model/Users.php';
+
 $oCriteria = new Criteria( 'workflow' );
 $oCriteria->addSelectColumn( UsersPeer::USR_UID );
 
 $sDataBase = 'database_' . strtolower( DB_ADAPTER );
 if (G::LoadSystemExist( $sDataBase )) {
-    G::LoadSystem( $sDataBase );
     $oDataBase = new database();
     $oCriteria->addAsColumn( 'USR_COMPLETENAME', $oDataBase->concatString( "USR_LASTNAME", "' '", "USR_FIRSTNAME" ) );
     //$oCriteria->addAsColumn('USR_PHOTO', $oDataBase->concatString("'".PATH_IMAGES_ENVIRONMENT_USERS."'", "USR_UID","'.gif'"));

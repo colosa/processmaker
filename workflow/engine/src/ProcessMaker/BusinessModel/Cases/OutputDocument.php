@@ -1,6 +1,8 @@
 <?php
 namespace ProcessMaker\BusinessModel\Cases;
 
+use ProcessMaker\Plugins\PluginRegistry;
+
 class OutputDocument
 {
     /**
@@ -200,7 +202,6 @@ class OutputDocument
     public function getCasesOutputDocuments($applicationUid, $userUid)
     {
         try {
-            \G::LoadClass('case');
             $oCase = new \Cases();
             $fields = $oCase->loadCase( $applicationUid );
             $sProcessUID = $fields['PRO_UID'];
@@ -244,7 +245,6 @@ class OutputDocument
         try {
             $sApplicationUID = $applicationUid;
             $sUserUID = $userUid;
-            \G::LoadClass('case');
             $oCase = new \Cases();
             $fields = $oCase->loadCase( $sApplicationUID );
             $sProcessUID = $fields['PRO_UID'];
@@ -442,7 +442,6 @@ class OutputDocument
             $outputID = $outputDocumentUid;
             $g = new \G();
             $g->sessionVarSave();
-            \G::LoadClass( 'case' );
             $oCase = new \Cases();
             $oCase->thisIsTheCurrentUser( $sApplication, $index, $sUserLogged, '', 'casesListExtJs' );
             //require_once 'classes/model/OutputDocument.php';
@@ -526,11 +525,10 @@ class OutputDocument
             $this->generate( $outputID, $Fields['APP_DATA'], $pathOutput, $sFilename, $aOD['OUT_DOC_TEMPLATE'], (boolean) $aOD['OUT_DOC_LANDSCAPE'], $aOD['OUT_DOC_GENERATE'], $aProperties , $applicationUid);
 
             //Plugin Hook PM_UPLOAD_DOCUMENT for upload document
-            //G::LoadClass('plugin');
-            $oPluginRegistry = & \PMPluginRegistry::getSingleton();
+            $oPluginRegistry = PluginRegistry::loadSingleton();
             if ($oPluginRegistry->existsTrigger( PM_UPLOAD_DOCUMENT ) && class_exists( 'uploadDocumentData' )) {
                 $triggerDetail = $oPluginRegistry->getTriggerInfo( PM_UPLOAD_DOCUMENT );
-                $aFields['APP_DOC_PLUGIN'] = $triggerDetail->sNamespace;
+                $aFields['APP_DOC_PLUGIN'] = $triggerDetail->getNamespace();
                 $oAppDocument1 = new \AppDocument();
                 $oAppDocument1->update( $aFields );
                 $sPathName = PATH_DOCUMENT . \G::getPathFromUID($sApplication) . PATH_SEP;

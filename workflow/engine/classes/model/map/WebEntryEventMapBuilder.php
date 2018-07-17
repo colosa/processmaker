@@ -67,9 +67,9 @@ class WebEntryEventMapBuilder
 
         $tMap->addPrimaryKey('WEE_UID', 'WeeUid', 'string', CreoleTypes::VARCHAR, true, 32);
 
-        $tMap->addColumn('WEE_TITLE', 'WeeTitle', 'string', CreoleTypes::LONGVARCHAR, true, null);
+        $tMap->addColumn('WEE_TITLE', 'WeeTitle', 'string', CreoleTypes::LONGVARCHAR, false, null);
 
-        $tMap->addColumn('WEE_DESCRIPTION', 'WeeDescription', 'string', CreoleTypes::LONGVARCHAR, true, null);
+        $tMap->addColumn('WEE_DESCRIPTION', 'WeeDescription', 'string', CreoleTypes::LONGVARCHAR, false, null);
 
         $tMap->addColumn('PRJ_UID', 'PrjUid', 'string', CreoleTypes::VARCHAR, true, 32);
 
@@ -77,9 +77,9 @@ class WebEntryEventMapBuilder
 
         $tMap->addColumn('ACT_UID', 'ActUid', 'string', CreoleTypes::VARCHAR, true, 32);
 
-        $tMap->addColumn('DYN_UID', 'DynUid', 'string', CreoleTypes::VARCHAR, true, 32);
+        $tMap->addColumn('DYN_UID', 'DynUid', 'string', CreoleTypes::VARCHAR, false, 32);
 
-        $tMap->addColumn('USR_UID', 'UsrUid', 'string', CreoleTypes::VARCHAR, true, 32);
+        $tMap->addColumn('USR_UID', 'UsrUid', 'string', CreoleTypes::VARCHAR, false, 32);
 
         $tMap->addColumn('WEE_STATUS', 'WeeStatus', 'string', CreoleTypes::VARCHAR, true, 10);
 

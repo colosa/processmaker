@@ -229,6 +229,16 @@
         scope.find("span,img").each(function (i, e) {
             $(e).data("disabled", disabled);
         });
+        if (!propertiesGot[property].disabled && property === "requiredFieldErrorMessage"){
+            scope.find("textarea").prop("disabled", !propertiesGot["required"].value);
+        }
+        if (!propertiesGot[property].disabled && propertiesGot.type.value === 'multipleFile' &&
+            (property === 'extensions' || property === 'size' || property === 'sizeUnity')) {
+            propertiesGot[property].node.disabled = propertiesGot['inputDocument'].value.indexOf("...");
+        }
+        if (property === 'enableVersioning') {
+            propertiesGot[property].node.textContent = (propertiesGot[property].node.textContent === "true") ? 'Yes' : 'No'
+        }
         if (cellValue && propertiesGot[property].disabledTodayOption !== undefined) {
             cellValue.find("input[type='text']").prop("disabled", propertiesGot[property].disabledTodayOption);
             scope.find("span,img").each(function (i, e) {

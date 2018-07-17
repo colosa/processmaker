@@ -35,7 +35,6 @@
 </head>
 <body>
 <?php
-    G::LoadSystem('inputfilter');
     $filter = new InputFilter();
     if(isset($_GET["q"])) {
         $_GET["q"] = $filter->xssFilterHard($_GET["q"]);
@@ -58,7 +57,6 @@
 // displays the upload form
 function displayUploadForm()
 {
-    G::LoadSystem('inputfilter');
     $filter = new InputFilter();
     if(isset($_SERVER["QUERY_STRING"])) {
         $_SERVER["QUERY_STRING"] = $filter->xssFilterHard($_SERVER["QUERY_STRING"],'url');
@@ -86,7 +84,6 @@ function displayUploadForm()
 // uploads the file to the destination path, and returns a link with link path substituted for destination path
 function uploadContentFile()
 {
-	G::LoadSystem('inputfilter');
     $filter = new InputFilter();
     $_FILES["upload_file"] = $filter->xssFilterHard($_FILES["upload_file"]);
     
@@ -105,7 +102,7 @@ function uploadContentFile()
 
 function showPopUp($PopupText)
 {
-	G::LoadSystem('inputfilter');
+
     $filter = new InputFilter();
     $PopupText = $filter->xssFilterHard($PopupText);
 	echo "<script type=\"text/javascript\" language=\"javascript\">alert (\"$PopupText\");</script>";

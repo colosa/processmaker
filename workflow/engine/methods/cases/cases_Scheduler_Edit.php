@@ -48,8 +48,6 @@ try {
     //	$G_ID_MENU_SELECTED    = 'CASES';
     $G_PUBLISH = new Publisher();
 
-    G::LoadClass( 'case' );
-
     /* Prepare page before to show */
 
     $oCaseScheduler = new CaseScheduler();

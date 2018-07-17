@@ -1,0 +1,22 @@
+{
+	"name": "libchart/libchart",
+	"type": "library",
+	"description": "Simple PHP chart drawing library",
+	"keywords": ["chart","charts","bar charts","line charts","pie charts"],
+	"homepage": "http://naku.dohcrew.com/libchart/pages/introduction/",
+	"license": "GPL-3.0",
+	"authors": [
+		{
+			"name": "Jean-Marc Trémeaux",
+			"homepage": "http://naku.dohcrew.com/",
+			"role": "Developer"
+		},
+		{
+			"name": "Alexander Stehlik",
+			"role": "Developer"
+		}
+	],
+	"autoload": {
+		"psr-0": { "Libchart\\": "libchart/"}
+	}
+}

@@ -1,4 +1,7 @@
 <?php
+
+use ProcessMaker\Plugins\PluginRegistry;
+
 require_once 'classes/model/Users.php';
 $oUser = new Users();
 $aUser = $oUser->load($_SESSION['USER_LOGGED']);
@@ -50,15 +53,19 @@ if (class_exists('redirectDetail')) {
     if (isset($RBAC->aUserInfo['PROCESSMAKER']['ROLE']['ROL_CODE'])) {
         $userRole = $RBAC->aUserInfo['PROCESSMAKER']['ROLE']['ROL_CODE'];
     }
-    $oPluginRegistry = &PMPluginRegistry::getSingleton();
+    $oPluginRegistry = PluginRegistry::loadSingleton();
     //$oPluginRegistry->showArrays();
     $aRedirectLogin = $oPluginRegistry->getRedirectLogins();
     if (isset($aRedirectLogin)) {
         if (is_array($aRedirectLogin)) {
-            foreach ($aRedirectLogin as $key => $detail) {
+            /** @var \ProcessMaker\Plugins\Interfaces\RedirectDetail $detail */
+            foreach ($aRedirectLogin as $detail) {
                 if (isset($detail->sPathMethod)) {
-                    if ($detail->sRoleCode == $userRole) {
-                        G::header('location: /sys' .  SYS_TEMP . '/' . SYS_LANG . '/' . SYS_SKIN . '/' . $detail->sPathMethod );
+                    if ($detail->equalRoleCodeTo($userRole)) {
+                        G::header(
+                            'location: /sys' . SYS_TEMP . '/' . SYS_LANG .
+                            '/' . SYS_SKIN . '/' . $detail->getPathMethod()
+                        );
                         die;
                     }
                 }

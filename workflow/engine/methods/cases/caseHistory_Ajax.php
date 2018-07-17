@@ -26,9 +26,6 @@ $actionAjax = isset( $_REQUEST['actionAjax'] ) ? $_REQUEST['actionAjax'] : null;
 
 if ($actionAjax == 'historyGridList_JXP') {
 
-    G::LoadClass('case');
-    G::LoadClass("BasePeer");
-
     global $G_PUBLISH;
     $criteria = Cases::getTransferHistoryCriteria($_SESSION['APPLICATION']);
 

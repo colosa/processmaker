@@ -80,13 +80,17 @@ class Calendar extends Api
     }
 
     /**
-     * 
-     * @access protected
-     * @class  AccessControl {@permission PM_SETUP_CALENDAR}
+     * Update calendar.
+     *
      * @url PUT /:cal_uid
      *
      * @param string $cal_uid      {@min 32}{@max 32}
      * @param array  $request_data
+     *
+     * @throws RestException
+     *
+     * @access protected
+     * @class AccessControl {@permission PM_SETUP_CALENDAR}
      */
     public function doPut($cal_uid, $request_data)
     {

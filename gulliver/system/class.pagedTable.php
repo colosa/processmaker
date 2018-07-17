@@ -25,8 +25,6 @@
  *
  */
 
-G::LoadClass( 'filterForm' );
-G::LoadClass( 'xmlMenu' );
 
 /**
  * Class pagedTable
@@ -92,7 +90,7 @@ class pagedTable
     public $name = 'pagedTable';
     public $id = 'A1';
     public $disableFooter = false;
-    //This attribute is used to set STYLES to groups of TD, using the field type "cellMark" (see XmlForm_Field_cellMark)
+    //This attribute is used to set STYLES to groups of TD, using the field type "cellMark" (see XmlFormFieldCellMark)
     public $tdStyle = '';
     public $tdClass = '';
     //Config Save definition
@@ -778,7 +776,7 @@ class pagedTable
      */
     public function renderTable ($block = '')
     {
-        G::LoadSystem('inputfilter');
+
         $filter = new InputFilter();
         $this->orderBy  = $filter->xssFilterHard($this->orderBy);
         $this->currentPage  = $filter->xssFilterHard($this->currentPage);

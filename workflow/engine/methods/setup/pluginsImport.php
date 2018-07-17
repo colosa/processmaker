@@ -22,6 +22,9 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
 global $RBAC;
+
+use ProcessMaker\Plugins\PluginRegistry;
+
 $access = $RBAC->userCanAccess( 'PM_SETUP_ADVANCE' );
 if ($access != 1) {
     switch ($access) {
@@ -42,9 +45,8 @@ if ($access != 1) {
             break;
     }
 }
-G::LoadClass( 'plugin' );
 
-$oPluginRegistry = & PMPluginRegistry::getSingleton();
+$oPluginRegistry = PluginRegistry::loadSingleton();
 $G_MAIN_MENU = 'processmaker';
 $G_ID_MENU_SELECTED = 'SETUP';
 $G_SUB_MENU = 'setup';

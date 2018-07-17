@@ -22,6 +22,8 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
 
+use ProcessMaker\Plugins\PluginRegistry;
+
 /**
  * Report - Report view
  *
@@ -47,7 +49,6 @@ switch ($RBAC->userCanAccess( 'PM_REPORTS' )) {
 try {
 
     //form type format hours in the form xml
-    G::LoadClass( 'xmlfield_InputPM' );
 
     $G_MAIN_MENU = 'processmaker';
     $G_ID_MENU_SELECTED = 'REPORTS';
@@ -69,7 +70,6 @@ try {
                 $fields['TO'] = date( 'Y-m-d' );
             }
 
-            G::LoadClass( 'report' );
             $oReport = new Report();
             if ($sw == 0) {
                 $c = $oReport->generatedReport1();
@@ -103,7 +103,6 @@ try {
                 $fields['TO'] = date( 'Y-m-d' );
             }
 
-            G::LoadClass( 'report' );
             $oReport = new Report();
 
             if ($sw == 0) {
@@ -135,7 +134,6 @@ try {
                 $fields['TO'] = date( 'Y-m-d' );
             }
 
-            G::LoadClass( 'report' );
             $oReport = new Report();
 
             if ($sw == 0) {
@@ -164,7 +162,6 @@ try {
                 $fields['TASKS'] = $_POST['form']['TASKS'];
             }
 
-            G::LoadClass( 'report' );
             $oReport = new Report();
 
             if ($sw == 0) {
@@ -193,7 +190,6 @@ try {
                 $fields['TASKS'] = $_POST['form']['TASKS'];
             }
 
-            G::LoadClass( 'report' );
             $oReport = new Report();
 
             if ($sw == 0) {
@@ -216,7 +212,7 @@ try {
             break;
         default:
             $foundReport = false;
-            $oPluginRegistry = &PMPluginRegistry::getSingleton();
+            $oPluginRegistry = PluginRegistry::loadSingleton();
             $aAvailableReports = $oPluginRegistry->getReports();
             foreach ($aAvailableReports as $sReportClass) {
 

@@ -26,7 +26,6 @@ global $RBAC;
 $RBAC->requirePermissions( 'PM_SETUP_ADVANCE' );
 $G_PUBLISH = new Publisher();
 
-G::LoadClass( 'configuration' );
 $c = new Configurations();
 $configPage = $c->getConfiguration( 'additionalTablesList', 'pageSize', '', $_SESSION['USER_LOGGED'] );
 $Config['pageSize'] = isset( $configPage['pageSize'] ) ? $configPage['pageSize'] : 20;

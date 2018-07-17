@@ -636,6 +636,7 @@ class MessageType
 
                 $criteriaMessageTypeVariable = $variable->getMessageTypeVariableCriteria();
                 $criteriaMessageTypeVariable->add(\MessageTypeVariablePeer::MSGT_UID, $row["MSGT_UID"], \Criteria::EQUAL);
+                $criteriaMessageTypeVariable->addAscendingOrderByColumn(\MessageTypeVariablePeer::MSGTV_NAME);
 
                 $rsCriteriaMessageTypeVariable = \MessageTypeVariablePeer::doSelectRS($criteriaMessageTypeVariable);
                 $rsCriteriaMessageTypeVariable->setFetchmode(\ResultSet::FETCHMODE_ASSOC);

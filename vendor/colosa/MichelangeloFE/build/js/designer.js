@@ -1,257 +1,4 @@
 /*----------------------------------********---------------------------------*/
-/**features-begins**/
-var defaultRules = {
-    'bpmn:StartEvent': [
-        {
-            code: '105101',
-            description: 'Start Event must have an outgoing sequence flow'.translate(),
-            type: 'bpmnStartEvent',
-            severity: 'Error',
-            criteria: function (shape, error) {
-                var ref = shape.businessObject.elem;
-                if (ref && !(ref.outgoing && ref.outgoing.length === 1)) {
-                    //add error
-                    shape.addErrorLog(error);
-                }
-            }
-        },
-        {
-            code: '105102',
-            description: "Can't connect start event to subprocess".translate(),
-            type: 'bpmnStartEvent',
-            severity: 'Error',
-            criteria: function (shape, error) {
-                var ref = shape.businessObject.elem,
-                    refArray = ref.outgoing;
-                if (ref && refArray && refArray.length === 1) {
-                    if (refArray[0].targetRef.$type === "bpmn:SubProcess") {
-                        //add error
-                        shape.addErrorLog(error);
-                    }
-                }
-            }
-        },
-        {
-            code: '105103',
-            description: 'Invalid Connection between elements'.translate(),
-            type: 'bpmnStartEvent',
-            severity: 'Error',
-            criteria: function (shape, error) {
-                if(!shape.ValidateConnections()) {
-                    //add error
-                    shape.addErrorLog(error);
-                }
-            }
-        }
-    ],
-    'bpmnActivity': [
-        {
-            code: '105201',
-            description: 'Activity must have an incoming sequence flow'.translate(),
-            type: 'bpmnActivity',
-            severity: 'Error',
-            criteria: function (shape, error) {
-                var ref = shape.businessObject.elem;
-                if (ref && !(ref.incoming && ref.incoming.length > 0 )) {
-                    //add error
-                    shape.addErrorLog(error);
-                }
-            }
-        },
-        {
-            code: '105202',
-            description: 'Activity must have an outgoing sequence flow'.translate(),
-            type: 'bpmnActivity',
-            severity: 'Error',
-            criteria: function (shape, error) {
-                var ref = shape.businessObject.elem;
-                if (ref && !(ref.outgoing && ref.outgoing.length === 1)) {
-                    //add error
-                    shape.addErrorLog(error);
-                }
-            }
-        },
-        {
-            code: '105203',
-            description: 'Invalid Connection between elements'.translate(),
-            type: 'bpmnActivity',
-            severity: 'Error',
-            criteria: function (shape, error) {
-                if(!shape.ValidateConnections()) {
-                    //add error
-                    shape.addErrorLog(error);
-                }
-            }
-        }
-    ],
-    'bpmn:EndEvent': [
-        {
-            code: '105301',
-            description: 'End event must have an incoming sequence flow'.translate(),
-            type: 'bpmnEndEvent',
-            severity: 'Error',
-            criteria: function (shape, error) {
-                var ref = shape.businessObject.elem;
-                if (ref && !(ref.incoming && ref.incoming.length > 0)) {
-                    //add error
-                    shape.addErrorLog(error);
-                }
-            }
-        },
-        {
-            code: '105302',
-            description: 'Invalid Connection between elements'.translate(),
-            type: 'bpmnEndEvent',
-            severity: 'Error',
-            criteria: function (shape, error) {
-                if(!shape.ValidateConnections()) {
-                    //add error
-                    shape.addErrorLog(error);
-                }
-            }
-        }
-    ],
-    'bpmnIntermediateEvent': [
-        {
-            code: '105401',
-            description: 'Intermediate event must have one or more incoming sequence flow'.translate(),
-            type: 'bpmnIntermediateEvent',
-            severity: 'Error',
-            criteria: function (shape, error) {
-                var ref = shape.businessObject.elem;
-                if (ref && !(ref.incoming && ref.incoming.length >= 1)) {
-                    //add error
-                    shape.addErrorLog(error);
-                }
-            }
-        },
-        {
-
-            code: '105402',
-            description: 'Intermediate event must have an outgoing sequence flow'.translate(),
-            type: 'bpmnIntermediateEvent',
-            severity: 'Error',
-            criteria: function (shape, error) {
-                var ref = shape.businessObject.elem;
-                if (ref && !(ref.outgoing && ref.outgoing.length === 1)) {
-                    //add error
-                    shape.addErrorLog(error);
-                }
-            }
-        },
-        {
-            code: '105403',
-            description: 'Invalid Connection between elements'.translate(),
-            type: 'bpmnIntermediateEvent',
-            severity: 'Error',
-            criteria: function (shape, error) {
-                if(!shape.ValidateConnections()) {
-                    //add error
-                    shape.addErrorLog(error);
-                }
-            }
-        }
-    ],
-    'bpmnGateway': [
-        {
-            code: '105501',
-            description: 'Diverging Gateway must have an incoming sequence flow'.translate(),
-            type: 'bpmnGateway',
-            severity: 'Error',
-            criteria: function (shape, error) {
-                if (shape.gat_direction === 'CONVERGING') {
-                    error.description = 'Converging Gateway must have two or more incoming sequence flow'.translate();
-                    var ref = shape.businessObject.elem;
-                    if (ref && !(ref.incoming && ref.incoming.length > 1)) {
-                        shape.addErrorLog(error);
-                    }
-                } else {
-                    var ref = shape.businessObject.elem;
-                    if (ref && !(ref.incoming && ref.incoming.length === 1)) {
-                        //add error
-                        shape.addErrorLog(error);
-                    }
-                }
-
-            }
-        },
-        {
-            code: '105502',
-            description: 'Diverging Gateway must have two or more outgoing sequence flow'.translate(),
-            type: 'bpmnGateway',
-            severity: 'Error',
-            criteria: function (shape, error) {
-                if (shape.gat_direction === 'CONVERGING') {
-                    error.description = 'Converging Gateway must have a outgoing sequence flow'.translate();
-                    var ref = shape.businessObject.elem;
-                    if (ref && !(ref.outgoing && ref.outgoing.length === 1)) {
-                        shape.addErrorLog(error);
-                    }
-                } else {
-                    var ref = shape.businessObject.elem;
-                    if (ref && !(ref.outgoing && ref.outgoing.length > 1)) {
-                        //add error
-                        shape.addErrorLog(error);
-                    }
-                }
-            }
-        },
-        {
-            code: '105503',
-            description: 'Invalid Connection between elements'.translate(),
-            type: 'bpmnGateway',
-            severity: 'Error',
-            criteria: function (shape, error) {
-                if(!shape.ValidateConnections()) {
-                    //add error
-                    shape.addErrorLog(error);
-                }
-            }
-        }
-    ],
-    'bpmnSubProcess': [
-        {
-            code: '105601',
-            description: 'SubProcess must have an incoming sequence flow'.translate(),
-            type: 'bpmnSubProcess',
-            severity: 'Error',
-            criteria: function (shape, error) {
-                var ref = shape.businessObject.elem;
-                if (ref && !(ref.incoming && ref.incoming.length > 0)) {
-                    //add error
-                    shape.addErrorLog(error);
-                }
-            }
-        },
-        {
-            code: '105602',
-            description: 'SubProcess must have an outgoing sequence flow'.translate(),
-            type: 'bpmnSubProcess',
-            severity: 'Error',
-            criteria: function (shape, error) {
-                var ref = shape.businessObject.elem;
-                if (ref && !(ref.outgoing && ref.outgoing.length === 1)) {
-                    //add error
-                    shape.addErrorLog(error);
-                }
-            }
-        },
-        {
-            code: '105603',
-            description: 'Invalid Connection between elements'.translate(),
-            type: 'bpmnSubProcess',
-            severity: 'Error',
-            criteria: function (shape, error) {
-                if(!shape.ValidateConnections()) {
-                    //add error
-                    shape.addErrorLog(error);
-                }
-            }
-        }
-    ]
-};
-/**features-ends**/
-/*----------------------------------********---------------------------------*/
 var defaultCrown = {
     items: [
         {
@@ -491,6 +238,16 @@ var configCrown = {
             rows: 2,
             cols: 1
         },
+        'DATAINPUT': {
+            order: ["flow", "delete"],
+            rows: 2,
+            cols: 1
+        },
+        'DATAOUTPUT': {
+            order: ["flow", "delete"],
+            rows: 2,
+            cols: 1
+        },
         'DATASTORE': {
             order: ["flow", "delete"],
             rows: 2,
@@ -682,7 +439,8 @@ PMDesigner.hideAllTinyEditorControls = function () {
 
 
 jQuery(document).ready(function ($) {
-    var setSaveButtonDisabled, s, sidebarCanvas, project, d, downloadLink, handlerExportNormal, handlerExportGranular, handler, validatosr, help, option, menu, elem;
+    var setSaveButtonDisabled, s, sidebarCanvas, project, d, downloadLink, handlerExportNormal, handlerExportGranular,
+        handler, validatosr, help, option, menu, elem;
     /***************************************************
      * Defines the Process
      ***************************************************/
@@ -944,7 +702,7 @@ jQuery(document).ready(function ($) {
                 name: 'numrow',
                 "title": "#",
                 width: '5%',
-                render: function(data, type, row, conf){
+                render: function (data, type, row, conf) {
                     return conf.row + 1;
                 }
             },
@@ -977,12 +735,12 @@ jQuery(document).ready(function ($) {
             shape;
         if ($(this).hasClass('selected')) {
             $(this).removeClass('selected');
-            PMUI.getActiveCanvas().emptyCurrentSelection();
+            PMUI.getActiveCanvas().hideAllCoronas().emptyCurrentSelection();
         }
         else {
             PMDesigner.validTable.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
-            PMUI.getActiveCanvas().emptyCurrentSelection();
+            PMUI.getActiveCanvas().hideAllCoronas().emptyCurrentSelection();
             shape = PMUI.getActiveCanvas().items.find('id', id);
             PMUI.getActiveCanvas().addToSelection(shape.relatedObject);
         }
@@ -1249,19 +1007,19 @@ jQuery(document).ready(function ($) {
 
             {
                 element: '.bpmn_shapes',
-                intro: 'Drag and Drop the process elements that you want include in the process design.'.translate() +
-                '<br /><img src="../../../lib/img/corona-task.png">' + ' Task: Add to include action in your process.'.translate() +
-                '<br /><img src="../../../lib/img/corona-gateway-exclusive.png"> <img src="../../../lib/img/corona-gateway-parallel.png"> <img src="../../../lib/img/corona-gateway-inclusive.png">' + ' Gateway: Used to control the execution flow. '.translate() +
-                '<br /><img src="../../../lib/img/corona-start.png"> <img src="../../../lib/img/corona-start-message.png">' + ' Start Event: The process begins with a start event.'.translate() +
-                '<br /><img src="../../../lib/img/corona-intermediate-receive-message.png"> <img src="../../../lib/img/corona-intermediate-send-message.png">' + ' Intermediate Event: Used to define an event that could happen in the middle of the process.'.translate() +
+                intro: 'Drag and drop the process elements that you want to include in the process design.'.translate() +
+                '<br /><img src="../../../lib/img/corona-task.png">' + ' Task: Add to include an action in your process.'.translate() +
+                '<br /><img src="../../../lib/img/corona-gateway-exclusive.png"> <img src="../../../lib/img/corona-gateway-parallel.png"> <img src="../../../lib/img/corona-gateway-inclusive.png">' + ' Gateway: Selects a path or divides the process into multiple paths and joins them together.'.translate() +
+                '<br /><img src="../../../lib/img/corona-start.png"> <img src="../../../lib/img/corona-start-message.png">' + ' Start Event: The process always begins with a start event.'.translate() +
+                '<br /><img src="../../../lib/img/corona-intermediate-receive-message.png"> <img src="../../../lib/img/corona-intermediate-send-message.png">' + ' Intermediate Event: Used to define an event that happens in the middle of the process.'.translate() +
                 '<br /><img src="../../../lib/img/corona-end.png"> <img src="../../../lib/img/corona-end-message.png">' + ' End Event: End the execution of the process.'.translate() +
-                '<br /><img src="../../../lib/img/corona-pool.png"> <img src="../../../lib/img/corona-lane.png">' + ' Pool & Lanes: Separate Multiple processes into different pools.'.translate()
+                '<br /><img src="../../../lib/img/corona-pool.png">' + ' Pool: Place each process in a separate pool.'.translate() +
+                '<br /><img src="../../../lib/img/corona-lane.png">' + ' Lane: Used to divide a process into different sections.'.translate()
             },
             {
                 element: '#div-layout-canvas',
                 intro: "In the design area you can drop the process elements and order or arrange them to design your process.".translate()
             },
-
             {
                 element: '.content_controls',
                 intro: '<p>' +
@@ -1277,7 +1035,13 @@ jQuery(document).ready(function ($) {
             {
                 intro: '<div class="startcoronahelp"></div><div>' + 'Select an element in the designer to display the quick toolbar with the list of the most used options available for that element.'.translate() + '</div>'
             }
-        ]
+        ],
+        onExit: function () {
+            var canvas = PMUI.getActiveCanvas();
+            if (canvas && canvas.getGridLine() && canvas.getHTML()) {
+                canvas.getHTML().classList.add("pmui-pmcanvas");
+            }
+        }
     });
 
     jQuery('.mafe-toolbar-validation').click(function (e) {
@@ -2406,9 +2170,14 @@ ViewTaskInformation.prototype.showViewLegendsInformation = function () {
                 }
             ],
             onShow: function (menu) {
-                if (PMUI.getActiveCanvas().currentConnection) {
-                    PMUI.getActiveCanvas().currentConnection.hidePortsAndHandlers();
+                var canvas = PMUI.getActiveCanvas();
+                if (canvas.currentConnection) {
+                    canvas.currentConnection.hidePortsAndHandlers();
                 }
+                if (canvas.isGridLine) {
+                    menu.items.find('id', 'menuGridLines').setText("Disable Grid Lines".translate());
+                }
+
             }
         },
         task = {
@@ -2779,6 +2548,7 @@ ViewTaskInformation.prototype.showViewLegendsInformation = function () {
                                     PMDesigner.project.isSave = false;
                                     //open property form
                                     webEntry = new WebEntry(menuOption.getMenuTargetElement());
+                                    webEntry.render();
                                 },
                                 error: function (xhr, textStatus, errorThrown) {
                                     PMDesigner.project.listeners.failure(that, textStatus, xhr);
@@ -2787,6 +2557,7 @@ ViewTaskInformation.prototype.showViewLegendsInformation = function () {
                             });
                         } else {
                             webEntry = new WebEntry(menuOption.getMenuTargetElement());
+                            webEntry.render();
                         }
                     }
                 },
@@ -5865,7 +5636,7 @@ var defaultNavbarPanelMenus = {
                                 footerItems: [
                                     {
                                         pmType: 'label',
-                                        text: " ".translate()
+                                        text: ' '
                                     }, {
                                         text: "No".translate(),
                                         handler: function () {
@@ -5924,7 +5695,11 @@ var defaultNavbarPanelMenus = {
                     tooltip: "Help".translate(),
                     execute: true,
                     handler: function () {
+                        var canvas = PMUI.getActiveCanvas();
                         PMDesigner.helper.startIntro();
+                        if (canvas && canvas.getHTML()) {
+                            canvas.getHTML().classList.remove("pmui-pmcanvas");
+                        }
                     }
                 }
             },
@@ -6062,7 +5837,7 @@ var defaultNavbarPanelMenus = {
                     selector: ".mafe-button-undo",
                     tooltip: "Undo Action".translate(),
                     label: {
-                        text: "".translate()
+                        text: ''
                     },
                     execute: true,
                     handler: function () {
@@ -6094,7 +5869,7 @@ var defaultNavbarPanelMenus = {
                     selector: ".mafe-button-redo",
                     tooltip: "Redo Action".translate(),
                     label: {
-                        text: "".translate()
+                        text: ''
                     },
                     execute: true,
                     handler: function () {
@@ -6155,52 +5930,6 @@ var defaultNavbarPanelMenus = {
 };
 
 defaultNavbarPanelMenus.init();
-/*----------------------------------********---------------------------------*/
-/**features-begins**/
-(function(){
-    var validationButton = {
-        id: 'validationButton',
-        name: 'validationButton',
-        htmlProperty: {
-            id: 'validationButton',
-            element: 'li',
-            child: {
-                elemet: 'a',
-                class: 'mafe-toolbar-validation',
-                child: {
-                    element: 'span',
-                    class: 'mafe-toolbar-validation'
-                }
-            }
-        },
-        actions: {
-            selector: ".mafe-toolbar-validation",
-            tooltip: "Validator".translate(),
-            execute: true,
-            handler: function () {
-                PMDesigner.reloadDataTable();
-            }
-        }
-    };
-    if(window.defaultNavbarPanelMenus){
-        // Add button properties
-        window.defaultNavbarPanelMenus.addItemToNavBarPanelMenu(validationButton);
-        // Add button icon
-        PMDesigner.sidebar.push(new ToolbarPanel({
-            buttons: [
-                {
-                    selector: 'VALIDATOR',
-                    className: [
-                        'mafe-designer-icon',
-                        'mafe-toolbar-validation'
-                    ],
-                    tooltip: "Validate Now".translate()
-                }
-            ]
-        }));
-    }
-})();
-/**features-ends**/
 /*----------------------------------********---------------------------------*/
 
 /**
@@ -11188,7 +10917,7 @@ InputDocument.prototype.build = function () {
                             formEditTriggerCustom.getItems()[1].setValue(data.tri_webbot);
 
                             codeMirrorControl.setValue(data.tri_webbot);
-
+                            codeMirrorControl.refresh();
                         } else {
                             openFormWizardEditMode();
 
@@ -11568,8 +11297,8 @@ InputDocument.prototype.build = function () {
                 var codeMirrorControl, cmControlCopyTrigger;
                 codeMirrorControl = formEditTriggerCustom.getItems()[1].controls[0].cm;
                 formEditTriggerCustom.getItems()[1].html.style.padding = "10px";
-                if (codeMirrorControl != undefined) {
-                    codeMirrorControl.setSize(580, 150); //CodeMirror Size
+                if (codeMirrorControl !== undefined) {
+                    codeMirrorControl.setSize(580, 150);
                 }
                 formEditTriggerCustom.getItems()[1].setHeight(170);
 
@@ -11581,6 +11310,7 @@ InputDocument.prototype.build = function () {
                 fields.getItems()[2].setValue("");
                 formEditTriggerCustom.getItems()[1].setValue("");
                 formEditTriggerCustom.getItems()[1].controls[0].cm.setValue("");
+                codeMirrorControl.refresh();
             },
             style: {
                 cssClasses: [
@@ -11599,14 +11329,15 @@ InputDocument.prototype.build = function () {
                 getListProjects();
                 openFormCopy();
                 formCopyTrigger.getFields()[1].clearOptions();
-                $($('#Code .CodeMirror.cm-s-default.CodeMirror-wrap')[1]).css({'border': '1px solid #c0c0c0'});
+                $("#Code .CodeMirror.cm-s-default.CodeMirror-wrap").css({'border': '1px solid #c0c0c0'});
                 formCopyTrigger.getItems()[4].setHeight(160);
 
                 var cmControlCopyTrigger = formCopyTrigger.getFields()[4].controls[0].cm;
                 cmControlCopyTrigger.setValue("");
-                if (cmControlCopyTrigger != undefined) {
-                    cmControlCopyTrigger.setSize(650, 140); //CodeMirror in formCopyTrigger Size
+                if (cmControlCopyTrigger !== undefined) {
+                    cmControlCopyTrigger.setSize(650, 140);
                 }
+                cmControlCopyTrigger.refresh();
             },
             style: {
                 cssClasses: [
@@ -12531,8 +12262,8 @@ InputDocument.prototype.build = function () {
                 var codeMirrorControl;
                 codeMirrorControl = formEditTriggerCustom.getItems()[1].controls[0].cm;
 
-                if (codeMirrorControl != undefined) {
-                    codeMirrorControl.setSize(650, 300); //CodeMirror Size
+                if (codeMirrorControl !== undefined) {
+                    codeMirrorControl.setSize(650, 280);
                 }
                 formEditTriggerCustom.getItems()[1].setHeight(170);
 
@@ -12552,6 +12283,7 @@ InputDocument.prototype.build = function () {
                 formEditTriggerCustom.footer.getItems()[1].setVisible(false);
                 formEditTriggerCustom.footer.getItems()[0].style.addProperties({'margin-right': "10px"});
                 formEditTriggerCustom.footer.style.addProperties({width: '880px'});
+                codeMirrorControl.refresh();
             }
         });
 
@@ -12682,7 +12414,7 @@ InputDocument.prototype.build = function () {
                             'height': '360px'
                         });
                         $('#triggerWindow .pmui-window-body').css('overflow', 'hidden');
-
+                        codeMirrorCopy.refresh();
                     },
                     style: {
                         cssProperties: {
@@ -13258,15 +12990,6 @@ stepsTask.prototype.createAccordionItem = function (data) {
             var receiveData = item.getData();
             that.sortableRowHandler(receiveData, this, index);
             that.updateIndexToGrid(this);
-        },
-        onDragStart: function (grid, row) {
-            var items;
-            items = grid.getItems();
-            if (jQuery.isArray(items)) {
-                if (items.length === 1) {
-                    grid.showEmptyCell();
-                }
-            }
         }
     });
     if (data.st_type !== "ROUTING" && data.st_type !== "ASSIGNMENT") {
@@ -13377,15 +13100,6 @@ stepsTask.prototype.createAccordionItem = function (data) {
             var receiveData = item.getData();
             that.sortableRowHandler(receiveData, this, index);
             that.updateIndexToGrid(this);
-        },
-        onDragStart: function (grid, row) {
-            var items;
-            items = grid.getItems();
-            if (jQuery.isArray(items)) {
-                if (items.length === 1) {
-                    grid.showEmptyCell();
-                }
-            }
         }
     });
     if (data.st_type !== "ROUTING" && data.st_type !== "ASSIGNMENT") {
@@ -14831,6 +14545,11 @@ stepsTask.prototype.notItemConfig = function () {
                             return true;
                         }
                         break;
+                    case "ATTACHMENT":
+                        if (cboPermission.getValue() !== processPermissionsData.op_action) {
+                            return true;
+                        }
+                        break;
                     case "INPUT":
                         inputDocument = (cboInputDocument.getValue() !== "") ? cboInputDocument.getValue() : "0";
 
@@ -15103,6 +14822,9 @@ stepsTask.prototype.notItemConfig = function () {
                         cboDynaForm.setVisible(true);
                         cboPermission.setVisible(true);
                         break;
+                    case "ATTACHMENT":
+                        cboPermission.setVisible(true);
+                        break;
                     case "INPUT":
                         cboPermission.addOption({value: "DELETE", label: "Delete".translate()});
 
@@ -15210,6 +14932,9 @@ stepsTask.prototype.notItemConfig = function () {
                                 break;
                             case "DYNAFORM":
                                 cboDynaForm.setValue(processPermissionsData.op_obj_uid);
+                                cboPermission.setValue(processPermissionsData.op_action);
+                                break;
+                            case "ATTACHMENT":
                                 cboPermission.setValue(processPermissionsData.op_action);
                                 break;
                             case "INPUT":
@@ -15336,6 +15061,10 @@ stepsTask.prototype.notItemConfig = function () {
                 {
                     value: "DYNAFORM",
                     label: "Dynaform".translate()
+                },
+                {
+                    value: "ATTACHMENT",
+                    label: "Attachment".translate()
                 },
                 {
                     value: "INPUT",
@@ -17350,7 +17079,7 @@ PMDesigner.taskProperties = function (activity) {
                                 label: 'Template'.translate(),
                                 options: [{
                                     value: '',
-                                    label: ''.translate()
+                                    label: ''
                                 }],
                                 labelWidth: "27%"
                             }
@@ -17461,7 +17190,7 @@ PMDesigner.taskProperties = function (activity) {
                                 label: 'Template'.translate(),
                                 options: [{
                                     value: '',
-                                    label: ''.translate()
+                                    label: ''
                                 }],
                                 labelWidth: "27%"
                             }
@@ -17555,437 +17284,6 @@ PMDesigner.taskProperties = function (activity) {
         });
     }
 
-    /*----------------------------------********---------------------------------*/
-    /**features-begins**/
-    customGrid = new PMUI.grid.GridPanel({
-        id: 'customGrid',
-        pageSize: 10,
-        width: DEFAULT_WINDOW_WIDTH - 400,
-        style: {
-            cssClasses: ['mafe-gridPanel'],
-            cssProperties: {
-                'margin-left': '0px',
-                'padding-top': '5px'
-            }
-        },
-        emptyMessage: 'No records found'.translate(),
-        nextLabel: 'Next'.translate(),
-        previousLabel: 'Previous'.translate(),
-        behavior: 'dragdropsort',
-        filterable: false,
-        customStatusBar: function (currentPage, pageSize, numberItems, criteria, filter) {
-            return '';
-        },
-        columns: [{
-            id: 'abe_custom_value',
-            title: 'Value'.translate(),
-            dataType: 'string',
-            columnData: 'abe_custom_value',
-            alignmentCell: 'left',
-            width: 95,
-            sortable: true
-        }, {
-            id: 'abe_custom_label',
-            title: 'Label'.translate(),
-            dataType: 'string',
-            alignmentCell: 'left',
-            columnData: 'abe_custom_label',
-            width: 135,
-            sortable: true
-        }, {
-            id: 'abe_custom_format',
-            title: 'Format (CSS)'.translate(),
-            dataType: 'string',
-            alignmentCell: 'left',
-            columnData: 'abe_custom_format',
-            width: 320,
-            sortable: true
-        }, {
-            id: 'varEdit',
-            dataType: 'button',
-            title: '',
-            buttonLabel: 'Edit'.translate(),
-            width: '68px',
-            buttonStyle: {
-                cssClasses: [
-                    'mafe-button-edit'
-                ]
-            },
-            onButtonClick: function (row, grid) {
-                customGridRowEdit(row);
-            }
-        }, {
-            id: 'varDelete',
-            dataType: 'button',
-            title: '',
-            buttonLabel: function (row, data) {
-                return 'Delete'.translate();
-            },
-            width: '68px',
-            buttonStyle: {
-                cssClasses: [
-                    'mafe-button-delete'
-                ]
-            },
-            onButtonClick: function (row, grid) {
-                customGrid.removeItem(row);
-            }
-        }
-        ],
-        dataItems: null
-    });
-
-    abeFields = {
-        'type': {
-            name: "ABE_TYPE",
-            id: "ABE_TYPE",
-            label: "Type",
-            pmType: "dropdown",
-            options: [
-                {
-                    "label": "- None -".translate(),
-                    "value": "",
-                    "type": "default"
-                },
-                {
-                    "label": "Link to fill a form".translate(),
-                    "value": "LINK"
-                },
-                {
-                    "label": "Use a field to generate actions links".translate(),
-                    "value": "FIELD"
-                },
-                {
-                    "label": "Custom actions".translate(),
-                    "value": "CUSTOM"
-                }
-            ],
-            onChange: function (val) {
-                var addOptionForm, buttonAdd, buttonAddControl, buttonCancel, buttonCancelControl;
-                abeFields.type.value = val;
-                $(abeFields.email.getHTML()).find('.pmui-field-message span').css('display', 'none');
-                $(abeFields.action.getHTML()).find('.pmui-field-message span').css('display', 'none');
-                $customGrid = $("#customGrid");
-                if (abeAddOption && abeAddOption.getHTML()) {
-                    addOptionForm = $(abeAddOption.getHTML());
-                    addOptionForm.hide();
-                }
-                switch (val) {
-                    case '' :
-                        abeForm.setItems([abeFields.type]);
-                        break;
-                    case 'LINK' :
-                        $customGrid.hide().appendTo($("#windowProperties").find(".pmui-window-body:eq(0)"));
-                        abeForm.setItems([abeFields.type, abeFields.template, abeFields.dynaform, abeFields.subject, abeFields.email, abeFields.emailAccount, abeFields.emailFrom, abeFields.note, abeFields.forceLogin]);
-                        abeForm.getField('ABE_CASE_NOTE_IN_RESPONSE').setValue(abeFields.note.value);
-                        abeForm.getField("ABE_FORCE_LOGIN").setValue(abeFields.forceLogin.value);
-                        break;
-                    case 'FIELD' :
-                        $customGrid.hide().appendTo($("#windowProperties").find(".pmui-window-body:eq(0)"));
-                        abeForm.setItems([abeFields.type, abeFields.template, abeFields.dynaform, abeFields.subject, abeFields.email, abeFields.action, abeFields.emailAccount, abeFields.emailFrom, abeFields.note, abeFields.forceLogin]);
-                        abeForm.getField('ABE_CASE_NOTE_IN_RESPONSE').setValue(abeFields.note.value);
-                        abeForm.getField("ABE_FORCE_LOGIN").setValue(abeFields.forceLogin.value);
-                        abeFields.action.setLabel('Variable sent in email'.translate());
-                        abeFields.action.setPlaceholder('Insert a variable with options'.translate());
-                        break;
-                    case 'CUSTOM' :
-                        abeForm.setItems([abeFields.type, abeFields.emailAccount, abeFields.emailFrom, abeFields.email, abeFields.subject, abeFields.template, abeFields.action, abeFields.note, abeFields.forceLogin]);
-                        abeForm.getField("ABE_CASE_NOTE_IN_RESPONSE").setValue(abeFields.note.value);
-                        abeForm.getField("ABE_FORCE_LOGIN").setValue(abeFields.forceLogin.value);
-                        if (!abeAddOption) {
-                            abeMainPanel.addItem(abeAddOption = new PMUI.form.Form(abeFields.customGrid));
-                        } else {
-                            addOptionForm.show();
-                        }
-                        buttonAdd = abeAddOption.getField("buttonFieldAdd");
-                        buttonAddControl = buttonAdd.getControl();
-                        buttonAddControl.button.setButtonType("success");
-
-                        buttonCancel = abeAddOption.getField("buttonFieldCancel");
-                        buttonCancelControl = buttonCancel.getControl();
-                        buttonCancelControl.button.setButtonType("error");
-                        abeFields.action.setLabel('Store Result In'.translate());
-                        abeFields.action.setPlaceholder('Store result in variable @@myResult'.translate());
-                        customDOM();
-                        break;
-                }
-            }
-        },
-        'template': abeTemplates = {
-            name: "ABE_TEMPLATE",
-            label: 'Email template'.translate(),
-            pmType: "dropdown",
-            controlsWidth: 300,
-            options: [
-                {
-                    "value": "",
-                    "label": "- Select a Template -".translate(),
-                    "type": "default"
-                }
-            ],
-            onChange: function (val) {
-            }
-        },
-        'dynaform': abeDynaforms = {
-            name: "DYN_UID",
-            label: 'Dynaform'.translate(),
-            pmType: "dropdown",
-            controlsWidth: 300,
-            options: [
-                {
-                    "value": "",
-                    "label": "- Select a Dynaform -".translate(),
-                    "type": "default"
-                }
-            ],
-            onChange: function (val) {
-            }
-        },
-        'subject': new CriteriaField({
-            id: 'ABE_SUBJECT_FIELD',
-            pmType: 'text',
-            name: 'ABE_SUBJECT_FIELD',
-            valueType: 'string',
-            label: 'Subject by email'.translate(),
-            placeholder: 'Insert a subject variable'.translate(),
-            required: false,
-            controlsWidth: 250
-        }),
-        'email': new CriteriaField({
-            id: 'ABE_EMAIL_FIELD',
-            pmType: 'text',
-            name: 'ABE_EMAIL_FIELD',
-            valueType: 'string',
-            label: 'Email variable'.translate(),
-            placeholder: 'Insert an email variable'.translate(),
-            helper: "It leaving this field in blank, the next user's email will be used.".translate(),
-            controlsWidth: 250
-        }),
-        'action': new CriteriaField({
-            id: 'ABE_ACTION_FIELD',
-            pmType: 'text',
-            name: 'ABE_ACTION_FIELD',
-            valueType: 'string',
-            label: 'Variable sent in email'.translate(),
-            placeholder: 'Insert a variable with options'.translate(),
-            required: true,
-            controlsWidth: 250
-        }),
-        'emailAccount': abeEmailAcount =  {
-            id: 'ABE_EMAIL_SERVER_UID',
-            pmType: 'dropdown',
-            name: 'ABE_EMAIL_SERVER_UID',
-            label: 'Email account'.translate(),
-            controlsWidth: 300,
-            options: [
-                {
-                    id: 'defEmailAccount',
-                    label: 'Default email account'.translate(),
-                    value: ''
-                }
-            ]
-        },
-        'emailFrom': {
-            id: 'ABE_MAILSERVER_OR_MAILCURRENT',
-            pmType: 'dropdown',
-            name: 'ABE_MAILSERVER_OR_MAILCURRENT',
-            label: 'Email From Format'.translate(),
-            controlsWidth: 300,
-            options: [
-                {
-                    id: 'emailServerConfiguration',
-                    label: 'Assigned user'.translate(),
-                    value: 0
-                }, {
-                    id: 'femailCurrentUser',
-                    label: 'Email Account Settings'.translate(),
-                    value: 1
-                }
-            ]
-        },
-        'note': {
-            name: "ABE_CASE_NOTE_IN_RESPONSE",
-            pmType: "checkbox",
-            labelVisible: false,
-            options: [
-                {
-                    "id": "formTimingControlOption",
-                    "label": "Register a Case Note when the recipient submits the Response".translate(),
-                    "value": "1"
-                }
-            ]
-        },
-        forceLogin: {
-            name: "ABE_FORCE_LOGIN",
-            pmType: "checkbox",
-            labelVisible: false,
-            options: [
-                {
-                    id: "ABE_FORCE_LOGIN",
-                    label: "Force user login".translate(),
-                    value: 1
-                }
-            ]
-        },
-        'customGrid': {
-            id: "customGridPanel",
-            pmType: "panel",
-            visibleHeader: false,
-            layout: 'vbox',
-            fieldset: false,
-            width: 735,
-            legend: "Options".translate(),
-            items: [
-                {
-                    pmType: 'panel',
-                    legend: "Options".translate(),
-                    fieldset: true,
-                    layout: 'hbox',
-                    items: [
-                        {
-                            pmType: "panel",
-                            id: "customGridPanelControls",
-                            layout: "hbox",
-                            proportion: 1.7,
-                            items: [
-                                {
-                                    pmType: "panel",
-                                    layout: "vbox",
-                                    id: "firstPanel",
-                                    proportion: 0.8,
-                                    items: [
-                                        {
-                                            pmType: "text",
-                                            name: "abe_custom_value_add",
-                                            id: "abe_custom_value_add",
-                                            label: "Value".translate(),
-                                            valueType: "string",
-                                            labelWidth: "37%",
-                                            controlsWidth: 120,
-                                            maxLength: 255,
-                                            required: true
-                                        },
-                                        {
-                                            pmType: "text",
-                                            name: "abe_custom_label_add",
-                                            id: "abe_custom_label_add",
-                                            label: "Label".translate(),
-                                            valueType: "string",
-                                            labelWidth: "37%",
-                                            controlsWidth: 120,
-                                            maxLength: 255,
-                                            required: true
-                                        }
-                                    ]
-                                },
-                                {
-                                    pmType: "panel",
-                                    layout: "vbox",
-                                    id: "secondPanel",
-                                    proportion: 1.2,
-                                    items: [
-                                        {
-                                            pmType: "textarea",
-                                            name: "abe_custom_format_add",
-                                            id: "abe_custom_format_add",
-                                            label: "Format (CSS)".translate(),
-                                            valueType: "string",
-                                            required: false,
-                                            controlsWidth: 235,
-                                            placeholder: "padding:12px;\ntext-decoration:none;\nborder-radius:2px;\nbackground:#1fbc99;\nborder:1px solid #1ba385;",
-                                            style: {
-                                                cssClasses: [
-                                                    'mafe-textarea-resize'
-                                                ]
-                                            },
-                                            rows: 90,
-                                            validators: [
-                                                {
-                                                    pmType: "regexp",
-                                                    criteria: /^[a-zA-Z0-9\s\[\]\.\-_#%;,=:()']*$/,
-                                                    errorMessage: "Please enter only CSS code".translate()
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            pmType: "panel",
-                            id: "thirdPanel",
-                            layout: "vbox",
-                            proportion: 0.3,
-                            items: [
-                                {
-                                    id: 'buttonFieldAdd',
-                                    pmType: 'buttonField',
-                                    value: 'Add'.translate(),
-                                    labelVisible: false,
-                                    buttonAlign: 'center',
-                                    handler: function (field) {
-                                        addAcceptedValue();
-                                    },
-                                    buttonType: "success",
-                                    controlsWidth: 120,
-                                    style: {
-                                        cssProperties: {
-                                            'width': 'auto'
-                                        }
-                                    }
-                                },
-                                {
-                                    id: 'buttonFieldCancel',
-                                    pmType: 'buttonField',
-                                    value: 'Cancel'.translate(),
-                                    labelVisible: false,
-                                    visible: false,
-                                    buttonAlign: 'center',
-                                    handler: function (field) {
-                                        clearAddOptionForm();
-                                    },
-                                    buttonType: "error",
-                                    controlsWidth: 120,
-                                    style: {
-                                        cssProperties: {
-                                            'width': 'auto'
-                                        }
-                                    },
-                                    buttonStyle: {
-                                        cssClasses: [
-                                            'mafe-button-delete'
-                                        ]
-                                    }
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
-    };
-    for (i in ENABLED_FEATURES) {
-        if (ENABLED_FEATURES[i] == 'zLhSk5TeEQrNFI2RXFEVktyUGpnczV1WEJNWVp6cjYxbTU3R29mVXVZNWhZQT0=') {
-            featuresForms.push({
-                id: "ActionsByEmailConfiguration",
-                title: "Actions by Email".translate(),
-                icon: "",
-                panel: abeMainPanel = new PMUI.core.Panel({
-                    id: "ActionsByEmailPanel",
-                    items: [
-                        abeForm = new PMUI.form.Form({
-                            id: "ActionsByEmail",
-                            name: "ActionsByEmail",
-                            visibleHeader: false,
-                            width: DEFAULT_WINDOW_WIDTH - 250,
-                            items: [abeFields.type]
-                        })
-                    ]
-                })
-            });
-        }
-    }
-    /**features-ends**/
     /*----------------------------------********---------------------------------*/
 
     warningChanges = new PMUI.ui.MessageWindow({
@@ -18214,138 +17512,6 @@ PMDesigner.taskProperties = function (activity) {
         formNotifications.getField('tas_receive_email_from_format').setValue(dataProperties.tas_receive_email_from_format);
     }
     /*----------------------------------********---------------------------------*/
-
-    /**
-     * Set Visibility from second check(routeCaseMobile) and set value for false
-     * @param value
-     * @param valueTwo
-     */
-    function changeFormOfflineMobile(data) {
-        // Offline setData parameters
-        var dataProperties = data.properties || null,
-            parseValue = dataProperties.tas_offline === stringTrue ? true : false;
-
-        enableTaskMobile.setValue(dataProperties.tas_offline === stringTrue ? arrayTrue : arrayFalse);
-        routeCaseMobile.setValue(dataProperties.tas_auto_root === stringTrue ? arrayTrue : arrayFalse);
-        onChangeMobileOffline(parseValue);
-    }
-
-    function onChangeMobileOffline(parseValue) {
-        if (typeof parseValue === "boolean" && !parseValue) {
-            routeCaseMobile.setValue(arrayFalse);
-        }
-        routeCaseMobile.setVisible(parseValue);
-    }
-
-    /****feature-begin*****/
-    function loadFeaturesConfiguration(response) {
-        var form, type, i, j, customGridData;
-        if (typeof response === 'undefined') {
-            abeForm.setItems([abeFields.template, abeFields.subject, abeFields.email, abeFields.emailFrom, abeFields.action, abeFields.note, abeFields.forceLogin]);
-            return;
-        }
-        for (i in response) {
-            switch (response[i]['feature']) {
-                case 'ActionsByEmail':
-                    abeForm._form_data = response[i];
-                    type = '';
-                    if (typeof response[i]['ABE_TYPE'] !== 'undefined') {
-                        type = response[i]['ABE_TYPE'];
-                    }
-                    abeFields.type.value = type;
-                    for (j in abeFields) {
-                        abeFields[j].value = (response[i][abeFields[j].name] || '');
-                    }
-                    switch (type) {
-                        case '' :
-                            abeForm.setItems([abeFields.type]);
-                            break;
-                        case 'LINK' :
-                            abeForm.setItems([abeFields.type, abeFields.template, abeFields.dynaform, abeFields.subject, abeFields.email, abeFields.emailFrom, abeFields.note, abeFields.forceLogin]);
-                            abeForm.getField('ABE_CASE_NOTE_IN_RESPONSE').setValue(abeFields.note.value);
-                            abeForm.getField("ABE_FORCE_LOGIN").setValue(abeFields.forceLogin.value);
-                            break;
-                        case 'FIELD' :
-                            abeForm.setItems([abeFields.type, abeFields.template, abeFields.dynaform, abeFields.subject, abeFields.email, abeFields.action, abeFields.emailFrom, abeFields.note, abeFields.forceLogin]);
-                            abeForm.getField('ABE_CASE_NOTE_IN_RESPONSE').setValue(abeFields.note.value);
-                            abeForm.getField("ABE_FORCE_LOGIN").setValue(abeFields.forceLogin.value);
-                            break;
-                        case 'CUSTOM' :
-                            abeForm.setItems([abeFields.type, abeFields.emailFrom, abeFields.email, abeFields.subject, abeFields.template, abeFields.action, abeFields.note, abeFields.forceLogin, abeFields.customGrid]);
-                            abeForm.getField("ABE_CASE_NOTE_IN_RESPONSE").setValue(abeFields.note.value);
-                            abeForm.getField("ABE_FORCE_LOGIN").setValue(abeFields.forceLogin.value);
-
-                            customGridData = response[i].ABE_CUSTOM_GRID;
-                            customGrid.setDataItems(customGridData);
-
-                            break;
-                    }
-                    break;
-            }
-        }
-    }
-
-    processDataProperties = function (properties) {
-        var fields = properties.form.getFields(), i;
-        properties.data['_features'] = (properties.data['_features'] || {});
-
-        if (typeof properties.form._form_data === 'undefined') {
-            properties.form._form_data = {};
-            properties.form._form_data['ABE_UID'] = '';
-            properties.form._form_data['PRO_UID'] = PMDesigner.project.id;
-            properties.form._form_data['TAS_UID'] = activity.id;
-        }
-
-        properties.data['_features'][properties.feature] = {
-            'type': properties.type,
-            'fields': {
-                'ABE_UID': properties.form._form_data['ABE_UID'],
-                'ABE_TYPE': 'FIELD',
-                'PRO_UID': properties.form._form_data['PRO_UID'],
-                'TAS_UID': properties.form._form_data['TAS_UID']
-            }
-        };
-        for (i in fields) {
-            properties.data
-                ['_features']
-                [properties.feature]
-                ['fields']
-                [fields[i].name] = fields[i].getValue();
-        }
-        return properties.data;
-    };
-
-    function loadStepsConsolidated(response) {
-        var field = formConsolidated.getField('consolidated_dynaform'), i;
-        field.clearOptions();
-        field.addOption({
-            value: '',
-            label: '- None -'.translate()
-        });
-        for (i = 0; i < response.length; i += 1) {
-            if (response[i].step_type_obj == "DYNAFORM") {
-                field.addOption({
-                    value: response[i].step_uid_obj,
-                    label: response[i].obj_title
-                });
-            }
-        }
-    }
-
-    function loadFormConsolidate(response) {
-        if (response.rep_tab_uid != '') {
-            formConsolidated.getField('consolidated_report_table').setValue(response.rep_tab_uid);
-            formConsolidated.getField('consolidated_dynaform').setValue(response.dyn_uid);
-            changeConsolidated(true);
-        } else {
-            changeConsolidated(false);
-        }
-        formConsolidated.getField('consolidated_table').setValue(response.rep_tab_name);
-        formConsolidated.getField('consolidated_title').setValue(response.con_value);
-    }
-
-    /****feature-end*****/
-    /*----------------------------------********---------------------------------*/
     function loadCalendar(response) {
         var field = formTimingControl.getField('tas_calendar'), i;
         field.clearOptions();
@@ -18502,32 +17668,6 @@ PMDesigner.taskProperties = function (activity) {
                 loadEmailAccount(response["emailserver"].response, 'tas_receive_server_uid');
 
                 /*----------------------------------********---------------------------------*/
-                /****features-begin****/
-                if (consolidated == '1') {
-                    if(response["steps"]) {
-                        loadStepsConsolidated(response["steps"].response);
-                    }
-                    if (response["consolidate"]){
-                        loadFormConsolidate(response["consolidate"].response);
-                    }
-                }
-
-                for (i in ENABLED_FEATURES) {
-                    if (ENABLED_FEATURES[i] == 'zLhSk5TeEQrNFI2RXFEVktyUGpnczV1WEJNWVp6cjYxbTU3R29mVXVZNWhZQT0=') {
-                        loadABEmailAccount(response["emailserver"].response);
-                        if (response["featureconfig"]) {
-                            loadFeaturesConfiguration(response["featureconfig"].response);
-                        }
-                        if (response["abetemplates"]) {
-                            loadABETemplateField(response["abetemplates"].response);
-                        }
-                        if (response['abedynaforms']) {
-                            loadABEDynaformField(response['abedynaforms'].response);
-                        }
-                    }
-                }
-                /****features-end****/
-                /*----------------------------------********---------------------------------*/
             },
             functionFailure: function (xhr, response) {
                 PMDesigner.msgWinError(response.error.message);
@@ -18545,27 +17685,6 @@ PMDesigner.taskProperties = function (activity) {
                 }
             });
         }
-        /*----------------------------------********---------------------------------*/
-        /****features-begin****/
-        for (i in ENABLED_FEATURES) {
-            if (ENABLED_FEATURES[i] == 'zLhSk5TeEQrNFI2RXFEVktyUGpnczV1WEJNWVp6cjYxbTU3R29mVXVZNWhZQT0=') {
-                $.extend(restClient.data.calls, {
-                    "featureconfig": {
-                        url: 'project/' + PMDesigner.project.id + '/activity/' + activity.id + '/feature-configuration/',
-                        method: 'GET'
-                    },
-                    "abetemplates": {
-                        "url": 'ActionsByEmail/Templates/' + PMDesigner.project.id,
-                        "method": 'GET'
-                    },
-                    "abedynaforms": {
-                        url: 'ActionsByEmail/Dynaforms/' + PMDesigner.project.id,
-                        method: 'GET'
-                    }
-                });
-            }
-        }
-        /****features-end****/
         /*----------------------------------********---------------------------------*/
         restClient.setBaseEndPoint('');
         restClient.executeRestClient();
@@ -18635,13 +17754,6 @@ PMDesigner.taskProperties = function (activity) {
                 return;
             }
         }
-        /*----------------------------------********---------------------------------*/
-        /****features-begin****/
-        if (abeFields && abeFields.type.value === 'FIELD' && abeFields.action.value === '') {
-            $(abeFields.action.getHTML()).find('.pmui-field-message span').css('display', 'block');
-            return;
-        }
-        /****features-end****/
         /*----------------------------------********---------------------------------*/
 
         tas_transfer_fly = formTimingControl.getField('tas_transfer_fly').getValue() === '["1"]';
@@ -18746,35 +17858,6 @@ PMDesigner.taskProperties = function (activity) {
             dataProperties.tas_receive_message_template = dataNotification['tas_receive_message_template'];
         }
         /*----------------------------------********---------------------------------*/
-        /** features-start */
-        for (i in ENABLED_FEATURES) {
-            if (ENABLED_FEATURES[i] == 'zLhSk5TeEQrNFI2RXFEVktyUGpnczV1WEJNWVp6cjYxbTU3R29mVXVZNWhZQT0=') {
-                dataProperties = processDataProperties({
-                    'type': 'configuration',
-                    'feature': abeForm.id,
-                    'data': dataProperties,
-                    'form': abeForm
-                });
-                if (abeForm.getField("ABE_TYPE").getValue() == "CUSTOM") {
-                    if (customGrid.getData().length == 0) {
-                        message = new PMUI.ui.FlashMessage({
-                            message: "At least one option must be filled.".translate(),
-                            duration: 3000,
-                            severity: 'error',
-                            appendTo: windowProperties.footer
-                        });
-                        message.show();
-                        return;
-                    } else {
-                        dataProperties._features.ActionsByEmail.fields.ABE_CUSTOM_GRID = customGrid.getData();
-                    }
-                }
-            }
-        }
-        
-
-        /** features-end */
-        /*----------------------------------********---------------------------------*/
 
         if (consolidated == '1') {
             consolidated_enable = false;
@@ -18796,7 +17879,7 @@ PMDesigner.taskProperties = function (activity) {
         (new PMRestClient({
             endpoint: 'activity/' + activity.id,
             typeRequest: 'update',
-            messageError: ''.translate(),
+            messageError: '',
             data: {
                 definition: {},
                 properties: dataProperties
@@ -18865,13 +17948,6 @@ PMDesigner.taskProperties = function (activity) {
     if (consolidated == '1') {
         formConsolidated.getField('consolidated_report_table').setVisible(false);
     }
-    /*----------------------------------********---------------------------------*/
-    /** features-start */
-    // validates if there is customGrid Action by Email grid
-    if (windowProperties.getItem('customGrid')) {
-        windowProperties.getItem('customGrid').setVisible(false);
-    }
-    /** features-end */
     /*----------------------------------********---------------------------------*/
     function customDOM() {
         $customGrid = $("#customGrid");
@@ -19012,7 +18088,7 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
                 (new PMRestClient({
                     endpoint: 'file-manager/' + rowselectedFile.getData().prf_uid,
                     typeRequest: 'remove',
-                    messageError: ''.translate(),
+                    messageError: '',
                     functionSuccess: function (xhr, response) {
                         PMDesigner.msgFlash('File deleted successfully'.translate(), gridTemplate);
                         loadTemplate();
@@ -19140,7 +18216,7 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
                 (new PMRestClient({
                     endpoint: 'file-manager/' + rowselectedFile.getData().prf_uid,
                     typeRequest: 'remove',
-                    messageError: ''.translate(),
+                    messageError: '',
                     functionSuccess: function (xhr, response) {
                         loadPublic();
                     },
@@ -19423,7 +18499,7 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
     function createWindowTinyMCE() {
         windowEdit = new PMUI.ui.Window({
             id: 'windowEdit',
-            title: ''.translate(),
+            title: '',
             height: DEFAULT_WINDOW_HEIGHT - 80,
             width: DEFAULT_WINDOW_WIDTH,
             onBeforeClose: function () {
@@ -19445,7 +18521,12 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
                             required: true,
                             valueType: 'string',
                             labelWidth: "15%",
-                            controlsWidth: 300
+                            controlsWidth: 300,
+                            validators: [{
+                                pmType: "regexp",
+                                criteria: /^[a-zA-Z0-9-_ ]*$/,
+                                errorMessage: "File name is invalid".translate()
+                            }]
                         }),
                         new PMUI.field.TextAreaField({
                             id: 'filecontent',
@@ -19478,9 +18559,11 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
                 text: "Save".translate(),
                 buttonType: 'success',
                 handler: function () {
-                    PMDesigner.hideAllTinyEditorControls();
-                    $(".mceSplitButtonMenu").hide();
-                    save();
+                    if (formEdit.isValid()) {
+                        PMDesigner.hideAllTinyEditorControls();
+                        $(".mceSplitButtonMenu").hide();
+                        save();
+                    }
                 }
             }
             ]
@@ -19498,6 +18581,8 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
             skin: 'o2k7',
             theme: 'advanced',
             skin_variant: 'silver',
+            relative_urls : false,
+            remove_script_host : false,
             theme_advanced_source_editor_width: DEFAULT_WINDOW_WIDTH - 50,
             theme_advanced_source_editor_height: DEFAULT_WINDOW_HEIGHT - 100,
             plugins: "advhr,advimage,advlink,advlist,autolink,autoresize,contextmenu,directionality,emotions,example,example_dependency,fullpage,fullscreen,iespell,inlinepopups,insertdatetime,layer,legacyoutput,lists,media,nonbreaking,noneditable,pagebreak,paste,preview,print,save,searchreplace,style,tabfocus,table,template,visualblocks,visualchars,wordcount,xhtmlxtras,pmSimpleUploader,pmVariablePicker,style",
@@ -19590,6 +18675,7 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
             "margin": "5px 5px 5px 20px"
         }));
         $(".pmui-window-body").css("overflow", "hidden");
+        editorHTML.cm.refresh();
     }
 
     function newfile() {
@@ -19676,7 +18762,7 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
             (new PMRestClient({
                 endpoint: 'file-manager',
                 typeRequest: 'post',
-                messageError: ''.translate(),
+                messageError: '',
                 data: {
                     prf_filename: data.filename + ".html",
                     prf_path: processFileManagerOptionPath,
@@ -19705,7 +18791,7 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
             (new PMRestClient({
                 endpoint: 'file-manager/' + rowselectedFile.getData().prf_uid,
                 typeRequest: 'update',
-                messageError: ''.translate(),
+                messageError: '',
                 data: {
                     prf_content: tinyMCE.activeEditor.getContent()
                 },
@@ -19771,7 +18857,7 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
         (new PMRestClient({
             endpoint: 'file-manager',
             typeRequest: 'get',
-            messageError: ''.translate(),
+            messageError: '',
             functionSuccess: function (xhr, response) {
                 gridFilesManager.clearItems();
                 for (var i = 0; i < response.length; i++) {
@@ -19792,7 +18878,7 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
         (new PMRestClient({
             endpoint: 'file-manager',
             typeRequest: 'get',
-            messageError: ''.translate(),
+            messageError: '',
             data: {
                 path: processFileManagerOptionPath,
                 get_content: true
@@ -19821,7 +18907,7 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
         (new PMRestClient({
             endpoint: 'file-manager',
             typeRequest: 'get',
-            messageError: ''.translate(),
+            messageError: '',
             data: {
                 path: processFileManagerOptionPath,
                 get_content: false
@@ -19892,7 +18978,7 @@ PMDesigner.ProcessFilesManager = function (processFileManagerOptionPath, optionC
         (new PMRestClient({
             endpoint: 'file-manager',
             typeRequest: 'post',
-            messageError: ''.translate(),
+            messageError: '',
             data: {
                 prf_filename: fileSelector.files[0].name,
                 prf_path: processFileManagerOptionPath,
@@ -20281,7 +19367,7 @@ PMDesigner.ProcessFilesManager.createFirst = function (processFileManagerOptionP
                     options: [{
                         id: 'formAssignmentRulesTriggerOption1',
                         value: '',
-                        label: ''.translate()
+                        label: ''
                     }]
                 }, {
                     id: 'formAssignmentRulesTriggerExecute',
@@ -20489,7 +19575,7 @@ PMDesigner.ProcessFilesManager.createFirst = function (processFileManagerOptionP
                     buttonLabel: function (row, data) {
                         var sw = row.getData()["aas_type"] === 'user';
                         row.getCells()[0].content.style.addClasses([sw ? 'button-icon-user' : 'button-icon-group']);
-                        return ''.translate();
+                        return '';
                     },
                     onButtonClick: function (row, grid) {
                         var dataRow = {};
@@ -20708,7 +19794,7 @@ PMDesigner.ProcessFilesManager.createFirst = function (processFileManagerOptionP
                     buttonLabel: function (row, data) {
                         var sw = row.getData()["aas_type"] === 'user';
                         row.getCells()[0].content.style.addClasses([sw ? 'button-icon-user' : 'button-icon-group']);
-                        return ''.translate();
+                        return '';
                     },
                     onButtonClick: function (row, grid) {
                         var dataRow = {};
@@ -20936,7 +20022,7 @@ PMDesigner.ProcessFilesManager.createFirst = function (processFileManagerOptionP
                     buttonLabel: function (row, data) {
                         var sw = row.getData()["ada_type"] === 'user';
                         row.getCells()[0].content.style.addClasses([sw ? 'button-icon-user' : 'button-icon-group']);
-                        return ''.translate();
+                        return '';
                     },
                     onButtonClick: function (row, grid) {
                         var dataRow = {};
@@ -21164,7 +20250,7 @@ PMDesigner.ProcessFilesManager.createFirst = function (processFileManagerOptionP
                     buttonLabel: function (row, data) {
                         var sw = row.getData()["ada_type"] === 'user';
                         row.getCells()[0].content.style.addClasses([sw ? 'button-icon-user' : 'button-icon-group']);
-                        return ''.translate();
+                        return '';
                     },
                     onButtonClick: function (row, grid) {
                         var dataRow = {};
@@ -21401,7 +20487,7 @@ PMDesigner.ProcessFilesManager.createFirst = function (processFileManagerOptionP
             (new PMRestClient({
                 endpoint: 'activity/' + activity.id,
                 typeRequest: 'update',
-                messageError: ' '.translate(),
+                messageError: ' ',
                 data: {
                     definition: {},
                     properties: dataProperties
@@ -22706,7 +21792,7 @@ PMDesigner.ProcessFilesManager.createFirst = function (processFileManagerOptionP
                 },
                 buttonLabel: function (row, data) {
                     row.getCells()[0].content.style.addClasses([row.getData()["obj_type"] === 'user' ? 'button-icon-user' : 'button-icon-group']);
-                    return ''.translate();
+                    return '';
                 },
                 onButtonClick: function (row, grid) {
                     grid = (grid != null) ? grid : gridUsers;
@@ -22952,7 +22038,7 @@ PMDesigner.ProcessFilesManager.createFirst = function (processFileManagerOptionP
                 },
                 buttonLabel: function (row, data) {
                     row.getCells()[0].content.style.addClasses([row.getData()["pu_type"] === "SUPERVISOR" ? 'button-icon-user' : 'button-icon-group']);
-                    return ''.translate();
+                    return '';
                 },
                 onButtonClick: function (row, grid) {
                     grid = (grid != null) ? grid : gridUsers;
@@ -23445,7 +22531,7 @@ PMDesigner.ProcessFilesManager.createFirst = function (processFileManagerOptionP
                     id: 'gridPanelObjectsButtonDelete',
                     title: '',
                     dataType: 'button',
-                    buttonLabel: "".translate(),
+                    buttonLabel: '',
                     buttonStyle: {cssClasses: ['mafe-button-delete-assign']},
                     buttonTooltip: 'Remove Object'.translate(),
                     onButtonClick: function (row, grid) {
@@ -23593,6 +22679,7 @@ PMDesigner.ProcessFilesManager.createFirst = function (processFileManagerOptionP
                 isDirtyFormProcess,
                 saveProperties,
                 propertiesWindow,
+                processUID,
                 textTitle,
                 textDescription,
                 dropCalendar,
@@ -23713,7 +22800,6 @@ PMDesigner.ProcessFilesManager.createFirst = function (processFileManagerOptionP
 
                         PMDesigner.project.setProjectName(data.pro_title);
                         PMDesigner.project.setDescription(data.pro_description);
-                        PMDesigner.project.dirty = true;
                     },
                     functionFailure: function (xhr, response) {
                         PMDesigner.msgWinError(response.error.message);
@@ -23771,6 +22857,15 @@ PMDesigner.ProcessFilesManager.createFirst = function (processFileManagerOptionP
                         }
                     }
                 ]
+            });
+
+            processUID = new PMUI.field.TextField({
+                label: "UID".translate(),
+                id: "process_uid",
+                name: "pro_uid",
+                labelWidth: "35%",
+                controlsWidth: "300px",
+                disabled: true
             });
 
             textTitle = new PMUI.field.TextField({
@@ -24018,6 +23113,7 @@ PMDesigner.ProcessFilesManager.createFirst = function (processFileManagerOptionP
                 title: "Process Information".translate(),
                 width: DEFAULT_WINDOW_WIDTH - DEFAULT_WINDOW_WIDTH * 0.10,
                 items: [
+                    processUID,
                     textTitle,
                     textDescription,
                     dropCalendar,
@@ -24211,6 +23307,7 @@ PMDesigner.ProcessFilesManager.createFirst = function (processFileManagerOptionP
                 formEditProcess.getField("pro_type_process").hideColon();
                 formEditProcess.reset();
                 responseProperties = response;
+                processUID.setValue(response.pro_uid);
                 textTitle.setValue(response.pro_title);
                 textDescription.setValue(response.pro_description);
                 dropDynaform.setValue(response.pro_summary_dynaform);
@@ -24793,7 +23890,7 @@ PMDesigner.ProcessFilesManager.createFirst = function (processFileManagerOptionP
                     id: 'gridPanelObjectsButtonDelete',
                     title: '',
                     dataType: 'button',
-                    buttonLabel: "".translate(),
+                    buttonLabel: '',
                     buttonStyle: {cssClasses: ['mafe-button-delete-assign']},
                     buttonTooltip: 'Remove Object'.translate(),
                     onButtonClick: function (row, grid) {
@@ -26536,13 +25633,20 @@ var PMVariables = function (options) {
         buttonAlign: 'center',
         proportion: 0.8,
         handler: function (field) {
-            var inp_doc_uid = that.formVariables.getField('inp_doc_uid').getValue();
-            if (inp_doc_uid) {
-                var inputDocument = new InputDocument();
+            var form = that.formVariables,
+                fieldInpDoc = form.getField('inp_doc_uid'),
+                inp_doc_uid = fieldInpDoc.getValue(),
+                defaultText = "- Select an input document -".translate(),
+                inputDocument;
+            if (inp_doc_uid && inp_doc_uid !== defaultText) {
+                inputDocument = new InputDocument();
                 inputDocument.build();
                 inputDocument.inputDocumentOriginDataForUpdate = {};
                 inputDocument.openFormInMainWindow();
                 inputDocument.inputDocumentFormGetProxy(inp_doc_uid);
+            } else {
+                fieldInpDoc.setValue("");
+                form.isValid();
             }
         }
     });
@@ -26566,10 +25670,45 @@ var PMVariables = function (options) {
         label: "Related Input Document".translate(),
         controlsWidth: 460,
         valueType: "string",
-        labelPosition: "top"
+        labelPosition: "top",
+        onChange: function () {
+            that.validateInputDoc();
+        }
     });
 
-    that.setInputDocuments(inp_doc_uid);
+    this.buttonFieldAdd = new PMUI.field.ButtonField({
+        id: 'buttonFieldAdd',
+        pmType: 'buttonField',
+        value: 'Create'.translate(),
+        labelVisible: false,
+        buttonAlign: 'center',
+        controlsWidth: 50,
+        proportion: 0.8,
+        handler: function (field) {
+            that.addAcceptedValue();
+        },
+        style: {
+            cssProperties: {
+                "margin-left": "10px"
+            }
+        }
+    });
+    this.buttonFieldAdd.getControl().button.setButtonType("success");
+    this.buttonFieldCancel = new PMUI.field.ButtonField({
+        id: 'buttonFieldCancel',
+        pmType: 'buttonField',
+        value: 'Cancel'.translate(),
+        labelVisible: false,
+        buttonAlign: 'center',
+        controlsWidth: 55,
+        proportion: 0.6,
+        handler: function (field) {
+            that.clickedClose = false;
+            that.cancelAcceptedValue();
+            that.editingOptions = false;
+        }
+    });
+    this.buttonFieldCancel.getControl().button.setButtonType("error");
 
     this.formVariables = new PMUI.form.Form({
         id: 'formVariables',
@@ -26591,7 +25730,7 @@ var PMVariables = function (options) {
                 validators: [
                     {
                         pmType: "regexp",
-                        criteria: /^[0-9a-zA-Z\_]+$/,
+                        criteria: /^[a-zA-Z\_]{1}\w+$/,
                         errorMessage: "A valid variable starts with a letter or underscore, followed by any number of letters, numbers, or underscores.".translate()
                     }
                 ]
@@ -26655,9 +25794,9 @@ var PMVariables = function (options) {
                     var sw2 = that.formBooleanOptions.visible === false ? true : (that.formBooleanOptions.getField('trueOption').getValue() + that.formBooleanOptions.getField('falseOption').getValue()) === '';
                     if (sw && sw2) {
                         that.changeViewFieldType(newValue, oldValue);
-                        that.formAcceptedValues.reset();
+                        that.resetAcceptedValuesPanel();
                         that.gridAcceptedValues.clearItems();
-                        that.formBooleanOptions.reset();
+                        that.resetBooleanPanel();
                         return;
                     }
                     var message_window = new PMUI.ui.MessageWindow({
@@ -26683,9 +25822,9 @@ var PMVariables = function (options) {
                                 handler: function () {
                                     message_window.close();
                                     that.changeViewFieldType(newValue, oldValue);
-                                    that.formAcceptedValues.reset();
+                                    that.resetAcceptedValuesPanel();
                                     that.gridAcceptedValues.clearItems();
-                                    that.formBooleanOptions.reset();
+                                    that.resetBooleanPanel();
                                 },
                                 buttonType: "success"
                             }
@@ -26706,7 +25845,61 @@ var PMVariables = function (options) {
                     that.buttonCreateInputDocument,
                     that.buttonEditInputDocument
                 ]
-            }, {
+            },
+            {
+                id: 'booleanPanel',
+                pmType: 'panel',
+                legend: 'Options'.translate(),
+                fieldset: true,
+                layout: 'vbox',
+                items: [
+                    {
+                        pmType: 'panel',
+                        layout: 'hbox',
+                        items: [
+                            new PMLabelField({
+                                text: 'Key'.translate(),
+                                textMode: 'plain',
+                                style: {
+                                    cssProperties: {
+                                        color: '#AEAEAE',
+                                        'font-weight': 'bold'
+                                    }
+                                },
+                                proportion: 0.3
+                            }),
+                            new PMLabelField({
+                                text: 'Label'.translate(),
+                                textMode: 'plain',
+                                style: {
+                                    cssProperties: {
+                                        color: '#AEAEAE',
+                                        'font-weight': 'bold'
+                                    }
+                                }
+                            })
+                        ]
+                    },
+                    {
+                        pmType: 'text',
+                        name: 'trueOption',
+                        label: 'True'.translate(),
+                        controlsWidth: 460,
+                        valueType: 'string',
+                        maxLength: 100,
+                        required: true
+                    }, {
+                        pmType: 'text',
+                        name: 'falseOption',
+                        label: 'False'.translate(),
+                        controlsWidth: 460,
+                        valueType: 'string',
+                        maxLength: 100,
+                        required: true
+                    }
+                ]
+            },
+            {
                 pmType: 'dropdown',
                 label: 'Database Connection'.translate(),
                 placeholder: 'Database Connection'.translate(),
@@ -26741,6 +25934,40 @@ var PMVariables = function (options) {
                 onChange: function (newValue, oldValue) {
                     that.changeViewFieldType(that.formVariables.getField('var_field_type').getValue());
                 }
+            },
+            {
+                id: 'formAcceptedValues',
+                pmType: 'panel',
+                fieldset: false,
+                layout: 'hbox',
+                items: [
+                    {
+                        pmType: 'text',
+                        name: 'keyValue',
+                        id: "variable-keyvalue",
+                        label: 'Key'.translate(),
+                        labelWidth: '100%',
+                        controlsWidth: 210,
+                        proportion: 2.5,
+                        valueType: 'string',
+                        maxLength: 255,
+                        labelPosition: "top"
+                    },
+                    {
+                        pmType: 'text',
+                        name: 'value',
+                        id: "variable-value",
+                        label: 'Label'.translate(),
+                        labelWidth: '100%',
+                        controlsWidth: 300,
+                        valueType: 'string',
+                        maxLength: 255,
+                        proportion: 3.4,
+                        labelPosition: "top"
+                    },
+                    that.buttonFieldCancel,
+                    that.buttonFieldAdd
+                ]
             }
         ]
     });
@@ -26812,79 +26039,6 @@ var PMVariables = function (options) {
         ],
         dataItems: null
     });
-    this.buttonFieldAdd = new PMUI.field.ButtonField({
-        id: 'buttonFieldAdd',
-        pmType: 'buttonField',
-        value: 'Create'.translate(),
-        labelVisible: false,
-        buttonAlign: 'center',
-        controlsWidth: 50,
-        proportion: 0.8,
-        handler: function (field) {
-            that.addAcceptedValue();
-        },
-        style: {
-            cssProperties: {
-                "margin-left": "10px"
-            }
-        }
-    });
-    this.buttonFieldAdd.controls[0].button.setButtonType("success");
-    this.buttonFieldCancel = new PMUI.field.ButtonField({
-        id: 'buttonFieldCancel',
-        pmType: 'buttonField',
-        value: 'Cancel'.translate(),
-        labelVisible: false,
-        buttonAlign: 'center',
-        controlsWidth: 55,
-        proportion: 0.6,
-        handler: function (field) {
-            that.clickedClose = false;
-            that.cancelAcceptedValue();
-            that.editingOptions = false;
-        }
-    });
-    this.buttonFieldCancel.controls[0].button.setButtonType("error");
-    this.formAcceptedValues = new PMUI.form.Form({
-        id: 'formAcceptedValues',
-        width: 800,
-        visibleHeader: false,
-        items: [
-            {
-                pmType: 'panel',
-                fieldset: false,
-                layout: 'hbox',
-                items: [{
-                    pmType: 'text',
-                    name: 'keyValue',
-                    id: "variable-keyvalue",
-                    label: 'Key'.translate(),
-                    //labelWidth: '55%',
-                    controlsWidth: 210,
-                    proportion: 2.5,
-                    valueType: 'string',
-                    maxLength: 255,
-                    required: true,
-                    labelPosition: "top"
-                }, {
-                    pmType: 'text',
-                    name: 'value',
-                    id: "variable-value",
-                    label: 'Label'.translate(),
-                    //labelWidth: '40%',
-                    controlsWidth: 300,
-                    valueType: 'string',
-                    maxLength: 255,
-                    proportion: 3.4,
-                    required: true,
-                    labelPosition: "top"
-                },
-                    that.buttonFieldCancel,
-                    that.buttonFieldAdd
-                ]
-            }
-        ]
-    });
     this.gridAcceptedValues = new PMUI.grid.GridPanel({
         id: 'gridAcceptedValues',
         pageSize: 5,
@@ -26942,65 +26096,6 @@ var PMVariables = function (options) {
         ],
         dataItems: null,
         behavior: 'dragdropsort'
-    });
-    this.formBooleanOptions = new PMUI.form.Form({
-        id: 'formAcceptedValues',
-        width: 700,
-        visibleHeader: false,
-        items: [
-            {
-                pmType: 'panel',
-                legend: 'Options'.translate(),
-                fieldset: true,
-                layout: 'vbox',
-                items: [
-                    {
-                        pmType: 'panel',
-                        layout: 'hbox',
-                        items: [
-                            new PMLabelField({
-                                text: 'Key'.translate(),
-                                textMode: 'plain',
-                                style: {
-                                    cssProperties: {
-                                        color: '#AEAEAE',
-                                        'font-weight': 'bold'
-                                    }
-                                },
-                                proportion: 0.3
-                            }),
-                            new PMLabelField({
-                                text: 'Label'.translate(),
-                                textMode: 'plain',
-                                style: {
-                                    cssProperties: {
-                                        color: '#AEAEAE',
-                                        'font-weight': 'bold'
-                                    }
-                                }
-                            })
-                        ]
-                    },
-                    {
-                        pmType: 'text',
-                        name: 'trueOption',
-                        label: 'True'.translate(),
-                        controlsWidth: 460,
-                        valueType: 'string',
-                        maxLength: 100,
-                        required: true
-                    }, {
-                        pmType: 'text',
-                        name: 'falseOption',
-                        label: 'False'.translate(),
-                        controlsWidth: 460,
-                        valueType: 'string',
-                        maxLength: 100,
-                        required: true
-                    }
-                ]
-            }
-        ]
     });
     this.isDirtyFormVariables = function () {
         $("input,select,textarea").blur();
@@ -27103,43 +26198,42 @@ var PMVariables = function (options) {
         buttonPanelPosition: "bottom"
     });
     PMVariables.prototype.init.call(this);
+    that.setInputDocuments(inp_doc_uid);
 };
 PMVariables.prototype.init = function () {
-    var that = this;
+    var that = this,
+        acceptedValuesForm,
+        label;
 
     that.buttonCreate.defineEvents();
 
     that.windowVariables.addItem(that.gridVariables);
     that.windowVariables.addItem(that.formVariables);
-    that.windowVariables.addItem(that.formAcceptedValues);
     that.windowVariables.addItem(that.gridAcceptedValues);
-    that.windowVariables.addItem(that.formBooleanOptions);
     that.windowVariables.hideFooter();
     that.windowVariables.open();
+    label = $('#booleanPanel');
+    acceptedValuesForm = $('#formAcceptedValues');
     that.customCss();
-    $("#formAcceptedValues .pmui-field-message").css("marginLeft", 10);
+    acceptedValuesForm.find(".pmui-field-message").css("marginLeft", 10);
+    $("#gridAcceptedValues").css({"height": "254px", "margin": "0 10px"});
     $("#requiredMessage").css({"margin-top": "10px"});
     $("#inp_doc_uid").find(".pmui-field-message:eq(0)").css("left", "226px");
-    this.formAcceptedValues.panel.html.style.padding = "0px 0px";
-    this.formAcceptedValues.getField("keyValue").parent.html.style.padding = "0 0 10px 10px";
-    this.formAcceptedValues.getField("keyValue").dom.labelTextContainer.style.width = "100%";
-    this.formAcceptedValues.getField("keyValue").controls[0].html.style.marginLeft = "10px";
-    this.formAcceptedValues.getField("value").dom.labelTextContainer.style.width = "100%";
-    this.formAcceptedValues.getField("value").controls[0].html.style.marginLeft = "10px";
+    this.formAcceptedValues = PMUI.getPMUIObject(acceptedValuesForm.get(0));
 
     this.buttonFieldAdd.controls[0].button.setStyle({cssProperties: {padding: "6px 15px"}});
     this.buttonFieldCancel.controls[0].button.setStyle({cssProperties: {padding: "6px 15px"}});
-
     $('#gridVariables .pmui-textcontrol').css({'margin-top': '5px', width: '250px'});
     that.gridVariables.dom.toolbar.appendChild(that.buttonCreate.getHTML());
 
+    this.formBooleanOptions = PMUI.getPMUIObject(label.get(0));
     that.showGrid();
     that.loadDataBaseConnections();
 
     validateKeysField(that.formVariables.getField('var_name').getControls()[0].getHTML(), ['isbackspace', 'isnumber', 'isletter', 'isunderscore']);
 
-    that.formAcceptedValues.reset();
-    var label = $(this.formBooleanOptions.html).find(".pmui-pmlabelfield");
+    that.resetAcceptedValuesPanel();
+    label = $('#booleanPanel').css({'width': '675px', margin: '10px'}).find(".pmui-pmlabelfield");
     $(label[0]).replaceWith($(label[0]).find(".pmui-pmlabelcontrol").css({
         "font-size": "14px",
         "margin-right": "127px"
@@ -27152,7 +26246,6 @@ PMVariables.prototype.init = function () {
     $(this.formVariables.panel.html).removeClass("pmui-formpanel");
     $(this.formVariables.panel.html).append(that.formAcceptedValues.html);
     $(this.formVariables.panel.html).append(that.gridAcceptedValues.html);
-    $(this.formVariables.panel.html).append(that.formBooleanOptions.html);
     $(that.formAcceptedValues.html).find(".pmui-formpanel").css({"display": "inline-block"});
     that.windowVariables.footer.html.style.textAlign = "right";
 };
@@ -27191,7 +26284,7 @@ PMVariables.prototype.saveVariables = function () {
         functionFailure: function (xhr, response) {
             PMDesigner.msgWinError(response.error.message);
         },
-        messageError: ' '.translate(),
+        messageError: ' ',
         data: data,
         messageSuccess: 'Variable saved successfully'.translate(),
         flashContainer: that.panel
@@ -27239,7 +26332,7 @@ PMVariables.prototype.updateVariables = function () {
         functionFailure: function (xhr, response) {
             PMDesigner.msgWinError(response.error.message);
         },
-        messageError: ' '.translate(),
+        messageError: ' ',
         messageSuccess: 'Variable edited successfully'.translate(),
         flashContainer: that.panel
     })).executeRestClient();
@@ -27335,9 +26428,9 @@ PMVariables.prototype.customCss = function () {
 PMVariables.prototype.showGrid = function () {
     var that = this;
     that.formVariables.setVisible(false);
-    that.formAcceptedValues.setVisible(false);
+    that.disableAcceptedValuesPanel();
     that.gridAcceptedValues.setVisible(false);
-    that.formBooleanOptions.setVisible(false);
+    that.disableBooleanPanel();
     $(that.gridVariables.dom.toolbar).find("input").val("");
     that.gridVariables.clearFilter();
     that.gridVariables.setVisible(true);
@@ -27348,17 +26441,17 @@ PMVariables.prototype.showForm = function () {
     that.edit = false;
     that.dirtyAcceptedValue = false;
     that.formVariables.setVisible(true);
-    that.formAcceptedValues.setVisible(true);
+    that.enableAcceptedValuesPanel();
     that.gridAcceptedValues.setVisible(true);
-    that.formBooleanOptions.setVisible(true);
+    that.enableBooleanPanel();
     that.gridVariables.setVisible(false);
     that.windowVariables.setTitle('Create Variable'.translate());
     that.formVariables.reset();
     that.formVariables.setFocus();
     that.changeViewFieldType('string');
-    that.formAcceptedValues.reset();
+    that.resetAcceptedValuesPanel();
     that.gridAcceptedValues.clearItems();
-    that.formBooleanOptions.reset();
+    that.resetBooleanPanel();
     that.buttonFieldCancel.setVisible(false);
     that.windowVariables.showFooter();
     that.buttonCreateInputDocument.setVisible(false);
@@ -27420,9 +26513,9 @@ PMVariables.prototype.changeViewFieldType = function (newValue) {
     that.formVariables.getField('var_options_control').setVisible(false);
     that.formVariables.getField('inp_doc_uid').setVisible(false);
     that.formVariables.getField('inp_doc_uid').setRequired(false);
-    that.formAcceptedValues.setVisible(false);
+    that.disableAcceptedValuesPanel();
     that.gridAcceptedValues.setVisible(false);
-    that.formBooleanOptions.setVisible(false);
+    that.disableBooleanPanel();
     that.buttonCreateInputDocument.setVisible(false);
     that.buttonEditInputDocument.setVisible(false);
 
@@ -27440,14 +26533,10 @@ PMVariables.prototype.changeViewFieldType = function (newValue) {
             that.formVariables.getField('var_dbconnection').setVisible(true);
             that.formVariables.getField('var_sql').setVisible(true);
             that.formVariables.getField('var_options_control').setVisible(true);
-            that.formAcceptedValues.setVisible(true && sw);
+            sw ? that.enableAcceptedValuesPanel() : that.disableAcceptedValuesPanel();
             that.gridAcceptedValues.setVisible(true && sw);
             this.fieldInfo.data = "Supported Controls: text, textarea, dropdown, radio, suggest, hidden.".translate();
 
-            /*----------------------------------********---------------------------------*/
-            /**features-begins**/
-            this.fieldInfo.data = "Supported Controls: text, textarea, dropdown, radio, suggest, hidden, geo map, qr code.".translate();
-            /**features-ends**/
             /*----------------------------------********---------------------------------*/
 
             break;
@@ -27455,7 +26544,7 @@ PMVariables.prototype.changeViewFieldType = function (newValue) {
             that.formVariables.getField('var_dbconnection').setVisible(true);
             that.formVariables.getField('var_sql').setVisible(true);
             that.formVariables.getField('var_options_control').setVisible(true);
-            that.formAcceptedValues.setVisible(true && sw);
+            sw ? that.enableAcceptedValuesPanel() : that.disableAcceptedValuesPanel();
             that.gridAcceptedValues.setVisible(true && sw);
 
             validateKeysField(that.formAcceptedValues.getField('keyValue').getControls()[0].getHTML(), ['isbackspace', 'isnumber', 'ishyphen']);
@@ -27465,14 +26554,14 @@ PMVariables.prototype.changeViewFieldType = function (newValue) {
             that.formVariables.getField('var_dbconnection').setVisible(true);
             that.formVariables.getField('var_sql').setVisible(true);
             that.formVariables.getField('var_options_control').setVisible(true);
-            that.formAcceptedValues.setVisible(true && sw);
+            sw ? that.enableAcceptedValuesPanel() : that.disableAcceptedValuesPanel();
             that.gridAcceptedValues.setVisible(true && sw);
 
             validateKeysField(that.formAcceptedValues.getField('keyValue').getControls()[0].getHTML(), ['isbackspace', 'isnumber', 'isperiod', 'ishyphen']);
             this.fieldInfo.data = "Supported Controls: text, textarea, dropdown, radio, suggest, hidden.".translate();
             break;
         case 'boolean':
-            that.formBooleanOptions.setVisible(true);
+            that.enableBooleanPanel();
             this.fieldInfo.data = "Supported Controls: checkbox, radio, hidden.".translate();
             break;
         case 'datetime':
@@ -27485,7 +26574,7 @@ PMVariables.prototype.changeViewFieldType = function (newValue) {
             that.formVariables.getField('var_dbconnection').setVisible(true);
             that.formVariables.getField('var_sql').setVisible(true);
             that.formVariables.getField('var_options_control').setVisible(true);
-            that.formAcceptedValues.setVisible(true && sw);
+            sw ? that.enableAcceptedValuesPanel() : that.disableAcceptedValuesPanel();
             that.gridAcceptedValues.setVisible(true && sw);
             this.fieldInfo.data = "Supported Controls: checkgroup.".translate();
             break;
@@ -27495,6 +26584,7 @@ PMVariables.prototype.changeViewFieldType = function (newValue) {
             that.buttonEditInputDocument.setVisible(true);
             that.formVariables.getField('inp_doc_uid').setRequired(true);
             this.fieldInfo.data = "Supported Controls: file.".translate();
+            that.validateInputDoc();
             break;
         case 'multiplefile':
             this.fieldInfo.data = "Supported Controls: Multiple File.".translate();
@@ -27504,32 +26594,48 @@ PMVariables.prototype.changeViewFieldType = function (newValue) {
             break;
     }
 };
-PMVariables.prototype.addAcceptedValue = function () {
-    var that = this;
-    if (that.isAcceptedValueAdded()) {
-        PMDesigner.msgFlash('The key value already exists.'.translate(), document.getElementById('windowVariables'), 'error', 1000, 5);
-        return;
+/**
+ * Enable or disable edit button of input document
+ */
+PMVariables.prototype.validateInputDoc = function () {
+    var form = this.formVariables,
+        fieldInpDoc = form.getField("inp_doc_uid"),
+        defaultText = "- Select an input document -".translate();
+    if (fieldInpDoc && fieldInpDoc.getValue() && fieldInpDoc.getValue() !== defaultText) {
+        this.buttonEditInputDocument.enable();
+    } else {
+        this.buttonEditInputDocument.disable();
     }
-    if (!that.formAcceptedValues.isValid()) {
-        return;
+};
+PMVariables.prototype.addAcceptedValue = function () {
+    var that = this,
+        key = jQuery.trim(that.formAcceptedValues.getField('keyValue').getValue()),
+        value = jQuery.trim(that.formAcceptedValues.getField('value').getValue());
+
+    if (that.isAcceptedValueAdded()) {
+        return PMDesigner.msgFlash('The key value already exists.'.translate(),
+            document.getElementById('windowVariables'), 'error', 1000, 5);
+    }
+    if (!(key && value)) {
+        return PMDesigner.msgFlash('The key and label must be supplied.'.translate(),
+            document.getElementById('windowVariables'), 'error', 1000, 5);
     }
     if (that.editRow === null) {
         that.gridAcceptedValues.addItem(new PMUI.grid.GridPanelRow({
             data: {
-                keyValue: that.formAcceptedValues.getField('keyValue').getValue(),
-                value: that.formAcceptedValues.getField('value').getValue()
+                keyValue: key,
+                value: value
             }
         }));
     } else {
         this.editingOptions = false;
         that.editRow.setData({
-            keyValue: that.formAcceptedValues.getField('keyValue').getValue(),
-            value: that.formAcceptedValues.getField('value').getValue()
+            keyValue: key,
+            value: value
         });
     }
     that.dirtyAcceptedValue = true;
     that.cancelAcceptedValue();
-
 };
 PMVariables.prototype.editAcceptedValue = function (row) {
     var that = this;
@@ -27590,7 +26696,11 @@ PMVariables.prototype.getDataAcceptedValues = function () {
         }
     }
     if (that.formBooleanOptions.visible) {
-        var a = that.formBooleanOptions.getData();
+        var a = that.formBooleanOptions.getItems("fields").reduce(function (prev, curr) {
+                prev[curr.getName()] = curr.getValue();
+                return prev;
+            }, {});
+
         data = [
             {value: '1', label: a.trueOption},
             {value: '0', label: a.falseOption}
@@ -27674,7 +26784,7 @@ PMVariables.prototype.cancelAcceptedValue = function () {
     that.editRow = null;
     that.buttonFieldAdd.setValue('Add'.translate());
     that.buttonFieldCancel.setVisible(false);
-    that.formAcceptedValues.reset();
+    that.resetAcceptedValuesPanel();
 };
 PMVariables.prototype.isAcceptedValueAdded = function () {
     var that = this, i, keyValue, data, exist, i, index, rowEditValue;
@@ -27768,6 +26878,82 @@ PMVariables.prototype.isWindowActive = function () {
         return true;
     }
     return false;
+};
+/**
+ * Reset the fields from the form's boolean panel.
+ * @returns {PMVariables}
+ */
+PMVariables.prototype.resetBooleanPanel = function () {
+    if (this.formBooleanOptions) {
+        this.formBooleanOptions.getItems("fields").forEach(function (i) {
+            i.setValue("");
+        });
+    }
+    return this;
+};
+/**
+ * Disable the fields from the form's boolean panel.
+ * @returns {PMVariables}
+ */
+PMVariables.prototype.disableBooleanPanel = function () {
+    if (this.formBooleanOptions) {
+        this.formBooleanOptions.setVisible(false)
+            .getItems("fields").forEach(function (i) {
+            i.disable();
+        });
+    }
+    return this;
+};
+/**
+ * Enable the fields from the form's boolean panel.
+ * @returns {PMVariables}
+ */
+PMVariables.prototype.enableBooleanPanel = function () {
+    if (this.formBooleanOptions) {
+        this.formBooleanOptions.setVisible(true)
+            .getItems("fields").forEach(function (i) {
+            i.enable();
+        });
+    }
+    return this;
+};
+/**
+ * Reset the fields from the form's Accepted Values panel.
+ * @returns {PMVariables}
+ */
+PMVariables.prototype.resetAcceptedValuesPanel = function () {
+    if (this.formAcceptedValues) {
+        this.formAcceptedValues.getItems().forEach(function (i) {
+            i.setValue("");
+        });
+    }
+    return this;
+};
+/**
+ * Enable the fields from the form's Accepted Values panel.
+ * @returns {PMVariables}
+ */
+PMVariables.prototype.enableAcceptedValuesPanel = function () {
+    if (this.formAcceptedValues) {
+        this.formAcceptedValues.setVisible(true)
+            .getItems('fields').forEach(function (i) {
+            i.enable("");
+        });
+    }
+    return this;
+};
+/**
+ * Disable the fields from the form's Accepted Values panel.
+ * @returns {PMVariables}
+ */
+PMVariables.prototype.disableAcceptedValuesPanel = function () {
+    if (this.formAcceptedValues) {
+        this.formAcceptedValues.setVisible(false)
+            .getItems('fields').forEach(function (i) {
+            i.disable("");
+        });
+    }
+    return this;
 };
 PMDesigner.variables = function () {
     var pmvariables = new PMVariables();
@@ -28023,7 +27209,7 @@ EventMessagesForm.prototype.init = function () {
         label: 'Name'.translate(),
         value: '',
         maxLength: 100,
-        placeholder: ''.translate(),
+        placeholder: '',
         name: '',
         required: true,
         controlsWidth: 300
@@ -28376,399 +27562,3826 @@ PMUI.form.FormItemFactory.prototype.init = function () {
         .setDefaultProduct(defaults.defaultProduct);
 };
 
-var WebEntry = function (menuOption) {
+/**
+ * Class representing a Web Entry
+ * @param relatedShape
+ * @constructor
+ */
+var WebEntry = function (relatedShape) {
     this.relatedShape = null;
-    this.restClient = null;
-    this.formWebEntry = null;
-    this.wee_uid = null;
-    this.dyn_uid = null;
-    this.usr_uid = null;
-    this.wee_status = null;
-    this.sugesstField = null;
-    this.linkField = null;
-    this.generateButton = null;
-    WebEntry.prototype.init.call(this, menuOption);
+    this.groupType = null;
+    this.groupLabel = null;
+    this.stepsType = null;
+    this.actUid = null;
+    this.evenUid = null;
+    this.weeUid = null;
+    this.stepsAssigned = null;
+    this.elementAccordionOpen = null;
+    this.configWebEntry = null;
+    this.isNewWebEntry = null;
+    this.windowWebEntry = null;
+    this.windowAlternative = null;
+    this.tabForm = null;
+    this.tabProperties = null;
+    this.tabLink = null;
+    this.confirmWindow = null;
+    this.tabPanelWindow = null;
+    this.suggestUser = null;
+    this.stepsAssignTree = null;
+    this.stepsAssignAccordion = null;
+    this.labelsPanel = null;
+    this.userGuest = {};
+    WebEntry.prototype.initialize.call(this, relatedShape);
 };
+/**
+ * A module representing a Web Entry
+ **/
+WebEntry.prototype = {
+    /**
+     * Sets the actUid
+     * @param {string} actUid
+     */
+    setActUid: function (actUid) {
+        this.actUid = actUid;
+        return this;
+    },
 
-WebEntry.prototype.init = function (menuOption) {
-    var requiredMessage,
-        defaults = {
-            relatedShape: null
+    /**
+     * Sets the evenUid
+     * @param {string} evenUid
+     */
+    setEvnUid: function (evenUid) {
+        this.evenUid = evenUid;
+        return this;
+    },
+
+    /**
+     * Sets the weeUid
+     * @param {string} weeUid
+     */
+    setWeeUid: function (weeUid) {
+        this.weeUid = weeUid;
+        return this;
+    },
+
+    /**
+     * Sets the configWebEntry
+     * @param {object} configWebEntry
+     */
+    setConfigWebEntry: function (configWebEntry) {
+        this.configWebEntry = configWebEntry;
+        return this;
+    },
+
+    /**
+     * Sets the isNewWebEntry
+     * @param {boolean} isNewWebEntry
+     */
+    setIsNewWebEntry: function (isNewWebEntry) {
+        this.isNewWebEntry = isNewWebEntry;
+        return this;
+    },
+
+    /**
+     * Sets the windowWebEntry
+     * @param {object} windowWebEntry
+     */
+    setWindowWebEntry: function (windowWebEntry) {
+        this.windowWebEntry = windowWebEntry;
+        return this;
+    },
+
+    /**
+     * Sets the windowAlternative
+     * @param {object} windowAlternative
+     */
+    setWindowAlternative: function (windowAlternative) {
+        this.windowAlternative = windowAlternative;
+        return this;
+    },
+
+    /**
+     * Sets the relatedShape
+     * @param {object} relatedShape
+     */
+    setRelatedShape: function (relatedShape) {
+        this.relatedShape = relatedShape;
+        return this;
+    },
+
+    /**
+     * Sets the tabForm
+     * @param {object} tabForm
+     */
+    setTabForm: function (tabForm) {
+        this.tabForm = tabForm;
+        return this;
+    },
+
+    /**
+     * Sets the tabProperties
+     * @param {object} tabProperties
+     */
+    setTabProperty: function (tabProperties) {
+        this.tabProperties = tabProperties;
+        return this;
+    },
+
+    /**
+     * Sets the tabLink
+     * @param {object} tabLink
+     */
+    setTabLink: function (tabLink) {
+        this.tabLink = tabLink;
+        return this;
+    },
+
+    /**
+     * Sets the confirmWindow
+     * @param {object} confirmWindow
+     */
+    setConfirmWin: function (confirmWindow) {
+        this.confirmWindow = confirmWindow;
+        return this;
+    },
+
+    /**
+     * Sets the tabPanelWindow
+     * @param {object} tabPanelWindow
+     */
+    setTabPanelWindow: function (tabPanelWindow) {
+        this.tabPanelWindow = tabPanelWindow;
+        return this;
+    },
+
+    /**
+     * Sets the suggestUser
+     * @param {object} suggestUser
+     */
+    setSuggestUser: function (suggestUser) {
+        this.suggestUser = suggestUser;
+        return this;
+    },
+
+    /**
+     * Sets the stepsAssignTree
+     * @param {object} stepsAssignTree
+     */
+    setStepsTree: function (stepsAssignTree) {
+        this.stepsAssignTree = stepsAssignTree;
+        return this;
+    },
+
+    /**
+     * Sets the stepsAssignAccordion
+     * @param {object} stepsAssignAccordion
+     */
+    setStepsAccordion: function (stepsAssignAccordion) {
+        this.stepsAssignAccordion = stepsAssignAccordion;
+        return this;
+    },
+
+    /**
+     * Sets the labelsPanel
+     * @param {object} labelsPanel
+     */
+    setLabelPanel: function (labelsPanel) {
+        this.labelsPanel = labelsPanel;
+        return this;
+    },
+
+    /**
+     * Sets the userGuest
+     * @param userGuest
+     */
+    setUserGuest: function (userGuest) {
+        this.userGuest = userGuest;
+        return this;
+    },
+
+    /**
+     * Get the userGuest
+     * @returns {Object} userGuest
+     */
+    getUserGuest: function () {
+        return this.userGuest || {};
+    },
+
+    /**
+     * Get the actUid value
+     * @returns {null|*|string} The actUid value
+     */
+    getActUid: function () {
+        return this.actUid || "";
+    },
+
+    /**
+     * Get the isNewWebEntry value
+     * @returns {null|*|boolean} The isNewWebEntry value
+     */
+    getRelatedShape: function () {
+        return this.relatedShape || [];
+    },
+
+    /**
+     * Get the evenUid value
+     * @returns {null|*|string} The evenUid value
+     */
+    getEvnUid: function () {
+        return this.evenUid || "";
+    },
+
+    /**
+     * Get the weeUid value
+     * @returns {null|*|string} The weeUid value
+     */
+    getWeeUid: function () {
+        return this.weeUid || "";
+    },
+
+    /**
+     * Get the configWebEntry value
+     * @returns {*|null|Array} The configWebEntry value
+     */
+    getConfigWebEntry: function () {
+        return this.configWebEntry || [];
+    },
+
+    /**
+     * Get the isNewWebEntry value
+     * @returns {null|*|boolean} The isNewWebEntry value
+     */
+    getIsNewWebEntry: function () {
+        return this.isNewWebEntry || false;
+    },
+
+    /**
+     * Get the windowWebEntry value
+     * @returns {null|*} The windowWebEntry value
+     */
+    getWindowWebEntry: function () {
+        return this.windowWebEntry || null;
+    },
+
+    /**
+     * Get the windowAlternative value
+     * @returns {*|null} The windowAlternative value
+     */
+    getWindowAlternative: function () {
+        return this.windowAlternative || null;
+    },
+
+    /**
+     * Get the tabForm value
+     * @returns {*|null} The tabForm value
+     */
+    getTabForm: function () {
+        return this.tabForm || null;
+    },
+
+    /**
+     * Get the tabProperties value
+     * @returns {null|*} The tabProperties value
+     */
+    getTabProperty: function () {
+        return this.tabProperties || null;
+    },
+
+    /**
+     * Get the tablink value
+     * @returns {null|*} The tablink value
+     */
+    getTabLink: function () {
+        return this.tabLink || null;
+    },
+
+    /**
+     * Get the confirmWindow value
+     * @returns {null|*} The confirmWindow value
+     */
+    getConfirmWin: function () {
+        return this.confirmWindow || null;
+    },
+
+    /**
+     * Get the tabPanelWindow
+     * @returns {*|null}
+     */
+    getTabPanelWindow: function () {
+        return this.tabPanelWindow || null;
+    },
+
+    /**
+     * get the suggestUser value
+     * @returns {*|null} The suggestUser value
+     */
+    getSuggestUser: function () {
+        return this.suggestUser || null;
+    },
+
+    /**
+     * Sets the stepsAssignTree
+     * @returns {*|null}
+     */
+    getStepsTree: function () {
+        return this.stepsAssignTree || null;
+    },
+
+    /**
+     * Get the stepsAssignAccordion value
+     * @returns {*|null} The stepsAssignAccordion value
+     */
+    getStepsAccordion: function () {
+        return this.stepsAssignAccordion || null;
+    },
+
+    /**
+     * get the labelsPanel value
+     * @returns {null|*} The labelsPanel value
+     */
+    getLabelPanel: function () {
+        return this.labelsPanel || null;
+    },
+
+    /**
+     * initialize App
+     * @param relatedShape
+     */
+    initialize: function (relatedShape) {
+        this.groupType = [
+            'DYNAFORM', 'INPUT_DOCUMENT',
+            'OUTPUT_DOCUMENT', 'EXTERNAL'
+        ];
+        this.groupLabel = [
+            'Dynaform (s)'.translate(), 'Input Document (s)'.translate(),
+            'OutPut Document (s)'.translate(), 'External (s)'.translate()
+        ];
+        this.stepsType = {
+            'DYNAFORM': 'Dynaform'.translate(),
+            'INPUT_DOCUMENT': 'Input Document'.translate(),
+            'OUTPUT_DOCUMENT': 'Output Document'.translate(),
+            'EXTERNAL': 'External'.translate()
         };
-    this.relatedShape = menuOption;
-    this.createForm();
-    this.createWindow();
-    this.createSugesstField();
-    this.createLinkField();
-    this.createGenerateButton();
-    this.createRestClient();
-    this.winWebEntry.addItem(this.formWebEntry);
-    this.winWebEntry.open();
-    document.getElementById("requiredMessage").style.marginTop = "40px";
-    requiredMessage = $(document.getElementById("requiredMessage"));
-    requiredMessage.hide();
-    this.formWebEntry.panel.html.appendChild(this.sugesstField.createHTML());
-    this.formWebEntry.panel.html.appendChild(this.generateButton);
-    this.formWebEntry.panel.html.appendChild(this.linkField);
-    this.formWebEntry.panel.html.style.height = "300px";
-    this.winWebEntry.defineEvents();
-    this.hideDeleteButton();
-    this.loadDynaformsAndUsers(this.formWebEntry.getField("dyn_uid"), this.formWebEntry.getField("usr_uid"));
-    this.formWebEntry.panel.html.appendChild(requiredMessage.show()[0]);
-};
 
-WebEntry.prototype.createSugesstField = function () {
-    this.sugesstField = new SuggestField({
-        label: "Users".translate(),
-        width: 569.81,
-        placeholder: "suggest users",
-        required: true,
-        helper: "When the form is submitted a new case is created with this user account.".translate(),
-        dynamicLoad: {
-            data: [
-                {
-                    key: "usr_uid",
-                    label: ["usr_firstname", "usr_lastname", "(", "usr_username", ")"]
-                }
-            ],
-            keys: {
-                url: HTTP_SERVER_HOSTNAME + "/api/1.0/" + WORKSPACE,
-                accessToken: credentials.access_token,
-                endpoints: [
+        this.setRelatedShape(relatedShape)
+            .setEvnUid(relatedShape.evn_uid);
+
+        if (this.getRelatedShape().getPorts().getFirst()) {
+            this.setActUid(this.getRelatedShape().getPorts().getFirst().getConnection().getDestPort().getParent()
+                .act_uid);
+        }
+        if (__env.USER_GUEST) {
+            $.extend(true, this.userGuest, __env.USER_GUEST);
+        }
+        this.stepsAssigned = new PMUI.util.ArrayList();
+        this.elementAccordionOpen = new PMUI.util.ArrayList();
+    },
+
+    /**
+     * Render form
+     * @returns {WebEntry}
+     */
+    render: function () {
+        this.getWindow().addItem(this.getTabPanel());
+        this.getWindow().open();
+        this.getWindow().showFooter();
+        this.initializeData();
+        return this;
+    },
+
+    /**
+     * Populate Web Entry data
+     */
+    initializeData: function () {
+        //Pupulate web entry data
+        this.getInstanceWebEntryData();
+        this.setWebEntryConfiguration();
+        this.initializeAccordionAndTreepanelData();
+    },
+
+    /**
+     * Populate accordion and treepanel data
+     */
+    initializeAccordionAndTreepanelData: function () {
+        var that = this;
+        //clear global array stepsAssigned
+        this.stepsAssigned.clear();
+        //get accordion data
+        this.getAccordionData(
+            function (xhr, response) {
+                //populate data accordion tabForms
+                that.loadAccordionItems(response);
+            }, function (xhr, response) {
+                PMDesigner.msgWinError(response.error.message);
+            }
+        );
+        //get getTreePanelData data
+        this.getTreePanelData(
+            function (xhr, response) {
+                //populate data treePanel tabForms
+                that.loadTreePanelData(response);
+            }, function (xhr, response) {
+                PMDesigner.msgWinError(response.error.message);
+            }
+        );
+        this.addEventSortableInAccordionElements();
+        this.addEventSortableInTreePanelElements();
+    },
+
+    /**
+     * Get all dynaforms
+     * Execute restClient(GET/project/dynaforms)
+     * @param successCallback
+     * @param failureCallback
+     */
+    getDynaforms: function (successCallback, failureCallback) {
+        return new PMRestClient({
+            typeRequest: 'post',
+            multipart: true,
+            data: {
+                calls: [
                     {
-                        method: "GET",
-                        url: 'users'
+                        url: 'dynaforms',
+                        method: 'GET'
                     }
                 ]
+            },
+            functionSuccess: function (xhr, response) {
+                successCallback(xhr, response);
+            },
+            functionFailure: function (xhr, response) {
+                failureCallback(xhr, response);
             }
-        }
-    });
-    return this;
-};
+        }).executeRestClient();
+    },
 
-WebEntry.prototype.hideDeleteButton = function () {
-    $(this.winWebEntry.footer.items.asArray()[0].html).hide();
-    return this;
-};
+    /**
+     * Get users
+     * Execute restClient(GET/users/uid_usr)
+     * @param uidUser
+     * @param successCallback
+     * @param failureCallback
+     */
+    getUserData: function (uidUser, successCallback, failureCallback) {
+        return new PMRestClient({
+            typeRequest: 'post',
+            multipart: true,
+            data: {
+                calls: [
+                    {
+                        url: 'users/' + uidUser,
+                        method: 'GET'
+                    }
+                ]
+            },
+            functionSuccess: function (xhr, response) {
+                successCallback(xhr, response);
+            },
+            functionFailure: function (xhr, response) {
+                failureCallback(xhr, response);
+            },
+            messageError: 'There are problems getting the Steps, please try again.'.translate()
+        }).setBaseEndPoint("").executeRestClient();
+    },
 
-WebEntry.prototype.showDeleteButton = function () {
-    $(this.winWebEntry.footer.items.asArray()[0].html).show();
-    return this;
-};
-
-WebEntry.prototype.createLinkField = function () {
-    var label, link;
-    this.linkField = document.createElement("div");
-    this.linkField.style.marginLeft = "22px";
-    this.linkField.className = "pmui-field";
-    $(this.linkField).css({
-        "margin-left": "11px",
-        left: "0px",
-        top: "0px",
-        display: "block",
-        position: "relative",
-        "z-index": "auto",
-        "margin-top": "20px"
-    });
-    label = document.createElement("label");
-    label.textContent = "Web Entry URL".translate();
-    asterisk = document.createElement("span");
-    asterisk.textContent = "*";
-    $(asterisk).css({"color": "red"});
-    twopointsLabel = document.createElement("label");
-    twopointsLabel.textContent = ":".translate();
-    label.appendChild(asterisk);
-    label.appendChild(twopointsLabel);
-    link = document.createElement("a");
-    link.setAttribute("target", "_blank");
-    $(link).css({
-        "text-overflow": "ellipsis",
-        "white-space": "nowrap",
-        overflow: "hidden",
-        display: "inline-block",
-        left: "0px",
-        top: "0px",
-        width: "569.81px",
-        height: "30px",
-        position: "relative",
-        "z-index": "auto"
-    });
-    $(label).css({
-        "width": "23.5%",
-        "display": "inline-block",
-        "float": "left",
-        "color": "#2d3e50",
-        "font-size": "14px"
-    });
-    this.linkField.appendChild(label);
-    this.linkField.appendChild(link);
-    return this;
-};
-
-WebEntry.prototype.createGenerateButton = function () {
-    var link, button, that = this;
-    this.generateButton = document.createElement("div");
-    this.generateButton.style.marginLeft = "22px";
-    $(this.linkField).css({
-        "margin-left": "11px",
-        left: "0px",
-        top: "0px",
-        display: "block",
-        position: "relative",
-        "z-index": "auto",
-        "margin-top": "20px"
-    });
-    link = document.createElement("div");
-    $(link).css({
-        "text-overflow": "ellipsis",
-        overflow: "hidden",
-        display: "inline-block",
-        left: "0px",
-        top: "0px",
-        width: "755px",
-        height: "30px",
-        position: "relative",
-        "z-index": "auto"
-    });
-    button = $("<button>");
-    button.addClass('pmui pmui-button pmui-success');
-    button.css({
-        height: "25px",
-        float: "right",
-        padding: "0px 35px"
-    });
-    button.text("Generate Link".translate());
-    $(button).click(function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var data, act;
-        if (that.formWebEntry.isValid()) {
-            if (that.sugesstField.isValid()) {
-                if (that.linkField.childNodes.length > 2) {
-                    that.linkField.childNodes[2].remove();
+    /**
+     * Get WebEntry Configuration
+     * Execute restClient(GET/web-entry-event/event/)
+     * Execute restClient(POST/web-entry-event/)
+     * @param successCallback
+     * @returns {Array}
+     */
+    getWebEntryConfiguration: function (successCallback) {
+        var that = this,
+            restProxy = new PMRestClient({
+                endpoint: 'web-entry-event/event/' + that.getEvnUid(),
+                typeRequest: "get",
+                functionSuccess: function (xhr, response) {
+                    successCallback(response, false);
+                    that.initializeSomeVariables(response, false);
+                },
+                functionFailure: function (xhr, response) {
+                    restProxy = new PMRestClient({
+                        endpoint: 'web-entry-event',
+                        typeRequest: "post",
+                        data: {
+                            act_uid: that.getActUid(),
+                            evn_uid: that.getEvnUid(),
+                            wee_title: that.getEvnUid(),
+                            we_type: "MULTIPLE",
+                            we_authentication: "LOGIN_REQUIRED",
+                            we_callback: "PROCESSMAKER",
+                            we_callback_url: "",
+                            we_show_in_new_case: "0",
+                            usr_uid: that.getUserGuest().uid || ''
+                        },
+                        functionSuccess: function (xhr, response) {
+                            successCallback(response, true);
+                            that.initializeSomeVariables(response, true);
+                        },
+                        functionFailure: function (xhr, response) {
+                            PMDesigner.msgWinError(response.error.message);
+                        }
+                    });
+                    restProxy.executeRestClient();
                 }
-                data = that.formWebEntry.getData();
-                data["usr_uid"] = that.sugesstField.get("value");
-                data["evn_uid"] = that.relatedShape.evn_uid;
-                act = that.relatedShape.getPorts().asArray()[0];
-                data["act_uid"] = that.relatedShape.getPorts().asArray()[0].connection.destPort.parent.act_uid;
-                data["wee_title"] = that.relatedShape.evn_uid;
-                data["wee_description"] = "";
-                if (that.wee_uid === null) {
-                    dataPostWee = that.consumeRest('post', 'web-entry-event', data);
-                    that.linkField.style.display = "block";
-                    that.wee_uid = dataPostWee['wee_uid'];
-                    $(that.linkField).find("a")[0].textContent = dataPostWee['wee_url'];
-                    $(that.linkField).find("a")[0].href = dataPostWee['wee_url'];
-                    $(that.linkField).find("a")[0].setAttribute("title", dataPostWee['wee_url']);
-                    that.showDeleteButton();
+            });
+        restProxy.executeRestClient();
+        return this;
+    },
+
+    /**
+     * Update data Web Entry Configuration
+     * Execute restClient(PUT/web-entry-event/weeuid)
+     * @param data
+     * @param successCallback
+     * @param failureCallback
+     * @returns {PMRestClient}
+     */
+    updateWebEntryConfiguration: function (data, successCallback, failureCallback) {
+        return new PMRestClient({
+            endpoint: 'web-entry-event/' + this.weeUid,
+            typeRequest: 'update',
+            data: data,
+            functionSuccess: function (xhr, response) {
+                successCallback(xhr, response);
+            },
+            functionFailure: function (xhr, response) {
+                failureCallback(xhr, response);
+            }
+        }).executeRestClient();
+    },
+
+    /**
+     * Get Accordion Data (Tab Forms)
+     * Execute restClient(GET/steps, GET/step/triggers)
+     * @returns {Array}
+     */
+    getAccordionData: function (successCallback, failureCallback) {
+        return new PMRestClient({
+            typeRequest: 'post',
+            multipart: true,
+            data: {
+                calls: [
+                    {
+                        url: 'activity/' + this.getConfigWebEntry().tas_uid + '/steps',
+                        method: 'GET'
+                    }, {
+                        url: 'activity/' + this.getConfigWebEntry().tas_uid + '/step/triggers',
+                        method: 'GET'
+                    }
+                ]
+            },
+            functionSuccess: function (xhr, response) {
+                successCallback(xhr, response);
+            },
+            functionFailure: function (xhr, response) {
+                failureCallback(xhr, response);
+            },
+            messageError: 'There are problems getting the Steps, please try again.'.translate()
+        }).executeRestClient();
+    },
+
+    /**
+     * Get TreePanel Data (TabForm)
+     * Execute restClient(GET/available-steps GET/triggers)
+     * @returns {Array}
+     */
+    getTreePanelData: function (successCallback, failureCallback) {
+        return new PMRestClient({
+            typeRequest: 'post',
+            multipart: true,
+            data: {
+                calls: [
+                    {
+                        url: 'activity/' + this.getConfigWebEntry().tas_uid + '/available-steps',
+                        method: 'GET'
+                    }, {
+                        url: 'triggers',
+                        method: 'GET'
+                    }
+                ]
+            },
+            functionSuccess: function (xhr, response) {
+                successCallback(xhr, response);
+            },
+            functionFailure: function (xhr, response) {
+                failureCallback(xhr, response);
+            }
+        }).executeRestClient();
+    },
+
+    /**
+     * Get steps Availables (TreePanel)
+     * Execute restClient(GET/available-steps)
+     * @param successCallback
+     * @param failureCallback
+     * @returns {Array}
+     */
+    getStepAvailables: function (successCallback, failureCallback) {
+        return new PMRestClient({
+            typeRequest: 'post',
+            multipart: true,
+            data: {
+                calls: [
+                    {
+                        url: 'activity/' + this.getConfigWebEntry().tas_uid + '/available-steps',
+                        method: 'GET'
+                    }
+                ]
+            },
+            functionSuccess: function (xhr, response) {
+                successCallback(xhr, response);
+            },
+            functionFailure: function (xhr, response) {
+                failureCallback(xhr, response);
+            }
+        }).executeRestClient();
+    },
+
+    /**
+     * Load Skin and Languages
+     * Execute restClient(GET/system/languages GET/system/skins)
+     * @returns {Array}
+     */
+    getSkinLanguage: function (successCallback, failureCallback) {
+        return new PMRestClient({
+            typeRequest: 'post',
+            multipart: true,
+            data: {
+                calls: [
+                    {
+                        url: 'system/languages',
+                        method: 'GET'
+                    }, {
+                        url: 'system/skins',
+                        method: 'GET'
+                    }
+                ]
+            },
+            functionSuccess: function (xhr, response) {
+                successCallback(xhr, response);
+            },
+            functionFailure: function (xhr, response) {
+                failureCallback(xhr, response);
+            },
+            messageError: 'There are problems getting the Steps, please try again.'.translate()
+        }).setBaseEndPoint("").executeRestClient();
+    },
+
+    /**
+     * Delete the WebEntry configuration.
+     * @param successCallback
+     * @param failureCallback
+     */
+    deleteWebEntryConfiguration: function (successCallback, failureCallback) {
+        return new PMRestClient({
+            endpoint: 'web-entry-event/' + this.weeUid,
+            typeRequest: 'remove',
+            functionSuccess: function (xhr, response) {
+                successCallback(xhr, response);
+            },
+            functionFailure: function (xhr, response) {
+                failureCallback(xhr, response);
+            }
+        }).executeRestClient();
+    },
+
+    /**
+     * Generate webEntry Link
+     * @param weeUid
+     * @param successCallback
+     * @param failureCallback
+     */
+    generateLink: function (weeUid, successCallback, failureCallback) {
+        return new PMRestClient({
+            endpoint: 'web-entry-event/' + weeUid + '/generate-link',
+            typeRequest: 'get',
+            functionSuccess: function (xhr, response) {
+                successCallback(xhr, response);
+            },
+            functionFailure: function (xhr, response) {
+                failureCallback(xhr, response);
+            }
+        }).executeRestClient();
+    },
+
+    /**
+     * Creates an instance of the WebEntry class
+     * @returns {null}
+     */
+    getInstanceWebEntryData: function () {
+        this.getWebEntryConfiguration(
+            function (webEntryEvent, isNew) {
+                if (isNew) {
+                    webEntryEvent.we_type = 'SINGLE';
+                    webEntryEvent.we_authentication = 'ANONYMOUS';
+                    webEntryEvent.wee_url = '';
+                    webEntryEvent.wee_title = '';
+                }
+            }
+        );
+        return this;
+    },
+
+    /**
+     * Get Main Container Window
+     * @returns {PMUI.ui.Window}
+     */
+    getWindow: function () {
+        if (this.getWindowWebEntry() === null) {
+            this.setWindowWebEntry(this.buildWindow());
+        }
+        return this.getWindowWebEntry();
+    },
+
+    /**
+     * Build Window Container
+     * @returns {PMUI.ui.Window}
+     */
+    buildWindow: function () {
+        var that = this;
+        return new PMUI.ui.Window({
+            id: 'windowWebEntry',
+            title: 'Web Entry'.translate(),
+            height: DEFAULT_WINDOW_HEIGHT,
+            width: DEFAULT_WINDOW_WIDTH,
+            footerAlign: 'right',
+            onBeforeClose: function () {
+                if (that.isNewWebEntry) {
+                    that.deleteWebEntryConfiguration(
+                        function () {
+                            that.getWindow().close();
+                        },
+                        function (xhr, response) {
+                            PMDesigner.msgWinError(response.error.message);
+                        }
+                    );
                 } else {
-                    dataPostWee = that.consumeRest('update', 'web-entry-event/' + that.wee_uid, data);
-                    dataPostWee = that.consumeRest('get', 'web-entry-event/' + that.wee_uid, data);
-                    that.linkField.style.display = "block";
-                    that.wee_uid = dataPostWee['wee_uid'];
-                    $(that.linkField).find("a")[0].textContent = dataPostWee['wee_url'];
-                    $(that.linkField).find("a")[0].href = dataPostWee['wee_url'];
-                    $(that.linkField).find("a")[0].setAttribute("title", dataPostWee['wee_url']);
-                    that.showDeleteButton();
+                    that.getWindow().close();
                 }
-            }
-            else {
-                that.sugesstField.showMessageRequired();
-            }
-        }
-    });
-    $(link).append(button);
-    this.generateButton.appendChild(link);
-    return this;
-};
-
-WebEntry.prototype.createForm = function () {
-    this.formWebEntry = new PMUI.form.Form({
-        id: "formWebEntry",
-        title: "",
-        height: "300px",
-        width: DEFAULT_WINDOW_WIDTH - 70,
-        items: [
-            {
-                pmType: "dropdown",
-                label: "Dynaform".translate(),
-                options: [],
-                name: "dyn_uid",
-                id: "dyn_uid",
-                helper: "Select one DynaForm".translate(),
-                required: true
+                that.getWindow().close();
             },
-            {
-                pmType: "radio",
-                label: "Status".translate(),
-                name: "wee_status",
-                id: "wee_status",
-                required: true,
-                options: [
-                    {
-                        label: "enable".translate(),
-                        value: "ENABLED",
+            buttonPanelPosition: 'bottom',
+            buttonsPosition: 'right',
+            buttons: [
+                {
+                    id: 'windowWebEntryButtonDelete',
+                    text: 'Delete'.translate(),
+                    handler: function () {
+                        that.handlerDeleteWebEntry();
                     },
-                    {
-                        label: "disabled".translate(),
-                        value: "DISABLED"
-                    }
-                ],
-                value: "ENABLED",
-                visible: false
-            }
-        ],
-        visibleHeader: false
-    });
-    return this;
-};
+                    buttonType: "error"
+                },
+                {
+                    id: 'windowWebEntryButtonCancel',
+                    text: 'Cancel'.translate(),
+                    handler: function () {
+                        if (that.isNewWebEntry) {
+                            that.deleteWebEntryConfiguration(
+                                function () {
+                                    that.getWindow().close();
+                                },
+                                function (xhr, response) {
+                                    PMDesigner.msgWinError(response.error.message);
+                                }
+                            );
+                        } else {
+                            that.getWindow().close();
+                        }
+                    },
+                    buttonType: "error"
+                },
+                {
+                    id: 'windowWebEntryButtonSave',
+                    text: 'Save'.translate(),
+                    handler: function (e) {
+                        that.checkUserGuest('saveConfig');
+                    },
+                    buttonType: 'success'
+                }
+            ]
+        });
+    },
 
-WebEntry.prototype.createWindow = function () {
-    var that = this, dataPostWee;
-    this.winWebEntry = new PMUI.ui.Window({
-        id: "winWebEntry",
-        title: "Web Entry".translate(),
-        height: DEFAULT_WINDOW_HEIGHT,
-        width: DEFAULT_WINDOW_WIDTH,
-        modal: true,
-        footerItems: [
-            {
-                pmType: 'button',
-                text: 'Delete'.translate(),
-                handler: function () {
-                    if (that.wee_uid != null) {
-                        dataPostWee = that.consumeRest('remove', 'web-entry-event/' + that.wee_uid, {});
-                        that.winWebEntry.close();
-                        PMDesigner.msgFlash('The Web entry was removed successfully.'.translate(), document.body, 'success', 3000, 5);
-                    } else {
-                        that.restClient.msgFlash('Not exists Web entry'.translate(), document.body, 'info', 3000, 5);
-                    }
-                },
-                buttonType: "error"
-            },
-            {
-                pmType: 'button',
-                text: "Cancel".translate(),
-                handler: function () {
-                    if (!that.formWebEntry.isDirty()) {
-                        that.winWebEntry.close();
-                    }
-                },
-                buttonType: "error"
-            },
-            {
-                pmType: 'button',
+    /**
+     * Return Second Window Container
+     * @returns {PMUI.ui.Window}
+     */
+    getWindowAlternativeForm: function () {
+        if (this.getWindowAlternative() === null) {
+            this.setWindowAlternative(this.buildWindowAlternative());
+        }
+        return this.getWindowAlternative();
+    },
+
+    /**
+     * Build Second Window Container
+     * @returns {PMUI.ui.Window}
+     */
+    buildWindowAlternative: function () {
+        return new PMUI.ui.Window({
+            visibleFooter: true,
+            title: 'Trigger'.translate(),
+            footerAlign: 'right',
+            footerItems: [{
+                text: "@@",
+                id: "secondaryWindow-criteria",
+                style: {
+                    cssProperties: {
+                        "background": "rgb(45, 62, 80)",
+                        "border": "1px solid rgb(45, 62, 80)"
+                    },
+                    cssClasses: ["mafe-button-condition-trigger"]
+                }
+            }, {
+                id: 'secondaryWindow-cancel',
+                text: 'Cancel'.translate(),
+                buttonType: 'error',
+                height: 31,
+                style: {
+                    cssClasses: ["mafe-button-condition-trigger"]
+                }
+            }, {
+                id: 'secondaryWindow-save',
                 text: 'Save'.translate(),
-                handler: function () {
-                    var data, act;
-                    if (that.formWebEntry.isValid()) {
-                        if (that.sugesstField.isValid()) {
-                            if (that.wee_uid === null) {
-                                requiredMessageLink = that.formWebEntry.getItems()[0].dom.messageContainer.cloneNode(true);
-                                requiredMessageLink.childNodes[0].style.display = "block";
-                                requiredMessageLink.childNodes[0].innerText = "This field is required. Please press the \"Generate Link\" button.".translate();
-                                that.linkField.appendChild(requiredMessageLink);
-                                return;
-                            }
-                            data = that.formWebEntry.getData();
-                            data["usr_uid"] = that.sugesstField.get("value");
-                            data["evn_uid"] = that.relatedShape.evn_uid;
-                            act = that.relatedShape.getPorts().asArray()[0];
-                            data["act_uid"] = that.relatedShape.getPorts().asArray()[0].connection.destPort.parent.act_uid;
-                            data["wee_title"] = that.relatedShape.evn_uid;
-                            data["wee_description"] = "";
-                            if (that.wee_uid === null) {
-                                dataPostWee = that.consumeRest('post', 'web-entry-event', data);
-                            } else {
-                                dataPostWee = that.consumeRest('update', 'web-entry-event/' + that.wee_uid, data);
-                            }
-                            that.winWebEntry.close();
+                buttonType: 'success',
+                height: 31,
+                style: {
+                    cssClasses: ["mafe-button-condition-trigger"]
+                }
+            }]
+        });
+    },
+
+    /**
+     * Get TabPanel Container
+     * @returns {TabPanel}
+     */
+    getTabPanel: function () {
+        if (this.getTabPanelWindow() === null) {
+            this.setTabPanelWindow(this.buildPanelWindow());
+        }
+        return this.getTabPanelWindow();
+    },
+
+    /**
+     * Build TabPanel (TabForms, TabProperties, TabLink)
+     * @returns {PMUI.panel.TabPanel}
+     */
+    buildPanelWindow: function () {
+        return new PMUI.panel.TabPanel({
+            id: 'windowWebEntryTabPanel',
+            width: DEFAULT_WINDOW_WIDTH - 50,
+            items: [
+                {
+                    id: 'tabForms',
+                    title: 'Forms'.translate(),
+                    panel: this.getTabForms()
+                },
+                {
+                    id: 'tabProperties',
+                    title: 'Properties'.translate(),
+                    panel: this.getTabProperties()
+                },
+                {
+                    id: 'tabLink',
+                    title: 'Link'.translate(),
+                    panel: this.getTabLinkForm()
+                }
+            ],
+            style: {
+                cssProperties: {
+                    'margin-left': '10px'
+                }
+            },
+            itemsPosition: {
+                position: 'left'
+            }
+        });
+    },
+
+    /**
+     * Get Panel TabForms
+     * @returns {Panel}
+     */
+    getTabForms: function () {
+        if (this.getTabForm() === null) {
+            this.setTabForm(this.buildTabForms());
+        }
+        return this.getTabForm();
+    },
+
+    /**
+     * Build Tab Forms
+     * @returns {PMUI.core.Panel}
+     */
+    buildTabForms: function () {
+        var that = this,
+            singleDynaform,
+            stepsMainContainer;
+
+        singleDynaform = new PMUI.form.Form({
+            id: 'singleDynaform',
+            width: DEFAULT_WINDOW_WIDTH - 220,
+            height: 180,
+            name: 'singleDynaform',
+            visibleHeader: false,
+            items: [
+                {
+                    id: 'singleDynaformRadio',
+                    pmType: 'radio',
+                    labelVisible: false,
+                    value: 'SINGLE',
+                    name: 'options',
+                    required: false,
+                    controlPositioning: 'horizontal',
+                    maxDirectionOptions: 4,
+                    options: [
+                        {
+                            id: 'singleDynaform',
+                            label: 'Single Dynaform'.translate(),
+                            value: 'SINGLE',
+                            selected: true
                         }
-                        else {
-                            that.sugesstField.showMessageRequired();
+                    ],
+                    onChange: function (newVal, oldVal) {
+                        that.weeFormModeChange(newVal, oldVal);
+                    },
+                    labelWidth: '0%'
+                },
+                {
+                    id: 'weeSelectDynaform',
+                    name: 'tabFormsDropdownDyanform',
+                    pmType: 'dropdown',
+                    label: 'Dynaform'.translate(),
+                    helper: 'Select Dynaform use in case.'.translate(),
+                    required: true,
+                    controlsWidth: 400,
+                    labelWidth: '25%',
+                    style: {
+                        cssProperties: {
+                            'padding-left': '100px'
+                        }
+                    },
+                    options: [
+                        {
+                            label: 'Select Dynaform'.translate(),
+                            value: ''
+                        }
+                    ]
+
+                },
+                {
+                    id: 'multipleStepsRadio',
+                    pmType: 'radio',
+                    labelVisible: false,
+                    value: '',
+                    name: 'options',
+                    required: false,
+                    controlPositioning: 'vertical',
+                    maxDirectionOptions: 4,
+                    options: [
+                        {
+                            id: 'multipleSteps',
+                            label: 'Multiple Steps'.translate(),
+                            value: 'MULTIPLE'
+                        }
+                    ],
+                    onChange: function (newVal, oldVal) {
+                        that.weeFormModeChange(newVal, oldVal);
+                    },
+                    labelWidth: '0%'
+
+                }
+            ]
+        });
+
+        stepsMainContainer = new PMUI.core.Panel({
+            id: 'stepsMainContainer',
+            layout: 'hbox',
+            width: DEFAULT_WINDOW_WIDTH - 220,
+            items: [
+                that.getStepsAssignTree(),
+                that.getStepsAssignAccordion()
+            ]
+        });
+
+        return new PMUI.core.Panel({
+            id: 'mainContainer',
+            layout: 'vbox',
+            width: DEFAULT_WINDOW_WIDTH - 220,
+            items: [
+                singleDynaform,
+                that.getLabelsPanel(),
+                stepsMainContainer
+            ]
+        });
+    },
+
+    /**
+     * Get Panel TabProperties
+     * @returns {Panel}
+     */
+    getTabProperties: function () {
+        if (this.getTabProperty() === null) {
+            this.setTabProperty(this.buildTabProperties());
+        }
+        return this.getTabProperty();
+    },
+
+    /**
+     * Build TabProperties
+     * @returns {PMUI.core.Panel}
+     */
+    buildTabProperties: function () {
+        var that = this,
+            propertiesForm;
+
+        propertiesForm = new PMUI.form.Form({
+            id: 'idTabFormProperties',
+            width: DEFAULT_WINDOW_WIDTH - 220,
+            visibleHeader: false,
+            items: [
+                {
+                    id: 'tabPropertiesWebEntryTitle',
+                    pmType: 'text',
+                    name: 'tabPropertiesWebEntryTitle',
+                    valueType: 'string',
+                    label: 'Web Entry Title'.translate(),
+                    placeholder: 'Enter a title displayed on web entry window (if applies)'.translate(),
+                    helper: 'Enter a title displayed on web entry window (if applies).'.translate(),
+                    required: false,
+                    controlsWidth: 458,
+                    labelWidth: '23%'
+                },
+                {
+                    id: 'tabPropRadioAuthentication',
+                    pmType: 'radio',
+                    labelVisible: true,
+                    label: 'Authentication',
+                    value: 'ANONYMOUS',
+                    name: 'authentication',
+                    required: true,
+                    controlPositioning: 'horizontal',
+                    maxDirectionOptions: 4,
+                    options: [
+                        {
+                            id: 'tabPropertiesOptionRadioAnonymous',
+                            label: 'Anonymous'.translate(),
+                            value: 'ANONYMOUS',
+                            selected: false
+                        }
+                    ],
+                    onChange: function (newVal, oldVal) {
+                        that.anonimusProcedure(newVal, oldVal);
+                    },
+                    labelWidth: '23%'
+                },
+                {
+                    id: 'tabPropertiesRequireUserLogin',
+                    pmType: 'radio',
+                    labelVisible: false,
+                    value: 'LOGIN_REQUIRED',
+                    required: false,
+                    name: 'authentication',
+                    controlPositioning: 'horizontal',
+                    maxDirectionOptions: 4,
+                    options: [
+                        {
+                            id: 'tabPropertiesRadioRequireUserLogin',
+                            label: 'Require user login'.translate(),
+                            value: 'LOGIN_REQUIRED',
+                            selected: false
+                        }
+                    ],
+                    onChange: function (newVal, oldVal) {
+                        that.loginRequired(newVal, oldVal);
+                    },
+                    labelWidth: '23%'
+                },
+                {
+                    id: 'tabPropertiesHideLoogedInformationBar',
+                    pmType: 'checkbox',
+                    name: 'tabPropertiesHideLoogedInformationBar',
+                    labelVisible: false,
+                    disabled: true,
+                    options: [
+                        {
+                            id: 'hideLoogedInformationBar',
+                            label: 'Hide Logged Information Bar'.translate(),
+                            value: '1',
+                            selected: false
+                        }
+                    ],
+                    style: {
+                        cssProperties: {
+                            'padding-left': '50px'
                         }
                     }
                 },
-                buttonType: "success",
+                {
+                    id: 'tabPropertiesRadioCallback',
+                    pmType: 'radio',
+                    labelVisible: true,
+                    label: 'Callback Action',
+                    value: 'PROCESSMAKER',
+                    required: true,
+                    disabled: false,
+                    controlPositioning: 'vertical',
+                    labelPosition: 'left',
+                    helper: 'Callback Action...'.translate(),
+                    maxDirectionOptions: 4,
+                    options: [
+                        {
+                            id: 'redirectPM',
+                            label: 'Redirect to ProcessMaker predefined response page'.translate(),
+                            value: 'PROCESSMAKER',
+                            selected: true
+                        },
+                        {
+                            id: 'redirectURL',
+                            label: 'Redirect to custom URL'.translate(),
+                            value: 'CUSTOM'
+                        },
+                        {
+                            id: 'redirectCustom',
+                            label: 'Redirect to custom URL and clear login info'.translate(),
+                            value: 'CUSTOM_CLEAR'
+                        }
+                    ],
+                    onChange: function (newVal, oldVal) {
+                        that.callbackActionChange(newVal, oldVal);
+
+                    },
+                    labelWidth: '23%'
+                },
+                new CriteriaField({
+                    id: 'criteriaFieldCustomUrl',
+                    pmType: 'text',
+                    name: 'criteriaFieldCustomUrl',
+                    label: 'Custom URL'.translate(),
+                    placeholder: 'Enter a valid URL to be redirected when entry will be completed'.translate(),
+                    labelWidth: '23%',
+                    controlsWidth: 455,
+                    required: true,
+                    disabled: true
+                }),
+                {
+                    id: 'showInNewCase',
+                    pmType: 'checkbox',
+                    name: 'showInNewCase',
+                    label: 'Show task in New Case'.translate(),
+                    labelVisible: true,
+                    options: [
+                        {
+                            id: 'showTaskInNewCase',
+                            value: 'showCase',
+                            selected: false
+                        }
+                    ],
+                    onChange: function (newValue, oldValue) {
+                        this.setValue(newValue);
+                    }
+                }
+            ]
+        });
+
+        $(propertiesForm.getItem('tabPropRadioAuthentication').getHTML())
+            .append($(that.getSuggestField().createHTML()));
+
+        return propertiesForm;
+    },
+
+    /**
+     * Get Panel TabLink
+     * @returns {Panel}
+     */
+    getTabLinkForm: function () {
+        if (this.getTabLink() === null) {
+            this.setTabLink(this.buildTabLink());
+        }
+        return this.getTabLink();
+    },
+
+    /**
+     * Build TabLink
+     * @returns {PMUI.core.Panel}
+     */
+    buildTabLink: function () {
+        var that = this,
+            tfromLink;
+
+        tfromLink = new PMUI.form.Form({
+            id: 'idTabFormLink',
+            width: DEFAULT_WINDOW_WIDTH - 220,
+            visibleHeader: false,
+            items: [
+                {
+                    id: 'tabLinkRadioGeneration',
+                    pmType: 'radio',
+                    labelVisible: true,
+                    label: 'Link Generation'.translate(),
+                    value: 'DEFAULT',
+                    name: 'options',
+                    required: true,
+                    controlPositioning: 'vertical',
+                    labelPosition: 'left',
+                    helper: 'Link Generation'.translate(),
+                    controlsWidth: 485,
+                    labelWidth: '24.5%',
+                    maxDirectionOptions: 3,
+                    options: [
+                        {
+                            id: 'generateLinkDefaultValues',
+                            label: 'Generate link using workspace default values (skin, language)'.translate(),
+                            value: 'DEFAULT',
+                            selected: 'true'
+                        },
+                        {
+                            id: 'advancedLinkGeneration',
+                            label: 'Advanced link generation'.translate(),
+                            value: 'ADVANCED'
+                        }
+                    ],
+                    onChange: function (newVal) {
+                        that.linkGenerationOnChange(newVal);
+                    },
+                    labelWidth: '18%'
+                },
+                {
+                    id: 'tabLinkDropdownSkin',
+                    name: 'tabLinkDropdownSkin',
+                    pmType: 'dropdown',
+                    label: 'Skin'.translate(),
+                    helper: 'Select a Skin.'.translate(),
+                    required: true,
+                    controlsWidth: 485,
+                    labelWidth: '24.5%',
+                    onChange: function () {
+                        that.setLinkText(tfromLink, '');
+                    },
+                    options: [
+                        {
+                            label: 'Select a Skin'.translate(),
+                            value: ''
+                        }
+                    ]
+                },
+                {
+                    id: 'tabLinkDropdownLanguage',
+                    name: 'tabLinkDropdownLanguage',
+                    pmType: 'dropdown',
+                    label: 'Language'.translate(),
+                    helper: 'Select a language.'.translate(),
+                    required: true,
+                    controlsWidth: 485,
+                    labelWidth: '24.5%',
+                    onChange: function () {
+                        that.setLinkText(tfromLink, '');
+                    },
+                    options: [
+                        {
+                            label: 'Select a language'.translate(),
+                            value: ''
+                        }
+                    ]
+                },
+                {
+                    id: 'tablinkTextCustomDomain',
+                    pmType: 'text',
+                    name: 'tablinkTextCustomDomain',
+                    valueType: 'string',
+                    label: 'Custom Hostname'.translate(),
+                    placeholder: 'https://example.com:8080'.translate(),
+                    helper: 'Protocol and Hostname, port is optional.'.translate(),
+                    required: true,
+                    controlsWidth: 485,
+                    labelWidth: "24.5%",
+                    validators: [
+                        {
+                            pmType: "regexp",
+                            criteria: /^(https?:\/\/)?(((\d{1,3}\.){3}\d{1,3})|(([\-\w]+\.)+\w{2,3}(\/[%\-\w]+(\.\w{2,})?)*(([\w\-\.\?\\\/+@&#;`~=%!]*)(\.\w{2,})?)*\/?))(:\d+)?$/i,
+                            errorMessage: 'Enter a Protocol and Hostname valid value.'.translate()
+                        }
+                    ],
+                    onChange: function () {
+                        that.setLinkText(tfromLink, '');
+                    }
+                },
+                {
+                    id: 'panelLinkForm',
+                    pmType: 'panel',
+                    layout: 'hbox',
+                    required: true,
+                    width: '155px',
+                    style: {
+                        cssProperties: {
+                            'margin-left': '-10px',
+                            'margin-top': '-10px'
+                        }
+                    },
+                    items: [
+                        {
+                            pmType: 'annotation',
+                            text: 'Web Entry URL:'.translate(),
+                            id: 'webEntryLinkLabel',
+                            required: true,
+                            name: 'webEntryLinkLabel'
+                        },
+                        {
+                            pmType: 'annotation',
+                            id: 'webEntryLink',
+                            name: 'webEntryLink',
+                            text: '',
+                            required: true,
+                            textType: 1,
+                            style: {
+                                cssProperties: {
+                                    'margin-left': '-173px'
+                                }
+                            }
+                        }
+                    ]
+                },
+                new PMUI.field.ButtonField({
+                    id: 'buttonFieldGenerateLink',
+                    pmType: 'buttonField',
+                    value: 'Generate Link'.translate(),
+                    labelVisible: false,
+                    buttonAlign: 'center',
+                    controlsWidth: 180,
+                    proportion: 0.6,
+                    handler: function (field) {
+                        that.checkUserGuest('generateLink');
+                    },
+                    buttonType: 'success',
+                    style: {
+                        cssProperties: {
+                            'vertical-align': 'top',
+                            'padding-top': '10px',
+                            'padding-right': '0px',
+                            'padding-bottom': '1px',
+                            'padding-left': '130px'
+                        }
+                    }
+                })
+            ]
+        });
+
+        tfromLink.getItem('buttonFieldGenerateLink').getControl(0).button.setButtonType('success');
+
+        return tfromLink;
+    },
+
+    /**
+     * Get MessageWindow Container
+     * @returns {PMUI.ui.MessageWindow}
+     */
+    getConfirmWindow: function () {
+        if (this.getConfirmWin() === null) {
+            this.setConfirmWin(this.buildConfirmWindow());
+        }
+        return this.getConfirmWin();
+    },
+
+    /**
+     * Build MessageWindow
+     * @returns {PMUI.ui.MessageWindow}
+     */
+    buildConfirmWindow: function () {
+        return new PMUI.ui.MessageWindow({
+            id: 'confirmWindowDeleteAcceptedValue',
+            windowMessageType: 'warning',
+            width: 490,
+            bodyHeight: 'auto',
+            title: '',
+            message: '',
+            footerItems: [
+                {
+                    id: 'confirmWindow-footer-no',
+                    text: 'No'.translate(),
+                    visible: true,
+                    buttonType: 'error'
+                }, {
+                    id: 'confirmWindow-footer-yes',
+                    text: 'Yes'.translate(),
+                    visible: true,
+                    buttonType: 'success'
+                }
+            ],
+            visibleFooter: true
+        });
+    },
+
+    /**
+     * Handler button for delete web entry config
+     */
+    handlerDeleteWebEntry: function () {
+        var that = this,
+            confirmWindow,
+            yesButton,
+            noButton;
+        confirmWindow = that.getConfirmWindow()
+            .setMessage('Are you sure you want to delete the Web Entry configuration?'.translate());
+        yesButton = that.getConfirmWindow().footer.getItem('confirmWindow-footer-yes');
+        yesButton.setHandler(function () {
+            confirmWindow.close();
+            that.deleteWebEntryConfiguration(
+                function () {
+                    that.getWindow().close();
+                },
+                function (xhr, response) {
+                    PMDesigner.msgWinError(response.error.message);
+                }
+            );
+        });
+        noButton = that.getConfirmWindow().footer.getItem('confirmWindow-footer-no');
+        noButton.setHandler(function () {
+            that.getConfirmWindow().close();
+        });
+        that.getConfirmWindow().open();
+        return this;
+    },
+
+    /**
+     * Handler button for save web entry config
+     * @param method
+     */
+    checkUserGuest: function (method) {
+        var title = 'Web Entry Anonymous Authentication'.translate(),
+            message = ('Current selected user to act as anonymous will be replaced by the Guest user. ' +
+                'This action cannot be undone. Do you want to proceed?').translate();
+
+        //Validate the data before saving the configuration or generate the link
+        if (this.isValidWebEntryData(method)) {
+            (method === 'saveConfig') ? this.handlerSaveButton(message, title) : this.handlerGenerateLinkButton(message, title);
+        }
+        return this;
+    },
+
+    /**
+     * Check userGuestUID and save Config
+     * @param message
+     * @param title
+     * @returns {WebEntry}
+     */
+    handlerSaveButton: function (message, title) {
+        var that = this,
+            messageWindow = this.getConfirmWindow();
+        //Validation is done to be compatible with older versions of webEntry (Now exist guest-type user).
+        if (this.getUserGuest().uid && this.getSuggestField().value !== this.getUserGuest().uid) {
+            messageWindow.setMessage(message);
+            messageWindow.setTitle(title);
+
+            //handler for cancel button
+            messageWindow.footer.getItem('confirmWindow-footer-no').setHandler(function () {
+                messageWindow.close();
+            });
+
+            //handler for yes button
+            messageWindow.footer.getItem('confirmWindow-footer-yes').setHandler(function () {
+                messageWindow.close();
+                that.getSuggestField().set('value', that.getUserGuest().uid);
+                that.saveWebEntryConfiguration(
+                    function () {
+                        that.getWindow().close();
+                    }, function (xhr, response) {
+                        PMDesigner.msgWinError(response.error.message);
+                    }
+                );
+            });
+            messageWindow.open();
+        } else {
+            //For new configurations we save the configuration without any GUEST user validation.
+            this.saveWebEntryConfiguration(
+                function () {
+                    that.getWindow().close();
+                }, function (xhr, response) {
+                    PMDesigner.msgWinError(response.error.message);
+                }
+            );
+        }
+        return this;
+    },
+
+    /**
+     * Check userGuestUID and generate webEntry Link
+     * @param message
+     * @param title
+     * @returns {WebEntry}
+     */
+    handlerGenerateLinkButton: function (message, title) {
+        var that = this,
+            formLink = this.getTabLinkForm(),
+            messageWindow = this.getConfirmWindow();
+        //Validation is done to be compatible with older versions of webEntry (Now exist guest-type user).
+        if (this.getUserGuest().uid && this.getSuggestField().value !== this.getUserGuest().uid) {
+            messageWindow.setMessage(message);
+            messageWindow.setTitle(title);
+
+            //handler for cancel button
+            messageWindow.footer.getItem('confirmWindow-footer-no').setHandler(function () {
+                messageWindow.close();
+            });
+            //handler for yes button
+
+            messageWindow.footer.getItem('confirmWindow-footer-yes').setHandler(function () {
+                messageWindow.close();
+                that.getSuggestField().set('value', that.getUserGuest().uid);
+                that.setLinkText(formLink, '');
+                //save Web Entry Configuration
+                that.saveWebEntryConfiguration(
+                    function (xhr, response) {
+                        that.getConfigWebEntry().usr_uid = response.usr_uid || that.getConfigWebEntry().usr_uid;
+                        //generate webEntry Link
+                        that.generateLink(
+                            that.getWeeUid(),
+                            function (xhr, response) {
+                                that.setLinkText(formLink, (response.link) ? response.link : '');
+                                that.initializeAccordionAndTreepanelData();
+                                that.getSuggestField().html.find("input")
+                                    .val(that.getUserGuest().firstname + " " + "(" + that.getUserGuest().username + ")");
+                            },
+                            function (xhr, response) {
+                                PMDesigner.msgWinError(response.error.message);
+                            }
+                        );
+                    },
+                    function (xhr, response) {
+                        PMDesigner.msgWinError(response.error.message);
+                    }
+                );
+            });
+            messageWindow.open();
+        } else {
+            //For new configurations we generate the webEntry Link without any GUEST user validation.
+            this.saveWebEntryConfiguration(
+                function () {
+                    that.generateLink(
+                        that.getWeeUid(),
+                        function (xhr, response) {
+                            that.setLinkText(formLink, (response.link) ? response.link : '');
+                            that.initializeAccordionAndTreepanelData();
+                        },
+                        function (xhr, response) {
+                            that.setLinkText(formLink, '');
+                            PMDesigner.msgWinError(response.error.message);
+                        }
+                    );
+                },
+                function (xhr, response) {
+                    that.setLinkText(formLink, '');
+                    PMDesigner.msgWinError(response.error.message);
+                }
+            );
+        }
+        return this;
+    },
+
+    /**
+     * Get Steps AssignAccordion
+     * @returns {PMUI.panel.AccordionPanel}
+     */
+    getStepsAssignAccordion: function () {
+        if (this.getStepsAccordion() === null) {
+            this.setStepsAccordion(this.buildStepsAssignAccordion());
+        }
+        return this.getStepsAccordion();
+    },
+
+    /**
+     * Build Steps Assign Accordion
+     * @returns {PMUI.panel.AccordionPanel}
+     */
+    buildStepsAssignAccordion: function () {
+        var that = this;
+        return new PMUI.panel.AccordionPanel({
+            id: 'stepsAssignAccordion',
+            multipleSelection: true,
+            hiddenTitle: true,
+            proportion: 1.5,
+            style: {
+                cssProperties: {
+                    margin: '0px 0px 0px 0px'
+                },
+                cssClasses: ['mafe-border-panel']
+            },
+            listeners: {
+                select: function (accordionItem, event) {
+                    var buttonExpand, buttonCollapse, itemsAccod;
+                    itemsAccod = that.getStepsAssignAccordion().items;
+                    if (accordionItem.collapsed) {
+                        if (that.elementAccordionOpen.indexOf(accordionItem) > -1) {
+                            that.elementAccordionOpen.remove(accordionItem);
+                        }
+                    } else {
+                        if (that.elementAccordionOpen.indexOf(accordionItem) === -1) {
+                            that.elementAccordionOpen.insert(accordionItem);
+                        }
+                    }
+                    buttonCollapse = that.getLabelsPanel().getItem('collapse-button');
+                    buttonExpand = that.getLabelsPanel().getItem('expand-button');
+                    if (that.elementAccordionOpen.getSize() === 0) {
+                        buttonExpand.setDisabled(false);
+                        buttonCollapse.setDisabled(true);
+                    } else if (that.elementAccordionOpen.getSize() === itemsAccod.getSize()) {
+                        buttonExpand.setDisabled(true);
+                        buttonCollapse.setDisabled(false);
+                    } else {
+                        buttonExpand.setDisabled(false);
+                        buttonCollapse.setDisabled(false);
+                    }
+                }
             }
-        ],
-        footerAlign: "right",
-        closable: true,
-        visibleFooter: true
-    });
-    return this;
-};
+        });
+    },
 
-WebEntry.prototype.createRestClient = function () {
-    this.restClient = new PMRestClient();
-    return this;
-};
+    /**
+     * Get steps AssignTree
+     * @returns {PMUI.core.Panel}
+     */
+    getStepsAssignTree: function () {
+        if (this.getStepsTree() === null) {
+            this.setStepsTree(this.buildStepsAssignTree());
+        }
+        return this.getStepsTree();
+    },
 
-WebEntry.prototype.loadDynaformsAndUsers = function (dynaformsControl) {
-    var i, j, data, options = [], response, webentries = [],
-        that = this, linkValue, link, label, fieldLink, dynaforms;
-    webentries = this.consumeRest("get", "web-entry-events");
-    dynaforms = this.consumeRest("get", "dynaforms");
-    for (i = 0; i < dynaforms.length; i += 1) {
-        data = {};
-        data.label = dynaforms[i]["dyn_title"];
-        data.value = dynaforms[i]["dyn_uid"];
-        for (j = 0; j < webentries.length; j += 1) {
-            if (webentries[j]["dyn_uid"] === data.value && webentries[j]["evn_uid"] == that.relatedShape["evn_uid"]) {
-                data.selected = true;
-                if (webentries[j].hasOwnProperty("usr_uid") && webentries[j]["usr_uid"] != "") {
-                    user = this.consumeRest("get", "user/" + webentries[j]["usr_uid"]);
-                    this.sugesstField.html.find("input").val(user["usr_firstname"] + " " + user["usr_lastname"] + " " + "(" + user["usr_username"] + ")");
-                    this.sugesstField.set("value", user["usr_uid"]);
-                    this.wee_uid = webentries[j]["wee_uid"];
-                    linkValue = webentries[j]["wee_url"];
+    /**
+     * Build steps AssignTree
+     * @returns {PMUI.panel.TreePanel}
+     */
+    buildStepsAssignTree: function () {
+        return new PMUI.panel.TreePanel({
+            id: 'stepsAssignTree',
+            proportion: 0.5,
+            height: 475,
+            filterable: true,
+            autoBind: true,
+            filterPlaceholder: 'Search ...'.translate(),
+            emptyMessage: 'No records found'.translate(),
+            nodeDefaultSettings: {
+                labelDataBind: 'obj_title',
+                autoBind: true,
+                collapsed: false,
+                itemsDataBind: 'items',
+                childrenDefaultSettings: {
+                    labelDataBind: 'obj_title',
+                    autoBind: true
+                },
+                behavior: 'drag'
+            },
+            style: {
+                cssProperties: {
+                    margin: '0px 0px 0px 0px',
+                    float: 'left',
+                    overflow: 'auto'
+                },
+                cssClasses: ['mafe-border-panel']
+            }
+        });
+    },
+
+    /**
+     * Get Label Panel
+     * @returns {PMUI.core.Panel}
+     */
+    getLabelsPanel: function () {
+        if (this.getLabelPanel() === null) {
+            this.setLabelPanel(this.buildLabelPanel());
+        }
+        return this.getLabelPanel();
+    },
+
+    /**
+     * Build Label Panel
+     * @returns {PMUI.core.Panel}
+     */
+    buildLabelPanel: function () {
+        var that = this;
+        return new PMUI.core.Panel({
+            width: DEFAULT_WINDOW_WIDTH - 220,
+            layout: "hbox",
+            items: [
+                new PMUI.field.TextAnnotationField({
+                    text: 'Available Elements'.translate(),
+                    proportion: 1.12,
+                    text_Align: 'center'
+                }),
+                new PMUI.field.TextAnnotationField({
+                    text: 'Assigned Elements (Drop here)'.translate(),
+                    proportion: 1.3,
+                    text_Align: 'center'
+                }),
+                new PMUI.ui.Button({
+                    buttonType: 'link',
+                    text: 'Expand all'.translate(),
+                    id: 'expand-button',
+                    proportion: 1.2,
+                    handler: function () {
+                        that.expandAndCollapseHandler('collapse-button', 'expand-button');
+                    }
+                }),
+                new PMUI.ui.Button({
+                    buttonType: 'link',
+                    text: 'Collapse all'.translate(),
+                    id: 'collapse-button',
+                    proportion: 1.1,
+                    disabled: true,
+                    handler: function () {
+                        that.expandAndCollapseHandler('expand-button', 'collapse-button');
+                    }
+                })
+            ]
+        });
+    },
+
+    /**
+     * Get SuggestField Control
+     * @returns {SuggestField}
+     */
+    getSuggestField: function () {
+        if (this.getSuggestUser() === null) {
+            this.setSuggestUser(this.createSugesstField());
+        }
+        return this.getSuggestUser();
+    },
+
+    /**
+     * Create Field Suggest (User)
+     * @returns {SuggestField}
+     */
+    createSugesstField: function () {
+        return new SuggestField({
+            id: 'idSuggestUser',
+            label: 'Users'.translate(),
+            width: 450,
+            placeholder: 'Suggest users'.translate(),
+            required: true,
+            disabled: true,
+            helper: 'When the form is submitted a new case is created with this user account.'.translate(),
+            dynamicLoad: {
+                data: [{
+                    key: 'usr_uid',
+                    label: ['usr_firstname', 'usr_lastname', '(', 'usr_username', ')']
+                }],
+                keys: {
+                    url: HTTP_SERVER_HOSTNAME + '/api/1.0/' + WORKSPACE,
+                    accessToken: credentials.access_token,
+                    endpoints: [{
+                        method: 'GET',
+                        url: 'users'
+                    }]
+                }
+            }
+        });
+    },
+
+    /**
+     * Generate Web Entry Link
+     * @param formLink
+     * @param linkText
+     */
+    setLinkText: function (formLink, linkText) {
+        formLink.getItem('panelLinkForm').getItem('webEntryLink')
+            .setText('<a href="' + linkText + '" target="_blank" ' + 'class="mafe-webentry-link">' + linkText + '</a>');
+        return this;
+    },
+
+    /**
+     * Initialize Some Variables for web Entry (weeUId, actUid, evnUid, response, isNewWebEntry)
+     * @param response
+     * @param newWebEntry
+     */
+    initializeSomeVariables: function (response, newWebEntry) {
+        this.setWeeUid(response.wee_uid)
+            .setActUid(response.act_uid)
+            .setEvnUid(response.evn_uid)
+            .setConfigWebEntry(response)
+            .setIsNewWebEntry(newWebEntry);
+        return this;
+    },
+
+    /**
+     * Collapse and Expand Accordion Handler
+     * @param enableItem
+     * @param disableItem
+     */
+    expandAndCollapseHandler: function (enableItem, disableItem) {
+        var items,
+            i,
+            item;
+        items = this.getStepsAssignAccordion().getItems();
+        this.getLabelsPanel().getItem(enableItem).setDisabled(false);
+        this.getLabelsPanel().getItem(disableItem).setDisabled(true);
+        if (enableItem === 'collapse-button') {
+            this.elementAccordionOpen.clear();
+            for (i = 0; i < items.length; i += 1) {
+                item = items[i];
+                item.expand();
+                this.elementAccordionOpen.insert(item);
+            }
+        } else {
+            for (i = 0; i < items.length; i += 1) {
+                item = items[i];
+                this.elementAccordionOpen.remove(item);
+                item.collapse();
+            }
+        }
+    },
+
+    /**
+     * Disable MultipleSteps or Single Dynaform (tabForms)
+     * @returns {disableMultipleSteps}
+     */
+    weeFormModeChange: function (newVal, oldVal) {
+        if (newVal === 'SINGLE') {
+            this.disableMultipleSteps('SINGLE');
+        } else {
+            this.disableSingleDynaform('MULTIPLE');
+            this.getTabForms().getItem('singleDynaform').getItem('weeSelectDynaform').hideMessage();
+            this.getTabForms().getItem('singleDynaform').getItem('weeSelectDynaform')
+                .getControl(0).style.removeClasses(['error']);
+        }
+        this.setLinkText(this.getTabLinkForm(), '');
+        return this;
+    },
+
+    /**
+     * Disable MultipleSteps (tabForms)
+     * @param singleMultiple
+     * @returns {WebEntry}
+     */
+    disableMultipleSteps: function (singleMultiple) {
+        var singleDyna = this.getTabForms().getItem('singleDynaform');
+        singleDyna.getItem('multipleStepsRadio').setValue('');
+        singleDyna.getItem('weeSelectDynaform').enable();
+        singleDyna.getItem('weeSelectDynaform').setRequired(true);
+        singleDyna.getItem('singleDynaformRadio').setValue(singleMultiple);
+        singleDyna.getItem('singleDynaformRadio').getControl(0).select();
+        //Hide step panel
+        this.getLabelsPanel().setVisible(false);
+        this.getTabForms().getItem('stepsMainContainer').setVisible(false);
+        return this;
+    },
+
+    /**
+     * Disable Form SingleDynaform (tabForms)
+     * @param singleMultiple
+     * @returns {WebEntry}
+     */
+    disableSingleDynaform: function (singleMultiple) {
+        var singleDyna = this.getTabForms().getItem('singleDynaform');
+        singleDyna.getItem('singleDynaformRadio').setValue('');
+        singleDyna.getItem('weeSelectDynaform').disable();
+        singleDyna.getItem('weeSelectDynaform').setRequired(false);
+        singleDyna.getItem('multipleStepsRadio').setValue(singleMultiple);
+        singleDyna.getItem('multipleStepsRadio').getControl(0).select();
+        //Show step panel
+        this.getLabelsPanel().setVisible(true);
+        this.getTabForms().getItem('stepsMainContainer').setVisible(true);
+        return this;
+    },
+
+    /**
+     * Change handler
+     * @param newValue
+     * @param oldValue
+     * @returns {loginRequired}
+     */
+    anonimusProcedure: function (newValue, oldValue) {
+        var propertiesForm = this.getTabProperties(),
+            //The Callback Actions (PROCESSMAKER is 0, CUSTOM is 1, and CUSTOM_CLEAR is 2)
+            callbackAction = 2;
+        propertiesForm.getItem('tabPropertiesRequireUserLogin').setValue('[]');
+        propertiesForm.getItem('tabPropertiesHideLoogedInformationBar').disable();
+        propertiesForm.getItem('tabPropRadioAuthentication').setRequired(true);
+        this.getSuggestField().setRequired(true);
+        this.getSuggestField().hideMessageRequired();
+        propertiesForm.getItem('tabPropertiesRadioCallback').disableOption(callbackAction);
+        if (propertiesForm.getItem('tabPropertiesRadioCallback').getValue() === 'CUSTOM_CLEAR') {
+            propertiesForm.getItem('tabPropertiesRadioCallback').getControl(callbackAction).deselect();
+            propertiesForm.getItem('tabPropertiesRadioCallback').setValue('');
+        }
+        propertiesForm.getItem('criteriaFieldCustomUrl').disable();
+        propertiesForm.getItem('criteriaFieldCustomUrl').buttonHTML.disable();
+        this.setLinkText(this.getTabLinkForm(), '');
+        return this;
+    },
+
+    /**
+     * Change chandler
+     * @param newValue
+     * @param oldValue
+     * @returns {loginRequired}
+     */
+    loginRequired: function (newValue, oldValue) {
+        var propertiesForm = this.getTabProperties(),
+            //The Callback Actions (PROCESSMAKER is 0, CUSTOM is 1, and CUSTOM_CLEAR is 2)
+            callbackAction = 2;
+        propertiesForm.getItem('tabPropRadioAuthentication').setValue('[]');
+        propertiesForm.getItem('tabPropRadioAuthentication').setRequired(false);
+
+        this.getSuggestField().setRequired(false);
+        this.getSuggestField().hideMessageRequired();
+        propertiesForm.getItem('tabPropertiesHideLoogedInformationBar').enable();
+        propertiesForm.getItem('tabPropertiesRadioCallback').enableOption(callbackAction);
+        this.callbackActionChange(propertiesForm.getItem('tabPropertiesRadioCallback').getValue(), '');
+        this.setLinkText(this.getTabLinkForm(), '');
+        return this;
+    },
+
+    /**
+     * Change handler
+     * @param newValue
+     * @param oldValue
+     * @returns {callbackActionChange}
+     */
+    callbackActionChange: function (newValue, oldValue) {
+        var propertiesForm = this.getTabProperties();
+        propertiesForm.getItem("tabPropertiesRadioCallback").setValue(newValue);
+        switch (newValue) {
+            case 'PROCESSMAKER':
+                propertiesForm.getItem('criteriaFieldCustomUrl').disable();
+                propertiesForm.getItem('criteriaFieldCustomUrl').setRequired(false);
+                propertiesForm.getItem('criteriaFieldCustomUrl').buttonHTML.disable();
+                break;
+            case 'CUSTOM':
+            case 'CUSTOM_CLEAR':
+                propertiesForm.getItem('criteriaFieldCustomUrl').enable();
+                propertiesForm.getItem('criteriaFieldCustomUrl').setRequired(true);
+                propertiesForm.getItem('criteriaFieldCustomUrl').buttonHTML.enable();
+                break;
+        }
+        return this;
+    },
+
+    /**
+     * Change handler
+     * @param newValue
+     * @returns {linkGenerationOnChange}
+     */
+    linkGenerationOnChange: function (newValue) {
+        var required,
+            skin,
+            language,
+            domain,
+            tfromLink;
+        tfromLink = this.getTabLinkForm();
+        required = newValue === 'ADVANCED';
+        skin = tfromLink.getItem('tabLinkDropdownSkin');
+        language = tfromLink.getItem('tabLinkDropdownLanguage');
+        domain = tfromLink.getItem('tablinkTextCustomDomain');
+        this.setLinkText(tfromLink, '');
+        skin.setRequired(required);
+        language.setRequired(required);
+        domain.setRequired(required);
+        if (required) {
+            skin.enable();
+            language.enable();
+            domain.enable();
+        } else {
+            skin.disable();
+            domain.hideMessage();
+            language.disable();
+            domain.disable();
+            domain.getControl(0).style.removeClasses(['error']);
+        }
+        return this;
+    },
+
+    /**
+     * Save webEntry Configuration
+     * @param successCallback
+     * @param failureCallback
+     */
+    saveWebEntryConfiguration: function (successCallback, failureCallback) {
+        var data,
+            //tabs window web entry
+            tabProperties = this.getTabPanel().getItem('tabProperties'),
+            tabLink = this.getTabPanel().getItem('tabLink'),
+            //form tabs
+            dataTabSingleDyn = this.getTabForms().getItem('singleDynaform'),
+            dataTabProperties = tabProperties.getPanel('idTabProperties'),
+            dataTabLink = tabLink.getPanel('idTabLink');
+
+        //Prepare Data
+        data = this.prepareData(dataTabSingleDyn, dataTabProperties, dataTabLink);
+        //Save web Entry configuration
+        this.updateWebEntryConfiguration(data, successCallback, failureCallback);
+        return this;
+    },
+
+    /**
+     * Validate Web Entry Data
+     * @param method
+     */
+    isValidWebEntryData: function (method) {
+        var valid = true,
+            //tabs window web entry
+            tabForm = this.getTabPanel().getItem('tabForms'),
+            tabProperties = this.getTabPanel().getItem('tabProperties'),
+            tabLink = this.getTabPanel().getItem('tabLink'),
+            //form tabs
+            dataTabSingleDyn = this.getTabForms().getItem('singleDynaform'),
+            dataTabProperties = tabProperties.getPanel('idTabProperties'),
+            dataTabLink = tabLink.getPanel('idTabLink'),
+            //selected tab
+            selectedTab = null;
+
+        // validate form tab
+        if (dataTabSingleDyn instanceof PMUI.form.Form) {
+            valid = valid && dataTabSingleDyn.isValid();
+            selectedTab = !valid && !selectedTab ? tabForm : selectedTab;
+        }
+        //validate property tab
+        if (dataTabProperties instanceof PMUI.form.Form) {
+            valid = valid && dataTabProperties.isValid();
+            selectedTab = !valid && !selectedTab ? tabProperties : selectedTab;
+        }
+        //validate suggestField
+        if (!this.getSuggestField().isValid()) {
+            this.getSuggestField().showMessageRequired();
+            valid = valid && this.getSuggestField().isValid();
+            selectedTab = !valid && !selectedTab ? tabProperties : selectedTab;
+        }
+        //validate link Tab
+        if (dataTabLink instanceof PMUI.form.Form) {
+            valid = valid && dataTabLink.isValid();
+            selectedTab = !valid && !selectedTab ? tabLink : selectedTab;
+        }
+        if (!valid) {
+            selectedTab.select();
+        }
+        //validate Link Generate Button
+        if (!$(dataTabLink.getItem('panelLinkForm').getItem('webEntryLink').text).attr('href') &&
+            method !== 'generateLink') {
+            PMDesigner.msgFlash('Please press the \"Generate Link\" button.'.translate(),
+                this.getWindow(), 'error', 3000, 5);
+            valid = false;
+            tabLink.select();
+        }
+        return valid;
+    },
+
+    /**
+     * Prepare Data
+     * @param dataTabSingleDyn
+     * @param dataTabProperties
+     * @param dataTabLink
+     */
+    prepareData : function (dataTabSingleDyn, dataTabProperties, dataTabLink) {
+        var data = {};
+        data['act_uid'] = this.getActUid();
+        data['evn_uid'] = this.getEvnUid();
+        data['wee_title'] = this.getEvnUid();
+        data['we_type'] = (dataTabSingleDyn.getItem('singleDynaformRadio').getValue()) ? 'SINGLE' : 'MULTIPLE';
+        data['dyn_uid'] = (data['we_type'] === 'SINGLE') ? dataTabSingleDyn.getItem('weeSelectDynaform')
+            .getValue() : '';
+        data['we_custom_title'] = dataTabProperties.getItem('tabPropertiesWebEntryTitle').getValue();
+        data['we_authentication'] = dataTabProperties.getItem('tabPropRadioAuthentication').getValue() === '[]' ?
+            'LOGIN_REQUIRED' : 'ANONYMOUS';
+        data['usr_uid'] = this.getSuggestField().value;
+        data['we_hide_information_bar'] = dataTabProperties.getItem('tabPropertiesHideLoogedInformationBar')
+            .getValue() === '[]' ? '0' : '1';
+        data['we_callback'] = dataTabProperties.getItem('tabPropertiesRadioCallback').getValue();
+        data['we_callback_url'] = (data['we_callback'] !== 'PROCESSMAKER') ?
+            dataTabProperties.getItem('criteriaFieldCustomUrl').getValue() : '';
+        data['we_link_generation'] = dataTabLink.getItem('tabLinkRadioGeneration').getValue();
+        data['we_link_skin'] = dataTabLink.getItem('tabLinkDropdownSkin').getValue();
+        data['we_link_language'] = dataTabLink.getItem('tabLinkDropdownLanguage').getValue();
+        data['we_link_domain'] = (data['we_link_generation'] === 'ADVANCED') ?
+            dataTabLink.getItem('tablinkTextCustomDomain').getValue() : '';
+        data['we_show_in_new_case'] = (dataTabProperties.getItem('showInNewCase').getValue() === '["showCase"]') ? 1 : 0;
+        return data;
+    },
+
+    /**
+     * Populate all tabPanels (TabForms, TabProperties, TabLink) with data config
+     * return void
+     */
+    setWebEntryConfiguration: function () {
+        this.setConfigDataTabForms();
+        this.setConfigDataTabProperties();
+        this.setConfigDataTabLink();
+        this.getWindow().getItem('windowWebEntryTabPanel').getItem('tabForms').select();
+        return this;
+    },
+
+    /**
+     * Load and populate Dynaforms Items
+     * @returns {*}
+     */
+    setConfigDataTabForms: function () {
+        var that = this,
+            i,
+            data,
+            options = [],
+            dynaformsControl,
+            dynaforms = [];
+
+        //execute Rest (get Dynaforms)
+        this.getDynaforms(
+            function (xhr, response) {
+                dynaforms = response[0].response;
+                //get Controls tab-Forms
+                dynaformsControl = that.getTabForms().getItem('singleDynaform').getItem('weeSelectDynaform');
+
+                //Set data Dropdown Single Dynaform
+                for (i = 0; i < dynaforms.length; i += 1) {
+                    data = {};
+                    data.label = dynaforms[i]['dyn_title'];
+                    data.value = dynaforms[i]['dyn_uid'];
+                    if (that.getConfigWebEntry().dyn_uid === data.value &&
+                        that.getConfigWebEntry().evn_uid === that.getRelatedShape()['evn_uid']) {
+                        data.selected = true;
+                    }
+                    options.push(data);
+                }
+                dynaformsControl.setOptions(options);
+
+                //set Disable/Enable single or multiple steps
+                (that.getConfigWebEntry().we_type === 'SINGLE') ?
+                    that.disableMultipleSteps(that.getConfigWebEntry().we_type) :
+                    that.disableSingleDynaform(that.getConfigWebEntry().we_type);
+            },
+            function (xhr, response) {
+                PMDesigner.msgWinError(response.error.message);
+            }
+        );
+    },
+
+    /**
+     * TabProperties Panel
+     * Assigns values to tabProperties fields
+     */
+    setConfigDataTabProperties: function () {
+        var that = this,
+            webEntryTitle,
+            radioAuthentication,
+            radioRequiredLogin,
+            informationBar,
+            radioCollback,
+            customUrl,
+            user,
+            showInNewCase;
+
+        //get Controls Tab-Properties
+        this.getTabPanel().getItem('tabProperties').select();
+        webEntryTitle = this.getTabProperties().getItem('tabPropertiesWebEntryTitle');
+        radioAuthentication = this.getTabProperties().getItem('tabPropRadioAuthentication');
+        radioRequiredLogin = this.getTabProperties().getItem('tabPropertiesRequireUserLogin');
+        radioCollback = this.getTabProperties().getItem('tabPropertiesRadioCallback');
+        customUrl = this.getTabProperties().getItem('criteriaFieldCustomUrl');
+        informationBar = this.getTabProperties().getItem('tabPropertiesHideLoogedInformationBar');
+        showInNewCase = this.getTabProperties().getItem('showInNewCase');
+
+        //set webentry Title
+        webEntryTitle.setValue(this.getConfigWebEntry().we_custom_title);
+
+        //Loggin required or Anonymous
+        radioCollback.setValue(this.getConfigWebEntry().we_callback);
+        if (this.getConfigWebEntry().we_authentication === 'LOGIN_REQUIRED') {
+            radioRequiredLogin.getControl(0).select();
+            radioRequiredLogin.setValue(this.getConfigWebEntry().we_authentication);
+            this.loginRequired();
+        } else {
+            radioAuthentication.getControl(0).select();
+            radioAuthentication.setValue(this.getConfigWebEntry().we_authentication);
+            this.anonimusProcedure();
+        }
+
+        //set value suggest user
+        this.getSuggestField().html.find('input').val('');
+        this.getConfigWebEntry().usr_uid = this.getConfigWebEntry().usr_uid || this.getUserGuest().uid;
+        if (this.getConfigWebEntry().usr_uid) {
+            this.getUserData(
+                this.getConfigWebEntry().usr_uid,
+                function (xhr, response) {
+                    user = response[0].response;
+                    that.getSuggestField().html.find("input").val(user.usr_firstname + " "
+                        + user.usr_lastname + " " + "(" + user.usr_username + ")");
+                    that.getSuggestField().set("value", user.usr_uid);
+                },
+                function (xhr, response) {
+                    PMDesigner.msgWinError(response.error.message);
+                }
+            );
+        }
+
+        //set Hide Logged Information Bar
+        if (this.getConfigWebEntry().we_hide_information_bar === '1') {
+            informationBar.setValue('["1"]');
+            informationBar.getControl(0).select();
+        } else {
+            informationBar.setValue('[]');
+            informationBar.getControl(0).deselect();
+        }
+
+        //set Callback Action
+        switch (this.getConfigWebEntry().we_callback) {
+            case 'PROCESSMAKER':
+                radioCollback.getControl(0).select();
+                break;
+            case 'CUSTOM':
+                radioCollback.getControl(1).select();
+                break;
+            case 'CUSTOM_CLEAR':
+                radioCollback.getControl(2).select();
+                break;
+        }
+
+        //set custom URL
+        customUrl.setValue(this.getConfigWebEntry().we_callback_url);
+
+        //set show task in new case
+        if (this.getConfigWebEntry().we_show_in_new_case === '1'){
+            showInNewCase.setValue('["showCase"]');
+        }else{
+            showInNewCase.setValue('[]');
+        }
+
+        //customize suggest styles
+        this.getSuggestField().inputField[0].style.width = '280px';
+        this.getSuggestField().inputLabel[0].parentElement.style.width = '120px';
+        this.getSuggestField().inputLabel[0].parentElement.style.marginLeft = '220px';
+    },
+
+    /**
+     * TabLink Panel
+     * Assigns values to tabLink fields
+     */
+    setConfigDataTabLink: function () {
+        var that = this,
+            options = [],
+            customDomain,
+            radioGeneration,
+            languages = [],
+            skins = [],
+            dropDownLanguages,
+            dropDownSkins,
+            data,
+            i;
+
+        //execute Rest (Get languages and Skins)
+        this.getSkinLanguage(
+            function (xhr, response) {
+                languages = response[0].response.data;
+                skins = response[1].response.data;
+                //get controls Tab-link
+                that.getTabPanel().getItem('tabLink').select();
+                radioGeneration = that.getTabLinkForm().getItem('tabLinkRadioGeneration');
+                dropDownSkins = that.getTabLinkForm().getItem('tabLinkDropdownSkin');
+                dropDownLanguages = that.getTabLinkForm().getItem('tabLinkDropdownLanguage');
+                customDomain = that.getTabLinkForm().getItem('tablinkTextCustomDomain');
+
+                //set Link generation (Default or Advanced)
+                radioGeneration.setValue(that.getConfigWebEntry().we_link_generation);
+                (that.getConfigWebEntry().we_link_generation === 'DEFAULT') ? radioGeneration.getControl(0).select() :
+                    radioGeneration.getControl(1).select();
+
+                //set Languages Dropdown
+                if (jQuery.isArray(languages)) {
+                    for (i = 0; i < languages.length; i += 1) {
+                        data = {};
+                        data.label = languages[i].LANG_NAME;
+                        data.value = languages[i].LANG_ID;
+                        if (languages[i].LANG_ID === that.getConfigWebEntry().we_link_language) {
+                            data.selected = true;
+                        }
+                        options.push(data);
+                    }
+                    dropDownLanguages.setOptions(options);
+                }
+                //set Skins Dropdown
+                if (jQuery.isArray(skins)) {
+                    options = [];
+                    for (i = 0; i < skins.length; i += 1) {
+                        data = {};
+                        data.label = skins[i].SKIN_NAME;
+                        data.value = skins[i].SKIN_FOLDER_ID;
+                        if (that.getConfigWebEntry().we_link_skin === skins[i].SKIN_FOLDER_ID) {
+                            data.selected = true;
+                        }
+                        options.push(data);
+                    }
+                    dropDownSkins.setOptions(options);
+                }
+
+                //set Custom Domain
+                customDomain.setValue(that.getConfigWebEntry().we_link_domain);
+                //Enable or Disable (Skin, Language, CustomDomain)
+                that.linkGenerationOnChange(that.getConfigWebEntry().we_link_generation);
+                //set Link text
+                that.setLinkText(that.getTabLinkForm(), that.getConfigWebEntry().wee_url);
+            },
+            function (xhr, response) {
+                PMDesigner.msgWinError(response.error.message);
+            }
+        );
+    },
+
+    /**
+     * Load and populate Accordion Data Items
+     * @param response
+     */
+    loadAccordionItems: function (response) {
+        var firstResp = [],
+            secondResp = [],
+            i,
+            item,
+            assigmentConfig,
+            firstRes = 0,
+            secondRes = 1;
+        this.getStepsAssignAccordion().clearItems();
+        if (jQuery.isArray(response) && response.length) {
+            if (typeof response[firstRes] === "object") {
+                firstResp = response[firstRes].response ? response[firstRes].response : [];
+            }
+            if (typeof response[secondRes] === "object") {
+                secondResp = response[secondRes].response ? response[secondRes].response : [];
+            }
+        }
+        if (firstResp.length) {
+            for (i = 0; i < firstResp.length; i += 1) {
+                item = this.createAccordionItem(firstResp[i], true, true);
+                this.getStepsAssignAccordion().addItem(item);
+                item.dataItem = firstResp[i];
+                this.customAccordionItemButtons(item.html, firstResp[i], item);
+            }
+        }
+        assigmentConfig = {
+            step_type_obj: "Assignment".translate(),
+            triggers: secondResp,
+            st_type: "ASSIGNMENT",
+            obj_title: "Assignment".translate(),
+            step_uid_obj: "Assignment"
+        };
+        item = this.createAccordionItem(assigmentConfig);
+        this.getStepsAssignAccordion().addItem(item);
+        item.dataItem = assigmentConfig;
+        assigmentConfig = {
+            step_type_obj: "Routing".translate(),
+            triggers: secondResp,
+            obj_title: "Routing".translate(),
+            st_type: 'ROUTING',
+            step_uid_obj: "Routing"
+        };
+        item = this.createAccordionItem(assigmentConfig);
+        this.getStepsAssignAccordion().addItem(item);
+        item.dataItem = assigmentConfig;
+        this.getStepsAssignAccordion().defineEvents();
+    },
+
+    /**
+     * Create Accordion
+     * @param data
+     * @returns {PMUI.item.AccordionItem}
+     */
+    createAccordionItem: function (data) {
+        var that = this,
+            gridBefore,
+            gridAfter,
+            beforeTitle,
+            afterTitle,
+            i,
+            textLabel;
+        if (this.stepsType[data.step_type_obj]) {
+            textLabel = this.stepsType[data.step_type_obj];
+        } else {
+            textLabel = data.step_type_obj;
+        }
+        beforeTitle = new PMUI.field.TextAnnotationField({
+            text: 'Before'.translate() + ' ' + textLabel,
+            proportion: 0.5,
+            text_Align: 'left'
+        });
+        afterTitle = new PMUI.field.TextAnnotationField({
+            text: 'After'.translate() + ' ' + textLabel,
+            proportion: 0.5,
+            text_Align: 'left',
+            visible: data.st_type === "ASSIGNMENT" ? false : true
+        });
+
+        gridBefore = new PMUI.grid.GridPanel({
+            behavior: 'dragdropsort',
+            filterable: false,
+            visibleHeaders: false,
+            data: data.triggers,
+            st_type: 'BEFORE',
+            step_uid: data.step_uid,
+            visibleFooter: false,
+            width: '96%',
+            emptyMessage: 'No records found'.translate(),
+            style: {
+                cssClasses: ['mafe-gridPanel']
+            },
+            customStatusBar: function (currentPage, pageSize, numberItems, criteria, filter) {
+                return messagePageGrid(currentPage, pageSize, numberItems, criteria, filter);
+            },
+            columns: [{
+                title: '',
+                dataType: 'string',
+                alignmentCell: 'center',
+                columnData: "st_position",
+                width: 20
+            }, {
+                title: 'Before Output Document'.translate(),
+                dataType: 'string',
+                alignmentCell: 'left',
+                columnData: 'tri_title',
+                width: 210
+            }, {
+                title: '',
+                dataType: 'button',
+                buttonLabel: function (row, data) {
+                    return data.st_condition === '' ? 'Condition'.translate() : 'Condition *'.translate();
+                },
+                buttonStyle: {
+                    cssClasses: ['mafe-button-edit']
+                },
+                onButtonClick: function (row, grid) {
+                    var data = row.getData();
+                    that.editCondition(grid.step_uid, data.tri_uid, data.st_type, row);
+                }
+            }, {
+                title: '',
+                dataType: 'button',
+                buttonLabel: 'Edit'.translate(),
+                buttonStyle: {
+                    cssClasses: ['mafe-button-edit']
+                },
+                onButtonClick: function (row, grid) {
+                    var data = row.getData(),
+                        restClient;
+                    restClient = new PMRestClient({
+                        endpoint: 'trigger/' + data.tri_uid,
+                        typeRequest: 'get',
+                        functionSuccess: function (xhr, response) {
+                            that.editTrigger(response.tri_webbot, response.tri_uid);
+                        },
+                        functionFailure: function (xhr, response) {
+                            PMDesigner.msgWinError(response.error.message);
+                        }
+                    });
+                    restClient.executeRestClient();
+                }
+            }, {
+                title: '',
+                dataType: 'button',
+                buttonLabel: 'Remove'.translate(),
+                buttonStyle: {
+                    cssClasses: ['mafe-button-delete']
+                },
+                onButtonClick: function (row, grid) {
+                    that.removeTrigger(row, grid);
+                }
+            }],
+            onDrop: function (container, draggableItem, index) {
+                var receiveData = draggableItem.getData();
+                if (draggableItem instanceof PMUI.item.TreeNode) {
+                    that.receiveTreeNodeItem(receiveData, this, index);
+                } else {
+                    that.receiveRowItem(receiveData, this, index, draggableItem);
+                }
+                that.updateIndexToGrid(this);
+                return false;
+            },
+            onSort: function (container, item, index) {
+                var receiveData = item.getData();
+                that.sortableRowHandler(receiveData, this, index);
+                that.updateIndexToGrid(this);
+            },
+            onDragStart: function (grid, row) {
+                var items;
+                items = grid.getItems();
+                if (jQuery.isArray(items)) {
+                    if (items.length === 1) {
+                        grid.showEmptyCell();
+                    }
+                }
+            }
+        });
+        if (data.st_type !== "ROUTING" && data.st_type !== "ASSIGNMENT") {
+            gridBefore.st_type = 'BEFORE';
+        } else if (data.st_type === "ROUTING") {
+            gridBefore.st_type = "BEFORE_ROUTING";
+        } else {
+            gridBefore.st_type = "BEFORE_ASSIGNMENT";
+        }
+        gridBefore.step_uid = data.step_uid;
+        gridBefore.clearItems();
+        if (jQuery.isArray(data.triggers)) {
+            for (i = 0; i < data.triggers.length; i += 1) {
+                if (gridBefore.st_type === data.triggers[i].st_type) {
+                    gridBefore.addDataItem({
+                        st_condition: data.triggers[i].st_condition,
+                        st_position: data.triggers[i].st_position,
+                        st_type: data.triggers[i].st_type,
+                        tri_description: data.triggers[i].tri_description,
+                        tri_title: data.triggers[i].tri_title,
+                        tri_uid: data.triggers[i].tri_uid,
+                        obj_title: data.triggers[i].tri_title,
+                        obj_uid: data.triggers[i].tri_uid
+                    });
                 }
             }
         }
-        options.push(data);
-    }
-    dynaformsControl.setOptions(options);
-
-    options = [];
-
-    this.sugesstField.set("options", options);
-    if (this.wee_uid) {
-        this.linkField.style.display = "block";
-        $(this.linkField).find("a")[0].textContent = linkValue;
-        $(this.linkField).find("a")[0].href = linkValue;
-        $(this.linkField).find("a")[0].setAttribute("title", linkValue);
-        this.showDeleteButton();
-    }
-    return this;
-};
-
-WebEntry.prototype.consumeRest = function (method, endpoint, data, callbkack) {
-    var resp = null;
-    this.restClient = new PMRestClient({
-        functionSuccess: function (xhr, response) {
-            resp = response;
-        },
-        functionFailure: function (xhr, response) {
-            PMDesigner.msgWinError(response.error.message);
+        gridAfter = new PMUI.grid.GridPanel({
+            behavior: 'dragdropsort',
+            filterable: false,
+            visibleHeaders: false,
+            data: data.triggers,
+            visibleFooter: false,
+            width: '96%',
+            visible: data.st_type === "ASSIGNMENT" ? false : true,
+            emptyMessage: 'No records found'.translate(),
+            style: {
+                cssClasses: ['mafe-gridPanel']
+            },
+            customStatusBar: function (currentPage, pageSize, numberItems, criteria, filter) {
+                return messagePageGrid(currentPage, pageSize, numberItems, criteria, filter);
+            },
+            columns: [{
+                title: '',
+                dataType: 'string',
+                alignmentCell: 'center',
+                columnData: 'st_position',
+                width: 20
+            }, {
+                title: 'Before Output Document'.translate(),
+                dataType: 'string',
+                alignmentCell: 'left',
+                columnData: 'tri_title',
+                width: 210
+            }, {
+                title: '',
+                dataType: 'button',
+                buttonLabel: function (row, data) {
+                    return data.st_condition === '' ? 'Condition'.translate() : 'Condition *'.translate();
+                },
+                buttonStyle: {
+                    cssClasses: ['mafe-button-edit']
+                },
+                onButtonClick: function (row, grid) {
+                    var data = row.getData();
+                    that.editCondition(grid.step_uid, data.tri_uid, data.st_type, row);
+                }
+            }, {
+                title: '',
+                dataType: 'button',
+                buttonLabel: 'Edit'.translate(),
+                buttonStyle: {
+                    cssClasses: ['mafe-button-edit']
+                },
+                onButtonClick: function (row, grid) {
+                    var data = row.getData(),
+                        restClient;
+                    restClient = new PMRestClient({
+                        endpoint: 'trigger/' + data.tri_uid,
+                        typeRequest: 'get',
+                        functionSuccess: function (xhr, response) {
+                            that.editTrigger(response.tri_webbot, response.tri_uid);
+                        },
+                        functionFailure: function (xhr, response) {
+                            PMDesigner.msgWinError(response.error.message);
+                        }
+                    });
+                    restClient.executeRestClient();
+                }
+            }, {
+                title: '',
+                dataType: 'button',
+                buttonLabel: 'Remove'.translate(),
+                buttonStyle: {
+                    cssClasses: ['mafe-button-delete']
+                },
+                onButtonClick: function (row, grid) {
+                    that.removeTrigger(row, grid);
+                }
+            }],
+            onDrop: function (container, draggableItem, index) {
+                var receiveData = draggableItem.getData();
+                if (draggableItem instanceof PMUI.item.TreeNode) {
+                    that.receiveTreeNodeItem(receiveData, this, index);
+                } else {
+                    that.receiveRowItem(receiveData, this, index, draggableItem);
+                }
+                that.updateIndexToGrid(this);
+                return false;
+            },
+            onSort: function (container, item, index) {
+                var receiveData = item.getData();
+                that.sortableRowHandler(receiveData, this, index);
+                that.updateIndexToGrid(this);
+            },
+            onDragStart: function (grid, row) {
+                var items;
+                items = grid.getItems();
+                if (jQuery.isArray(items)) {
+                    if (items.length === 1) {
+                        grid.showEmptyCell();
+                    }
+                }
+            }
+        });
+        if (data.st_type !== "ROUTING" && data.st_type !== "ASSIGNMENT") {
+            gridAfter.st_type = 'AFTER';
+        } else if (data.st_type == "ROUTING") {
+            gridAfter.st_type = "AFTER_ROUTING";
+        } else {
+            gridAfter.st_type = "AFTER_ASSIGNMENT";
         }
-    });
-    this.restClient.typeRequest = method;
-    if (endpoint.split('/')[0] === "user") {
-        this.restClient.setBaseEndPoint("");
+        gridAfter.step_uid = data.step_uid;
+        if (jQuery.isArray(data.triggers)) {
+            for (i = 0; i < data.triggers.length; i += 1) {
+                if (gridAfter.st_type === data.triggers[i].st_type) {
+                    gridAfter.addDataItem({
+                        st_condition: data.triggers[i].st_condition,
+                        st_position: data.triggers[i].st_position,
+                        st_type: data.triggers[i].st_type,
+                        tri_description: data.triggers[i].tri_description,
+                        tri_title: data.triggers[i].tri_title,
+                        tri_uid: data.triggers[i].tri_uid,
+                        obj_title: data.triggers[i].tri_title,
+                        obj_uid: data.triggers[i].tri_uid
+                    });
+                }
+            }
+        }
+        var accordionItem = new PMUI.item.AccordionItem({
+            id: 'id' + data.step_uid_obj,
+            dataStep: data,
+            closeable: true,
+            body: new PMUI.core.Panel({
+                layout: 'vbox',
+                items: [
+                    beforeTitle,
+                    gridBefore,
+                    afterTitle,
+                    gridAfter
+                ]
+            })
+        });
+        if (this.stepsType[data.step_type_obj]) {
+            accordionItem.setTitle(data.step_position + ".  " + data.obj_title + ' ('
+                + this.stepsType[data.step_type_obj] + ')');
+            this.stepsAssigned.insert(accordionItem);
+        } else {
+            accordionItem.setTitle((this.getStepsAssignAccordion().items.getSize() + 1) + ". " + data.obj_title);
+        }
+        return accordionItem;
+    },
+
+    /**
+     * This method is executed when a row is drop in another grid
+     * @param receiveData, data of the droppable item
+     * @param grid, the affected grid
+     * @param index, the index position row
+     * @param draggableItem
+     * @returns {*}
+     */
+    receiveRowItem: function (receiveData, grid, index, draggableItem) {
+        var receiveParent = draggableItem.getParent(),
+            message,
+            restClient,
+            that = this;
+        if (this.isTriggerAssigned(grid, receiveData.obj_uid)) {
+            message = new PMUI.ui.FlashMessage({
+                message: 'Trigger is assigned.'.translate(),
+                duration: 3000,
+                severity: 'error',
+                appendTo: this.getWindow()
+            });
+            index = receiveParent.items.indexOf(draggableItem);
+            receiveParent.items.remove(draggableItem);
+            receiveParent.addItem(draggableItem, index);
+            message.show();
+            return false;
+        }
+        restClient = new PMRestClient({
+            typeRequest: 'post',
+            multipart: true,
+            data: {
+                calls: [{
+                    url: grid.step_uid === undefined ?
+                        'activity/' + that.getConfigWebEntry().tas_uid + '/step/trigger' : 'activity/'
+                        + that.getConfigWebEntry().tas_uid + '/step/' + grid.step_uid + '/trigger',
+                    method: 'POST',
+                    data: {
+                        tri_uid: receiveData.obj_uid,
+                        st_type: grid.st_type,
+                        st_condition: receiveData.st_condition,
+                        st_position: index + 1
+                    }
+                }, {
+                    url: receiveParent.step_uid === undefined ?
+                        'activity/' + that.getConfigWebEntry().tas_uid + '/step/trigger/' + receiveData.obj_uid
+                        + '/' + that.getStepType(receiveParent.st_type) :
+                        'activity/' + that.getConfigWebEntry().tas_uid + '/step/' + receiveParent.step_uid
+                        + '/trigger/' + receiveData.obj_uid + '/' + receiveParent.st_type.toLowerCase(),
+                    method: 'DELETE'
+                }]
+            },
+            functionSuccess: function (xhr, response) {
+                var data;
+                data = receiveData;
+                if (data.hasOwnProperty("st_type")) {
+                    data.st_type = grid.st_type;
+                    grid.addDataItem(receiveData, index);
+                }
+                receiveParent.removeItem(draggableItem);
+            },
+            functionFailure: function (xhr, response) {
+                PMDesigner.msgWinError(response.error.message);
+            },
+            flashContainer: that.getWindow(),
+            messageError: [
+                'An unexpected error while assigning the trigger, please try again later.'.translate()
+            ],
+            messageSuccess: [
+                'Trigger assigned successfully.'.translate()
+            ]
+        });
+        restClient.executeRestClient();
+        return this;
+    },
+
+    /**
+     * This method is executed when a row is sorted in the grid
+     * @param receiveData, data of the droppable item
+     * @param grid, the affected grid
+     * @param index, the new index position row
+     * @returns {stepsTask}
+     */
+    sortableRowHandler: function (receiveData, grid, index) {
+        return new PMRestClient({
+            endpoint: grid.step_uid === undefined ?
+                'activity/' + this.getConfigWebEntry().tas_uid + "/step/trigger/" + receiveData.tri_uid : 'activity/' +
+                this.getConfigWebEntry().tas_uid + "/step/" + grid.step_uid + "/trigger/" + receiveData.tri_uid,
+            typeRequest: 'update',
+            data: {
+                st_type: receiveData.st_type,
+                st_condition: receiveData.st_condition,
+                st_position: index + 1
+            },
+            functionFailure: function (xhr, response) {
+                PMDesigner.msgWinError(response.error.message);
+            },
+            flashContainer: this.getWindow(),
+            messageError: 'An unexpected error while assigning the trigger, please try again later.'.translate(),
+            messageSuccess: 'Trigger assigned successfully.'.translate()
+        }).executeRestClient();
+    },
+
+    /**
+     * Return the not items config.
+     * @returns {{obj_title: *, obj_uid: string, id: string}}
+     */
+    notItemConfig: function () {
+        var config = {
+            obj_title: 'N/A'.translate(),
+            obj_uid: '',
+            id: "notItem"
+        };
+        return config;
+    },
+
+    /**
+     * Get the steps assigned by a search criterion
+     * @param criteria, search filter, after running the endpoint getAccordionData method
+     * @returns {Array}, response with criteria
+     */
+    getStepsAssignedByCriteria: function (criteria) {
+        var allAssigned = [],
+            i,
+            elements,
+            j,
+            resp,
+            data,
+            respon = [];
+
+        this.getAccordionData(
+            function (xhr, response) {
+                allAssigned = response;
+                if (jQuery.isArray(allAssigned)) {
+                    for (i = 0; i < allAssigned.length; i += 1) {
+                        resp = allAssigned[i];
+                        if (typeof resp === "object") {
+                            elements = resp.response ? resp.response : [];
+                            for (j = 0; j < elements.length; j += 1) {
+                                data = elements[j];
+                                if (typeof data === "object") {
+                                    if (data.step_type_obj && data.step_type_obj === criteria) {
+                                        respon.push(data);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            function (xhr, response) {
+                PMDesigner.msgWinError(response.error.message);
+            }
+        );
+        return respon;
+    },
+
+    /**
+     * Opens the properties of the selected step with the current settings
+     * @param step, is the data of selected step
+     * @chainable
+     */
+    propertiesStepShow: function (step) {
+        var that = this,
+            form,
+            saveButton,
+            cancelButton,
+            restClient,
+            criteriaButton;
+        this.setWindowAlternative(null);
+        this.getWindowAlternativeForm().setWidth(520);
+        this.getWindowAlternativeForm().setHeight(370);
+        this.getWindowAlternativeForm().setTitle('Step Properties'.translate());
+        form = new PMUI.form.Form({
+            id: 'stepsEditCondition',
+            width: 500,
+            title: 'Condition Trigger'.translate(),
+            visibleHeader: false,
+            items: [
+                {
+                    id: 'step_mode',
+                    pmType: 'radio',
+                    label: 'Mode'.translate(),
+                    value: '',
+                    visible: step.step_type_obj === "DYNAFORM" ? true : false,
+                    name: 'step_mode',
+                    options: [{
+                        id: 'modeEdit',
+                        label: 'Edit'.translate(),
+                        value: 'EDIT',
+                        selected: true
+                    }, {
+                        id: 'modeView',
+                        label: 'View'.translate(),
+                        value: 'VIEW'
+                    }]
+                },
+                new CriteriaField({
+                    id: 'step_condition',
+                    pmType: 'textarea',
+                    name: 'step_condition',
+                    valueType: 'string',
+                    label: 'Condition'.translate(),
+                    placeholder: 'Insert a condition'.translate(),
+                    rows: 150,
+                    controlsWidth: 250,
+                    renderType: 'textarea'
+                })
+            ]
+        });
+        this.getWindowAlternativeForm().addItem(form);
+
+        restClient = new PMRestClient({
+            endpoint: 'activity/' + that.getConfigWebEntry().tas_uid + '/step/' + step.step_uid,
+            typeRequest: 'get',
+            functionSuccess: function (xhr, response) {
+                form.getField('step_mode').setValue(response.step_mode);
+                form.getField('step_condition').setValue(response.step_condition);
+            },
+            functionFailure: function (xhr, response) {
+                PMDesigner.msgWinError(response.error.message);
+            }
+        });
+        restClient.executeRestClient();
+        saveButton = this.getWindowAlternativeForm().footer.getItem("secondaryWindow-save");
+        cancelButton = this.getWindowAlternativeForm().footer.getItem("secondaryWindow-cancel");
+        criteriaButton = this.getWindowAlternativeForm().footer.getItem("secondaryWindow-criteria");
+        if (saveButton) {
+            saveButton.setHandler(function () {
+                var restClient;
+                if (form.isValid()) {
+                    restClient = new PMRestClient({
+                        endpoint: 'activity/' + that.getConfigWebEntry().tas_uid + '/step/' + step.step_uid,
+                        typeRequest: 'update',
+                        data: form.getData(),
+                        functionSuccess: function () {
+                            that.getWindowAlternativeForm().close();
+                        },
+                        functionFailure: function (xhr, response) {
+                            PMDesigner.msgWinError(response.error.message);
+                        },
+                        messageError: 'There are problems update the Step Trigger, please try again.'.translate()
+                    });
+                    restClient.executeRestClient();
+                }
+            });
+        }
+        if (cancelButton) {
+            cancelButton.setHandler(function () {
+                that.getWindowAlternativeForm().close();
+            });
+        }
+        if (criteriaButton) {
+            criteriaButton.handler = null;
+            criteriaButton.setVisible(false);
+        }
+        this.getWindowAlternativeForm().open();
+    },
+
+    /**
+     * Opens the step of the selected step with the current settings
+     * @param step, is the data of selected step
+     * @param accordioItem
+     * @chainable
+     */
+    editStepShow: function (step, accordioItem) {
+        var that = this,
+            inputDocument;
+        switch (step.step_type_obj) {
+            case 'DYNAFORM':
+                var restProxy = new PMRestClient({
+                    endpoint: 'dynaform/' + step.step_uid_obj,
+                    typeRequest: 'get',
+                    functionSuccess: function (xhr, response) {
+                        var old = PMUI.activeCanvas,
+                            formDesigner;
+                        PMUI.activeCanvas = false;
+                        formDesigner = PMDesigner.dynaformDesigner(response);
+                        formDesigner.onHide = function () {
+                            var assignedDynaform,
+                                i,
+                                data,
+                                title;
+                            assignedDynaform = that.getStepsAssignedByCriteria("DYNAFORM");
+                            if (jQuery.isArray(assignedDynaform)) {
+                                for (i = 0; i < assignedDynaform.length; i += 1) {
+                                    data = assignedDynaform[i];
+                                    if (typeof data === "object") {
+                                        if (data.step_uid === step.step_uid) {
+                                            title = data.step_position + ". " + data.obj_title;
+                                            title = title + ' (' + that.stepsType["DYNAFORM"] + ')';
+                                            accordioItem.setTitle(title);
+                                            accordioItem.dataItem = data;
+                                        }
+                                    }
+                                }
+                            }
+                            PMUI.activeCanvas = old;
+                        };
+                    },
+                    functionFailure: function (xhr, response) {
+                        PMDesigner.msgWinError(response.error.message);
+                    }
+                });
+                restProxy.executeRestClient();
+                break;
+            case 'OUTPUT_DOCUMENT':
+                PMDesigner.output();
+                PMDesigner.output.showTiny(step.step_uid_obj);
+                break;
+            case 'INPUT_DOCUMENT':
+                inputDocument = new InputDocument({
+                    onUpdateInputDocumentHandler: function (data, inputDoc) {
+                        var position, title;
+                        position = accordioItem.dataItem.step_position;
+                        title = position + ". " + data.inp_doc_title;
+                        title = title + ' (' + this.stepsType["INPUT_DOCUMENT"] + ')';
+                        accordioItem.dataItem.obj_title = data.inp_doc_title;
+                        accordioItem.setTitle(title);
+                        inputDoc.winMainInputDocument.close();
+                    }
+                });
+                inputDocument.build();
+                inputDocument.openFormInMainWindow();
+                inputDocument.inputDocumentFormGetProxy(step.step_uid_obj);
+                break;
+        }
+    },
+
+    /**
+     * Edit the selected trigger condition
+     * @param stepID, It is the id of the step to upgrade
+     * @param triggerID, is the id of the trigger to update
+     * @param stepType, It is the kind of step to update
+     * @param row, PMUI.grid.GridPanelRow, is the row affected
+     */
+    editCondition: function (stepID, triggerID, stepType, row) {
+        var that = this,
+            saveButton,
+            cancelButton,
+            criteriaButton,
+            form,
+            dataRow;
+        dataRow = row.getData();
+        this.setWindowAlternative(null);
+        this.getWindowAlternativeForm().setWidth(500);
+        this.getWindowAlternativeForm().setHeight(350);
+        this.getWindowAlternativeForm().setTitle('Condition Trigger'.translate());
+        this.getWindowAlternativeForm().setTitle("Trigger".translate());
+        form = new PMUI.form.Form({
+            id: 'idFormEditCondition',
+            width: 500,
+            title: 'Condition Trigger'.translate(),
+            visibleHeader: false,
+            items: [
+                new CriteriaField({
+                    id: 'st_condition',
+                    pmType: 'textarea',
+                    name: 'st_condition',
+                    valueType: 'string',
+                    label: 'Condition'.translate(),
+                    placeholder: 'Insert a condition'.translate(),
+                    rows: 150,
+                    controlsWidth: 250,
+                    renderType: 'textarea',
+                    value: dataRow.st_condition
+                })
+            ]
+        });
+        this.getWindowAlternativeForm().addItem(form);
+        saveButton = this.getWindowAlternativeForm().footer.getItem("secondaryWindow-save");
+        cancelButton = this.getWindowAlternativeForm().footer.getItem("secondaryWindow-cancel");
+        criteriaButton = this.getWindowAlternativeForm().footer.getItem("secondaryWindow-criteria");
+        if (saveButton) {
+            saveButton.setHandler(function () {
+                var data,
+                    restClient;
+                data = form.getData();
+                data.st_type = stepType;
+                restClient = new PMRestClient({
+                    endpoint: 'activity/' + that.getConfigWebEntry().tas_uid + '/step/'
+                    + ((typeof (stepID) != "undefined") ? stepID + "/" : "") + 'trigger/' + triggerID,
+                    typeRequest: 'update',
+                    data: data,
+                    messageError: 'There are problems update the Step Trigger, please try again.'.translate(),
+                    functionSuccess: function (xhr, response) {
+                        dataRow.st_condition = data.st_condition;
+                        row.setData(dataRow);
+                    },
+                    functionFailure: function (xhr, response) {
+                        PMDesigner.msgWinError(response.error.message);
+                    }
+                });
+                restClient.executeRestClient();
+                that.getWindowAlternativeForm().close();
+            });
+        }
+        if (cancelButton) {
+            cancelButton.setHandler(function () {
+                that.getWindowAlternativeForm().close();
+            });
+        }
+        if (criteriaButton) {
+            criteriaButton.setVisible(false);
+            criteriaButton.handler = null;
+        }
+        this.getWindowAlternativeForm().open();
+    },
+
+    /**
+     * This method is executed when editing a "trigger" in a row of the grid.
+     * secondary window opens with the current configuration of the trigger
+     * @param trigger, is the return value when is update 'trigger' action  in the enpoint
+     * @param triggerID, is the id of the trigger to update
+     * @chainable
+     */
+    editTrigger: function (trigger, triggerID) {
+        var that = this,
+            codeMirror,
+            saveButton,
+            cancelButton,
+            criteriaButton;
+        this.setWindowAlternative(null);
+        codeMirror = new PMCodeMirror({
+            id: "codeMirror"
+        });
+        CodeMirror.commands.autocomplete = function (cm) {
+            CodeMirror.showHint(cm, CodeMirror.phpHint);
+        };
+        codeMirror.setValue(trigger);
+        this.getWindowAlternativeForm().setWidth(DEFAULT_WINDOW_WIDTH);
+        this.getWindowAlternativeForm().setHeight(DEFAULT_WINDOW_HEIGHT);
+        this.getWindowAlternativeForm().setTitle("Trigger".translate());
+        saveButton = this.getWindowAlternativeForm().footer.getItem("secondaryWindow-save");
+        cancelButton = this.getWindowAlternativeForm().footer.getItem("secondaryWindow-cancel");
+        criteriaButton = this.getWindowAlternativeForm().footer.getItem("secondaryWindow-criteria");
+        if (saveButton) {
+            saveButton.setHandler(function () {
+                var restClient = new PMRestClient({
+                    endpoint: 'trigger/' + triggerID,
+                    typeRequest: 'update',
+                    data: {
+                        tri_param: '',
+                        tri_webbot: codeMirror.getValue()
+                    },
+                    messageError: 'There are problems updating the trigger, please try again.'.translate(),
+                    messageSuccess: 'Trigger updated correctly'.translate(),
+                    flashContainer: that.getWindow(),
+                    functionSuccess: function () {
+                        that.getWindowAlternativeForm().close();
+                    },
+                    functionFailure: function (xhr, response) {
+                        PMDesigner.msgWinError(response.error.message);
+                    }
+                });
+                restClient.executeRestClient();
+            });
+        }
+        if (cancelButton) {
+            cancelButton.setHandler(function () {
+                that.getWindowAlternativeForm().close();
+            });
+        }
+        if (criteriaButton) {
+            criteriaButton.setVisible(true);
+            criteriaButton.setHandler(function () {
+                var picker = new VariablePicker();
+                picker.open({
+                    success: function (variable) {
+                        var cursorPos,
+                            codemirror;
+                        codemirror = codeMirror.cm;
+                        cursorPos = codemirror.getCursor();
+                        codemirror.replaceSelection(variable);
+                        codemirror.setCursor(cursorPos.line, cursorPos.ch);
+                    }
+                });
+            });
+        }
+        this.getWindowAlternativeForm().open();
+        this.getWindowAlternativeForm().addItem(codeMirror);
+        codeMirror.cm.setSize(this.getWindowAlternativeForm().getWidth(), 380);
+        $(".CodeMirror.cm-s-default.CodeMirror-wrap").after($ctrlSpaceMessage.css({
+            "padding-left": "10px",
+            "margin": "3px 0px 0px 0px"
+        }));
+    },
+
+    /**
+     * Returns the type of step, for the execution of "endpoint"
+     * @param st_type, this a step type, the accepted parameters are:
+     *  - BEFORE_ASSIGNMENT
+     *  - BEFORE_ROUTING
+     *  - AFTER_ROUTING
+     *  - BEFORE
+     *  - AFTER
+     * @returns {string}
+     */
+    getStepType: function (st_type) {
+        var value;
+        switch (st_type) {
+            case 'BEFORE_ASSIGNMENT':
+                value = 'before-assignment';
+                break;
+            case 'BEFORE_ROUTING':
+                value = 'before-routing';
+                break;
+            case 'AFTER_ROUTING':
+                value = 'after-routing';
+                break;
+            case 'BEFORE':
+                value = 'before';
+                break;
+            case 'AFTER':
+                value = 'after';
+                break;
+            default:
+                value = '';
+                break;
+        }
+        return value;
+    },
+
+    /**
+     * Checks whether a trigger is already assigned in a grid
+     * @param grid, is instanceof PMUI.grid.Grid, in conducting the search
+     * @param tri_uid, search parameter in the rows of the grid
+     * @returns {boolean}
+     */
+    isTriggerAssigned: function (grid, tri_uid) {
+        var data, i, exist = false;
+        data = grid.getData();
+        if (grid && jQuery.isArray(data)) {
+            for (i = 0; i < data.length; i += 1) {
+                if (data[i].tri_uid === tri_uid) {
+                    exist = true;
+                    break;
+                }
+            }
+        }
+        return exist;
+    },
+
+    /**
+     * This method eliminates the list of triggers trigger an assigned step
+     * @param row, the row affected or selected
+     * @param grid, It is affected or grid to remove selected row
+     */
+    removeTrigger: function (row, grid) {
+        var that = this,
+            message = 'Do you want to remove the trigger "',
+            messageData = row.getData().tri_title ? row.getData().tri_title : "",
+            yesButton,
+            noButton,
+            restClient;
+        message = message + messageData + '"?';
+        this.getConfirmWindow().setMessage(message.translate());
+        yesButton = this.getConfirmWindow().footer.getItem("confirmWindow-footer-yes");
+        if (yesButton) {
+            yesButton.setHandler(function () {
+                restClient = new PMRestClient({
+                    endpoint: grid.step_uid === undefined ?
+                        'activity/' + that.getConfigWebEntry().tas_uid + '/step/trigger/' + row.getData().tri_uid + '/'
+                        + that.getStepType(row.getData().st_type) : 'activity/' + that.getConfigWebEntry().tas_uid
+                        + '/step/' + grid.step_uid + '/trigger/' + row.getData().tri_uid
+                        + '/' + that.getStepType(row.getData().st_type),
+                    typeRequest: 'remove',
+                    functionSuccess: function (xhr, response) {
+                        grid.removeItem(row);
+                        that.getConfirmWindow().close();
+                        that.updateIndexToGrid(grid);
+                    },
+                    functionFailure: function (xhr, response) {
+                        PMDesigner.msgWinError(response.error.message);
+                    },
+                    flashContainer: that.getWindow(),
+                    messageError: 'An unexpected error while deleting the trigger, please try again later.'.translate(),
+                    messageSuccess: 'Trigger removed successfully'.translate()
+                });
+                restClient.executeRestClient();
+            });
+        }
+        noButton = this.getConfirmWindow().footer.getItem("confirmWindow-footer-no");
+        if (noButton) {
+            noButton.setHandler(function () {
+                that.getConfirmWindow().close();
+            });
+        }
+        this.getConfirmWindow().open();
+    },
+
+    /**
+     * Updates indexes of elements selected grid
+     * @param grid, It is affected or grid to remove selected row
+     * @returns {stepsTask}
+     */
+    updateIndexToGrid: function (grid) {
+        var cell, rows, i, row;
+        if (grid) {
+            rows = grid.getItems();
+            if (jQuery.isArray(rows)) {
+                for (i = 0; i < rows.length; i += 1) {
+                    row = rows[i];
+                    cell = row.cells.find("columnData");
+                    if (cell) {
+                        cell.setContent(i + 1);
+                    }
+                }
+            }
+        }
+        return this;
+    },
+
+    /**
+     * Add custom buttons on the head of an element of stepsAssignAccordion
+     * are three buttons
+     * properties
+     * edit
+     * remove
+     * @param html, is the html of the header accordion item
+     * @param step, the data of the step selected
+     * @param accordionItem
+     */
+    customAccordionItemButtons: function (html, step, accordionItem) {
+        var that = this,
+            propertiesStep,
+            editStep,
+            removeStep,
+            $html,
+            containerButtons,
+            title;
+        if (html) {
+            $html = jQuery(html.getElementsByClassName("pmui-accordion-item-header"));
+            title = step.obj_title + ' (' + step.step_type_obj + ')';
+            $html.find(".pmui-accordion-item-title").get(0).title = title;
+            containerButtons = $('<div></div>');
+            containerButtons.addClass("propertiesTask-accordionItem");
+            propertiesStep = $('<a>' + 'Properties'.translate() + '</a>');
+            propertiesStep.addClass("mafe-button-edit propertiesTask-accordionButton");
+            editStep = $('<a>' + 'Edit'.translate() + '</a>');
+            editStep.addClass("mafe-button-edit propertiesTask-accordionButton");
+            removeStep = $('<a>' + 'Remove'.translate() + '</a>');
+            removeStep.addClass("mafe-button-delete propertiesTask-accordionButton");
+
+            propertiesStep.click(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                that.propertiesStepShow(step);
+                return false;
+            });
+
+            editStep.click(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                that.editStepShow(step, accordionItem);
+                return false;
+            });
+
+            removeStep.click(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                that.removeStepShow(step);
+                return false;
+            });
+            containerButtons.append(propertiesStep);
+            containerButtons.append(editStep);
+            containerButtons.append(removeStep);
+            $html.append(containerButtons);
+        }
+    },
+
+    /**
+     * Add tooltip in treeNode elements
+     * @returns {stepsTask}
+     */
+    updateIndexPosition: function (treeNode) {
+        var items,
+            i,
+            item,
+            $item,
+            text,
+            data;
+        if (treeNode && treeNode.html) {
+            items = treeNode.getItems();
+            if (jQuery.isArray(items)) {
+                for (i = 0; i < items.length; i += 1) {
+                    item = items[i];
+                    if (item.html) {
+                        $item = $(item.html);
+                        data = item.getData();
+                        text = $item.find("a").get(0);
+                        text.title = data.obj_title;
+                    }
+                }
+            }
+        }
+        return this;
+    },
+
+    /**
+     * This method loads the data to stepsAssignTree
+     * @param response, the answer is an array containing all the elements
+     * that will be loaded into the step stepsAssignTree
+     * @chainable
+     */
+    loadTreePanelData: function (response) {
+        var data,
+            i,
+            j,
+            type,
+            label,
+            items = [],
+            dataTree = [],
+            treeNode;
+        data = response[1].response;
+
+        dataTree.push({
+            obj_title: 'Trigger (s)'.translate(),
+            items: [this.notItemConfig()]
+        });
+
+        for (i = 0; i < data.length; i += 1) {
+            items.push({
+                obj_title: data[i]['tri_title'],
+                obj_type: data[i]['tri_type'],
+                obj_uid: data[i]['tri_uid']
+            });
+        }
+
+        if (items.length) {
+            dataTree.shift();
+            dataTree.push({
+                obj_title: 'Trigger (s)'.translate(),
+                items: items,
+                id: "TRIGGER"
+            });
+        }
+
+        data = response[0].response;
+        type = this.groupType;
+        label = this.groupLabel;
+        items = [];
+        for (i = 0; i < type.length; i += 1) {
+            items = [];
+            for (j = 0; j < data.length; j += 1) {
+                if (type[i] === data[j].obj_type) {
+                    items.push({
+                        obj_title: data[j]['obj_title'],
+                        obj_type: data[j]['obj_type'],
+                        obj_uid: data[j]['obj_uid']
+                    });
+                }
+            }
+            if (items.length === 0) {
+                dataTree.push({
+                    obj_title: label[i].translate(),
+                    items: [this.notItemConfig()],
+                    behavior: '',
+                    id: type[i]
+                });
+            } else {
+                dataTree.push({
+                    obj_title: label[i].translate(),
+                    items: items,
+                    behavior: 'drag',
+                    id: type[i]
+                });
+            }
+        }
+        this.getStepsAssignTree().clearItems();
+        for (i = 0; i < dataTree.length; i += 1) {
+            this.getStepsAssignTree().addDataItem(dataTree[i]);
+            treeNode = this.getStepsAssignTree().getItem(i);
+            treeNode.setID(dataTree[i].id);
+            this.updateIndexPosition(treeNode);
+        }
+        return this;
+    },
+
+    /**
+     * It is an extension to add the "sortable" event "stepsAssignTree".
+     * when choosing a node treePanel and you want to add to the accordion or the grid
+     * @chainable
+     */
+    addEventSortableInTreePanelElements: function () {
+        var that = this,
+            items = this.getStepsAssignTree().getItems(),
+            connect,
+            i,
+            sw,
+            nodeItems;
+        for (i = 0; i < items.length; i += 1) {
+            nodeItems = items[i].getItems();
+            if (nodeItems.length && nodeItems[0].getData().obj_type) {
+                sw = items[i].getItems()[0].getData().obj_type === "SCRIPT";
+                connect = sw ? ".pmui-gridpanel-tbody" : ".pmui-accordion-panel-body";
+                $(items[i].html).find('ul').find('>li').draggable({
+                    appendTo: document.body,
+                    revert: "invalid",
+                    helper: "clone".translate(),
+                    cursor: "move",
+                    zIndex: 1000,
+                    connectToSortable: connect,
+                    start: function (e) {
+                        var i, nodeTag, node, nodeData, accordionItems, item;
+                        nodeTag = e.target;
+                        node = PMUI.getPMUIObject(nodeTag);
+                        nodeData = node.getData();
+                        accordionItems = that.getStepsAssignAccordion().getItems();
+                        $(that.getStepsAssignAccordion().body).hide();
+                        if (nodeData.obj_type !== "SCRIPT") {
+                            for (i = 0; i < accordionItems.length; i += 1) {
+                                item = accordionItems[i];
+                                item.collapse();
+                            }
+                        }
+                        $(that.getStepsAssignAccordion().body).show();
+                    },
+                    stop: function () {
+                        var i = 0,
+                            max;
+                        if (that.elementAccordionOpen) {
+                            max = that.elementAccordionOpen.getSize();
+                            for (i = 0; i < max; i += 1) {
+                                that.elementAccordionOpen.get(i).expand();
+                            }
+                        }
+                    }
+                });
+            } else {
+                $(nodeItems[0].html).draggable("disable");
+            }
+        }
+    },
+
+    /**
+     * It is an extension to add the "sortable" event "stepAssignAccordion".
+     * when a node "treePanel" is added to stop runs and is where you choose if it's a sort or aggregation.
+     * @chainable
+     */
+    addEventSortableInAccordionElements: function () {
+        var that = this,
+            tagContainer,
+            newIndex,
+            index,
+            treeNodeObject,
+            treeNodeData;
+        if (this.getStepsAssignAccordion() && this.getStepsAssignAccordion().html) {
+            tagContainer = this.getStepsAssignAccordion().body;
+            $(tagContainer).sortable({
+                items: '>div:not(#idAssignment,#idRouting)',
+                placeholder: 'steps-placeholder',
+                receive: function (event, ui) {
+                    var item = ui ? ui.item : null;
+                    if (item && item instanceof jQuery && item.length) {
+                        treeNodeObject = PMUI.getPMUIObject(item.get(0));
+                        treeNodeData = treeNodeObject.getData();
+                    }
+                },
+                stop: function (event, ui) {
+                    var itemClone = ui ? ui.item : null,
+                        accordionItems,
+                        accordionItem,
+                        dataEdited,
+                        restClientMultipart,
+                        restClient;
+                    var newIndex = ui.item.index();
+                    accordionItems = that.getStepsAssignAccordion().getItems();
+                    if (itemClone && itemClone instanceof jQuery && itemClone.length) {
+                        if (treeNodeObject) {
+                            itemClone.remove();
+                            if (newIndex + 1 > accordionItems.length) {
+                                newIndex = that.stepsAssigned.getSize();
+                            }
+                            restClient = new PMRestClient({
+                                endpoint: 'activity/' + that.getConfigWebEntry().tas_uid + '/step',
+                                typeRequest: 'post',
+                                data: {
+                                    step_type_obj: treeNodeData.obj_type,
+                                    step_uid_obj: treeNodeData.obj_uid,
+                                    step_condition: '',
+                                    step_position: newIndex + 1,
+                                    step_mode: 'EDIT'
+                                },
+                                functionSuccess: function (xhr, response) {
+                                    var item, buttonAfected, treeNode;
+                                    that.getStepsAssignTree().removeItem(treeNodeObject);
+                                    treeNode = that.getStepsAssignTree().items.find("id", response.step_type_obj);
+                                    if (treeNode.items.getSize() === 0) {
+                                        treeNode.addDataItem(that.notItemConfig());
+                                    }
+                                    response.obj_description = '';
+                                    response.obj_title = treeNodeData.obj_title;
+                                    response.triggers = [];
+                                    item = that.createAccordionItem(response, true, true);
+                                    item.dataItem = response;
+                                    if (that.getStepsAssignAccordion().items.getSize() === 2) {
+                                        that.getStepsAssignAccordion().addItem(item, 0);
+                                    } else {
+                                        that.getStepsAssignAccordion().addItem(item, newIndex);
+                                    }
+                                    that.getStepsAssignAccordion().defineEvents();
+                                    that.customAccordionItemButtons(item.html, response, item);
+                                    that.updateItemIndexToAccordion();
+                                    that.addEventSortableInAccordionElements();
+                                    that.addEventSortableInTreePanelElements();
+                                    buttonAfected = that.getLabelsPanel().getItem("expand-button");
+                                    buttonAfected.setDisabled(false);
+                                },
+                                functionFailure: function (xhr, response) {
+                                    PMDesigner.msgWinError(response.error.message);
+                                },
+                                messageError: 'An unexpected error while assigning the step, please try again later.'
+                                    .translate(),
+                                messageSuccess: 'Step assigned successfully.'.translate(),
+                                flashContainer: that.getStepsAssignAccordion().getParent()
+                            });
+                            restClient.executeRestClient();
+                        } else {
+                            accordionItem = PMUI.getPMUIObject(ui.item.get(0));
+                            index = that.getStepsAssignAccordion().items.indexOf(accordionItem);
+                            if (newIndex !== index) {
+                                that.getStepsAssignAccordion().items.remove(accordionItem);
+                                that.getStepsAssignAccordion().items.insertAt(accordionItem, newIndex);
+                                dataEdited = {
+                                    step_position: newIndex + 1,
+                                    step_uid: accordionItem.dataItem.step_uid,
+                                    step_type_obj: accordionItem.dataItem.step_type_obj,
+                                    step_uid_obj: accordionItem.dataItem.step_uid_obj
+                                };
+                                restClientMultipart = new PMRestClient({
+                                    endpoint: 'activity/' + that.getConfigWebEntry().tas_uid + '/step/'
+                                    + accordionItem.dataItem.step_uid,
+                                    typeRequest: 'update',
+                                    data: dataEdited,
+                                    functionSuccess: function (xhr, response) {
+                                        that.updateItemIndexToAccordion();
+                                    },
+                                    functionFailure: function (xhr, response) {
+                                        PMDesigner.msgWinError(response.error.message);
+                                    },
+                                    messageError: 'An unexpected error while editing the step, please try again later.'
+                                        .translate(),
+                                    messageSuccess: 'Step editing successfully.'.translate(),
+                                    flashContainer: that.getWindow()
+                                });
+                                restClientMultipart.executeRestClient();
+                            }
+                        }
+                    }
+                },
+                start: function (e, ui) {
+                    newIndex = ui.item.index();
+                }
+            });
+        }
+    },
+
+    /**
+     * Updates indexes of elements assigned
+     * @returns {stepsTask}
+     */
+    updateItemIndexToAccordion: function () {
+        var title,
+            i,
+            item,
+            dataItem,
+            items = this.getStepsAssignAccordion().items,
+            position,
+            max;
+        max = items.getSize();
+        for (i = 0; i < max; i += 1) {
+            item = items.get(i);
+            position = items.indexOf(item);
+            dataItem = item.dataItem;
+            title = (position + 1) + ".  " + dataItem.obj_title;
+            if (this.stepsType[dataItem.step_type_obj]) {
+                title = title + ' (' + this.stepsType[dataItem.step_type_obj] + ')';
+            }
+            item.dataItem.step_position = i + 1;
+            item.setTitle(title);
+        }
+        return this;
+    },
+
+    /**
+     * The window opens for confirmation of the removal step
+     * @param step, the current step to remove
+     * @chainable
+     */
+    removeStepShow: function (step) {
+        var that = this,
+            title,
+            yesButton,
+            noButton,
+            restClient;
+        if (this.stepsType[step.step_type_obj] !== undefined) {
+            title = "Step {0} ( {1} )".translate([step.obj_title, this.stepsType[step.step_type_obj]]);
+            this.getConfirmWindow().setTitle(title);
+        } else {
+            this.getConfirmWindow().setTitle("Step " + step.step_type_obj.capitalize());
+        }
+        this.getConfirmWindow().setMessage("Do you want to remove the step '{0}'?".translate([step.obj_title]));
+        yesButton = this.getConfirmWindow().footer.getItem("confirmWindow-footer-yes");
+        noButton = this.getConfirmWindow().footer.getItem("confirmWindow-footer-no");
+        if (yesButton) {
+            yesButton.setHandler(function () {
+                restClient = new PMRestClient({
+                    endpoint: 'activity/' + that.getConfigWebEntry().tas_uid + '/step/' + step.step_uid,
+                    typeRequest: 'remove',
+                    functionSuccess: function (xhr, response) {
+                        that.removingStepTask(step, response);
+                        that.getConfirmWindow().close();
+                        that.updateItemIndexToAccordion();
+                    },
+                    functionFailure: function (xhr, response) {
+                        PMDesigner.msgWinError(response.error.message);
+                    },
+                    messageError: 'An unexpected error while deleting the step, please try again later.'.translate(),
+                    messageSuccess: 'Step removed successfully'.translate(),
+                    flashContainer: that.getWindow().getParent()
+                });
+                restClient.executeRestClient();
+            });
+        }
+        if (noButton) {
+            noButton.setHandler(function () {
+                that.getConfirmWindow().close();
+            });
+        }
+        this.getConfirmWindow().open();
+    },
+
+    /**
+     * Get the steps is not assigned by a criterion
+     * @param criteria, It is the filter criteria search
+     * @param stepAvailable, all steps Unassigned
+     * @returns {Array}, filtered items
+     */
+    getAvailablesStepsByCriteria: function (criteria, stepAvailable) {
+        var items = [],
+            i;
+        if (jQuery.isArray(stepAvailable)) {
+            for (i = 0; i < stepAvailable.length; i += 1) {
+                if (stepAvailable[i].obj_type === criteria) {
+                    items.push(stepAvailable[i]);
+                }
+            }
+        }
+        return items;
+    },
+
+    /**
+     * Eliminates the step of step Assign Accordion
+     * @param step, the current step to remove
+     * @param response, data from the endpoint
+     */
+    removingStepTask: function (step, response) {
+        var stepObject,
+            stepAvailable,
+            treeNodeObject,
+            stepAvailables,
+            i,
+            itemsTreeNode = [],
+            items = [];
+        stepObject = this.getStepsAssignAccordion().getItem("id" + step.step_uid_obj);
+        this.elementAccordionOpen.remove(stepObject);
+        this.stepsAssigned.remove(stepObject);
+        this.getStepsAssignAccordion().removeItem(stepObject);
+        if (stepObject) {
+            this.getStepAvailables(
+                function (xhr, response) {
+                    stepAvailable = response[0] ? response[0].response : [];
+                },
+                function (xhr, response) {
+                    PMDesigner.msgWinError(response.error.message);
+                }
+            );
+            stepAvailables = this.getAvailablesStepsByCriteria(step.step_type_obj, stepAvailable);
+            for (i = 0; i < stepAvailables.length; i += 1) {
+                items.push({
+                    obj_title: stepAvailables[i]['obj_title'],
+                    obj_type: stepAvailables[i]['obj_type'],
+                    obj_uid: stepAvailables[i]['obj_uid']
+                });
+            }
+            treeNodeObject = this.getStepsAssignTree().getItem(step.step_type_obj);
+            itemsTreeNode = treeNodeObject.getItems();
+            for (i = 0; i < itemsTreeNode.length; i += 1) {
+                treeNodeObject.removeItem(itemsTreeNode[i]);
+            }
+            treeNodeObject.clearItems();
+            treeNodeObject.setDataItems(items);
+            this.updateIndexPosition(treeNodeObject);
+            this.addEventSortableInTreePanelElements();
+            this.addEventSortableInAccordionElements();
+        }
+    },
+
+    /**
+     * This method is executed when an element stepsAssignTree, is assigned in a grid
+     * @param receiveData, data of the droppable item
+     * @param grid, the affected grid
+     * @param index, the index position row
+     * @returns {stepsTask}
+     */
+    receiveTreeNodeItem: function (receiveData, grid, index) {
+        var restClient,
+            message,
+            that = this;
+        if (this.isTriggerAssigned(grid, receiveData.obj_uid)) {
+            message = new PMUI.ui.FlashMessage({
+                message: 'Trigger is assigned.'.translate(),
+                duration: 3000,
+                severity: 'error',
+                appendTo: this.getWindow()
+            });
+            message.show();
+            return;
+        }
+        restClient = new PMRestClient({
+            endpoint: grid.step_uid === undefined ?
+                'activity/' + that.getConfigWebEntry().tas_uid + '/step/trigger' : 'activity/'
+                + that.getConfigWebEntry().tas_uid + '/step/' + grid.step_uid + '/trigger',
+            typeRequest: 'post',
+            data: {
+                tri_uid: receiveData.obj_uid,
+                st_type: grid.st_type,
+                st_condition: '',
+                st_position: index + 1
+            },
+            functionSuccess: function (xhr, response) {
+                grid.addDataItem({
+                    st_condition: '',
+                    st_position: index + 1,
+                    st_type: grid.st_type,
+                    tri_description: '',
+                    tri_title: receiveData.obj_title,
+                    tri_uid: receiveData.obj_uid,
+                    obj_title: receiveData.obj_title,
+                    obj_uid: receiveData.obj_uid
+                }, index);
+            },
+            functionFailure: function (xhr, response) {
+                PMDesigner.msgWinError(response.error.message);
+            }
+        });
+        restClient.executeRestClient();
+        return this;
     }
-    if (method === "update") {
-        this.restClient.messageError = ['An unexpected error while editing the WebEntry, please try again later.'.translate()];
-        this.restClient.messageSuccess = ['WebEntry sucessfully edited.'.translate()];
-    }
-    if (method === "post") {
-        this.restClient.messageError = ['An unexpected error while created the WebEntry, please try again later.'.translate()];
-        this.restClient.messageSuccess = ['WebEntry created successfully.'.translate()];
-    }
-    this.restClient.data = data;
-    this.restClient.endpoint = this.restClient.endpoint + endpoint;
-    this.restClient.executeRestClient();
-    return resp;
 };
 var PMMessageType = function (options) {
     var that = this;
@@ -28781,6 +31394,7 @@ var PMMessageType = function (options) {
     this.onEdit = new Function();
     this.requiredMessage = null;
     this.clickedClose = true;
+    this.previousMessageValue = null;
     this.buttonCreate = new PMUI.ui.Button({
         id: 'buttonCreate',
         text: "Create".translate(),
@@ -28795,6 +31409,53 @@ var PMMessageType = function (options) {
             that.showForm();
         }
     });
+
+    this.buttonFieldAdd = new PMUI.field.ButtonField({
+        id: 'buttonFieldAdd',
+        pmType: 'buttonField',
+        value: 'Create'.translate(),
+        labelVisible: false,
+        buttonAlign: 'center',
+        controlsWidth: 50,
+        proportion: 0.6,
+        handler: function (field) {
+            that.addAcceptedValue();
+        },
+        buttonType: "success",
+        style: {
+            cssProperties: {
+                'vertical-align': 'top',
+                'padding-top': '37px',
+                'padding-right': '1px',
+                'padding-bottom': '1px',
+                'padding-left': '1px'
+            }
+        }
+    });
+    this.buttonFieldAdd.getControl().button.setButtonType("success");
+
+    this.buttonFieldCancel = new PMUI.field.ButtonField({
+        id: 'buttonFieldCancel',
+        pmType: 'buttonField',
+        value: 'Cancel'.translate(),
+        labelVisible: false,
+        buttonAlign: 'center',
+        controlsWidth: 50,
+        proportion: 0.6,
+        handler: function (field) {
+            that.cancelAcceptedValue();
+        },
+        style: {
+            cssProperties: {
+                'vertical-align': 'top',
+                'padding-top': '37px',
+                'padding-right': '1px',
+                'padding-bottom': '1px',
+                'padding-left': '1px'
+            }
+        }
+    });
+    this.buttonFieldCancel.getControl().button.setButtonType("error");
 
     this.frmMessageType = new PMUI.form.Form({
         id: 'frmMessageType',
@@ -28812,13 +31473,36 @@ var PMMessageType = function (options) {
                 required: true,
                 valueType: 'string',
                 maxLength: 60,
-                controlsWidth: 460,
-                validators: [
+                controlsWidth: 460
+            },
+            {
+                id: "frmAcceptedValues",
+                pmType: 'panel',
+                legend: "Message Field".translate(),
+                fieldset: true,
+                layout: 'hbox',
+                items: [
                     {
-                        pmType: "regexp",
-                        criteria: /^[a-zA-Z_]+[0-9a-zA-Z_]+$/,
-                        errorMessage: "A valid variable starts with a letter or underscore, followed by any number of letters, numbers, or underscores.".translate()
-                    }
+                        pmType: "text",
+                        name: "txtMessageTypeVariableName",
+                        label: "Message Field Name".translate(),
+                        labelWidth: "100%",
+                        controlsWidth: "400px",
+                        proportion: 2.5,
+                        valueType: "string",
+                        maxLength: 255,
+                        required: true,
+                        labelPosition: "top",
+                        validators: [
+                            {
+                                pmType: "regexp",
+                                criteria: /^[a-zA-Z_]+[0-9a-zA-Z_]+$/,
+                                errorMessage: "A valid variable starts with a letter or underscore, followed by any number of letters, numbers, or underscores.".translate()
+                            }
+                        ]
+                    },
+                    that.buttonFieldCancel,
+                    that.buttonFieldAdd
                 ]
             }
         ]
@@ -28885,90 +31569,6 @@ var PMMessageType = function (options) {
         }
         ],
         dataItems: null
-    });
-
-    this.buttonFieldAdd = new PMUI.field.ButtonField({
-        id: 'buttonFieldAdd',
-        pmType: 'buttonField',
-        value: 'Create'.translate(),
-        labelVisible: false,
-        buttonAlign: 'center',
-        controlsWidth: 50,
-        proportion: 0.6,
-        handler: function (field) {
-            that.addAcceptedValue();
-        },
-        buttonType: "success",
-        style: {
-            cssProperties: {
-                'vertical-align': 'top',
-                'padding-top': '37px',
-                'padding-right': '1px',
-                'padding-bottom': '1px',
-                'padding-left': '1px'
-            }
-        }
-    });
-    this.buttonFieldAdd.controls[0].button.setButtonType("success");
-
-    this.buttonFieldCancel = new PMUI.field.ButtonField({
-        id: 'buttonFieldCancel',
-        pmType: 'buttonField',
-        value: 'Cancel'.translate(),
-        labelVisible: false,
-        buttonAlign: 'center',
-        controlsWidth: 50,
-        proportion: 0.6,
-        handler: function (field) {
-            that.cancelAcceptedValue();
-        },
-        style: {
-            cssProperties: {
-                'vertical-align': 'top',
-                'padding-top': '37px',
-                'padding-right': '1px',
-                'padding-bottom': '1px',
-                'padding-left': '1px'
-            }
-        }
-    });
-    this.buttonFieldCancel.controls[0].button.setButtonType("error");
-
-    this.frmAcceptedValues = new PMUI.form.Form({
-        id: 'frmAcceptedValues',
-        width: 700,
-        visibleHeader: false,
-        items: [
-            {
-                pmType: 'panel',
-                legend: "Message Field".translate(),
-                fieldset: true,
-                layout: 'hbox',
-                items: [
-                    {
-                        pmType: "text",
-                        name: "txtMessageTypeVariableName",
-                        label: "Message Field Name".translate(),
-                        labelWidth: "100%",
-                        controlsWidth: "400px",
-                        proportion: 2.5,
-                        valueType: "string",
-                        maxLength: 255,
-                        required: true,
-                        labelPosition: "top",
-                        validators: [
-                            {
-                                pmType: "regexp",
-                                criteria: /^[a-zA-Z_]+[0-9a-zA-Z_]+$/,
-                                errorMessage: "A valid variable starts with a letter or underscore, followed by any number of letters, numbers, or underscores.".translate()
-                            }
-                        ]
-                    },
-                    that.buttonFieldCancel,
-                    that.buttonFieldAdd
-                ]
-            }
-        ]
     });
 
     this.gridAcceptedValues = new PMUI.grid.GridPanel({
@@ -29075,7 +31675,7 @@ var PMMessageType = function (options) {
     };
     this.winMessageType = new PMUI.ui.Window({
         id: 'winMessageType',
-        title: "".translate(),
+        title: '',
         height: DEFAULT_WINDOW_HEIGHT,
         width: DEFAULT_WINDOW_WIDTH,
         buttonsPosition: 'right',
@@ -29097,11 +31697,17 @@ var PMMessageType = function (options) {
                 id: 'winMessageTypeSave',
                 text: "Save".translate(),
                 handler: function () {
+                    that.frmAcceptedValues.getItems("fields").forEach(function (i) {
+                        i.disable();
+                    });
                     if (that.edit) {
                         that.updateMessageType();
                     } else {
                         that.createMessageType();
                     }
+                    that.frmAcceptedValues.getItems("fields").forEach(function (i) {
+                        i.enable();
+                    });
                 },
                 buttonType: 'success'
             })
@@ -29119,7 +31725,7 @@ PMMessageType.prototype.init = function () {
     that.winMessageType.open();
     that.winMessageType.addItem(that.gridMessages);
     that.winMessageType.addItem(that.frmMessageType);
-    that.winMessageType.addItem(that.frmAcceptedValues);
+
     that.winMessageType.addItem(that.gridAcceptedValues);
     that.winMessageType.hideFooter();
     that.requiredMessage = $(document.getElementById("requiredMessage"));
@@ -29129,17 +31735,17 @@ PMMessageType.prototype.init = function () {
     that.requiredMessage.css({float: "none"});
     that.winMessageType.footer.html.style.textAlign = 'right';
 
-    $('#frmAcceptedValues .pmui-formpanel:eq(1)').css({'width': '690px'});
+    that.frmAcceptedValues = PMUI.getPMUIObject($('#frmAcceptedValues').css({'width': '690px'}).get(0));
     $('#gridMessages .pmui-textcontrol').css({'margin-top': '5px', width: '250px'});
 
-    $(that.frmAcceptedValues.getHTML()).find("#requiredMessage").empty();
+    //$(that.frmAcceptedValues.getHTML()).find("#requiredMessage").empty();
     that.requiredMessage.hide();
-    that.winMessageType.body.appendChild(that.requiredMessage[0]);
+    //that.winMessageType.body.appendChild(that.requiredMessage[0]);
     that.gridMessages.dom.toolbar.appendChild(that.buttonCreate.getHTML());
     that.showGrid();
 
     validateKeysField(that.frmMessageType.getField('txtMessageTypeName').getControls()[0].getHTML(), ['isbackspace', 'isnumber', 'isletter', 'isunderscore']);
-    that.frmAcceptedValues.reset();
+    that.resetFrmAcceptedValues();
 };
 
 PMMessageType.prototype.createMessageType = function () {
@@ -29150,17 +31756,18 @@ PMMessageType.prototype.createMessageType = function () {
         return;
     }
     if (that.gridAcceptedValues.getData().length == 0) {
-        if (!this.frmAcceptedValues.isValid()) {
-            return;
-        } else {
-            PMDesigner.msgFlash('Add at least one variable.'.translate(), winMessageType, 'error', 3000, 5);
-            return;
-        }
+        PMDesigner.msgFlash('Add at least one variable.'.translate(), winMessageType, 'error', 3000, 5);
+        return;
     }
 
     data = this.frmMessageType.getData();
     data.msgt_name = data.txtMessageTypeName;
     data.msgt_variables = that.getDataAcceptedValues();
+
+    // This returned data is not necessary at sendind, so it is deleted
+    delete data.txtMessageTypeVariableName;
+    delete data.buttonFieldCancel;
+    delete data.buttonFieldAdd;
 
     (new PMRestClient({
         endpoint: 'message-type',
@@ -29178,7 +31785,7 @@ PMMessageType.prototype.createMessageType = function () {
             PMDesigner.msgWinError(response.error.message);
         },
 
-        messageError: " ".translate(),
+        messageError: ' ',
         data: data,
         messageSuccess: "Message Type Saved successfully.".translate(),
         flashContainer: that.panel
@@ -29224,7 +31831,7 @@ PMMessageType.prototype.updateMessageType = function () {
             PMDesigner.msgWinError(response.error.message);
         },
 
-        messageError: " ".translate(),
+        messageError: ' ',
         messageSuccess: "Message Type edited successfully.".translate(),
         flashContainer: that.panel
     })).executeRestClient();
@@ -29333,7 +31940,7 @@ PMMessageType.prototype.showForm = function () {
     that.frmMessageType.reset();
     that.frmMessageType.setFocus();
     that.changeViewFieldType();
-    that.frmAcceptedValues.reset();
+    that.resetFrmAcceptedValues();
     that.gridAcceptedValues.clearItems();
     that.buttonFieldCancel.setVisible(false);
 };
@@ -29365,9 +31972,16 @@ PMMessageType.prototype.changeViewFieldType = function () {
 };
 
 PMMessageType.prototype.addAcceptedValue = function () {
-    var that = this, message;
+    var that = this,
+        value = $.trim(that.frmAcceptedValues.getField('txtMessageTypeVariableName').getValue()),
+        message;
+        
+    // if the form (form field's RegEx) is invalid, add a Message Field will not be allowed.
+    if (!that.frmAcceptedValues.isValid()) {
+        return;
+     }
 
-    if (that.isAcceptedValueAdded()) {
+    if (that.previousMessageValue !== value && that.isAcceptedValueAdded(value)) {
         message = new PMUI.ui.FlashMessage({
             message: "The variable Name already exists.".translate(),
             duration: 3000,
@@ -29376,21 +31990,25 @@ PMMessageType.prototype.addAcceptedValue = function () {
         });
         message.show();
         return;
+    } else if (!value) {
+        message = new PMUI.ui.FlashMessage({
+            message: "Please, specify a name for the Message Field.".translate(),
+            duration: 3000,
+            severity: 'error',
+            appendTo: that.winMessageType.footer
+        });
+        return message.show();
     }
-
-    if (!that.frmAcceptedValues.isValid()) {
-        return;
-    }
-
+    that.previousMessageValue = null;
     if (that.editRow === null) {
         that.gridAcceptedValues.addItem(new PMUI.grid.GridPanelRow({
             data: {
-                msgtv_name: that.frmAcceptedValues.getField('txtMessageTypeVariableName').getValue()
+                msgtv_name: value
             }
         }));
     } else {
         that.editRow.setData({
-            msgtv_name: that.frmAcceptedValues.getField('txtMessageTypeVariableName').getValue()
+            msgtv_name: value
         });
     }
 
@@ -29403,6 +32021,7 @@ PMMessageType.prototype.editAcceptedValue = function (row) {
     that.editRow = row;
     data = row.getData();
 
+    that.previousMessageValue = data.msgtv_name;
     that.frmAcceptedValues.getField('txtMessageTypeVariableName').setValue(data.msgtv_name);
     that.buttonFieldAdd.setValue('Save'.translate());
     that.buttonFieldCancel.setVisible(true);
@@ -29485,19 +32104,31 @@ PMMessageType.prototype.cancelAcceptedValue = function () {
     that.editRow = null;
     that.buttonFieldAdd.setValue("Create".translate());
     that.buttonFieldCancel.setVisible(false);
-    that.frmAcceptedValues.reset();
+    that.resetFrmAcceptedValues();
 };
-
-PMMessageType.prototype.isAcceptedValueAdded = function () {
+/**
+ * Validate if the value is present in the data collection.
+ * @param value
+ * @returns {boolean}
+ */
+PMMessageType.prototype.isAcceptedValueAdded = function (value) {
     var that = this, i,
         data = that.gridAcceptedValues.getData();
 
     for (i = 0; i < data.length; i += 1) {
-        if (data[i].msgtv_name === that.frmAcceptedValues.getField('txtMessageTypeVariableName').getValue()) {
+        if (data[i].msgtv_name === value) {
             return true;
         }
     }
     return false;
+};
+/**
+ * Resets the fields from the form's panel for accepted values.
+ */
+PMMessageType.prototype.resetFrmAcceptedValues = function () {
+    this.frmAcceptedValues.getItems('fields').forEach(function (i) {
+        i.setValue("");
+    });
 };
 
 PMDesigner.messageType = function () {
@@ -29513,7 +32144,9 @@ PMDesigner.messageType.create = function () {
 
 var MessageEventDefinition = function (bpmnEvent) {
     var that = this,
-        msgTypeVariableDefaultValueTitle = "";
+        msgNameField,
+        variableSelector;
+
     this.bpmnEvent = bpmnEvent;
     this.arrayMessageType = [];
     this.messageEventDefinitionOption = "";
@@ -29525,11 +32158,31 @@ var MessageEventDefinition = function (bpmnEvent) {
     this.dirtyGrid = false;
     this.myTitle = "";
 
-    if ((that.bpmnEvent.evn_type == "INTERMEDIATE" || that.bpmnEvent.evn_type == "START") && that.bpmnEvent.evn_marker == "MESSAGECATCH") {
-        msgTypeVariableDefaultValueTitle = "Store value in".translate();
-    } else {
-        msgTypeVariableDefaultValueTitle = "Get value from".translate();
-    }
+    variableSelector = new CriteriaField({
+        id: "txtMessageTypeVariableDefaultValue",
+        name: "txtMessageTypeVariableDefaultValue",
+        valueType: "string",
+        label: that.bpmnEvent.evn_marker == "MESSAGECATCH" ? "Store value in".translate() : "Get value from".translate(),
+        maxLength: 200,
+        labelWidth: "50%",
+        controlsWidth: 300,
+        proportion: 3.4,
+        required: false
+    });
+
+    msgNameField = {
+        pmType: "text",
+        id: "txtMessageTypeVariableName",
+        name: "txtMessageTypeVariableName",
+        label: (that.bpmnEvent.evn_marker === "MESSAGECATCH" ? "Value" : "Name").translate(),
+        labelWidth: "40%",
+        controlsWidth: 200,
+        proportion: 2.5,
+        valueType: "string",
+        maxLength: 255,
+        readOnly: true,
+        required: false
+    };
 
     this.cboMessageType = new PMUI.field.DropDownListField({
         id: "cboMessageType",
@@ -29543,17 +32196,17 @@ var MessageEventDefinition = function (bpmnEvent) {
             if (messageTypeData != null) {
                 that.gridCurrent.setDataItems(messageTypeData.msgt_variables);
 
-                that.resetFrmMessageEventDefinition2();
+                that._resetEditMessageForm();
             }
         }
     });
 
     this.isDirtyFormMessageEvent = function () {
-        if (that.frmMessageEventDefinition1.isDirty() || that.frmMessageEventDefinition4.isDirty() || that.dirtyGrid) {
+        if (that.frmMessageEventDefinition1.isDirty() || that.dirtyGrid) {
             var message_window = new PMUI.ui.MessageWindow({
                 id: "cancelMessageType",
                 width: 490,
-                title: myTitle.translate(),
+                title: that.myTitle.translate(),
                 windowMessageType: "warning",
                 bodyHeight: 'auto',
                 message: 'Are you sure you want to discard your changes?'.translate(),
@@ -29581,20 +32234,15 @@ var MessageEventDefinition = function (bpmnEvent) {
             that.winMessageEventDefinition.close();
         }
     };
-    this.frmMessageEventDefinition1 = new PMUI.form.Form({
-        id: "frmMessageEventDefinition1",
-        title: "",
-        width: DEFAULT_WINDOW_WIDTH - 70,
-        height: "100px",
-        visibleHeader: false,
-        items: [
-            that.cboMessageType
-        ],
-        style: {
-            cssProperties: {
-                marginBottom: '15px',
-            }
-        }
+
+    this.txtCorrelationValue = new CriteriaField({
+        id: "txtCorrelationValue",
+        name: "txtCorrelationValue",
+        valueType: "string",
+        label: "Correlation Value".translate(),
+        maxLength: 200,
+        value: "",
+        controlsWidth: 380
     });
 
     this.btnSaveVariable = new PMUI.field.ButtonField({
@@ -29627,93 +32275,36 @@ var MessageEventDefinition = function (bpmnEvent) {
         buttonType: "error"
     });
 
-    this.frmMessageEventDefinition2 = new PMUI.form.Form({
-        id: "frmMessageEventDefinition2",
+    this.frmMessageEventDefinition1 = new PMUI.form.Form({
+        id: "frmMessageEventDefinition1",
+        title: "",
         width: DEFAULT_WINDOW_WIDTH - 70,
-        height: "150px",
         visibleHeader: false,
-        visible: false,
         items: [
+            that.cboMessageType,
+            that.txtCorrelationValue,
             {
+                id: "edit-panel",
                 pmType: "panel",
                 legend: "Message content".translate(),
                 fieldset: true,
                 layout: "hbox",
                 items: [
-                    {
-                        pmType: "text",
-                        id: "txtMessageTypeVariableName",
-                        name: "txtMessageTypeVariableName",
-                        label: "Name".translate(),
-                        labelWidth: "40%",
-                        controlsWidth: 200,
-                        proportion: 2.5,
-                        valueType: "string",
-                        maxLength: 255,
-                        readOnly: true,
-                        required: false
-                    },
-                    new CriteriaField({
-                        id: "txtMessageTypeVariableDefaultValue",
-                        name: "txtMessageTypeVariableDefaultValue",
-                        valueType: "string",
-                        label: msgTypeVariableDefaultValueTitle,
-                        maxLength: 200,
-                        labelWidth: "50%",
-                        controlsWidth: 300,
-                        proportion: 3.4,
-                        required: false
-                    }),
+                    that.bpmnEvent.evn_marker === "MESSAGECATCH" ? variableSelector : msgNameField,
+                    that.bpmnEvent.evn_marker === "MESSAGECATCH" ? msgNameField : variableSelector,
                     that.btnCancelVariable,
                     that.btnSaveVariable
                 ]
             }
-        ]
+        ],
+        style: {
+            cssProperties: {
+                marginBottom: '15px'
+            }
+        }
     });
 
-    this.frmMessageEventDefinition3 = new PMUI.form.Form({
-        id: "frmMessageEventDefinition3",
-        width: DEFAULT_WINDOW_WIDTH - 70,
-        height: "150px",
-        visibleHeader: false,
-        visible: false,
-        items: [
-            {
-                pmType: "panel",
-                legend: "Message content".translate(),
-                fieldset: true,
-                layout: "hbox",
-                items: [
-                    new CriteriaField({
-                        id: "txtMessageTypeVariableDefaultValue",
-                        name: "txtMessageTypeVariableDefaultValue",
-                        valueType: "string",
-                        label: msgTypeVariableDefaultValueTitle,
-                        maxLength: 200,
-                        labelWidth: "50%",
-                        controlsWidth: 300,
-                        proportion: 3.4,
-                        required: false
-                    }),
-                    {
-                        pmType: "text",
-                        id: "txtMessageTypeVariableName",
-                        name: "txtMessageTypeVariableName",
-                        label: "Value".translate(),
-                        labelWidth: "40%",
-                        controlsWidth: 200,
-                        proportion: 2.5,
-                        valueType: "string",
-                        maxLength: 255,
-                        readOnly: true,
-                        required: false
-                    },
-                    that.btnSaveVariable,
-                    that.btnCancelVariable
-                ]
-            }
-        ]
-    });
+    this.editMessageForm = this.frmMessageEventDefinition1.getItem("edit-panel");
 
     this.grdPnlVariable3 = new PMUI.grid.GridPanel({
         id: "grdPnlVariable3",
@@ -29804,26 +32395,6 @@ var MessageEventDefinition = function (bpmnEvent) {
     });
 
     this.gridCurrent = this.grdPnlVariable3;
-    this.txtCorrelationValue = new CriteriaField({
-        id: "txtCorrelationValue",
-        name: "txtCorrelationValue",
-        valueType: "string",
-        label: "Correlation Value".translate(),
-        maxLength: 200,
-        value: "",
-        controlsWidth: 380
-    });
-
-    this.frmMessageEventDefinition4 = new PMUI.form.Form({
-        id: "frmMessageEventDefinition4",
-        title: "",
-        width: DEFAULT_WINDOW_WIDTH - 70,
-        height: "50px",
-        visibleHeader: false,
-        items: [
-            that.txtCorrelationValue
-        ]
-    });
 
     MessageEventDefinition.prototype.init.call(this);
 };
@@ -29833,16 +32404,13 @@ MessageEventDefinition.prototype.init = function () {
 
     that.createWindow();
     that.winMessageEventDefinition.addItem(that.frmMessageEventDefinition1);
-    that.winMessageEventDefinition.addItem(that.editMessageForm);
     that.winMessageEventDefinition.addItem(that.gridCurrent);
-    that.winMessageEventDefinition.addItem(that.frmMessageEventDefinition4);
 
     that.winMessageEventDefinition.open();
     this.editMessageForm.setVisible(false);
     this.applyStylesPost();
 
     that.load();
-    document.getElementById("winMessageEventDefinition").childNodes[1].style.overflow = "hidden";
     document.getElementById("requiredMessage").style.marginTop = "15px";
 };
 
@@ -29858,40 +32426,19 @@ MessageEventDefinition.prototype.applyStylesPost = function () {
 };
 
 MessageEventDefinition.prototype.createWindow = function () {
-    var that = this,
-        flag = 0;
+    var that = this;
 
-    if (that.bpmnEvent.evn_type == "START" && that.bpmnEvent.evn_marker == "MESSAGECATCH" && flag == 0) {
-        myTitle = "Start Message Event".translate();
-        flag = 1;
-        this.gridCurrent = this.grdPnlReceive;
-        this.editMessageForm = this.frmMessageEventDefinition3;
-    }
-
-    if (that.bpmnEvent.evn_type == "END" && that.bpmnEvent.evn_marker == "MESSAGETHROW" && flag == 0) {
-        myTitle = "End Message Event".translate();
-        flag = 1;
-        this.gridCurrent = this.grdPnlVariable3;
-        this.editMessageForm = this.frmMessageEventDefinition2;
-    }
-
-    if (that.bpmnEvent.evn_type == "INTERMEDIATE" && that.bpmnEvent.evn_marker == "MESSAGECATCH" && flag == 0) {
-        myTitle = "Intermediate Receive Message Event".translate();
-        flag = 1;
-        this.gridCurrent = this.grdPnlReceive;
-        this.editMessageForm = this.frmMessageEventDefinition3;
-    }
-
-    if (that.bpmnEvent.evn_type == "INTERMEDIATE" && that.bpmnEvent.evn_marker == "MESSAGETHROW" && flag == 0) {
-        myTitle = "Intermediate Send Message Event".translate();
-        flag = 1;
-        this.gridCurrent = this.grdPnlVariable3;
-        this.editMessageForm = this.frmMessageEventDefinition2;
+    if (that.bpmnEvent.evn_marker === "MESSAGECATCH") {
+        that.myTitle = (that.bpmnEvent.evn_type === "START" ? "Start Message Event" : "Intermediate Receive Message Event").translate();
+        that.gridCurrent = this.grdPnlReceive;
+    } else if (that.bpmnEvent.evn_marker === "MESSAGETHROW") {
+        that.myTitle = (that.bpmnEvent.evn_type == "END" ? "End Message Event" : "Intermediate Send Message Event").translate();
+        that.gridCurrent = this.grdPnlVariable3;
     }
 
     that.winMessageEventDefinition = new PMUI.ui.Window({
         id: "winMessageEventDefinition",
-        title: myTitle.translate(),
+        title: that.myTitle.translate(),
 
         height: DEFAULT_WINDOW_HEIGHT,
         width: DEFAULT_WINDOW_WIDTH,
@@ -29918,7 +32465,7 @@ MessageEventDefinition.prototype.createWindow = function () {
                     if (!that.frmMessageEventDefinition1.isValid()) {
                         return;
                     }
-                    correlationValueAux = getData2PMUI(that.frmMessageEventDefinition4.html);
+                    correlationValueAux = that.frmMessageEventDefinition1.getData();
                     data = {
                         evn_uid: that.bpmnEvent.evn_uid,
                         msgt_uid: that.cboMessageType.getValue(),
@@ -30027,7 +32574,7 @@ MessageEventDefinition.prototype.load = function () {
                 that.messageEventDefinitionOption = "PUT";
 
                 that.gridCurrent.setDataItems(that.getVariablesByObject(arrayMessageEventDefinitionData.msged_variables));
-                that.frmMessageEventDefinition4.getField("txtCorrelationValue").setValue(arrayMessageEventDefinitionData.msged_correlation);
+                that.frmMessageEventDefinition1.getField("txtCorrelationValue").setValue(arrayMessageEventDefinitionData.msged_correlation);
             }
         },
         functionFailure: function (xhr, response) {
@@ -30050,27 +32597,19 @@ MessageEventDefinition.prototype.setValueMessageEventDefinition = function (row)
     that.editMessageForm.setVisible(true);
 };
 
-MessageEventDefinition.prototype.resetFrmMessageEventDefinition2 = function () {
-    var that = this;
-
-    that.editMessageForm.getField("txtMessageTypeVariableName").setValue("");
-    that.editMessageForm.getField("txtMessageTypeVariableDefaultValue").setValue("");
-};
-
 MessageEventDefinition.prototype.addVariableInGrdPnlVariable3 = function () {
-    var that = this;
-    if (that.editRow == null) {
-        that.gridCurrent.addItem(new PMUI.grid.GridPanelRow({
-            data: {
-                msgtv_name: that.editMessageForm.getField("txtMessageTypeVariableName").getValue(),
-                msgtv_default_value: that.editMessageForm.getField("txtMessageTypeVariableDefaultValue").getValue()
-            }
-        }));
-    } else {
-        that.editRow.setData({
+    var that = this,
+        data = {
             msgtv_name: that.editMessageForm.getField("txtMessageTypeVariableName").getValue(),
             msgtv_default_value: that.editMessageForm.getField("txtMessageTypeVariableDefaultValue").getValue()
-        });
+        };
+
+    if (that.editRow == null) {
+        that.gridCurrent.addItem(new PMUI.grid.GridPanelRow({
+            data: data
+        }));
+    } else {
+        that.editRow.setData(data);
     }
 
     that.cancelAcceptedValue();
@@ -30079,7 +32618,7 @@ MessageEventDefinition.prototype.addVariableInGrdPnlVariable3 = function () {
 MessageEventDefinition.prototype.cancelAcceptedValue = function () {
     var that = this;
     that.editRow = null;
-    that.editMessageForm.reset();
+    that._resetEditMessageForm();
     that.editMessageForm.setVisible(false);
 };
 
@@ -30185,140 +32724,20 @@ MessageEventDefinition.prototype.messageEventDefintionPutRestProxy = function (d
 
     restProxy.executeRestClient();
 };
-
-
-/*----------------------------------********---------------------------------*/
-var FeatureUtils = function () {
-
-};
-
-FeatureUtils.prototype.generateUId = function () {
-    var text = "",
-        i,
-        possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for (i = 0; i < 16; i += 1) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
+/**
+ * Reset the fields from the form's Edit panel.
+ * @returns {MessageEventDefinition}
+ * @private
+ */
+MessageEventDefinition.prototype._resetEditMessageForm = function () {
+    if (this.editMessageForm) {
+        this.editMessageForm.getItems().map(function (i) {
+            i.setValue("");
+        });
     }
-    return text;
+    return this;
 };
 
-var ElementFactory = function () {
-    this.utils = new FeatureUtils();
-};
-
-ElementFactory.prototype.getElement = function (data) {
-    var element = {};
-    element.id = this.utils.generateUId();
-    element.name = data.name;
-    element.label = data.label;
-    element.valueType = data.valueType;
-    element.controlsWidth = data.controlsWidth;
-    element.required = data.required;
-    element.events = data.events;
-    element.listeners = data.listeners;
-
-    switch (data.type) {
-        case 'text':
-            element.pmType = data.type;
-            element.maxLength = 3;
-            break;
-        case 'hidden':
-            element.pmType = data.type;
-            break;
-        case 'textarea':
-            element.pmType = data.type;
-            element.rows = data.rows;
-            break;
-        case 'dropdown':
-            element.pmType = data.type;
-            element.options = data.options;
-            break;
-        case 'checkbox':
-            element.pmType = data.type;
-            break;
-        case 'link':
-            element.pmType = data.type;
-            break;
-        case 'button':
-            element.pmType = data.type;
-            break;
-        case 'criteria':
-            element.pmType = data.type;
-            element.rows = data.rows;
-            break;
-        default:
-            break;
-    }
-
-    return element;
-};
-
-var FeaturesHandler = function () {
-    this.elementFactory = new ElementFactory();
-    this.utils = new FeatureUtils();
-    this.forms = [];
-};
-
-FeaturesHandler.prototype.registerEvents = function (items) {
-
-};
-
-FeaturesHandler.prototype.registerListeners = function (items) {
-
-};
-
-FeaturesHandler.prototype.wireEvents = function (items) {
-    this.registerEvents(items);
-    this.registerListeners(items);
-};
-
-FeaturesHandler.prototype.parseForm = function (formData) {
-    var form = {};
-    form.id = this.utils.generateUId();
-    form.title = formData.title;
-    form.icon = (formData.icon || '');
-    form.action = formData.action;
-    form.panel = new PMUI.form.Form({
-        id: this.utils.generateUId(),
-        visibleHeader: false,
-        width: DEFAULT_WINDOW_WIDTH - 250,
-        items: this.parseItems(formData)
-    });
-    return form;
-};
-
-FeaturesHandler.prototype.parseItems = function (formData) {
-    var items = [];
-    if (this.validateData(formData)) {
-        for (var i in formData.fields) {
-            items.push(
-                this.elementFactory.getElement(formData.fields[i])
-            );
-        }
-    }
-    this.wireEvents(items);
-    return items;
-};
-
-FeaturesHandler.prototype.validateData = function (formData) {
-    switch (true) {
-        case !(formData.type == 'form'):
-            return false;
-            break;
-        case formData.language == undefined:
-            return false;
-            break;
-        default:
-            return true;
-            break;
-    }
-};
-
-FeaturesHandler.prototype.getForms = function () {
-    return [];
-};
-
-PMDesigner.featuresHandler = new FeaturesHandler();
 /*----------------------------------********---------------------------------*/
 /**
  * @class IntroHelper
@@ -30330,6 +32749,7 @@ PMDesigner.featuresHandler = new FeaturesHandler();
  */
 var IntroHelper = function (options) {
     this.steps = [];
+    this.onExit = null;
     this.introjs = null;
     IntroHelper.prototype.initObject.call(this, options);
 };
@@ -30338,8 +32758,8 @@ IntroHelper.prototype.type = 'IntroHelper';
 IntroHelper.prototype.initObject = function (options) {
     var defaults = {
         steps: [],
-        skipLabel: "Skip"
-
+        skipLabel: "Skip",
+        onExit : new Function()
     };
     $.extend(true, defaults, options);
     this.setSteps(defaults.steps);
@@ -30348,7 +32768,7 @@ IntroHelper.prototype.initObject = function (options) {
     this.setNextLabel(defaults.nextLabel);
     this.setPrevLabel(defaults.prevLabel);
     this.setDoneLabel(defaults.doneLabel);
-
+    this.setOnExit(defaults.onExit);
 };
 
 IntroHelper.prototype.setSteps = function (steps) {
@@ -30380,7 +32800,15 @@ IntroHelper.prototype.setSkipLabel = function (label) {
     return this;
 };
 
+IntroHelper.prototype.setOnExit = function (callback) {
+    if (callback && typeof callback == "function") {
+        this.onExit = callback;
+    }
+    return this;
+};
+
 IntroHelper.prototype.startIntro = function () {
+    var that = this;
     this.introjs = introJs();
     this.introjs.setOptions({
         steps: this.steps,
@@ -30388,6 +32816,9 @@ IntroHelper.prototype.startIntro = function () {
         nextLabel: this.nextLabel,
         prevLabel: this.prevLabel,
         doneLabel: this.doneLabel
+    });
+    this.introjs.onexit(function () {
+        that.onExit();
     });
 
     this.introjs.start();
@@ -30732,7 +33163,7 @@ IntroHelper.prototype.startIntro = function () {
             width: '900px',
             height: "300px",
             name: "formScriptTask",
-            title: "".translate(),
+            title: '',
             items: [
                 {
                     id: "panelDetailsCustom",
@@ -30894,7 +33325,10 @@ IntroHelper.prototype.startIntro = function () {
             getTimerEventData,
             validateItems,
             domSettings,
-            eventType = activity.getEventType();
+            eventType = activity.getEventType(),
+            regexDay = new RegExp(/^(((0|1|2)?[0-9])|(3[01]))$/),
+            regexHour = new RegExp(/^(((0|1)?[0-9])|(2[0-4]))$/),
+            regexMinute = new RegExp(/^([0-5]?[0-9])$/);
 
         /*window*/
         buttonCancel = new PMUI.ui.Button({
@@ -31017,9 +33451,16 @@ IntroHelper.prototype.startIntro = function () {
                             };
                             break;
                         case "6": /*wait for*/
-                            if (formData.dayType == "" && formData.hourType == "" && formData.minuteType == "") {
-                                PMDesigner.msgWinError("At least one of these fields must be filled (Day, Hour, Minute)".translate());
+                            if ((formData.dayType === '' || formData.dayType === '00' || formData.dayType === '0') &&
+                                (formData.hourType === '' || formData.hourType === '00' || formData.hourType === '0') &&
+                                (formData.minuteType === '' || formData.minuteType === '00' || formData.minuteType === '0')) {
+                                PMDesigner.msgWinError("The amount of time entered is not valid. Please fill in at least one of the fields (day, hour, or minute)".translate());
                                 return;
+                            } else {
+                                if (!regexDay.test(formData.dayType) || !regexHour.test(formData.hourType) || !regexMinute.test(formData.minuteType)) {
+                                    PMDesigner.msgWinError("The amount of time entered is not valid. Please fill in at least one of the fields (day, hour, or minute)".translate());
+                                    return;
+                                }
                             }
                             dataTimer = {
                                 evn_uid: evnUid,
@@ -31305,13 +33746,14 @@ IntroHelper.prototype.startIntro = function () {
         startDate = new PMUI.field.DateTimeField({
             id: 'startDate',
             label: 'Start date'.translate(),
-            //value: new Date(),
             datetime: false,
             dateFormat: 'yy-mm-dd',
             firstDay: 1,
             controlsWidth: 100,
             required: false,
-            readOnly: true
+            readOnly: true,
+            minDate: 0,
+            maxDate: 1460
         });
 
         endDate = new PMUI.field.DateTimeField({
@@ -31324,7 +33766,9 @@ IntroHelper.prototype.startIntro = function () {
             firstDay: 1,
             controlsWidth: 100,
             required: false,
-            readOnly: true
+            readOnly: true,
+            minDate: 0,
+            maxDate: 1460
         });
 
         oneDateTime = new PMUI.field.DateTimeField({
@@ -31335,7 +33779,9 @@ IntroHelper.prototype.startIntro = function () {
             firstDay: 1,
             controlsWidth: 150,
             required: false,
-            readOnly: true
+            readOnly: true,
+            minDate: 0,
+            maxDate: 1460
         });
 
         daysGroup = new PMUI.field.CheckBoxGroupField({
@@ -31475,7 +33921,9 @@ IntroHelper.prototype.startIntro = function () {
             firstDay: 1,
             controlsWidth: 150,
             required: false,
-            readOnly: true
+            readOnly: true,
+            minDate: 0,
+            maxDate: 1460
         });
 
         formTimerEvent = new PMUI.form.Form({
@@ -31485,7 +33933,7 @@ IntroHelper.prototype.startIntro = function () {
             width: '900px',
             height: "300px",
             name: "formTimerEvent",
-            title: "".translate(),
+            title: '',
             items: [
                 {
                     id: "panelDetailsCustom",
@@ -31732,16 +34180,14 @@ IntroHelper.prototype.startIntro = function () {
                 valueItem,
                 regexTest;
 
-            if (itemId == 'dayType') {
-                regexTest = new RegExp(/^([1-9]|[1-2][0-9]|3[0-1])$/);
-                message = "Error value: Day: 1 - 31".translate();
-            }
-            if (itemId == 'hourType') {
-                regexTest = new RegExp(/^([0-9]|1[0-9]|2[0-4])$/);
+            if (itemId === 'dayType') {
+                regexTest = regexDay;
+                message = "Error value: Day: 0 - 31".translate();
+            } else if (itemId === 'hourType') {
+                regexTest = regexHour;
                 message = "Error value: Hour: 0 - 23".translate();
-            }
-            if (itemId == 'minuteType') {
-                regexTest = new RegExp(/^([0-9]|[1-2][0-9]|[3-4][0-9]|5[0-9]|6[0])$/);
+            } else if (itemId === 'minuteType') {
+                regexTest = regexMinute;
                 message = "Error value: Minute: 0 - 59".translate();
             }
 
@@ -31761,11 +34207,11 @@ IntroHelper.prototype.startIntro = function () {
 
             timerEventPropertiesWindow.footer.html.style.textAlign = 'right';
 
-            $('#hourType, #dayType, #minuteType').find('span input:eq(0)').bind('change', function () {
+            $('#hourType, #dayType, #minuteType').find('span input:eq(0)').bind('blur change', function () {
                 validateItems($(this).closest('div').attr('id'));
             });
 
-            $("#dayType").find("input").attr({"type": "number", "maxlength": "2", "min": "1", "max": "31"});
+            $("#dayType").find("input").attr({"type": "number", "maxlength": "2", "min": "0", "max": "31"});
             $("#hourType").find("input").attr({"type": "number", "maxlength": "2", "min": "0", "max": "23"});
             $("#minuteType").find("input").attr({"type": "number", "maxlength": "2", "min": "0", "max": "59"});
 
@@ -31871,7 +34317,7 @@ IntroHelper.prototype.startIntro = function () {
                         (new PMRestClient({
                             endpoint: 'file-manager',
                             typeRequest: 'post',
-                            messageError: ''.translate(),
+                            messageError: '',
                             data: {
                                 prf_filename: "emailEvent_" + new Date().getTime() + ".html",
                                 prf_path: "templates",
@@ -31914,7 +34360,7 @@ IntroHelper.prototype.startIntro = function () {
                         (new PMRestClient({
                             endpoint: 'file-manager/' + dataForm.prf_uid,
                             typeRequest: 'update',
-                            messageError: ''.translate(),
+                            messageError: '',
                             data: {
                                 prf_content: tinyMCE.activeEditor.getContent()
                             },
@@ -32084,7 +34530,7 @@ IntroHelper.prototype.startIntro = function () {
             width: '900px',
             height: "300px",
             name: "formEmailEvent",
-            title: "".translate(),
+            title: '',
             items: [
                 {
                     id: "panelDetailsCustom",
@@ -32172,6 +34618,8 @@ IntroHelper.prototype.startIntro = function () {
                 skin: 'o2k7',
                 theme: 'advanced',
                 skin_variant: 'silver',
+                relative_urls : false,
+                remove_script_host : false,
                 plugins: 'advhr,advimage,advlink,advlist,autolink,autoresize,contextmenu,directionality,emotions,example,example_dependency,fullpage,fullscreen,iespell,inlinepopups,insertdatetime,layer,legacyoutput,lists,media,nonbreaking,noneditable,pagebreak,paste,preview,print,save,searchreplace,style,tabfocus,table,template,visualblocks,visualchars,wordcount,xhtmlxtras,pmSimpleUploader,pmVariablePicker,style',
                 theme_advanced_buttons1: 'pmSimpleUploader,|,pmVariablePicker,|,bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontselect,fontsizeselect,|,cut,copy,paste',
                 theme_advanced_buttons2: 'bullist,numlist,|,outdent,indent,blockquote,|,tablecontrols,|,undo,redo,|,link,unlink,image,|,forecolor,backcolor,styleprops',
@@ -32226,7 +34674,7 @@ IntroHelper.prototype.startIntro = function () {
                             (new PMRestClient({
                                 endpoint: 'file-manager',
                                 typeRequest: 'get',
-                                messageError: ''.translate(),
+                                messageError: '',
                                 data: {
                                     path: "templates"
                                 },
@@ -32263,7 +34711,7 @@ IntroHelper.prototype.startIntro = function () {
             (new PMRestClient({
                 endpoint: 'email-event/by-event/' + activityId,
                 typeRequest: 'remove',
-                messageError: ''.translate(),
+                messageError: '',
                 functionSuccess: function (xhr, response) {
                 },
                 functionFailure: function (xhr, response) {

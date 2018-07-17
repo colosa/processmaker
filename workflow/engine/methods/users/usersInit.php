@@ -1,6 +1,8 @@
 <?php
 global $RBAC;
 
+use ProcessMaker\Core\System;
+
 require_once 'classes/model/Users.php';
 unset( $_SESSION['CURRENT_USER'] );
 $oUser = new Users();

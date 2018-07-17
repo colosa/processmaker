@@ -46,8 +46,6 @@ if (($RBAC_Response = $RBAC->userCanAccess( "PM_USERS" )) != 1) {
     return $RBAC_Response;
 }
 
-G::LoadClass( 'groups' );
-
 $G_MAIN_MENU = 'wf.login';
 $G_MENU_SELECTED = '';
 

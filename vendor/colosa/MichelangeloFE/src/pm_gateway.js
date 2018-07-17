@@ -469,8 +469,8 @@ PMGateway.prototype.isSupported = function () {
  * @returns {PMGateway}
  */
 PMGateway.prototype.evaluateGatewayDirection = function(){
-    var incomings = this.getIncomingConnections('SEQUENCE') || [],
-        outgoings = this.getOutgoingConnections('SEQUENCE') || [],
+    var incomings = this.getIncomingConnections('SEQUENCE', 'DEFAULT') || [],
+        outgoings = this.getOutgoingConnections('SEQUENCE', 'DEFAULT') || [],
         direction = "DIVERGING";
     if (outgoings.length < incomings.length) {
         if (incomings.length === 1 && outgoings.length === 0){

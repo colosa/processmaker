@@ -21,7 +21,9 @@
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
-G::LoadSystem('inputfilter');
+
+use ProcessMaker\Core\System;
+
 $filter = new InputFilter();
 $_POST = $filter->xssFilterHard($_POST);
 $_REQUEST = $filter->xssFilterHard($_REQUEST);
@@ -42,9 +44,6 @@ if ($actionAjax == 'messageHistoryGridList_JXP') {
     if (!isset($_REQUEST['limit']) || $_REQUEST['limit'] =='') {
         $_REQUEST['limit'] = 20;
     }
-
-    G::LoadClass( 'case' );
-    G::LoadClass( "BasePeer" );
 
     $dir = isset( $_POST['dir'] ) ? $_POST['dir'] : 'ASC';
     $sort = isset( $_POST['sort'] ) ? $_POST['sort'] : '';
@@ -160,7 +159,6 @@ if ($actionAjax == 'showHistoryMessage') {
       </script>
     <?php
 
-    G::LoadClass( 'case' );
     $oCase = new Cases();
 
     $_POST["APP_UID"] = $_REQUEST["APP_UID"];
@@ -192,17 +190,13 @@ if ($actionAjax == 'sendMailMessage_JXP') {
         $_POST['APP_UID'] = $_REQUEST['APP_UID'];
         $_POST['APP_MSG_UID'] = $_REQUEST['APP_MSG_UID'];
 
-        G::LoadClass( 'case' );
-        G::LoadClass( 'spool' );
 
         $oCase = new Cases();
         $data = $oCase->getHistoryMessagesTrackerView( $_POST['APP_UID'], $_POST['APP_MSG_UID'] );
 
-        G::LoadClass('system');
-
         $aSetup = System::getEmailConfiguration();
 
-        $oSpool = new spoolRun();
+        $oSpool = new SpoolRun();
 
         $oSpool->setConfig($aSetup);
         $oSpool->create( array ('msg_uid' => $data['MSG_UID'],'app_uid' => $data['APP_UID'],'del_index' => $data['DEL_INDEX'],'app_msg_type' => $data['APP_MSG_TYPE'],'app_msg_subject' => $data['APP_MSG_SUBJECT'],'app_msg_from' => $data['APP_MSG_FROM'],'app_msg_to' => $data['APP_MSG_TO'],'app_msg_body' => $data['APP_MSG_BODY'],'app_msg_cc' => $data['APP_MSG_CC'],'app_msg_bcc' => $data['APP_MSG_BCC'],'app_msg_attach' => $data['APP_MSG_ATTACH'],'app_msg_template' => $data['APP_MSG_TEMPLATE'],'app_msg_status' => 'pending'

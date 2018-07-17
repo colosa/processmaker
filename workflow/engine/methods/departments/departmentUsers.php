@@ -59,8 +59,6 @@ $oHeadPublisher = & headPublisher::getSingleton();
 $oHeadPublisher->addExtJsScript( 'departments/departmentUsers', false ); //adding a javascript file .js
 $oHeadPublisher->addContent( 'departments/departmentUsers' ); //adding a html file  .html.
 
-
-G::LoadClass( 'configuration' );
 $c = new Configurations();
 
 $arrayConfigPage = $c->getConfiguration('departmentUsersList', 'pageSize', null, $_SESSION['USER_LOGGED']);

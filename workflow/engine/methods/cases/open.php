@@ -40,7 +40,6 @@ if (!isset($_GET['APP_UID']) && !isset($_GET['APP_NUMBER']) && !isset($_GET['DEL
 }
 //Get the APP_UID related to APP_NUMBER
 if (!isset($_GET['APP_UID']) && isset($_GET['APP_NUMBER'])) {
-    G::LoadClass('case');
     $oCase = new Cases();
     $appUid = $oCase->getApplicationUIDByNumber(htmlspecialchars($_GET['APP_NUMBER']));
     if (is_null( $appUid )) {
@@ -51,7 +50,6 @@ if (!isset($_GET['APP_UID']) && isset($_GET['APP_NUMBER'])) {
 }
 //If we don't have the DEL_INDEX we get the current delIndex. Data reporting tool does not have this information
 if (!isset($_GET['DEL_INDEX'])) {
-    G::LoadClass('case');
     $oCase = new Cases();
     $delIndex = $oCase->getCurrentDelegation($appUid, $_SESSION['USER_LOGGED']);
     if (is_null( $delIndex )) {
@@ -64,9 +62,6 @@ if (!isset($_GET['DEL_INDEX'])) {
 
 $tasUid = (isset($_GET['TAS_UID'])) ? $tasUid = htmlspecialchars($_GET['TAS_UID']) : '';
 
-require_once ("classes/model/Step.php");
-G::LoadClass( "configuration" );
-G::LoadClass( "case" );
 $oCase = new Cases();
 $conf = new Configurations();
 
@@ -99,12 +94,14 @@ if( isset($_GET['action']) && ($_GET['action'] == 'jump') ) {
 }
 
 if(isset($_GET['actionFromList']) && ($_GET['actionFromList'] === 'to_revise') ){
-    $oApp = new Application;
-    $oApp->Load($appUid);
-    //If the case is completed can not update the information from supervisor/review
-    if($oApp->getAppStatus() === 'COMPLETED') {
+    $oSupervisor = new \ProcessMaker\BusinessModel\ProcessSupervisor();
+    $caseCanBeReview = $oSupervisor->reviewCaseStatusForSupervisor($appUid, $delIndex);
+    //Check if the case has the correct status for update the information from supervisor/review
+    if (!$caseCanBeReview) {
+        //The supervisor can not edit the information
         $script = 'cases_Open?';
     } else {
+        //The supervisor can edit the information, the case are in TO_DO
         $script = 'cases_OpenToRevise?APP_UID=' . $appUid . '&DEL_INDEX=' . $delIndex . '&TAS_UID=' . $tasUid;
         $oHeadPublisher->assign( 'treeToReviseTitle', G::loadtranslation( 'ID_STEP_LIST' ) );
         $casesPanelUrl = 'casesToReviseTreeContent?APP_UID=' . $appUid . '&DEL_INDEX=' . $delIndex;

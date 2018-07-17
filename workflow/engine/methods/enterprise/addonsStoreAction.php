@@ -1,8 +1,7 @@
 <?php
-require_once PATH_CORE . 'classes' . PATH_SEP . 'class.enterpriseUtils.php';
-require_once PATH_CORE . 'classes' . PATH_SEP . 'class.pmLicenseManager.php';
-require_once PATH_CORE . 'methods' . PATH_SEP . 'enterprise' . PATH_SEP . 'enterprise.php';
-require_once PATH_CORE . 'classes' . PATH_SEP . 'model' . PATH_SEP . 'AddonsManagerPeer.php';
+
+use ProcessMaker\Core\System;
+use ProcessMaker\Plugins\PluginRegistry;
 
 function runBgProcessmaker($task, $log)
 {
@@ -54,12 +53,12 @@ try {
                     $dir = PATH_DATA_SITE;
                     G::uploadFile($aInfoLoadFile["tmp_name"], $dir, $aInfoLoadFile["name"]);
                     //reading the file that was uploaded
-                    $oPmLicenseManager = &pmLicenseManager::getSingleton();
+                    $oPmLicenseManager = &PmLicenseManager::getSingleton();
                     $response = $oPmLicenseManager->installLicense($dir . $aInfoLoadFile["name"]);
 
                     ///////
                     //This command also find the following file "AddonsStore.php"
-                    $licenseManager = &pmLicenseManager::getSingleton();
+                    $licenseManager = &PmLicenseManager::getSingleton();
 
                     preg_match("/^license_(.*).dat$/", $licenseManager->file, $matches);
                     $realId = urlencode($matches[1]);
@@ -79,39 +78,15 @@ try {
 
                     BasePeer::doUpdate($oCriteriaSelect, $oCriteriaUpdate, $cnn);
 
-                    ///////
-                    //$licenseManager = &pmLicenseManager::getSingleton();
-
-                    //plugin.singleton //are all the plugins that are enabled in the SYS_SYS
-                    $pluginRegistry = &PMPluginRegistry::getSingleton();
-
-                    $arrayAddon = array();
-
-                    //ee //all plugins enterprise installed in /processmaker/workflow/engine/plugins (no matter if they are enabled/disabled)
-                    if (file_exists(PATH_DATA_SITE . "ee")) {
-                        $arrayAddon = unserialize(trim(file_get_contents(PATH_DATA_SITE . "ee")));
-                    }
-
-                    foreach ($arrayAddon as $addon) {
-                        $sFileName = substr($addon["sFilename"], 0, strpos($addon["sFilename"], "-"));
-
-                        if (file_exists(PATH_PLUGINS . $sFileName . ".php")) {
-                            $addonDetails = $pluginRegistry->getPluginDetails($sFileName . ".php");
-                            $enabled = 0;
-
-                            if ($addonDetails) {
-                                $enabled = ($addonDetails->enabled)? 1 : 0;
-                            }
-
-                            if ($enabled == 1 && !in_array($sFileName, $licenseManager->features)) {
-                                require_once (PATH_PLUGINS . $sFileName . ".php");
-
-                                $pluginRegistry->disablePlugin($sFileName);
-                            }
+                    //are all the plugins that are enabled in the workspace
+                    $pluginRegistry = PluginRegistry::loadSingleton();
+                    /** @var \ProcessMaker\Plugins\Interfaces\PluginDetail $plugin */
+                    foreach ($pluginRegistry->getAllPluginsDetails() as $plugin) {
+                        if ($plugin->isEnabled() && !in_array($plugin->getNamespace(), $licenseManager->features)) {
+                            $pluginRegistry->disablePlugin($plugin->getNamespace());
+                            $pluginRegistry->savePlugin($plugin->getNamespace());
                         }
                     }
-
-                    file_put_contents(PATH_DATA_SITE . "plugin.singleton", $pluginRegistry->serializeInstance());
                 }
             }
             break;
@@ -207,10 +182,6 @@ try {
                         break;
                     }
 
-                    //$logContents = file_get_contents("$log.log", false, NULL, 0, 10);
-                    //if (!empty($logContents))
-                    //  break;
-
                     $retries += 1;
 
                     if ($retries > $max_retries) {
@@ -218,11 +189,6 @@ try {
                         break;
                     }
                 }
-
-                //if ($failed) {
-                //    //$addon->clearState(); //clearState no found
-                //    $result["success"] = false;
-                //}
 
                 $result["status"] = "OK";
             } catch (Exception $e) {
@@ -246,7 +212,7 @@ try {
                 }
 
                 ///////
-                $licenseManager = &pmLicenseManager::getSingleton();
+                $licenseManager = &PmLicenseManager::getSingleton();
                 $server = $licenseManager->server;
                 $workspace = (isset($licenseManager->workspace)) ? $licenseManager->workspace : 'pmLicenseSrv';
                 $url = "http://$server/sys".$workspace."/en/green/services/rest";
@@ -355,4 +321,3 @@ try {
         ))
     );
 }
-

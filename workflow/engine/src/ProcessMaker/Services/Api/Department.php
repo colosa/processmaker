@@ -102,13 +102,21 @@ class Department extends Api
     }
 
     /**
+     * Assign a user to a specified department in version 3.0 and later. If the 
+     * user is already a member of another department, the user will be transfered 
+     * to the specified department.
+     * 
      * @url POST /:dep_uid/assign-user
-     *
+     * @status 201
+     * 
      * @param string $dep_uid      {@min 32}{@max 32}
      * @param array  $request_data
-     *
-     * @status 201
-     *
+     * 
+     * @return array
+     * @throws RestException 
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_USERS}
      */
     public function doPostAssignUser($dep_uid, array $request_data)
     {
@@ -123,6 +131,8 @@ class Department extends Api
 
     /**
      * @url DELETE /:dep_uid/unassign-user/:usr_uid
+     * @access protected
+     * @class AccessControl {@permission PM_USERS}
      *
      * @param string $dep_uid {@min 1}{@max 32}
      * @param string $usr_uid {@min 1}{@max 32}
@@ -141,13 +151,18 @@ class Department extends Api
     }
 
     /**
+     * Update manager user
+     *
      * @url PUT /:dep_uid/set-manager/:usr_uid
      *
      * @param string $dep_uid {@min 1}{@max 32}
      * @param string $usr_uid {@min 1}{@max 32}
      *
      * @return array
+     * @throws RestException
      *
+     * @access protected
+     * @class AccessControl {@permission PM_USERS}
      */
     public function doPutSetManager($dep_uid, $usr_uid)
     {
@@ -180,15 +195,19 @@ class Department extends Api
     }
 
     /**
+     * Create a new department.
+     * 
      * @url POST
-     *
+     * @status 201
+     * 
      * @param array $request_data
      * @param string $dep_title {@from body} {@min 1}
-     *
+     * 
      * @return array
-     *
-     * @status 201
-     *
+     * @throws RestException 
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_USERS}
      */
     public function doPost($request_data, $dep_title)
     {
@@ -202,11 +221,17 @@ class Department extends Api
     }
 
     /**
+     * Update department.
+     *
      * @url PUT /:dep_uid
      *
      * @param string $dep_uid      {@min 1}{@max 32}
      * @param array  $request_data
      *
+     * @throws RestException
+     *
+     * @access protected
+     * @class AccessControl {@permission PM_USERS}
      */
     public function doPut($dep_uid, $request_data)
     {
@@ -221,6 +246,8 @@ class Department extends Api
 
     /**
      * @url DELETE /:dep_uid
+     * @access protected
+     * @class AccessControl {@permission PM_USERS}
      *
      * @param string $dep_uid {@min 1}{@max 32}
      *

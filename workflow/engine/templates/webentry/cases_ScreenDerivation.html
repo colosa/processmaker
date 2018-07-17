@@ -1,0 +1,6 @@
+<script>
+    if({$derivationResponse|@json_encode})
+        parent.fullfill({$webEntryUrlEvaluated|@json_encode});
+    else
+        parent.reject();
+</script>

@@ -50,7 +50,8 @@ CanvasContainerBehavior.prototype.addToContainer = function (container, shape, x
     container.updateDimensions(10);
     // adds the shape to either the customShape arrayList or the regularShapes
     // arrayList if possible
-    canvas.addToList(shape);
+    canvas.addToList(shape); 
+    canvas.triggerCreateEvent(shape, []);
 };
 CanvasContainerBehavior.prototype.addShape = function (container, shape, x, y) {
     shape.setPosition(x, y);
@@ -65,5 +66,15 @@ CanvasContainerBehavior.prototype.addShape = function (container, shape, x, y) {
     shape.applyBehaviors();
     shape.attachListeners();
     return this;
-
+};
+/**
+ * Removes shape from its current container
+ * @param {PMUI.draw.Shape} shape shape to be removed
+ * @template
+ * @protected
+ */
+CanvasContainerBehavior.prototype.removeFromContainer = function (shape) {
+    var canvas = shape.getCanvas();
+    canvas.triggerRemoveEvent(shape, []);
+    PMUI.behavior.RegularContainerBehavior.prototype.removeFromContainer.call(this, shape);
 };

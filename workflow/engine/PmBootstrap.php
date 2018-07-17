@@ -1,5 +1,7 @@
 <?php
 //test
+use ProcessMaker\Core\System;
+
 class PmBootstrap extends Bootstrap
 {
     public $pmConfig = array();
@@ -66,7 +68,6 @@ class PmBootstrap extends Bootstrap
         // pm workflow classes (static load)
         $this->autoloader->registerClass('System', PATH_CORE . 'classes/class.system');
 
-        //$this->autoloader->registerClass('Services_JSON', PATH_THIRDPARTY .'pear/json/class.json');
         $this->autoloader->registerClass('Smarty', PATH_THIRDPARTY . 'smarty/libs/Smarty.class');
 
         $this->autoloader->registerClass('Propel', PATH_THIRDPARTY . 'propel/Propel');
@@ -83,7 +84,7 @@ class PmBootstrap extends Bootstrap
         $this->autoloader->registerClass('publisher', PATH_GULLIVER . 'class.publisher');
         $this->autoloader->registerClass('templatePower', PATH_GULLIVER . 'class.templatePower');
         $this->autoloader->registerClass('xmlDocument', PATH_GULLIVER . 'class.xmlDocument');
-        $this->autoloader->registerClass('XmlForm_Field_XmlMenu', PATH_GULLIVER . 'class.xmlMenu');
+        $this->autoloader->registerClass('XmlFormFieldXmlMenu', PATH_GULLIVER . 'class.xmlMenu');
         $this->autoloader->registerClass('xmlform', PATH_GULLIVER . 'class.xmlform');
 
         $this->autoloader->registerClass('xmlformExtension', PATH_GULLIVER . 'class.xmlformExtension');
@@ -97,8 +98,8 @@ class PmBootstrap extends Bootstrap
         $this->autoloader->registerClass('headPublisher', PATH_GULLIVER . 'class.headPublisher');
         $this->autoloader->registerClass('Xml_Node', PATH_GULLIVER . 'class.xmlDocument');
         $this->autoloader->registerClass('Xml_document', PATH_GULLIVER . 'class.xmlDocument');
-        $this->autoloader->registerClass('XmlForm_Field_*', PATH_GULLIVER . 'class.xmlform');
-        $this->autoloader->registerClass('serverConf', PATH_CORE . 'classes/class.serverConfiguration');
+        $this->autoloader->registerClass('XmlFormField*', PATH_GULLIVER . 'class.xmlform');
+        $this->autoloader->registerClass('ServerConf', PATH_CORE . 'classes/class.serverConfiguration');
     }
 
     /**
@@ -210,8 +211,8 @@ class PmBootstrap extends Bootstrap
     {
         // new installer, extjs based
         define('PATH_DATA', PATH_C);
-        require_once ( PATH_CONTROLLERS . 'installer.php' );
-        $controller = 'Installer';
+        require_once ( PATH_CONTROLLERS . 'InstallerModule.php' );
+        $controller = InstallerModule::class;
 
         // if the method name is empty set default to index method
         if (strpos(SYS_TARGET, '/') !== false) {
@@ -224,7 +225,7 @@ class PmBootstrap extends Bootstrap
         $controllerAction = ($controllerAction != '' && $controllerAction != 'login')? $controllerAction: 'index';
 
         // create the installer controller and call its method
-        if( is_callable(Array('Installer', $controllerAction)) ) {
+        if (is_callable([InstallerModule::class, $controllerAction])) {
             $installer = new $controller();
             $installer->setHttpRequestData($_REQUEST);
             $installer->call($controllerAction);
@@ -306,7 +307,7 @@ class PmBootstrap extends Bootstrap
 
         $noLoginFolders[] = 'services';
         $noLoginFolders[] = 'tracker';
-        $noLoginFolders[] = 'installer';
+        $noLoginFolders[] = 'InstallerModule';
 
       // This sentence is used when you lost the Session
       if (! in_array(SYS_TARGET, $noLoginFiles)
@@ -317,14 +318,12 @@ class PmBootstrap extends Bootstrap
         $bRedirect = true;
 
         if (isset($_GET['sid'])) {
-          G::LoadClass('sessions');
           $oSessions = new Sessions();
           if ($aSession = $oSessions->verifySession($_GET['sid'])) {
             require_once 'classes/model/Users.php';
             $oUser = new Users();
             $aUser = $oUser->load($aSession['USR_UID']);
-            $_SESSION['USER_LOGGED']  = $aUser['USR_UID'];
-            $_SESSION['USR_USERNAME'] = $aUser['USR_USERNAME'];
+            initUserSession($aUser['USR_UID'], $aUser['USR_USERNAME']);
             $bRedirect = false;
             $RBAC->initRBAC();
             $RBAC->loadUserRolePermission( $RBAC->sSystem, $_SESSION['USER_LOGGED'] );

@@ -1,5 +1,8 @@
 <?php
 
+use ProcessMaker\Core\System;
+use ProcessMaker\Plugins\PluginRegistry;
+
 /**
  * Designer Controller
  *
@@ -7,11 +10,16 @@
  * @access public
  */
 
+use Maveriks\Util\ClassLoader;
+use \OAuth2\Request;
+use \ProcessMaker\BusinessModel\Light\Tracker;
+use \ProcessMaker\Services\OAuth2\Server;
+
 class Designer extends Controller
 {
     protected $clientId = 'x-pm-local-client';
 
-    public function __construct ()
+    public function __construct()
     {
 
     }
@@ -26,38 +34,9 @@ class Designer extends Controller
         $proUid = isset($httpData->prj_uid) ? $httpData->prj_uid : '';
         $appUid = isset($httpData->app_uid) ? $httpData->app_uid : '';
         $proReadOnly = isset($httpData->prj_readonly) ? $httpData->prj_readonly : 'false';
-        $client = $this->getClientCredentials();
 
-        if (isset($httpData->tracker_designer) && $httpData->tracker_designer == 1) {
-            $client["tracker_designer"] = 1;
-        }
-
-        $authCode = $this->getAuthorizationCode($client);
+        $clientToken = $this->getCredentials($httpData);
         $debug = false; //System::isDebugMode();
-
-        $loader = Maveriks\Util\ClassLoader::getInstance();
-        $loader->add(PATH_TRUNK . 'vendor/bshaffer/oauth2-server-php/src/', "OAuth2");
-
-        $request = array(
-            'grant_type' => 'authorization_code',
-            'code' => $authCode
-        );
-        $server = array(
-            'REQUEST_METHOD' => 'POST'
-        );
-        $headers = array(
-            "PHP_AUTH_USER" => $client['CLIENT_ID'],
-            "PHP_AUTH_PW" => $client['CLIENT_SECRET'],
-            "Content-Type" => "multipart/form-data;",
-            "Authorization" => "Basic " . base64_encode($client['CLIENT_ID'] . ":" . $client['CLIENT_SECRET'])
-        );
-
-        $request = new \OAuth2\Request(array(), $request, array(), array(), array(), $server, null, $headers);
-        $oauthServer = new \ProcessMaker\Services\OAuth2\Server();
-        $response = $oauthServer->postToken($request, true);
-        $clientToken = $response->getParameters();
-        $clientToken["client_id"] = $client['CLIENT_ID'];
-        $clientToken["client_secret"] = $client['CLIENT_SECRET'];
 
         $consolidated = 0;
         $enterprise = 0;
@@ -79,10 +58,10 @@ class Designer extends Controller
         $this->setVar('HTTP_SERVER_HOSTNAME', System::getHttpServerHostnameRequestsFrontEnd());
 
         if ($debug) {
-            if (! file_exists(PATH_HTML . "lib-dev/pmUI/build.cache")) {
+            if (!file_exists(PATH_HTML . "lib-dev/pmUI/build.cache")) {
                 throw new RuntimeException("Development JS Files were are not generated!.\nPlease execute: \$>rake pmBuildDebug in pmUI project");
             }
-            if (! file_exists(PATH_HTML . "lib-dev/mafe/build.cache")) {
+            if (!file_exists(PATH_HTML . "lib-dev/mafe/build.cache")) {
                 throw new RuntimeException("Development JS Files were are not generated!.\nPlease execute: \$>rake pmBuildDebug in MichelangeloFE project");
             }
 
@@ -106,7 +85,7 @@ class Designer extends Controller
             $this->setVar('mafeCssFiles', $mafeCssFiles);
         } else {
             $buildhashFile = PATH_HTML . "lib/buildhash";
-            if (! file_exists($buildhashFile)) {
+            if (!file_exists($buildhashFile)) {
                 throw new RuntimeException("CSS and JS Files were are not generated!.\nPlease review install process");
             }
             $buildhash = file_get_contents($buildhashFile);
@@ -115,7 +94,7 @@ class Designer extends Controller
 
         $translationMafe = "/translations/translationsMafe.js";
         $this->setVar('translationMafe', $translationMafe);
-        if (!file_exists(PATH_HTML . "translations" . PATH_SEP. 'translationsMafe' . ".js")) {
+        if (!file_exists(PATH_HTML . "translations" . PATH_SEP . 'translationsMafe' . ".js")) {
             $translation = new Translation();
             $translation->generateFileTranslationMafe();
         }
@@ -148,10 +127,10 @@ class Designer extends Controller
         $sourceCss = array();
         $sourceJs = array();
 
-        $pluginRegistry = &PMPluginRegistry::getSingleton();
+        $pluginRegistry = PluginRegistry::loadSingleton();
         $srcPath = $pluginRegistry->getDesignerSourcePath();
 
-        foreach ($srcPath as $key => $value) {
+        foreach ($srcPath as $value) {
             $ext = pathinfo($value->pathFile, PATHINFO_EXTENSION);
             if ($ext === "css") {
                 $sourceCss[] = $value->pathFile;
@@ -175,10 +154,10 @@ class Designer extends Controller
 
     protected function getAuthorizationCode($client)
     {
-        \ProcessMaker\Services\OAuth2\Server::setDatabaseSource($this->getDsn());
-        \ProcessMaker\Services\OAuth2\Server::setPmClientId($client['CLIENT_ID']);
+        Server::setDatabaseSource($this->getDsn());
+        Server::setPmClientId($client['CLIENT_ID']);
 
-        $oauthServer = new \ProcessMaker\Services\OAuth2\Server();
+        $oauthServer = new Server();
 
         if (isset($client["tracker_designer"]) && $client["tracker_designer"] == 1) {
             $_SESSION["USER_LOGGED"] = "00000000000000000000000000000001";
@@ -193,7 +172,7 @@ class Designer extends Controller
         ));
 
         $response = $oauthServer->postAuthorize($authorize, $userId, true);
-        $code = substr($response->getHttpHeader('Location'), strpos($response->getHttpHeader('Location'), 'code=')+5, 40);
+        $code = substr($response->getHttpHeader('Location'), strpos($response->getHttpHeader('Location'), 'code=') + 5, 40);
 
         if (isset($client["tracker_designer"]) && $client["tracker_designer"] == 1) {
             unset($_SESSION["USER_LOGGED"]);
@@ -206,8 +185,63 @@ class Designer extends Controller
     {
         list($host, $port) = strpos(DB_HOST, ':') !== false ? explode(':', DB_HOST) : array(DB_HOST, '');
         $port = empty($port) ? '' : ";port=$port";
-        $dsn = DB_ADAPTER.':host='.$host.';dbname='.DB_NAME.$port;
+        $dsn = DB_ADAPTER . ':host=' . $host . ';dbname=' . DB_NAME . $port;
 
         return array('dsn' => $dsn, 'username' => DB_USER, 'password' => DB_PASS);
+    }
+
+    /**
+     * Return credentials oauth2
+     *
+     * @param object $httpData
+     * @return array credentials
+     */
+    public function getCredentials($httpData = null)
+    {
+        $client = $this->getClientCredentials();
+
+        if (!empty($httpData->tracker_designer) && $httpData->tracker_designer == 1) {
+            try {
+                if (!isset($_SESSION['CASE']) && !isset($_SESSION['PIN'])) {
+                    throw (new \Exception(
+                        \G::LoadTranslation('ID_CASE_NOT_EXISTS') . "\n" . \G::LoadTranslation('ID_PIN_INVALID')
+                    ));
+                }
+                Tracker::authentication($_SESSION['CASE'], $_SESSION['PIN']);
+            } catch (\Exception $e) {
+                Bootstrap::registerMonolog('CaseTracker', 400, $e->getMessage(), [], SYS_SYS, 'processmaker.log');
+                \G::header('Location: /errors/error403.php');
+                die();
+            }
+            $client["tracker_designer"] = 1;
+        }
+
+        $authCode = $this->getAuthorizationCode($client);
+
+        $loader = ClassLoader::getInstance();
+        $loader->add(PATH_TRUNK . 'vendor/bshaffer/oauth2-server-php/src/', "OAuth2");
+
+        $request = array(
+            'grant_type' => 'authorization_code',
+            'code' => $authCode
+        );
+        $server = array(
+            'REQUEST_METHOD' => 'POST'
+        );
+        $headers = array(
+            "PHP_AUTH_USER" => $client['CLIENT_ID'],
+            "PHP_AUTH_PW" => $client['CLIENT_SECRET'],
+            "Content-Type" => "multipart/form-data;",
+            "Authorization" => "Basic " . base64_encode($client['CLIENT_ID'] . ":" . $client['CLIENT_SECRET'])
+        );
+
+        $request = new Request(array(), $request, array(), array(), array(), $server, null, $headers);
+        $oauthServer = new Server();
+        $response = $oauthServer->postToken($request, true);
+        $clientToken = $response->getParameters();
+        $clientToken["client_id"] = $client['CLIENT_ID'];
+        $clientToken["client_secret"] = $client['CLIENT_SECRET'];
+
+        return $clientToken;
     }
 }

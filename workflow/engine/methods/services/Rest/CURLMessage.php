@@ -122,7 +122,7 @@ abstract class CURLMessage
      */
     public function displayResponse ()
     {
-        G::LoadSystem('inputfilter');
+
         $filter = new InputFilter();
         $error = curl_error( $this->ch );
         $error = $filter->xssFilterHard($error);

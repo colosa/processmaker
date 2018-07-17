@@ -46,8 +46,6 @@ if (($RBAC_Response = $RBAC->userCanAccess( "PM_USERS" )) != 1) {
     return $RBAC_Response;
 }
 
-G::LoadClass( 'groups' );
-
 $group = new Groupwf();
 
 if (! isset( $_POST['GRP_UID'] )) {

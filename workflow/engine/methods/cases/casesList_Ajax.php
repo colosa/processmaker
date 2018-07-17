@@ -28,7 +28,6 @@ if (!isset($_SESSION['USER_LOGGED'])) {
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
-G::LoadClass( 'case' );
 
 $actionAjax = isset($_REQUEST['actionAjax']) ? $_REQUEST['actionAjax'] : null;
 
@@ -48,7 +47,6 @@ if ($actionAjax == "userValues") {
     $action = isset( $_REQUEST['action'] ) ? $_REQUEST['action'] : null;
     $query = isset( $_REQUEST['query'] ) ? $_REQUEST['query'] : null;
 
-    G::LoadClass("configuration");
     $conf = new Configurations();
     $confEnvSetting = $conf->getFormats();
     $users = array();
@@ -66,6 +64,7 @@ if ($actionAjax == "userValues") {
             $cUsers->addSelectColumn(UsersPeer::USR_ID);
             break;
     }
+    $cUsers->add(UsersPeer::USR_UID, [RBAC::GUEST_USER_UID], Criteria::NOT_IN);
     $cUsers->add(UsersPeer::USR_STATUS, 'CLOSED', Criteria::NOT_EQUAL);
     if (!is_null($query)) {
         $filters = $cUsers->getNewCriterion(UsersPeer::USR_FIRSTNAME, '%' . $query . '%', Criteria::LIKE)->addOr(
@@ -303,7 +302,6 @@ if ($actionAjax == 'showHistoryMessage') {
     </script>
     <?php
 
-    G::LoadClass( 'case' );
     $oCase = new Cases();
 
     $_POST["APP_UID"] = $_REQUEST["APP_UID"];

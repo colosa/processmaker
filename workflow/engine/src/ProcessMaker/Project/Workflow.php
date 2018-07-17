@@ -1,19 +1,20 @@
 <?php
 namespace ProcessMaker\Project;
 
-use \Criteria;
-use \ResultSet;
+use Criteria;
+use ProcessMaker\Plugins\PluginRegistry;
+use ResultSet;
 
-use \Process;
-use \Tasks;
-use \Task;
-use \Route;
-use \RoutePeer;
+use Process as ClassesProcess;
+use Tasks;
+use Task as ClassesTask;
+use Route;
+use RoutePeer;
 
 use ProcessMaker\Util\Common;
 use ProcessMaker\Exception;
 use ProcessMaker\Util;
-
+use ReportTables;
 /**
  * Class Workflow
  *
@@ -37,7 +38,7 @@ class Workflow extends Handler
         $me = new self();
 
         try {
-            $process = new Process();
+            $process = new ClassesProcess();
             $processData = $process->load($proUid);
         } catch (\Exception $e) {
             if (is_null(\ProcessPeer::retrieveByPK($proUid))) {
@@ -74,12 +75,12 @@ class Workflow extends Handler
             self::log("Create Process with data:", $data);
 
             //validate if process with specified name already exists
-            if (Process::existsByProTitle($data["PRO_TITLE"])) {
+            if (ClassesProcess::existsByProTitle($data["PRO_TITLE"])) {
                 throw new Exception\ProjectAlreadyExists($this, $data["PRO_TITLE"]);
             }
 
             // Create project
-            $process = new Process();
+            $process = new ClassesProcess();
             $this->proUid = $process->create($data, false);
 
             // Call Plugins
@@ -87,12 +88,11 @@ class Workflow extends Handler
             $pluginData['PRO_TEMPLATE'] = empty($data["PRO_TEMPLATE"]) ? "" : $data["PRO_TEMPLATE"];
             $pluginData['PROCESSMAP'] = null;
 
-            $pluginRegistry = \PMPluginRegistry::getSingleton();
+            $pluginRegistry = PluginRegistry::loadSingleton();
             $pluginRegistry->executeTriggers(PM_NEW_PROCESS_SAVE, $pluginData);
 
             // Save Calendar ID for this process
             if (! empty($data["PRO_CALENDAR"])) {
-                //G::LoadClass( "calendar" );
                 $calendar = new \Calendar();
                 $calendar->assignCalendarTo($this->proUid, $data["PRO_CALENDAR"], 'PROCESS');
             }
@@ -106,7 +106,7 @@ class Workflow extends Handler
 
     public function update($data)
     {
-        $process = new Process();
+        $process = new ClassesProcess();
         $data["PRO_UID"] = $this->getUid();
         $process->update($data);
     }
@@ -137,7 +137,7 @@ class Workflow extends Handler
     public static function getList($start = null, $limit = null, $filter = "", $changeCaseTo = CASE_UPPER)
     {
         //return Project::getAll($start, $limit, $filter, $changeCaseTo);
-        $process = new Process();
+        $process = new ClassesProcess();
         $processes = $process->getAllProcesses($start, $limit);
         //$processes = $process->getAll();
 
@@ -182,7 +182,7 @@ class Workflow extends Handler
 
         try {
             self::log("Add Task with data: ", $taskData);
-            $task = new Task();
+            $task = new ClassesTask();
             $tasUid = $task->create($taskData, false);
             self::log("Add Task Success!");
 
@@ -203,7 +203,7 @@ class Workflow extends Handler
     {
         try {
             self::log("Update Task: $tasUid", "With data: ", $taskData);
-            $task = new Task();
+            $task = new ClassesTask();
             $taskData['TAS_UID'] = $tasUid;
             $result = $task->update($taskData);
             self::log("Update Task Success!");
@@ -231,7 +231,7 @@ class Workflow extends Handler
             }
 
             if ($tasType == "SERVICE-TASK") {
-                $registry = \PMPluginRegistry::getSingleton();
+                $registry = PluginRegistry::loadSingleton();
                 //The plugin pmConnectors will be moved to the core in pm.3.3
                 if ($registry->getStatusPlugin('pmConnectors') === 'enabled') {
                     $pathFile = PATH_PLUGINS . 'pmConnectors' . PATH_SEP . 'src' . PATH_SEP . 'Services' . PATH_SEP . 'BusinessModel' . PATH_SEP . 'PmConnectors' . PATH_SEP . 'ServiceTaskBM.php';
@@ -252,7 +252,7 @@ class Workflow extends Handler
     public function getTask($tasUid)
     {
         try {
-            $task = new Task();
+            $task = new ClassesTask();
             $taskData = $task->load($tasUid);
         } catch (\Exception $e){
             $taskData = null;
@@ -581,11 +581,9 @@ class Workflow extends Handler
     public function deleteProcess($sProcessUID, $flagRemoveCases = true, $onlyDiagram = false)
     {
         try {
-            //G::LoadClass('case');
-            //G::LoadClass('reportTables');
 
             //Instance all classes necesaries
-            $oProcess = new \Process();
+            $oProcess = new ClassesProcess();
             $oDynaform = new \Dynaform();
             $oInputDocument = new \InputDocument();
             $oOutputDocument = new \OutputDocument();
@@ -596,7 +594,7 @@ class Workflow extends Handler
             $oSwimlaneElement = new \SwimlanesElements();
             $oConfiguration = new \Configuration();
             $oDbSource = new \DbSource();
-            $oReportTable = new \ReportTables();
+            $oReportTable = new ReportTables();
             $oCaseTracker = new \CaseTracker();
             $oCaseTrackerObject = new \CaseTrackerObject();
 

@@ -27,9 +27,6 @@ $tpl = new TemplatePower(PATH_TPL . "cases" . PATH_SEP . "cases_DynaformHistory.
 
 $tpl->prepare();
 
-require_once 'classes/model/AppHistory.php';
-G::LoadClass('case');
-
 $oCase = new Cases();
 $Fields = $oCase->loadCase($_SESSION['APPLICATION']);
 

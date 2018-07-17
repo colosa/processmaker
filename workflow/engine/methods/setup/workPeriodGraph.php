@@ -25,8 +25,6 @@ if (($RBAC_Response = $RBAC->userCanAccess( "PM_SETUP" )) != 1)
     return $RBAC_Response;
 Header( "Content-type: image/jpeg" );
 
-G::LoadClass( "workPeriod" );
-
 $dbc = new DBConnection();
 $ses = new DBSession( $dbc );
 $obj = new workPeriod( $dbc );

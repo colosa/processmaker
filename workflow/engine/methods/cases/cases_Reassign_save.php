@@ -35,8 +35,7 @@ try {
             die();
             break;
     }
-    //print_r($_POST); die;
-    G::LoadClass( 'case' );
+
     $oCase = new Cases();
 
     if ($_POST['USERS'] != '') {
@@ -44,7 +43,6 @@ try {
 
     }
 
-    require_once 'classes/model/Users.php';
     $oUser = new Users();
     $aUser = $oUser->load( $_POST['USERS'] );
 
@@ -52,7 +50,6 @@ try {
 
     $Fields['USERS'] = $aUser['USR_FIRSTNAME'] . ' ' . $aUser['USR_LASTNAME'] . ' (' . $aUser['USR_USERNAME'] . ')';
 
-    G::LoadClass( 'case' );
     $oCases = new Cases();
     $aCases = $oCases->loadCase( $_POST['APP_UID'], $_POST['DEL_INDEX'] );
 

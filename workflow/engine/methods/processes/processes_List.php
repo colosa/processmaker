@@ -55,8 +55,7 @@ $aLabels['ACTIVE'] = G::LoadTranslation( 'ID_ACTIVE' );
 $aLabels['INACTIVE'] = G::LoadTranslation( 'ID_INACTIVE' );
 $aLabels['CONFIRM'] = G::LoadTranslation( 'ID_MSG_CONFIRM_DELETE_PROCESS' );
 
-G::LoadClass( 'processMap' );
-$oProcess = new processMap();
+$oProcess = new ProcessMap();
 $c = $oProcess->getConditionProcessList();
 
 function activeFalse ($value)

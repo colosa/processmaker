@@ -32,10 +32,6 @@ $id = '';
 if (isset( $_POST['id'] ))
     $id = $_POST['id'];
 
-G::LoadClass( 'languages' );
-G::LoadSystem( 'database_mysql' );
-G::LoadSystem('inputfilter');
-
 $aUpgradeData = unserialize( file_get_contents( PATH_DATA . 'log' . PATH_SEP . "upgrade.data.bin" ) );
 $aWorkspaces = $aUpgradeData['workspaces'];
 
@@ -166,7 +162,7 @@ function processSchemaFile ()
     global $DB_NAME;
 
     try {
-        G::LoadSystem( 'database_' . strtolower( $DB_ADAPTER ) );
+
 
         $aOldSchema = array ();
         $oDataBase = new database( $DB_ADAPTER, $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME );

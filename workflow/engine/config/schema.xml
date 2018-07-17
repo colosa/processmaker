@@ -42,7 +42,7 @@
     <column name="APP_PIN" type="VARCHAR" size="32" required="true" default=""/>
     <column name="APP_DURATION" type="DOUBLE" default="0"/>
     <column name="APP_DELAY_DURATION" type="DOUBLE" default="0"/>
-    <column name="APP_DRIVE_FOLDER_UID" type="VARCHAR" size="32" default="" required="false"/>
+    <column name="APP_DRIVE_FOLDER_UID" type="VARCHAR" size="128" default="" required="false"/>
     <column name="APP_ROUTING_DATA" type="LONGVARCHAR" />
     <validator column="APP_STATUS">
       <rule name="validValues" value="DRAFT|TO_DO|PAUSED|COMPLETED|CANCELLED" message="Please select a valid status." />
@@ -297,6 +297,15 @@
         <parameter name="Comment" value=""/>
       </vendor>
     </index>
+    <index name="indexAppUid">
+      <index-column name="APP_UID"/>
+    </index>
+    <index name="indexAppUidDocUidDocVersionDocType">
+      <index-column name="APP_UID"/>
+      <index-column name="DOC_UID"/>
+      <index-column name="DOC_VERSION"/>
+      <index-column name="APP_DOC_TYPE"/>
+    </index>
   </table>
   <table name="APP_MESSAGE" idMethod="native">
     <vendor type="mysql">
@@ -339,6 +348,9 @@
     <column name="APP_MSG_ERROR" type="LONGVARCHAR" required="false"/>
     <index name="indexForAppUid">
       <index-column name="APP_UID"/>
+    </index>
+    <index name="indexForMsgStatus">
+      <index-column name="APP_MSG_STATUS"/>
     </index>
   </table>
   <table name="APP_OWNER">
@@ -1610,7 +1622,7 @@
     <column name="USR_UX" type="VARCHAR" size="128" default="NORMAL"/>
     <column name="USR_COST_BY_HOUR" type="DECIMAL" size="7,2" required="false" default="0"/>
     <column name="USR_UNIT_COST" type="VARCHAR" size="50" required="false" default=""/>
-    <column name="USR_PMDRIVE_FOLDER_UID" type="VARCHAR" size="32" default="" required="false"/>
+    <column name="USR_PMDRIVE_FOLDER_UID" type="VARCHAR" size="128" default="" required="false"/>
     <column name="USR_BOOKMARK_START_CASES" type="LONGVARCHAR" required="false">
         <vendor type="mysql">
             <parameter name="Field" value="USR_BOOKMARK_START_CASES"/>
@@ -1689,6 +1701,7 @@
     <column name="APP_DELAY_UID" type="VARCHAR" size="32" required="true" primaryKey="true" default=""/>
     <column name="PRO_UID" type="VARCHAR" size="32" required="true" default="0"/>
     <column name="APP_UID" type="VARCHAR" size="32" required="true" default="0"/>
+    <column name="APP_NUMBER" type="INTEGER" required="false" default="0"/>
     <column name="APP_THREAD_INDEX" type="INTEGER" required="true" default="0"/>
     <column name="APP_DEL_INDEX" type="INTEGER" required="true" default="0"/>
     <column name="APP_TYPE" type="VARCHAR" size="20" required="true" default="0"/>
@@ -1700,6 +1713,17 @@
     <column name="APP_DISABLE_ACTION_USER" type="VARCHAR" size="32" default="0"/>
     <column name="APP_DISABLE_ACTION_DATE" type="TIMESTAMP"/>
     <column name="APP_AUTOMATIC_DISABLED_DATE" type="TIMESTAMP"/>
+    <column name="APP_DELEGATION_USER_ID" type="INTEGER" required="false" default="0"/>
+    <column name="PRO_ID" type="INTEGER" required="false" default="0"/>
+    <index name="INDEX_APP_NUMBER">
+      <index-column name="APP_NUMBER"/>
+    </index>
+    <index name="INDEX_USR_ID">
+      <index-column name="APP_DELEGATION_USER_ID"/>
+    </index>
+    <index name="INDEX_PRO_ID">
+      <index-column name="PRO_ID"/>
+    </index>
     <index name="indexAppDelay">
       <index-column name="PRO_UID"/>
       <index-column name="APP_UID"/>
@@ -2305,6 +2329,7 @@
     <column name="USR_LAST_UPDATE_DATE" type="TIMESTAMP"/>
     <column name="USR_LOGGED_NEXT_TIME" type="INTEGER" default="0"/>
     <column name="USR_PASSWORD_HISTORY" type="LONGVARCHAR" required="false"/>
+    <column name="USR_SETTING_DESIGNER" type="LONGVARCHAR"/>
   </table>
   <table name="ADDITIONAL_TABLES">
     <vendor type="mysql">
@@ -3316,32 +3341,56 @@
     <column name="PRF_UPDATE_DATE" type="TIMESTAMP" required="false" />
   </table>
 
-  <table name="WEB_ENTRY">
-      <vendor type="mysql">
-          <parameter name="Name" value="WEB_ENTRY" />
-          <parameter name="Engine" value="InnoDB" />
-          <parameter name="Version" value="10" />
-          <parameter name="Row_format" value="Dynamic" />
-          <parameter name="Data_free" value="0" />
-          <parameter name="Auto_increment" value="" />
-          <parameter name="Check_time" value="" />
-          <parameter name="Collation" value="utf8_general_ci" />
-          <parameter name="Checksum" value="" />
-          <parameter name="Create_options" value="" />
-      </vendor>
-      <column name="WE_UID"  type="VARCHAR" size="32" required="true" primaryKey="true" />
-      <column name="PRO_UID" type="VARCHAR" size="32" required="true" />
-      <column name="TAS_UID" type="VARCHAR" size="32" required="true" />
-      <column name="DYN_UID" type="VARCHAR" size="32" required="true" />
-      <column name="USR_UID" type="VARCHAR" size="32" default="" />
-      <column name="WE_METHOD" type="VARCHAR" size="4" default="HTML" />
-      <column name="WE_INPUT_DOCUMENT_ACCESS" type="INTEGER" default="0" />
-      <column name="WE_DATA" type="LONGVARCHAR" />
-      <column name="WE_CREATE_USR_UID" type="VARCHAR" size="32" default="" required="true" />
-      <column name="WE_UPDATE_USR_UID" type="VARCHAR" size="32" default="" />
-      <column name="WE_CREATE_DATE" type="TIMESTAMP" required="true" />
-      <column name="WE_UPDATE_DATE" type="TIMESTAMP" />
-  </table>
+    <table name="WEB_ENTRY">
+        <vendor type="mysql">
+            <parameter name="Name" value="WEB_ENTRY" />
+            <parameter name="Engine" value="InnoDB" />
+            <parameter name="Version" value="10" />
+            <parameter name="Row_format" value="Dynamic" />
+            <parameter name="Data_free" value="0" />
+            <parameter name="Auto_increment" value="" />
+            <parameter name="Check_time" value="" />
+            <parameter name="Collation" value="utf8_general_ci" />
+            <parameter name="Checksum" value="" />
+            <parameter name="Create_options" value="" />
+        </vendor>
+        <column name="WE_UID"  type="VARCHAR" size="32" required="true" primaryKey="true" />
+        <column name="PRO_UID" type="VARCHAR" size="32" required="true" />
+        <column name="TAS_UID" type="VARCHAR" size="32" required="true" />
+        <column name="DYN_UID" type="VARCHAR" size="32" required="false" />
+        <column name="USR_UID" type="VARCHAR" size="32" required="false" />
+        <column name="WE_METHOD" type="VARCHAR" size="4" default="HTML" />
+        <column name="WE_INPUT_DOCUMENT_ACCESS" type="INTEGER" default="0" />
+        <column name="WE_DATA" type="LONGVARCHAR" />
+        <column name="WE_CREATE_USR_UID" type="VARCHAR" size="32" default="" required="true" />
+        <column name="WE_UPDATE_USR_UID" type="VARCHAR" size="32" default="" />
+        <column name="WE_CREATE_DATE" type="TIMESTAMP" required="true" />
+        <column name="WE_UPDATE_DATE" type="TIMESTAMP" />
+        <!-- PROD-181: Web Entry 2.0 -->
+        <column name="WE_TYPE" type="VARCHAR" size="8" required="true" default="SINGLE"/>
+        <column name="WE_CUSTOM_TITLE" type="LONGVARCHAR" />
+        <column name="WE_AUTHENTICATION" type="VARCHAR" size="14" required="true" default="ANONYMOUS"/>
+        <column name="WE_HIDE_INFORMATION_BAR" type="CHAR" size="1" default="1"/>
+        <column name="WE_CALLBACK" type="VARCHAR" size="13" required="true" default="PROCESSMAKER"/>
+        <column name="WE_CALLBACK_URL" type="LONGVARCHAR" />
+        <column name="WE_LINK_GENERATION" type="VARCHAR" size="8" required="true" default="DEFAULT" />
+        <column name="WE_LINK_SKIN" type="VARCHAR" size="255" />
+        <column name="WE_LINK_LANGUAGE" type="VARCHAR" size="255" />
+        <column name="WE_LINK_DOMAIN" type="LONGVARCHAR" />
+        <column name="WE_SHOW_IN_NEW_CASE" type="CHAR" size="1" default="1"/>
+        <validator column="WE_TYPE">
+            <rule name="validValues" value="SINGLE|MULTIPLE" message="Please enter a valid value for WE_TYPE" />
+        </validator>
+        <validator column="WE_AUTHENTICATION">
+            <rule name="validValues" value="ANONYMOUS|LOGIN_REQUIRED" message="Please enter a valid value for WE_AUTHENTICATION" />
+        </validator>
+        <validator column="WE_CALLBACK">
+            <rule name="validValues" value="PROCESSMAKER|CUSTOM|CUSTOM_CLEAR" message="Please enter a valid value for WE_CALLBACK" />
+        </validator>
+        <validator column="WE_LINK_GENERATION">
+            <rule name="validValues" value="DEFAULT|ADVANCED" message="Please enter a valid value for WE_LINK_GENERATION" />
+        </validator>
+    </table>
 
   <!--
     OAUTH TABLES DEFINITION
@@ -4177,9 +4226,9 @@
         <column name="PRO_UID" type="VARCHAR" size="32" required="true" default=""/>
         <column name="APP_NUMBER" type="INTEGER" required="true" default="0"/>
         <column name="APP_STATUS" type="VARCHAR" size="32" required="false" default="0"/>
-        <column name="APP_TITLE" type="VARCHAR" size="255" required="false" default=""/>
-        <column name="APP_PRO_TITLE" type="VARCHAR" size="255" required="false" default=""/>
-        <column name="APP_TAS_TITLE" type="VARCHAR" size="255" required="false" default=""/>
+        <column name="APP_TITLE" type="LONGVARCHAR" required="false"/>
+        <column name="APP_PRO_TITLE" type="LONGVARCHAR" required="false"/>
+        <column name="APP_TAS_TITLE" type="LONGVARCHAR" required="false"/>
         <column name="APP_UPDATE_DATE" type="TIMESTAMP" required="false"/>
         <column name="DEL_PREVIOUS_USR_UID" type="VARCHAR" size="32" default=""/>
         <column name="DEL_PREVIOUS_USR_USERNAME" type="VARCHAR" size="100" default=""/>
@@ -4264,9 +4313,9 @@
         <column name="TAS_UID" type="VARCHAR" size="32" required="true" default=""/>
         <column name="PRO_UID" type="VARCHAR" size="32" required="true" default=""/>
         <column name="APP_NUMBER" type="INTEGER" required="true" default="0"/>
-        <column name="APP_TITLE" type="VARCHAR" size="255" required="true" default=""/>
-        <column name="APP_PRO_TITLE" type="VARCHAR" size="255" required="true" default=""/>
-        <column name="APP_TAS_TITLE" type="VARCHAR" size="255" required="true" default=""/>
+        <column name="APP_TITLE" type="LONGVARCHAR" required="false"/>
+        <column name="APP_PRO_TITLE" type="LONGVARCHAR" required="false"/>
+        <column name="APP_TAS_TITLE" type="LONGVARCHAR" required="false"/>
         <column name="DEL_PREVIOUS_USR_UID" type="VARCHAR" size="32" default=""/>
         <column name="DEL_PREVIOUS_USR_USERNAME" type="VARCHAR" size="100" default=""/>
         <column name="DEL_PREVIOUS_USR_FIRSTNAME" type="VARCHAR" size="50" default=""/>
@@ -4328,9 +4377,9 @@
         <column name="TAS_UID" type="VARCHAR" size="32" required="true" default=""/>
         <column name="PRO_UID" type="VARCHAR" size="32" required="true" default=""/>
         <column name="APP_NUMBER" type="INTEGER" required="true" default="0"/>
-        <column name="APP_TITLE" type="VARCHAR" size="255" required="true" default=""/>
-        <column name="APP_PRO_TITLE" type="VARCHAR" size="255" required="true" default=""/>
-        <column name="APP_TAS_TITLE" type="VARCHAR" size="255" required="true" default=""/>
+        <column name="APP_TITLE" type="LONGVARCHAR" required="false"/>
+        <column name="APP_PRO_TITLE" type="LONGVARCHAR" required="false"/>
+        <column name="APP_TAS_TITLE" type="LONGVARCHAR" required="false"/>
         <column name="APP_STATUS" type="VARCHAR" size="20" required="false" default="0"/>
         <column name="DEL_PREVIOUS_USR_UID" type="VARCHAR" size="32" default=""/>
         <column name="DEL_PREVIOUS_USR_USERNAME" type="VARCHAR" size="100" default=""/>
@@ -4403,9 +4452,9 @@
         <column name="TAS_UID" type="VARCHAR" size="32" required="true" default=""/>
         <column name="PRO_UID" type="VARCHAR" size="32" required="true" default=""/>
         <column name="APP_NUMBER" type="INTEGER" required="true" default="0"/>
-        <column name="APP_TITLE" type="VARCHAR" size="255" required="false" default=""/>
-        <column name="APP_PRO_TITLE" type="VARCHAR" size="255" required="false" default=""/>
-        <column name="APP_TAS_TITLE" type="VARCHAR" size="255" required="false" default=""/>
+        <column name="APP_TITLE" type="LONGVARCHAR" required="false"/>
+        <column name="APP_PRO_TITLE" type="LONGVARCHAR" required="false"/>
+        <column name="APP_TAS_TITLE" type="LONGVARCHAR" required="false"/>
         <column name="APP_CREATE_DATE" type="TIMESTAMP" required="false"/>
         <column name="APP_FINISH_DATE" type="TIMESTAMP" required="false"/>
         <column name="DEL_INDEX" type="INTEGER" required="true" default="0"/>
@@ -4462,9 +4511,9 @@
         <column name="TAS_UID" type="VARCHAR" size="32" required="true" default=""/>
         <column name="PRO_UID" type="VARCHAR" size="32" required="true" default=""/>
         <column name="APP_NUMBER" type="INTEGER" required="true" default="0"/>
-        <column name="APP_TITLE" type="VARCHAR" size="255" required="true" default=""/>
-        <column name="APP_PRO_TITLE" type="VARCHAR" size="255" required="true" default=""/>
-        <column name="APP_TAS_TITLE" type="VARCHAR" size="255" required="true" default=""/>
+        <column name="APP_TITLE" type="LONGVARCHAR" required="false"/>
+        <column name="APP_PRO_TITLE" type="LONGVARCHAR" required="false"/>
+        <column name="APP_TAS_TITLE" type="LONGVARCHAR" required="false"/>
         <column name="APP_PAUSED_DATE" type="TIMESTAMP" required="true"/>
         <column name="APP_RESTART_DATE" type="TIMESTAMP" required="true"/>
         <column name="DEL_PREVIOUS_USR_UID" type="VARCHAR" size="32" default=""/>
@@ -4526,9 +4575,9 @@
         <column name="TAS_UID" type="VARCHAR" size="32" required="true" default=""/>
         <column name="PRO_UID" type="VARCHAR" size="32" required="true" default=""/>
         <column name="APP_NUMBER" type="INTEGER" required="true" default="0"/>
-        <column name="APP_TITLE" type="VARCHAR" size="255" required="false" default=""/>
-        <column name="APP_PRO_TITLE" type="VARCHAR" size="255" required="false" default=""/>
-        <column name="APP_TAS_TITLE" type="VARCHAR" size="255" required="false" default=""/>
+        <column name="APP_TITLE" type="LONGVARCHAR" required="false"/>
+        <column name="APP_PRO_TITLE" type="LONGVARCHAR" required="false"/>
+        <column name="APP_TAS_TITLE" type="LONGVARCHAR" required="false"/>
         <column name="APP_CANCELED_DATE" type="TIMESTAMP" required="false"/>
         <column name="DEL_INDEX" type="INTEGER" required="true" default="0"/>
         <column name="DEL_PREVIOUS_USR_UID" type="VARCHAR" size="32" default=""/>
@@ -4587,9 +4636,9 @@
         <column name="TAS_UID" type="VARCHAR" size="32" required="true" default=""/>
         <column name="PRO_UID" type="VARCHAR" size="32" required="true" default=""/>
         <column name="APP_NUMBER" type="INTEGER" required="true" default="0"/>
-        <column name="APP_TITLE" type="VARCHAR" size="255" required="true" default=""/>
-        <column name="APP_PRO_TITLE" type="VARCHAR" size="255" required="true" default=""/>
-        <column name="APP_TAS_TITLE" type="VARCHAR" size="255" required="true" default=""/>
+        <column name="APP_TITLE" type="LONGVARCHAR" required="false"/>
+        <column name="APP_PRO_TITLE" type="LONGVARCHAR" required="false"/>
+        <column name="APP_TAS_TITLE" type="LONGVARCHAR" required="false"/>
         <column name="APP_CREATE_DATE" type="TIMESTAMP" required="false"/>
         <column name="APP_UPDATE_DATE" type="TIMESTAMP" required="false"/>
         <column name="APP_FINISH_DATE" type="TIMESTAMP" required="false"/>
@@ -4647,9 +4696,9 @@
         <column name="TAS_UID" type="VARCHAR" size="32" required="true" default=""/>
         <column name="PRO_UID" type="VARCHAR" size="32" required="true" default=""/>
         <column name="APP_NUMBER" type="INTEGER" required="true" default="0"/>
-        <column name="APP_TITLE" type="VARCHAR" size="255" required="true" default=""/>
-        <column name="APP_PRO_TITLE" type="VARCHAR" size="255" required="true" default=""/>
-        <column name="APP_TAS_TITLE" type="VARCHAR" size="255" required="true" default=""/>
+        <column name="APP_TITLE" type="LONGVARCHAR" required="false"/>
+        <column name="APP_PRO_TITLE" type="LONGVARCHAR" required="false"/>
+        <column name="APP_TAS_TITLE" type="LONGVARCHAR" required="false"/>
         <column name="DEL_PREVIOUS_USR_USERNAME" type="VARCHAR" size="100" default=""/>
         <column name="DEL_PREVIOUS_USR_FIRSTNAME" type="VARCHAR" size="50" default=""/>
         <column name="DEL_PREVIOUS_USR_LASTNAME" type="VARCHAR" size="50" default=""/>
@@ -4774,13 +4823,13 @@
             <parameter name="Create_options" value="" />
         </vendor>
         <column name="WEE_UID"    type="VARCHAR" size="32" required="true" primaryKey="true" />
-        <column name="WEE_TITLE" type="LONGVARCHAR" required="true"/>
-        <column name="WEE_DESCRIPTION" type="LONGVARCHAR" required="true"/>
+        <column name="WEE_TITLE" type="LONGVARCHAR" required="false"/>
+        <column name="WEE_DESCRIPTION" type="LONGVARCHAR" required="false"/>
         <column name="PRJ_UID"    type="VARCHAR" size="32" required="true" />
         <column name="EVN_UID"    type="VARCHAR" size="32" required="true" />
         <column name="ACT_UID"    type="VARCHAR" size="32" required="true" />
-        <column name="DYN_UID"    type="VARCHAR" size="32" required="true" />
-        <column name="USR_UID"    type="VARCHAR" size="32" required="true" />
+        <column name="DYN_UID"    type="VARCHAR" size="32" required="false" />
+        <column name="USR_UID"    type="VARCHAR" size="32" required="false" />
         <column name="WEE_STATUS" type="VARCHAR" size="10" required="true" default="ENABLED" />
         <column name="WEE_WE_UID"     type="VARCHAR" size="32" required="true" default="" />
         <column name="WEE_WE_TAS_UID" type="VARCHAR" size="32" required="true" default="" />
@@ -5521,7 +5570,7 @@
         <column name="EVN_UID" type="VARCHAR" size="32" required="true" />
         <column name="EMAIL_EVENT_FROM" type="VARCHAR" size="100" required="true" default="" />
         <column name="EMAIL_EVENT_TO" type="LONGVARCHAR" required="true" />
-        <column name="EMAIL_EVENT_SUBJECT" type="VARCHAR" size="150" required="false" default=""/>
+        <column name="EMAIL_EVENT_SUBJECT" type="VARCHAR" size="255" required="false" default=""/>
         <column name="PRF_UID" type="VARCHAR" size="32" required="false" default="" />
         <column name="EMAIL_SERVER_UID" type="VARCHAR" size="32" required="false" default="" />
     </table>
@@ -5543,7 +5592,7 @@
     <column name="DEV_UID"          type="VARCHAR" size="32"  required="true"  primaryKey="true" default=""/>
     <column name="USR_UID"          type="VARCHAR" size="32"  required="true"  primaryKey="true" default=""/>
     <column name="SYS_LANG"         type="VARCHAR" size="10"  required="false" default=""/>
-    <column name="DEV_REG_ID"       type="VARCHAR" size="150" required="true"  default=""/>
+    <column name="DEV_REG_ID"       type="VARCHAR" size="255" required="true"  default=""/>
     <column name="DEV_TYPE"         type="VARCHAR" size="50"  required="true"  default=""/>
     <column name="DEV_CREATE"       type="TIMESTAMP"          required="true"  />
     <column name="DEV_UPDATE"       type="TIMESTAMP"          required="true"  />
@@ -5598,5 +5647,33 @@
     <index name="indexNotStatus">
       <index-column name="NOT_STATUS"/>
     </index>
+  </table>
+  <table name="PLUGINS_REGISTRY" idMethod="native">
+    <!--PluginDetails-->
+    <column name="PR_UID" type="VARCHAR" size="32" required="true" primaryKey="true" default=""/>
+    <column name="PLUGIN_NAMESPACE" type="VARCHAR" size="100" required="true"/>
+    <column name="PLUGIN_DESCRIPTION" type="VARCHAR" size="200" default=""/>
+    <column name="PLUGIN_CLASS_NAME" type="VARCHAR" size="100" required="true"/>
+    <column name="PLUGIN_FRIENDLY_NAME" type="VARCHAR" size="150" default=""/>
+    <column name="PLUGIN_FILE" type="VARCHAR" size="250" required="true"/>
+    <column name="PLUGIN_FOLDER" type="VARCHAR" size="100" required="true"/>
+    <column name="PLUGIN_SETUP_PAGE" type="VARCHAR" size="100" default=""/>
+    <column name="PLUGIN_COMPANY_LOGO" type="VARCHAR" size="100" default=""/>
+    <column name="PLUGIN_WORKSPACES" type="VARCHAR" size="100" default=""/>
+    <column name="PLUGIN_VERSION" type="VARCHAR" size="50" default=""/>
+    <column name="PLUGIN_ENABLE" type="TINYINT" default="0"/>
+    <column name="PLUGIN_PRIVATE" type="TINYINT" default="0"/>
+    <!--PluginProperties-->
+    <column name="PLUGIN_MENUS" type="LONGVARCHAR"/>
+    <column name="PLUGIN_FOLDERS" type="LONGVARCHAR"/>
+    <column name="PLUGIN_TRIGGERS" type="LONGVARCHAR"/>
+    <column name="PLUGIN_PM_FUNCTIONS" type="LONGVARCHAR"/>
+    <column name="PLUGIN_REDIRECT_LOGIN" type="LONGVARCHAR"/>
+    <column name="PLUGIN_STEPS" type="LONGVARCHAR"/>
+    <column name="PLUGIN_CSS" type="LONGVARCHAR"/>
+    <column name="PLUGIN_JS" type="LONGVARCHAR"/>
+    <column name="PLUGIN_REST_SERVICE" type="LONGVARCHAR"/>
+    <column name="PLUGIN_TASK_EXTENDED_PROPERTIES" type="LONGVARCHAR"/>
+    <column name="PLUGIN_ATTRIBUTES" type="LONGVARCHAR"/>
   </table>
 </database>

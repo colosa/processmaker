@@ -68,12 +68,12 @@ switch ($sValue['OP_OBJ_TYPE']) {
         $sObjectUID = $sValue['OUTPUTS'];
         break;
 }
-require_once 'classes/model/ObjectPermission.php';
+
 $oOP = new ObjectPermission();
 $aData = array ('OP_UID' => G::generateUniqueID(),'PRO_UID' => $sValue['PRO_UID'],'TAS_UID' => $sValue['TAS_UID'],'USR_UID' => (string) $sUserGroup,'OP_USER_RELATION' => $iRelation,'OP_TASK_SOURCE' => $sValue['OP_TASK_SOURCE'],'OP_PARTICIPATE' => $sValue['OP_PARTICIPATE'],'OP_OBJ_TYPE' => $sValue['OP_OBJ_TYPE'],'OP_OBJ_UID' => $sObjectUID,'OP_ACTION' => $sValue['OP_ACTION'],'OP_CASE_STATUS' => $sValue['OP_CASE_STATUS']);
 $oOP->fromArray( $aData, BasePeer::TYPE_FIELDNAME );
 $oOP->save();
-G::LoadClass( 'processMap' );
+
 $oProcessMap = new ProcessMap();
 $oProcessMap->getObjectsPermissionsCriteria( $sValue['PRO_UID'] );
 

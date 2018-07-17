@@ -19,7 +19,7 @@
     var code;
     for (var c in CodeMirror.keyNames)
       if (CodeMirror.keyNames[c] == key) { code = c; break; }
-    if (c == null) throw new Error("Unknown key: " + key);
+    if (code == null) throw new Error("Unknown key: " + key);
 
     return eventCache[keyName] = {
       type: "keydown", keyCode: code, ctrlKey: ctrl, shiftKey: shift, altKey: alt,
@@ -39,25 +39,25 @@
     }, {keyMap: "emacs", value: start, mode: "javascript"});
   }
 
-  function at(line, ch) { return function(cm) { eqPos(cm.getCursor(), Pos(line, ch)); }; }
+  function at(line, ch, sticky) { return function(cm) { eqCursorPos(cm.getCursor(), Pos(line, ch, sticky)); }; }
   function txt(str) { return function(cm) { eq(cm.getValue(), str); }; }
 
-  sim("motionHSimple", "abc", "Ctrl-F", "Ctrl-F", "Ctrl-B", at(0, 1));
+  sim("motionHSimple", "abc", "Ctrl-F", "Ctrl-F", "Ctrl-B", at(0, 1, "after"));
   sim("motionHMulti", "abcde",
-      "Ctrl-4", "Ctrl-F", at(0, 4), "Ctrl--", "Ctrl-2", "Ctrl-F", at(0, 2),
-      "Ctrl-5", "Ctrl-B", at(0, 0));
+      "Ctrl-4", "Ctrl-F", at(0, 4, "before"), "Ctrl--", "Ctrl-2", "Ctrl-F", at(0, 2, "after"),
+      "Ctrl-5", "Ctrl-B", at(0, 0, "after"));
 
   sim("motionHWord", "abc. def ghi",
-      "Alt-F", at(0, 3), "Alt-F", at(0, 8),
-      "Ctrl-B", "Alt-B", at(0, 5), "Alt-B", at(0, 0));
+      "Alt-F", at(0, 3, "before"), "Alt-F", at(0, 8, "before"),
+      "Ctrl-B", "Alt-B", at(0, 5, "after"), "Alt-B", at(0, 0, "after"));
   sim("motionHWordMulti", "abc. def ghi ",
-      "Ctrl-3", "Alt-F", at(0, 12), "Ctrl-2", "Alt-B", at(0, 5),
-      "Ctrl--", "Alt-B", at(0, 8));
+      "Ctrl-3", "Alt-F", at(0, 12, "before"), "Ctrl-2", "Alt-B", at(0, 5, "after"),
+      "Ctrl--", "Alt-B", at(0, 8, "before"));
 
-  sim("motionVSimple", "a\nb\nc\n", "Ctrl-N", "Ctrl-N", "Ctrl-P", at(1, 0));
+  sim("motionVSimple", "a\nb\nc\n", "Ctrl-N", "Ctrl-N", "Ctrl-P", at(1, 0, "after"));
   sim("motionVMulti", "a\nb\nc\nd\ne\n",
-      "Ctrl-2", "Ctrl-N", at(2, 0), "Ctrl-F", "Ctrl--", "Ctrl-N", at(1, 1),
-      "Ctrl--", "Ctrl-3", "Ctrl-P", at(4, 1));
+      "Ctrl-2", "Ctrl-N", at(2, 0, "after"), "Ctrl-F", "Ctrl--", "Ctrl-N", at(1, 1, "before"),
+      "Ctrl--", "Ctrl-3", "Ctrl-P", at(4, 1, "before"));
 
   sim("killYank", "abc\ndef\nghi",
       "Ctrl-F", "Ctrl-Space", "Ctrl-N", "Ctrl-N", "Ctrl-W", "Ctrl-E", "Ctrl-Y",
@@ -108,10 +108,10 @@
 
   sim("openLine", "foo bar", "Alt-F", "Ctrl-O", txt("foo\n bar"))
 
-  sim("transposeChar", "abcd\n\ne",
-      "Ctrl-F", "Ctrl-T", "Ctrl-T", txt("bcad\n\ne"), at(0, 3),
-      "Ctrl-F", "Ctrl-T", "Ctrl-T", "Ctrl-T", txt("bcda\n\ne"), at(0, 4),
-      "Ctrl-F", "Ctrl-T", txt("bcd\na\ne"), at(1, 1));
+  sim("transposeChar", "abcd\ne",
+      "Ctrl-F", "Ctrl-T", "Ctrl-T", txt("bcad\ne"), at(0, 3),
+      "Ctrl-F", "Ctrl-T", "Ctrl-T", "Ctrl-T", txt("bcda\ne"), at(0, 4),
+      "Ctrl-F", "Ctrl-T", txt("bcde\na"), at(1, 1));
 
   sim("manipWordCase", "foo BAR bAZ",
       "Alt-C", "Alt-L", "Alt-U", txt("Foo bar BAZ"),
@@ -128,6 +128,9 @@
   sim("clearMark", "abcde", Pos(0, 2), "Ctrl-Space", "Ctrl-F", "Ctrl-F",
       "Ctrl-G", "Ctrl-W", txt("abcde"));
 
+  sim("delRegion", "abcde", "Ctrl-Space", "Ctrl-F", "Ctrl-F", "Delete", txt("cde"));
+  sim("backspaceRegion", "abcde", "Ctrl-Space", "Ctrl-F", "Ctrl-F", "Backspace", txt("cde"));
+
   testCM("save", function(cm) {
     var saved = false;
     CodeMirror.commands.save = function(cm) { saved = cm.getValue(); };
@@ -135,4 +138,10 @@
     cm.triggerOnKeyDown(fakeEvent("Ctrl-S"));
     is(saved, "hi");
   }, {value: "hi", keyMap: "emacs"});
+
+  testCM("gotoInvalidLineFloat", function(cm) {
+    cm.openDialog = function(_, cb) { cb("2.2"); };
+    cm.triggerOnKeyDown(fakeEvent("Alt-G"));
+    cm.triggerOnKeyDown(fakeEvent("G"));
+  }, {value: "1\n2\n3\n4", keyMap: "emacs"});
 })();

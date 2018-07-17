@@ -53,8 +53,6 @@ try {
         $uploadMaxSize = $postMaxSize;
     $aFields['MAX_FILES_SIZE'] = " (" . $UPLOAD_MAX_SIZE . ") ";
 
-    //Load Calendar options and falue for this user
-    G::LoadClass( 'calendar' );
     $calendar = new Calendar();
     $calendarObj = $calendar->getCalendarList( true, true );
     global $_DBArray;
@@ -84,7 +82,7 @@ try {
     $oDataset = UsersPeer::doSelectRS( $oCriteria );
     $oDataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
     ///////////////////////
-    G::loadClass( 'configuration' );
+
     $oConf = new Configurations();
     $oConf->loadConfig( $obj, 'ENVIRONMENT_SETTINGS', '' );
 

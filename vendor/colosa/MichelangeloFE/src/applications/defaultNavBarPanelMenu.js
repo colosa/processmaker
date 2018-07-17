@@ -108,7 +108,7 @@ var defaultNavbarPanelMenus = {
                                 footerItems: [
                                     {
                                         pmType: 'label',
-                                        text: " ".translate()
+                                        text: ' '
                                     }, {
                                         text: "No".translate(),
                                         handler: function () {
@@ -167,7 +167,11 @@ var defaultNavbarPanelMenus = {
                     tooltip: "Help".translate(),
                     execute: true,
                     handler: function () {
+                        var canvas = PMUI.getActiveCanvas();
                         PMDesigner.helper.startIntro();
+                        if (canvas && canvas.getHTML()) {
+                            canvas.getHTML().classList.remove("pmui-pmcanvas");
+                        }
                     }
                 }
             },
@@ -305,7 +309,7 @@ var defaultNavbarPanelMenus = {
                     selector: ".mafe-button-undo",
                     tooltip: "Undo Action".translate(),
                     label: {
-                        text: "".translate()
+                        text: ''
                     },
                     execute: true,
                     handler: function () {
@@ -337,7 +341,7 @@ var defaultNavbarPanelMenus = {
                     selector: ".mafe-button-redo",
                     tooltip: "Redo Action".translate(),
                     label: {
-                        text: "".translate()
+                        text: ''
                     },
                     execute: true,
                     handler: function () {

@@ -1,10 +1,10 @@
 <?php
 /**
  * rbac.appEdit.php
- *  
+ *
  * ProcessMaker Open Source Edition
  * Copyright (C) 2004 - 2008 Colosa Inc.23
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -14,18 +14,17 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * For more information, contact Colosa Inc, 2566 Le Jeune Rd., 
+ *
+ * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- * 
+ *
  */
 
 global $G_TMP_MENU;
-global $HTTP_SESSION_VARS;
-$appid = $HTTP_SESSION_VARS['CURRENT_APPLICATION'];
+$appid = $_SESSION['CURRENT_APPLICATION'];
 
 $G_TMP_MENU->AddIdRawOption( "OP1", "rbac/appList.html" );
 $G_TMP_MENU->AddIdRawOption( "OP2", "rbac/appDel.html" );
@@ -54,7 +53,6 @@ default:
 
 //si no hay nada relacionado a esta aplicación se puede BORRAR!!
 $dbc = new DBConnection(DB_HOST, DB_RBAC_USER, DB_RBAC_PASS, DB_RBAC_NAME );
-//G::LoadClassRBAC ("applications");
 $obj = New RBAC_Application;
 $obj->SetTo ($dbc);
 $sw = $obj->canRemoveApplication ($appid);

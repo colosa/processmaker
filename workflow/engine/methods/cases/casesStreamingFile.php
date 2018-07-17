@@ -68,7 +68,7 @@ exit;
 
 function rangeDownload($location,$mimeType)
 {
-    G::LoadSystem('inputfilter');
+
     $filter = new InputFilter();
     $location = $filter->xssFilterHard($location, "path");
     if (!file_exists($location))

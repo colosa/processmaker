@@ -16,7 +16,8 @@ require_once 'classes/model/om/BaseListInbox.php';
 // @codingStandardsIgnoreStart
 class ListInbox extends BaseListInbox
 {
-    // @codingStandardsIgnoreEnd
+    private $additionalClassName = '';
+
     /**
      * Create List Inbox Table
      *
@@ -384,19 +385,28 @@ class ListInbox extends BaseListInbox
         self::create($data, $isSelfService);
     }
 
-    public function loadFilters(&$criteria, $filters)
+    /**
+     * This function add restriction in the query related to the filters
+     * @param Criteria $criteria, must be contain only select of columns
+     * @param array $filters
+     * @param array $additionalColumns information about the new columns related to custom cases list
+     * @throws PropelException
+     */
+    public function loadFilters(&$criteria, $filters, $additionalColumns = array())
     {
-        $action         = isset($filters['action']) ? $filters['action'] : "";
-        $usrUid         = isset($filters['usr_uid']) ? $filters['usr_uid'] : "";
-        $filter         = isset($filters['filter']) ? $filters['filter'] : "";
-        $search         = isset($filters['search']) ? $filters['search'] : "";
-        $process        = isset($filters['process']) ? $filters['process'] : "";
-        $category       = isset($filters['category']) ? $filters['category'] : "";
-        $dateFrom       = isset($filters['dateFrom']) ? $filters['dateFrom'] : "";
-        $dateTo         = isset($filters['dateTo']) ? $filters['dateTo'] : "";
-        $filterStatus   = isset($filters['filterStatus']) ? $filters['filterStatus'] : "";
-        $newestthan     = isset($filters['newestthan']) ? $filters['newestthan'] : '';
-        $oldestthan     = isset($filters['oldestthan']) ? $filters['oldestthan'] : '';
+        $action = isset($filters['action']) ? $filters['action'] : '';
+        $usrUid = isset($filters['usr_uid']) ? $filters['usr_uid'] : '';
+        $filter = isset($filters['filter']) ? $filters['filter'] : '';
+        $search = isset($filters['search']) ? $filters['search'] : '';
+        $caseLink = isset($filters['caseLink']) ? $filters['caseLink'] : '';
+        $process = isset($filters['process']) ? $filters['process'] : '';
+        $category = isset($filters['category']) ? $filters['category'] : '';
+        $dateFrom = isset($filters['dateFrom']) ? $filters['dateFrom'] : '';
+        $dateTo = isset($filters['dateTo']) ? $filters['dateTo'] : '';
+        $filterStatus = isset($filters['filterStatus']) ? $filters['filterStatus'] : '';
+        $newestthan = isset($filters['newestthan']) ? $filters['newestthan'] : '';
+        $oldestthan = isset($filters['oldestthan']) ? $filters['oldestthan'] : '';
+        $appUidCheck = isset($filters['appUidCheck']) ? $filters['appUidCheck'] : array();
 
         //Check the inbox to call
         switch ($action) {
@@ -463,21 +473,14 @@ class ListInbox extends BaseListInbox
 
         //Filter Search
         if ($search != '') {
-            $criteria->add(
-                $criteria->getNewCriterion(ListInboxPeer::APP_TITLE, '%' . $search . '%', Criteria::LIKE)
-                ->addOr(
-                    $criteria->getNewCriterion(ListInboxPeer::APP_TAS_TITLE, '%' . $search . '%', Criteria::LIKE)
-                    ->addOr(
-                        $criteria->getNewCriterion(ListInboxPeer::APP_PRO_TITLE, '%' . $search . '%', Criteria::LIKE)
-                        ->addOr(
-                            $criteria->getNewCriterion(ListInboxPeer::APP_UID, $search, Criteria::EQUAL)
-                            ->addOr(
-                                $criteria->getNewCriterion(ListInboxPeer::APP_NUMBER, $search, Criteria::EQUAL)
-                            )
-                        )
-                    )
-                )
-            );
+            //Check if we need to search to the APP_UID
+            if (!empty($caseLink)) {
+                $criteria->add(ListInboxPeer::APP_UID, $search, Criteria::EQUAL);
+            } else {
+                //If we have additional tables configured in the custom cases list, prepare the variables for search
+                $casesList = new \ProcessMaker\BusinessModel\Cases();
+                $casesList->getSearchCriteriaListCases($criteria, __CLASS__ . 'Peer', $search, $this->additionalClassName, $additionalColumns);
+            }
         }
 
         //Filter Process Id
@@ -501,20 +504,28 @@ class ListInbox extends BaseListInbox
         if ($oldestthan != '') {
             $criteria->add( $criteria->getNewCriterion( ListInboxPeer::DEL_DELEGATE_DATE, $oldestthan, Criteria::LESS_THAN ));
         }
+
+        //Review in the specific lot of cases
+        if (!empty($appUidCheck)) {
+            $criteria->add(ListInboxPeer::APP_UID, $appUidCheck, Criteria::IN);
+        }
     }
 
     /**
-     * @param $usr_uid
-     * @param array $filters
+     * This function get the information in the corresponding cases list
+     * @param string $usr_uid, must be show cases related to this user
+     * @param array $filters for apply in the result
      * @param null $callbackRecord
-     * @return array
+     * @return array $data
      * @throws PropelException
      */
     public function loadList($usr_uid, $filters = array(), $callbackRecord = null)
     {
         $pmTable = new PmTable();
-        $criteria = $pmTable->addPMFieldsToList('todo');
-
+        $list = isset($filters['action']) ? $filters['action'] : "";
+        $criteria = $pmTable->addPMFieldsToList($list);
+        $this->additionalClassName = $pmTable->tableClassName;
+        $additionalColumns = $criteria->getSelectColumns();
         $filters['usr_uid'] = $usr_uid;
 
         $criteria->addSelectColumn(ListInboxPeer::APP_UID);
@@ -542,11 +553,19 @@ class ListInbox extends BaseListInbox
         $criteria->addSelectColumn(UsersPeer::USR_LASTNAME);
         $criteria->addSelectColumn(UsersPeer::USR_USERNAME);
         $criteria->addJoin(ListInboxPeer::USR_UID, UsersPeer::USR_UID, Criteria::LEFT_JOIN);
-        self::loadFilters($criteria, $filters);
+        self::loadFilters($criteria, $filters, $additionalColumns);
 
-        $sort  = (!empty($filters['sort'])) ?
-            ListInboxPeer::TABLE_NAME.'.'.$filters['sort'] :
-            "LIST_INBOX.APP_UPDATE_DATE";
+        //We will be defined the sort
+        $casesList = new \ProcessMaker\BusinessModel\Cases();
+        $sort = $casesList->getSortColumn(
+            __CLASS__ . 'Peer',
+            BasePeer::TYPE_FIELDNAME,
+            empty($filters['sort']) ? "APP_UPDATE_DATE" : $filters['sort'],
+            "APP_UPDATE_DATE",
+            $this->additionalClassName,
+            $additionalColumns
+        );
+
         $dir   = isset($filters['dir']) ? $filters['dir'] : "ASC";
         $start = isset($filters['start']) ? $filters['start'] : "0";
         $limit = isset($filters['limit']) ? $filters['limit'] : "25";
@@ -615,11 +634,10 @@ class ListInbox extends BaseListInbox
         return isset($aRow[$fieldName]) ? $aRow[$fieldName] : null;
     }
 
-   /**
+    /**
      * Returns the number of cases of a user
      * @param string $usrUid
      * @param array  $filters
-     * @param string $status
      * @return int
      */
     public function getCountList($usrUid, $filters = array())

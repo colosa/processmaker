@@ -404,7 +404,7 @@
                 },
                 buttonLabel: function (row, data) {
                     row.getCells()[0].content.style.addClasses([row.getData()["obj_type"] === 'user' ? 'button-icon-user' : 'button-icon-group']);
-                    return ''.translate();
+                    return '';
                 },
                 onButtonClick: function (row, grid) {
                     grid = (grid != null) ? grid : gridUsers;
@@ -650,7 +650,7 @@
                 },
                 buttonLabel: function (row, data) {
                     row.getCells()[0].content.style.addClasses([row.getData()["pu_type"] === "SUPERVISOR" ? 'button-icon-user' : 'button-icon-group']);
-                    return ''.translate();
+                    return '';
                 },
                 onButtonClick: function (row, grid) {
                     grid = (grid != null) ? grid : gridUsers;
@@ -1143,7 +1143,7 @@
                     id: 'gridPanelObjectsButtonDelete',
                     title: '',
                     dataType: 'button',
-                    buttonLabel: "".translate(),
+                    buttonLabel: '',
                     buttonStyle: {cssClasses: ['mafe-button-delete-assign']},
                     buttonTooltip: 'Remove Object'.translate(),
                     onButtonClick: function (row, grid) {

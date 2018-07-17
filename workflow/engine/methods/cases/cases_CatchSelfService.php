@@ -35,9 +35,6 @@ switch ($RBAC->userCanAccess( 'PM_CASES' )) {
         break;
 }
 
-/* Includes */
-G::LoadClass( 'case' );
-
 $oCase = new Cases();
 $Fields = $oCase->loadCase( $_SESSION['APPLICATION'], $_SESSION['INDEX'] );
 

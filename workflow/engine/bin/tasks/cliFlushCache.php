@@ -23,7 +23,9 @@
  *
  * @package workflow-engine-bin-tasks
  */
-G::LoadSystem("g");
+
+
+use ProcessMaker\Util\System;
 
 CLI::taskName('flush-cache');
 CLI::taskDescription(<<<EOT
@@ -36,33 +38,45 @@ EOT
 CLI::taskArg('workspace', true, true);
 CLI::taskRun('run_flush_cache');
 
+/**
+ * Flush the cache files for the specified workspace.
+ * If no workspace is specified, then the cache will be flushed in all available 
+ * workspaces.
+ * 
+ * @param array $args
+ * @param array $opts
+ */
 function run_flush_cache($args, $opts)
 {
-    $rootDir = realpath(__DIR__."/../../../../");
-    $app = new Maveriks\WebApplication();
-    $app->setRootDir($rootDir);
-    $loadConstants = false;
-    $workspaces = get_workspaces_from_args($args);
-
-    if (! defined("PATH_C")) {
-        die("ERROR: seems processmaker is not properly installed (System constants are missing).".PHP_EOL);
+    if (!defined("PATH_C")) {
+        die("ERROR: seems processmaker is not properly installed (System constants are missing)." . PHP_EOL);
     }
-
-    CLI::logging("Flush ".pakeColor::colorize("system", "INFO")." cache ... ");
-    G::rm_dir(PATH_C);
-    G::mk_dir(PATH_C, 0777);
-    echo "DONE" . PHP_EOL;
-
-    foreach ($workspaces as $workspace) {
-        echo "Flush workspace " . pakeColor::colorize($workspace->name, "INFO") . " cache ... ";
-
-        G::rm_dir($workspace->path . "/cache");
-        G::mk_dir($workspace->path . "/cache", 0777);
-        G::rm_dir($workspace->path . "/cachefiles");
-        G::mk_dir($workspace->path . "/cachefiles", 0777);
-        if (file_exists($workspace->path.'/routes.php')) {
-            unlink($workspace->path.'/routes.php');
+    $workspaces = get_workspaces_from_args($args);
+    if (count($args) === 1) {
+        flush_cache($workspaces[0]);
+    } else {
+        foreach ($workspaces as $workspace) {
+            passthru("./processmaker flush-cache " . $workspace->name);
         }
+    }
+}
+
+/**
+ * Flush the cache files for the specified workspace.
+ * 
+ * @param object $workspace
+ */
+function flush_cache($workspace)
+{
+    try {
+        CLI::logging("Flush " . pakeColor::colorize("system", "INFO") . " cache ... ");
+        echo PHP_EOL;
+        echo " Update singleton in workspace " . $workspace->name . " ... ";
+        echo PHP_EOL;
+        echo " Flush workspace " . pakeColor::colorize($workspace->name, "INFO") . " cache ... " . PHP_EOL;
+        System::flushCache($workspace);
         echo "DONE" . PHP_EOL;
+    } catch (Exception $e) {
+        echo $e->getMessage() . PHP_EOL;
     }
 }

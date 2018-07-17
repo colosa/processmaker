@@ -51,12 +51,19 @@ class CaseScheduler extends Api
     }
 
     /**
+     * Creates a new Case Scheduler. 
+     * 
+     * @url POST /:prjUid/case-scheduler
+     * @status 201
+     * 
      * @param string $prjUid {@min 32} {@max 32}
      * @param CaseSchedulerStructure $request_data
-     *
-     * @url POST /:prjUid/case-scheduler
-     *
-     * @status 201
+     * 
+     * @return mixed
+     * @throws RestException 
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPostProjectCaseScheduler($prjUid, CaseSchedulerStructure $request_data =  null)
     {
@@ -75,12 +82,19 @@ class CaseScheduler extends Api
     }
 
     /**
+     * Update project case scheduler.
+     *
      * @url PUT /:prjUid/case-scheduler/:schUid
      *
      * @param string $prjUid {@min 32} {@max 32}
      * @param string $schUid {@min 32} {@max 32}
-     * @param CaseSchedulerStructure $request_data     
+     * @param CaseSchedulerStructure $request_data
      *
+     * @return array
+     * @throws RestException
+     *
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPutProjectCaseScheduler($prjUid, $schUid, CaseSchedulerStructure $request_data)
     {
@@ -100,6 +114,9 @@ class CaseScheduler extends Api
 
     /**
      * @url DELETE /:prjUid/case-scheduler/:schUid
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
+     *
      * @param string $prjUid {@min 32} {@max 32}
      * @param string $schUid {@min 32} {@max 32}
      *

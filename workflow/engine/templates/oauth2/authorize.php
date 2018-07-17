@@ -1,6 +1,6 @@
 <?php
 require_once PATH_CORE . 'src/ProcessMaker/Services/OAuth2/PmPdo.php';
-G::LoadSystem('inputfilter');
+
 $filter = new InputFilter();
 $_GET = $filter->xssFilterHard($_GET,"url");
 $_SERVER["QUERY_STRING"] = $filter->xssFilterHard($_SERVER["QUERY_STRING"],"url");

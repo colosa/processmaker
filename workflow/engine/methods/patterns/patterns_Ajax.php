@@ -21,7 +21,6 @@
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
-G::LoadInclude( 'ajax' );
 //$oJSON = new Services_JSON();
 if (isset( $_POST['mode'] ) && $_POST['mode'] != '') {
     $aData = $_POST;
@@ -29,7 +28,6 @@ if (isset( $_POST['mode'] ) && $_POST['mode'] != '') {
     $aData = $_POST['form'];
 }
 
-G::LoadClass( 'tasks' );
 $oTasks = new Tasks();
 $rou_id = 0;
 switch ($aData['action']) {

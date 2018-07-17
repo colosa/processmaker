@@ -38,7 +38,7 @@
   define( 'PATH_GULLIVER',      PATH_GULLIVER_HOME . 'system' . PATH_SEP );   //gulliver system classes
   define( 'PATH_GULLIVER_BIN',  PATH_GULLIVER_HOME . 'bin' . PATH_SEP );   //gulliver bin classes
   define( 'PATH_TEMPLATE',      PATH_GULLIVER_HOME . 'templates' . PATH_SEP );
-  define( 'PATH_THIRDPARTY',    PATH_GULLIVER_HOME . 'thirdparty' . PATH_SEP );
+  define( 'PATH_THIRDPARTY',    PATH_TRUNK . 'thirdparty' . PATH_SEP );
 
   define( 'PATH_RBAC',          PATH_RBAC_HOME .     'engine'  . PATH_SEP . 'classes' . PATH_SEP );  //to enable rbac version 2
 
@@ -81,4 +81,4 @@
   if (!is_dir(PATH_SMARTY_C)) G::mk_dir(PATH_SMARTY_C);
   if (!is_dir(PATH_SMARTY_CACHE)) G::mk_dir(PATH_SMARTY_CACHE);
 
-?>
+G::defineConstants();

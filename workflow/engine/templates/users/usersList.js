@@ -1,7 +1,5 @@
-/*
- * @author: Qennix
- * Jan 24th, 2011
- */
+
+
 
 //Keyboard Events
 new Ext.KeyMap(document, [
@@ -65,59 +63,59 @@ Ext.onReady(function(){
   pageSize = parseInt(CONFIG.pageSize);
 
   newButton = new Ext.Action({
-    text: _('ID_NEW'),
-     iconCls: 'button_menu_ext ss_sprite  ss_add',
-     handler: NewUserAction
+      text: _('ID_NEW'),
+      iconCls: 'button_menu_ext ss_sprite  ss_add',
+      id: 'usersBtnNew',
+      handler: NewUserAction
   });
 
   summaryButton = new Ext.Action({
-    text: _('ID_SUMMARY'),
-     iconCls: 'button_menu_ext ss_sprite  ss_table',
-     handler: SummaryTabOpen,
-    disabled: true
+      text: _('ID_SUMMARY'),
+      id: 'usersBtnSummary',
+      iconCls: 'button_menu_ext ss_sprite  ss_table',
+      handler: SummaryTabOpen,
+      disabled: true
   });
 
   editButton = new Ext.Action({
-    text: _('ID_EDIT'),
-     iconCls: 'button_menu_ext ss_sprite  ss_pencil',
-     handler: EditUserAction,
-     disabled: true
+      text: _('ID_EDIT'),
+      id: 'usersBtnEdit',
+      iconCls: 'button_menu_ext ss_sprite  ss_pencil',
+      handler: EditUserAction,
+      disabled: true
   });
 
   changeStatusButton = new Ext.Button({
-    text: _('ID_STATUS'),
-    icon: '',
-    iconCls: 'silk-add',
-    handler: changeStatusCheck,
-    disabled: true
+      text: _('ID_STATUS'),
+      id: 'usersBtnStatus',
+      icon: '',
+      iconCls: 'silk-add',
+      handler: changeStatusCheck,
+      disabled: true
   });
 
   deleteButton = new Ext.Action({
-    text: _('ID_DELETE'),
-     iconCls: 'button_menu_ext ss_sprite  ss_delete',
-     handler: DeleteUserAction,
-     disabled: true
+      text: _('ID_DELETE'),
+      id: 'usersBtnDelete',
+      iconCls: 'button_menu_ext ss_sprite  ss_delete',
+      handler: DeleteUserAction,
+      disabled: true
   });
 
   groupsButton = new Ext.Action({
-     text: _('ID_GROUPS'),
-     iconCls: 'button_menu_ext ss_sprite ss_group_add',
-     handler: UsersGroupPage,
-     disabled: true
+      text: _('ID_GROUPS'),
+      id: 'usersBtnGroups',
+      iconCls: 'button_menu_ext ss_sprite ss_group_add',
+      handler: UsersGroupPage,
+      disabled: true
   });
 
-//    reassignButton = new Ext.Action({
-//      text: _('ID_REASSIGN_CASES'),
-//      iconCls: 'button_menu_ext ss_sprite ss_arrow_rotate_clockwise',
-//      handler: DoNothing,
-//      disabled: true
-//    });
-
   authenticationButton = new Ext.Action({
-     text: _('ID_AUTHENTICATION'),
-    iconCls: 'button_menu_ext ss_sprite ss_key',
-     handler: AuthUserPage,
-     disabled: true
+      text: _('ID_AUTHENTICATION'),
+      id: 'usersBtnAuthentication',
+      iconCls: 'button_menu_ext ss_sprite ss_key',
+      handler: AuthUserPage,
+      disabled: true
   });
 
 

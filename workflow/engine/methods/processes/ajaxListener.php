@@ -22,6 +22,9 @@
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
+
+use ProcessMaker\Plugins\PluginRegistry;
+
 /**
  *
  * @author Erik Amaru Ortiz <erik@colosa.com>
@@ -86,8 +89,6 @@ class Ajax
     public function saveProcess()
     {
         try {
-            require_once 'classes/model/Task.php';
-            G::LoadClass('processMap');
             $oProcessMap = new ProcessMap();
 
             if (!isset($_POST['PRO_UID'])) {
@@ -114,7 +115,7 @@ class Ajax
                 $oData['PRO_TEMPLATE'] = (isset($_POST['PRO_TEMPLATE']) && $_POST['PRO_TEMPLATE'] != '') ? $_POST['form']['PRO_TEMPLATE'] : '';
                 $oData['PROCESSMAP'] = $oProcessMap;
 
-                $oPluginRegistry = & PMPluginRegistry::getSingleton();
+                $oPluginRegistry = PluginRegistry::loadSingleton();
                 $oPluginRegistry->executeTriggers(PM_NEW_PROCESS_SAVE, $oData);
             } else {
                 //$oProcessMap->updateProcess($_POST['form']);
@@ -123,7 +124,6 @@ class Ajax
 
             //Save Calendar ID for this process
             if (isset($_POST['PRO_CALENDAR'])) {
-                G::LoadClass("calendar");
                 $calendarObj = new Calendar();
                 $calendarObj->assignCalendarTo($sProUid, $_POST['PRO_CALENDAR'], 'PROCESS');
             }
@@ -143,7 +143,6 @@ class Ajax
     {
         $ids = explode(',', $_REQUEST['UIDS']);
 
-        G::LoadClass('processes');
         $oProcess = new Processes();
         if (count($ids) > 0) {
             foreach ($ids as $id) {
@@ -156,7 +155,6 @@ class Ajax
     {
         $ids = explode(',', $_REQUEST['UIDS']);
 
-        G::LoadClass('processes');
         $oProcess = new Processes();
         if (count($ids) > 0) {
             foreach ($ids as $id) {
@@ -167,8 +165,6 @@ class Ajax
 
     public function getUsers($params)
     {
-        require_once 'classes/model/Users.php';
-        G::LoadClass('configuration');
         $conf = new Configurations();
 
         $search = isset($params['search']) ? $params['search'] : null;
@@ -209,9 +205,9 @@ class Ajax
 
             $result->success = true;
             if (count($UIDS) > 1) {
-                $result->msg = __('ID_ACTORS_ASSIGNED_SUCESSFULLY', SYS_LANG, Array(count($UIDS), $task->getTasTitle()));
+                $result->msg = G::LoadTranslation('ID_ACTORS_ASSIGNED_SUCESSFULLY', SYS_LANG, Array(count($UIDS), $task->getTasTitle()));
             } else {
-                $result->msg = __('ID_ACTOR_ASSIGNED_SUCESSFULLY', SYS_LANG, Array('tas_title' => $task->getTasTitle()));
+                $result->msg = G::LoadTranslation('ID_ACTOR_ASSIGNED_SUCESSFULLY', SYS_LANG, Array('tas_title' => $task->getTasTitle()));
             }
         } catch (Exception $e) {
             $result->success = false;
@@ -251,8 +247,6 @@ class Ajax
 
     public function getUsersTask($param)
     {
-        require_once 'classes/model/TaskUser.php';
-        G::LoadClass('configuration');
         $usersTaskList = Array();
         $task = new TaskUser();
         $conf = new Configurations();
@@ -284,11 +278,8 @@ class Ajax
 
     public function getProcessDetail($param)
     {
-        require_once 'classes/model/Process.php';
-
         $PRO_UID = $param['PRO_UID'];
 
-        G::loadClass('tasks');
         $tasks = new Tasks();
         $process = ProcessPeer::retrieveByPk($PRO_UID);
 
@@ -320,11 +311,7 @@ class Ajax
     {
         switch ($param['type']) {
             case 'process':
-                require_once 'classes/model/ProcessCategory.php';
-                require_once 'classes/model/CalendarDefinition.php';
-
-                G::LoadClass('processMap');
-                $oProcessMap = new processMap(new DBConnection());
+                $oProcessMap = new ProcessMap(new DBConnection());
                 $process = $oProcessMap->editProcessNew($param['UID']);
                 $category = ProcessCategoryPeer::retrieveByPk($process['PRO_CATEGORY']);
                 $categoryName = is_object($category) ? $category->getCategoryName() : '';
@@ -367,9 +354,6 @@ class Ajax
 
             switch ($param['type']) {
                 case 'process':
-                    require_once 'classes/model/ProcessCategory.php';
-                    require_once 'classes/model/CalendarDefinition.php';
-                    G::LoadClass('processMap');
                     $oProcessMap = new ProcessMap();
                     $process['PRO_UID'] = $param['UID'];
 
@@ -393,7 +377,6 @@ class Ajax
                             $fieldName = 'PRO_CALENDAR';
                             $calendar = CalendarDefinition::loadByCalendarName($param['value']);
 
-                            G::LoadClass("calendar");
                             $calendarObj = new Calendar();
                             $calendarObj->assignCalendarTo($process['PRO_UID'], $calendar['CALENDAR_UID'], 'PROCESS');
                             break;
@@ -453,7 +436,6 @@ class Ajax
 
     public function getCaledarList()
     {
-        G::LoadClass('calendar');
         $calendar = new CalendarDefinition();
         $calendarObj = $calendar->getCalendarList(true, true);
         $calendarObj['array'][0] = Array('CALENDAR_UID' => '', 'CALENDAR_NAME' => '');
@@ -465,8 +447,7 @@ class Ajax
 
     public function getPMVariables($param)
     {
-        G::LoadClass('processMap');
-        $oProcessMap = new processMap(new DBConnection());
+        $oProcessMap = new ProcessMap(new DBConnection());
         $response->rows = getDynaformsVars($param['PRO_UID']);
         foreach ($response->rows as $i => $var) {
             $response->rows[$i]['sName'] = "@@{$var['sName']}";

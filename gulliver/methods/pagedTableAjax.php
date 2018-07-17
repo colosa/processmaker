@@ -23,82 +23,76 @@
  * 
  */
 
-	G::LoadSystem('pagedTable');
-	G::LoadClass('propelTable');
-	G::LoadInclude('ajax');
-  G::LoadAllModelClasses();
-  G::LoadAllPluginModelClasses();
-require_once ( 'classes/class.xmlfield_InputPM.php' );
-	$id=get_ajax_value('ptID');
-	$ntable = unserialize(base64_decode($_SESSION['pagedTable[' . $id . ']']));
-	$page=get_ajax_value('page');
-	$function=get_ajax_value('function');
+G::LoadAllPluginModelClasses();
+$id=get_ajax_value('ptID');
+$ntable = unserialize(base64_decode($_SESSION['pagedTable[' . $id . ']']));
+$page=get_ajax_value('page');
+$function=get_ajax_value('function');
 
-  if (isset($ntable->filterForm_Id) && ($ntable->filterForm_Id!=='')) {
+if (isset($ntable->filterForm_Id) && ($ntable->filterForm_Id!=='')) {
     $filterForm=new filterForm(G::getUIDName( $ntable->filterForm_Id ));
     $filterForm->values=$_SESSION[$filterForm->id];
     parse_str( urldecode(get_ajax_value('filter')) , $newValues);
     if (isset($newValues['form'])) {
-      $filterForm->setValues($newValues['form']);
-      $filter = array();
-      foreach($filterForm->fields as $fieldName => $field ){
-        if (($field->dataCompareField!=='') && (isset($newValues['form'][$fieldName])))
-          $filter[$field->dataCompareField] = $filterForm->values[$fieldName];
-          $ntable->filterType[$field->dataCompareField] = $field->dataCompareType;
-      }
-      $ntable->filter = $filter;//G::http_build_query($filter);
+        $filterForm->setValues($newValues['form']);
+        $filter = array();
+        foreach($filterForm->fields as $fieldName => $field ){
+            if (($field->dataCompareField!=='') && (isset($newValues['form'][$fieldName])))
+                $filter[$field->dataCompareField] = $filterForm->values[$fieldName];
+            $ntable->filterType[$field->dataCompareField] = $field->dataCompareType;
+        }
+        $ntable->filter = $filter;//G::http_build_query($filter);
     }
-  }
-  $fastSearch=get_ajax_value('fastSearch');
-  if (isset($fastSearch)) $ntable->fastSearch= urldecode($fastSearch);
-  $orderBy=get_ajax_value('order');
-  if (isset($orderBy)) {
-	  $orderBy=urldecode($orderBy);
-  	$ntable->orderBy=$orderBy;
-  }
-	if (isset($page) && $page!=='') $ntable->currentPage=(int) $page;
-	if (function_exists('pagedTable_BeforeQuery')) pagedTable_BeforeQuery($ntable);
-	$ntable->prepareQuery();
-	switch ($function)
-	{
-	case "showHideField":
-	  $field=get_ajax_value('field');
-	  $ntable->style[$field]['showInTable']=
-	    ($ntable->style[$field]['showInTable']==='0')?'1':'0';
-	  break;
-	case "paint":
-		break;
-	case "delete":
-		$ntable->prepareQuery();
-		parse_str(get_ajax_value('field'),$field);
-		foreach($field as $key => $value) $field[$key]=urldecode($value);
-		$ntable->ses->execute($ntable->replaceDataField($ntable->sqlDelete,$field));
-		break;
-	case "update":
-		$ntable->prepareQuery();
-		parse_str(get_ajax_value('field'),$field);
-		foreach($field as $key => $value) $field[$key]=urldecode($value);
-		parse_str(get_ajax_value('update'),$fieldup);
-		foreach($fieldup as $key => $value) $field['new'.$key]=urldecode($value); //join
-		$ntable->ses->execute($ntable->replaceDataField($ntable->sqlUpdate,$field));
-		break;
-	case "insert":
-		$ntable->prepareQuery();
-		parse_str(get_ajax_value('field'),$field);
-		foreach($field as $key => $value) $field[$key]=urldecode($value);
-		$ntable->ses->execute($ntable->replaceDataField($ntable->sqlInsert,$field));
-		break;
-	case "printForm":
-		parse_str(get_ajax_value('field'),$field);
-		parse_str(get_ajax_value('field'),$field);
-		foreach($field as $key => $value) $field[$key]=urldecode($value);
-		$ntable->printForm(get_ajax_value('filename'),$field);
-		return ;
-	}
-	$ntable->renderTable( 'content' );
-  G::LoadClass('configuration');
-  $conf = new Configurations();
-  $conf->setConfig($ntable->__Configuration,$ntable,$conf->aConfig);
-  $conf->saveConfig('pagedTable',$ntable->__OBJ_UID,'',$_SESSION['USER_LOGGED'],'');
+}
+$fastSearch=get_ajax_value('fastSearch');
+if (isset($fastSearch)) $ntable->fastSearch= urldecode($fastSearch);
+$orderBy=get_ajax_value('order');
+if (isset($orderBy)) {
+    $orderBy=urldecode($orderBy);
+    $ntable->orderBy=$orderBy;
+}
+if (isset($page) && $page!=='') $ntable->currentPage=(int) $page;
+if (function_exists('pagedTable_BeforeQuery')) pagedTable_BeforeQuery($ntable);
+$ntable->prepareQuery();
+switch ($function)
+{
+    case "showHideField":
+        $field=get_ajax_value('field');
+        $ntable->style[$field]['showInTable']=
+            ($ntable->style[$field]['showInTable']==='0')?'1':'0';
+        break;
+    case "paint":
+        break;
+    case "delete":
+        $ntable->prepareQuery();
+        parse_str(get_ajax_value('field'),$field);
+        foreach($field as $key => $value) $field[$key]=urldecode($value);
+        $ntable->ses->execute($ntable->replaceDataField($ntable->sqlDelete,$field));
+        break;
+    case "update":
+        $ntable->prepareQuery();
+        parse_str(get_ajax_value('field'),$field);
+        foreach($field as $key => $value) $field[$key]=urldecode($value);
+        parse_str(get_ajax_value('update'),$fieldup);
+        foreach($fieldup as $key => $value) $field['new'.$key]=urldecode($value); //join
+        $ntable->ses->execute($ntable->replaceDataField($ntable->sqlUpdate,$field));
+        break;
+    case "insert":
+        $ntable->prepareQuery();
+        parse_str(get_ajax_value('field'),$field);
+        foreach($field as $key => $value) $field[$key]=urldecode($value);
+        $ntable->ses->execute($ntable->replaceDataField($ntable->sqlInsert,$field));
+        break;
+    case "printForm":
+        parse_str(get_ajax_value('field'),$field);
+        parse_str(get_ajax_value('field'),$field);
+        foreach($field as $key => $value) $field[$key]=urldecode($value);
+        $ntable->printForm(get_ajax_value('filename'),$field);
+        return ;
+}
+$ntable->renderTable( 'content' );
+$conf = new Configurations();
+$conf->setConfig($ntable->__Configuration,$ntable,$conf->aConfig);
+$conf->saveConfig('pagedTable',$ntable->__OBJ_UID,'',$_SESSION['USER_LOGGED'],'');
 
 ?>

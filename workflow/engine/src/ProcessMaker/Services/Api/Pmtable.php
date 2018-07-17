@@ -137,17 +137,18 @@ class Pmtable extends Api
     }
 
     /**
+     * Update pm-table.
+     *
+     * @url PUT /:pmt_uid
+     *
      * @param string $pmt_uid {@min 1} {@max 32}
-     *
      * @param array $request_data
-     * @return void
      *
-     * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
-     * @copyright Colosa - Bolivia
+     * @return void
+     * @throw RestException
      *
      * @access protected
-     * @class  AccessControl {@permission PM_SETUP_PM_TABLES}
-     * @url PUT /:pmt_uid
+     * @class AccessControl {@permission PM_SETUP_PM_TABLES}
      */
     public function doPutPmTable(
         $pmt_uid,
@@ -163,17 +164,18 @@ class Pmtable extends Api
     }
 
     /**
+     * Update pm-table data.
+     *
+     * @url PUT /:pmt_uid/data
+     *
      * @param string $pmt_uid {@min 1} {@max 32}
-     *
      * @param array $request_data
-     * @return array
      *
-     * @author Brayan Pereyra (Cochalo) <brayan@colosa.com>
-     * @copyright Colosa - Bolivia
+     * @return array
+     * @throws RestException
      *
      * @access protected
-     * @class  AccessControl {@permission PM_SETUP_PM_TABLES}
-     * @url PUT /:pmt_uid/data
+     * @class AccessControl {@permission PM_SETUP_PM_TABLES}
      */
     public function doPutPmTableData(
         $pmt_uid,

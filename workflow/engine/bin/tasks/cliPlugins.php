@@ -24,9 +24,6 @@
  * @package workflow-engine-bin-tasks
  */
 
-G::LoadClass("system");
-G::LoadClass("wsTools");
-
 CLI::taskName('plugins-translation-update');
 CLI::taskDescription(<<<EOT
     Update plugin translations

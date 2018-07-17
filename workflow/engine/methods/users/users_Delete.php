@@ -46,10 +46,8 @@ try {
   $oUser->remove($_GET['USR_UID']);*/
 
     //print_r($_GET['USR_UID']); die
-    G::LoadClass( 'tasks' );
     $oTasks = new Tasks();
     $oTasks->ofToAssignUserOfAllTasks( $_GET['USR_UID'] );
-    G::LoadClass( 'groups' );
     $oGroups = new Groups();
     $oGroups->removeUserOfAllGroups( $_GET['USR_UID'] );
     $RBAC->changeUserStatus( $_GET['USR_UID'], 'CLOSED' );

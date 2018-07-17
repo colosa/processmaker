@@ -354,7 +354,7 @@ class Step extends BaseStep
     public function loadInfoAssigDynaform ($sproUid, $sObjUID)
     {
         require_once ("classes/model/DynaformPeer.php");
-        G::LoadSystem( 'dynaformhandler' );
+
 
         $oC = new Criteria( 'workflow' );
         $oC->add( DynaformPeer::DYN_UID, $sObjUID );
@@ -374,7 +374,7 @@ class Step extends BaseStep
             while ($oDataset->next()) {
                 $aRow1 = $oDataset->getRow();
                 //print_r($aRow1);
-                $dynHandler = new dynaFormHandler(PATH_DYNAFORM . $sproUid . PATH_SEP . $aRow1["DYN_UID"] . ".xml");
+                $dynHandler = new DynaformHandler(PATH_DYNAFORM . $sproUid . PATH_SEP . $aRow1["DYN_UID"] . ".xml");
                 $dynFields = $dynHandler->getFields();
                 $sxmlgrid = '';
                 $sType = '';
@@ -452,7 +452,7 @@ class Step extends BaseStep
     public function loadInfoAssigConnecctionDB ($sproUid, $sdbsUid)
     {
         require_once ("classes/model/DynaformPeer.php");
-        G::LoadSystem( 'dynaformhandler' );
+
         $swDynaform = true;
         $swTriggers = true;
         //we are looking for triggers if there is at least one db connection
@@ -477,7 +477,7 @@ class Step extends BaseStep
         $oDataset->next();
         while ($aRow = $oDataset->getRow()) {
             if ($aRow['DYN_TYPE'] == 'xmlform') {
-                $dynHandler = new dynaFormHandler( PATH_DYNAFORM . $aRow['DYN_FILENAME'] . ".xml" );
+                $dynHandler = new DynaformHandler( PATH_DYNAFORM . $aRow['DYN_FILENAME'] . ".xml" );
                 $dynFields = $dynHandler->getFields();
                 $sxmlgrid = '';
                 $sType = '';
@@ -528,7 +528,7 @@ class Step extends BaseStep
     {
 
         require_once ("classes/model/DynaformPeer.php");
-        G::LoadSystem( 'dynaformhandler' );
+
         $uidsGrids = array ();
         $oC = new Criteria( 'workflow' );
         $oC->add( DynaformPeer::DYN_UID, $sObjUID );
@@ -547,7 +547,7 @@ class Step extends BaseStep
             while ($oDataset->next()) {
                 $aRow1 = $oDataset->getRow();
 
-                $dynHandler = new dynaFormHandler( PATH_DYNAFORM . $sproUid . "/" . $sObjUID . ".xml" );
+                $dynHandler = new DynaformHandler( PATH_DYNAFORM . $sproUid . "/" . $sObjUID . ".xml" );
                 $dynFields = $dynHandler->getFields();
                 $sxmlgrid = '';
                 $sType = '';

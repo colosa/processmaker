@@ -38,8 +38,6 @@ if ($RBAC->userCanAccess( 'PM_SUPERVISOR' ) != 1) {
     }
 }
 
-    /* Includes */
-G::LoadClass( 'case' );
 
 /* GET , POST & $_SESSION Vars */
 if (isset( $_SESSION['APPLICATION'] )) {
@@ -103,6 +101,7 @@ $criteria = new Criteria();
 
 $criteria->addSelectColumn(StepPeer::STEP_TYPE_OBJ);
 $criteria->addSelectColumn(StepPeer::STEP_UID_OBJ);
+$criteria->addSelectColumn(StepPeer::STEP_POSITION);
 
 $criteria->add(StepPeer::PRO_UID, $aFields["PRO_UID"], Criteria::EQUAL);
 $criteria->add(StepPeer::TAS_UID, $currentTask, Criteria::EQUAL);
@@ -129,7 +128,7 @@ while ($rsCriteria->next()) {
             break;
         case "INPUT_DOCUMENT":
             if (isset($arrayInputUid[$stepUidObj])) {
-                $url = "cases_StepToReviseInputs?type=INPUT_DOCUMENT&PRO_UID=" . $aFields["PRO_UID"] . "&INP_DOC_UID=" . $stepUidObj . "&APP_UID=" . $sAppUid . "&position=" . $step["STEP_POSITION"] . "&DEL_INDEX=" . $iDelIndex;
+                $url = "cases_StepToReviseInputs?type=INPUT_DOCUMENT&PRO_UID=" . $aFields["PRO_UID"] . "&INP_DOC_UID=" . $stepUidObj . "&APP_UID=" . $sAppUid . "&position=" . $row["STEP_POSITION"] . "&DEL_INDEX=" . $iDelIndex;
                 $flag = true;
             }
             break;

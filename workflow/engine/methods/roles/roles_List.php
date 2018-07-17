@@ -52,7 +52,6 @@ $G_ID_SUB_MENU_SELECTED = 'ROLES';
 
 $G_PUBLISH = new Publisher();
 
-G::LoadClass('configuration');
 $c = new Configurations();
 $configPage = $c->getConfiguration('rolesList', 'pageSize', '', $_SESSION['USER_LOGGED']);
 $Config['pageSize'] = isset($configPage['pageSize']) ? $configPage['pageSize'] : 20;

@@ -24,7 +24,7 @@
 
 try {
     //load the variables
-    G::LoadClass( 'processes' );
+
     $oProcess = new Processes();
 
     //  if ( isset ($_POST) ) {

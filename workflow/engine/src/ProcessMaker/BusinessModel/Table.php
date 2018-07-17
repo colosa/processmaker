@@ -1,9 +1,10 @@
 <?php
 namespace ProcessMaker\BusinessModel;
 
-use \G;
-use \AdditionalTables;
-use \Fields;
+use G;
+use AdditionalTables;
+use Fields;
+use DynaformHandler;
 
 class Table
 {
@@ -124,14 +125,13 @@ class Table
         if ($validate) {
             $pro_uid = $this->validateProUid($pro_uid);
             $rep_uid = $this->validateTabUid($rep_uid);
-            G::loadClass('pmTable');
         }
 
         $additionalTables = new AdditionalTables();
         $table = $additionalTables->load($rep_uid);
         $additionalTables->populateReportTable(
             $table['ADD_TAB_NAME'],
-            \pmTable::resolveDbSource( $table['DBS_UID'] ),
+            \PmTable::resolveDbSource( $table['DBS_UID'] ),
             $table['ADD_TAB_TYPE'],
             $table['PRO_UID'],
             $table['ADD_TAB_GRID'],
@@ -362,7 +362,7 @@ class Table
             throw (new \Exception("The fields must have a key 'fld_key'"));
         }
 
-        $pmTable = new \pmTable($tableName);
+        $pmTable = new \PmTable($tableName);
         $pmTable->setDataSource($tableCon);
         $pmTable->setColumns($columnsStd);
         $pmTable->setAlterTable(true);
@@ -728,7 +728,6 @@ class Table
      */
     public function getDynafields ($pro_uid, $rep_tab_type, $rep_tab_grid = '')
     {
-        G::LoadClass( 'reportTables' );
 
         $dynFields = array();
         $aFields   = array();
@@ -764,7 +763,7 @@ class Table
      */
     public function _getDynafields ($pro_uid, $type = 'xmlform', $rep_tab_grid = '')
     {
-        G::loadSystem( 'dynaformhandler' );
+
 
         $oCriteria = new \Criteria( 'workflow' );
         $oCriteria->addSelectColumn( \DynaformPeer::DYN_FILENAME );
@@ -800,7 +799,7 @@ class Table
         while ($oDataset->next()) {
             $aRow = $oDataset->getRow();
             if (file_exists( PATH_DYNAFORM . PATH_SEP . $aRow['DYN_FILENAME'] . '.xml' )) {
-                $dynaformHandler = new \dynaformHandler( PATH_DYNAFORM . $aRow['DYN_FILENAME'] . '.xml' );
+                $dynaformHandler = new DynaformHandler( PATH_DYNAFORM . $aRow['DYN_FILENAME'] . '.xml' );
                 $nodeFieldsList = $dynaformHandler->getFields();
 
                 foreach ($nodeFieldsList as $node) {
@@ -1040,7 +1039,7 @@ class Table
             throw (new \Exception("The property rep_tab_grid: '$rep_tab_grid' is incorrect."));
         }
 
-        G::loadSystem('dynaformhandler');
+
         $grids = array();
         $namesGrid = array();
         $aFieldsNames = array();
@@ -1054,7 +1053,7 @@ class Table
 
         while ($oDataset->next()) {
             $aRow = $oDataset->getRow();
-            $dynaformHandler = new \dynaformHandler( PATH_DYNAFORM . $aRow['DYN_FILENAME'] . '.xml' );
+            $dynaformHandler = new DynaformHandler( PATH_DYNAFORM . $aRow['DYN_FILENAME'] . '.xml' );
             $nodeFieldsList = $dynaformHandler->getFields();
             foreach ($nodeFieldsList as $node) {
                 $arrayNode = $dynaformHandler->getArray( $node );
@@ -1105,8 +1104,6 @@ class Table
                 $fld_type = 'TIMESTAMP';
                 break;
         }
-
-        G::loadClass('pmTable');
 
         $columnsTypes = \PmTable::getPropelSupportedColumnTypes();
         $res = array_search($fld_type, $columnsTypes);

@@ -1,6 +1,4 @@
 <?php
-G::LoadClass("webResource");
-G::LoadClass("pmFunctions");
 
 class AdditionalTablesConsolidated extends AdditionalTables
 {
@@ -380,7 +378,6 @@ class ajax_con extends WebResource
 {
     public function con_save_properties($sTasUid, $sDynUid, $sStatus, $sProUid, $sRepTabUid, $tableName, $title, $swOverwrite)
     {
-        G::LoadClass("reportTables");
 
         if ($sStatus == "1" && $sDynUid != "") {
             //Verified as not to duplicate the name of the table
@@ -462,8 +459,6 @@ class ajax_con extends WebResource
 
             $_POST['form']['FIELDS'] = array();
 
-            G::LoadClass("reportTables");
-
             $oReportTable = new ReportTable();
             //if (!isset($_POST['form']['REP_TAB_CONNECTION'])) {
             //  $_POST['form']['REP_TAB_CONNECTION'] = 'report';
@@ -495,7 +490,6 @@ class ajax_con extends WebResource
                 $aAux = explode('-', $_POST['form']['REP_TAB_GRID']);
                 global $G_FORM;
 
-                G::LoadClass("formBatchRouting");
                 $G_FORM = new FormBatchRouting($_POST["form"]["PRO_UID"] . PATH_SEP . $aAux[1], PATH_DYNAFORM, SYS_LANG, false);
                 $aAux = $G_FORM->getVars(false);
 

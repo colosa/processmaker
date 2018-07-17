@@ -31,7 +31,10 @@
             getTimerEventData,
             validateItems,
             domSettings,
-            eventType = activity.getEventType();
+            eventType = activity.getEventType(),
+            regexDay = new RegExp(/^(((0|1|2)?[0-9])|(3[01]))$/),
+            regexHour = new RegExp(/^(((0|1)?[0-9])|(2[0-4]))$/),
+            regexMinute = new RegExp(/^([0-5]?[0-9])$/);
 
         /*window*/
         buttonCancel = new PMUI.ui.Button({
@@ -154,9 +157,16 @@
                             };
                             break;
                         case "6": /*wait for*/
-                            if (formData.dayType == "" && formData.hourType == "" && formData.minuteType == "") {
-                                PMDesigner.msgWinError("At least one of these fields must be filled (Day, Hour, Minute)".translate());
+                            if ((formData.dayType === '' || formData.dayType === '00' || formData.dayType === '0') &&
+                                (formData.hourType === '' || formData.hourType === '00' || formData.hourType === '0') &&
+                                (formData.minuteType === '' || formData.minuteType === '00' || formData.minuteType === '0')) {
+                                PMDesigner.msgWinError("The amount of time entered is not valid. Please fill in at least one of the fields (day, hour, or minute)".translate());
                                 return;
+                            } else {
+                                if (!regexDay.test(formData.dayType) || !regexHour.test(formData.hourType) || !regexMinute.test(formData.minuteType)) {
+                                    PMDesigner.msgWinError("The amount of time entered is not valid. Please fill in at least one of the fields (day, hour, or minute)".translate());
+                                    return;
+                                }
                             }
                             dataTimer = {
                                 evn_uid: evnUid,
@@ -442,13 +452,14 @@
         startDate = new PMUI.field.DateTimeField({
             id: 'startDate',
             label: 'Start date'.translate(),
-            //value: new Date(),
             datetime: false,
             dateFormat: 'yy-mm-dd',
             firstDay: 1,
             controlsWidth: 100,
             required: false,
-            readOnly: true
+            readOnly: true,
+            minDate: 0,
+            maxDate: 1460
         });
 
         endDate = new PMUI.field.DateTimeField({
@@ -461,7 +472,9 @@
             firstDay: 1,
             controlsWidth: 100,
             required: false,
-            readOnly: true
+            readOnly: true,
+            minDate: 0,
+            maxDate: 1460
         });
 
         oneDateTime = new PMUI.field.DateTimeField({
@@ -472,7 +485,9 @@
             firstDay: 1,
             controlsWidth: 150,
             required: false,
-            readOnly: true
+            readOnly: true,
+            minDate: 0,
+            maxDate: 1460
         });
 
         daysGroup = new PMUI.field.CheckBoxGroupField({
@@ -612,7 +627,9 @@
             firstDay: 1,
             controlsWidth: 150,
             required: false,
-            readOnly: true
+            readOnly: true,
+            minDate: 0,
+            maxDate: 1460
         });
 
         formTimerEvent = new PMUI.form.Form({
@@ -622,7 +639,7 @@
             width: '900px',
             height: "300px",
             name: "formTimerEvent",
-            title: "".translate(),
+            title: '',
             items: [
                 {
                     id: "panelDetailsCustom",
@@ -869,16 +886,14 @@
                 valueItem,
                 regexTest;
 
-            if (itemId == 'dayType') {
-                regexTest = new RegExp(/^([1-9]|[1-2][0-9]|3[0-1])$/);
-                message = "Error value: Day: 1 - 31".translate();
-            }
-            if (itemId == 'hourType') {
-                regexTest = new RegExp(/^([0-9]|1[0-9]|2[0-4])$/);
+            if (itemId === 'dayType') {
+                regexTest = regexDay;
+                message = "Error value: Day: 0 - 31".translate();
+            } else if (itemId === 'hourType') {
+                regexTest = regexHour;
                 message = "Error value: Hour: 0 - 23".translate();
-            }
-            if (itemId == 'minuteType') {
-                regexTest = new RegExp(/^([0-9]|[1-2][0-9]|[3-4][0-9]|5[0-9]|6[0])$/);
+            } else if (itemId === 'minuteType') {
+                regexTest = regexMinute;
                 message = "Error value: Minute: 0 - 59".translate();
             }
 
@@ -898,11 +913,11 @@
 
             timerEventPropertiesWindow.footer.html.style.textAlign = 'right';
 
-            $('#hourType, #dayType, #minuteType').find('span input:eq(0)').bind('change', function () {
+            $('#hourType, #dayType, #minuteType').find('span input:eq(0)').bind('blur change', function () {
                 validateItems($(this).closest('div').attr('id'));
             });
 
-            $("#dayType").find("input").attr({"type": "number", "maxlength": "2", "min": "1", "max": "31"});
+            $("#dayType").find("input").attr({"type": "number", "maxlength": "2", "min": "0", "max": "31"});
             $("#hourType").find("input").attr({"type": "number", "maxlength": "2", "min": "0", "max": "23"});
             $("#minuteType").find("input").attr({"type": "number", "maxlength": "2", "min": "0", "max": "59"});
 

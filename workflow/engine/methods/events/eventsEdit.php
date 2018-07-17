@@ -28,8 +28,6 @@ if ($RBAC->userCanAccess( 'PM_SETUP' ) != 1) {
     die();
 }
 
-G::LoadClass( 'tasks' );
-G::LoadClass( 'processMap' );
 global $_DBArray;
 
 if (isset( $_GET['EVN_UID'] )) {
@@ -56,7 +54,7 @@ foreach ($aAux1 as $aAux2) {
     }
 }
 
-$oProcessMap = new processMap( new DBConnection() );
+$oProcessMap = new ProcessMap( new DBConnection() );
 $aTriggersList = $oProcessMap->getTriggers( $_SESSION['PROCESS'] );
 $aTriggersFileds = array ();
 $aTriggersFileds[] = array ('TRI_UID' => 'char','TRI_TITLE' => 'char');

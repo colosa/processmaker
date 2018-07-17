@@ -587,13 +587,16 @@ Ext.onReady ( function() {
     }
 
     //Render Full Name
-    full_name = function(v, x, s) {
+    full_name = function (v, x, s) {
+        var resp;
         if (s.data.USR_UID && s.data.USR_USERNAME) {
-            return _FNF(s.data.USR_USERNAME, s.data.USR_FIRSTNAME, s.data.USR_LASTNAME);
+            resp = _FNF(s.data.USR_USERNAME, s.data.USR_FIRSTNAME, s.data.USR_LASTNAME);
+        } else if (s && s.json && s.json["APP_TAS_TYPE"] === "SUBPROCESS") {
+            resp = '';
+        } else {
+            resp = '[' + _('ID_UNASSIGNED').toUpperCase() + ']';
         }
-        else {
-            return '[' + _('ID_UNASSIGNED').toUpperCase() + ']';
-        }
+        return resp;
     };
 
     previous_full_name = function(v, x, s) {
@@ -1188,6 +1191,29 @@ Ext.onReady ( function() {
         iconCls: 'no-icon'  //use iconCls if placing within menu to shift to right side of menu
     });
 
+    // ComboBox creation for the columnSearch: caseTitle, appNumber, tasTitle
+    var comboColumnSearch = new Ext.form.ComboBox({
+        width         : 80,
+        boxMaxWidth   : 90,
+        editable      : false,
+        mode          : 'local',
+        store         : new Ext.data.ArrayStore({
+            fields: ['id', 'value'],
+            data  : columnSearchValues
+        }),
+        valueField    : 'id',
+        displayField  : 'value',
+        triggerAction : 'all',
+        listeners:{
+            scope: this,
+            'select': function() {
+                var filter = comboColumnSearch.value;
+                storeCases.setBaseParam('columnSearch', filter);
+            }
+        },
+        iconCls: 'no-icon'  //use iconCls if placing within menu to shift to right side of menu
+    });
+
     // ComboBox creation processValues
     var userStore =  new Ext.data.Store( {
         proxy : new Ext.data.HttpProxy( {
@@ -1451,7 +1477,7 @@ Ext.onReady ( function() {
 
         if( rowSelected ) {
             if (Ext.getCmp('idTextareaReasonCasesList').getValue() === '') {
-                Ext.Msg.alert(_('ID_ALERT'), _('ID_CAN_NOT_BE_EMPTY', _('ID_REASON_REASSIGN')));
+                Ext.Msg.alert(_('ID_ALERT'), _('ID_THE_REASON_REASSIGN_USER_EMPTY'));
                 return;
             }
             PMExt.confirm(_('ID_CONFIRM'), _('ID_REASSIGN_CONFIRM'), function(){
@@ -1893,11 +1919,7 @@ Ext.onReady ( function() {
 
     var toolbarUnassigned = [
         optionMenuOpen,
-        btnRead,
         '-',
-        btnUnread,
-        '-',
-        btnAll,
         '->', // begin using the right-justified button container
         _("ID_CATEGORY"),
         comboCategory,
@@ -2042,6 +2064,9 @@ Ext.onReady ( function() {
         dateTo,
         clearDateTo,
         "->",
+        '-',
+        _('ID_FILTER_BY'),
+        comboColumnSearch,
         '-',
         textSearch,
         resetSearchButton,
@@ -2319,7 +2344,7 @@ Ext.onReady ( function() {
             storeCases.setBaseParam("category", "");
             storeCases.setBaseParam("process", "");
             storeCases.setBaseParam("status", comboStatus.store.getAt(0).get(comboStatus.valueField));
-            //storeCases.setBaseParam("user", comboUser.store.getAt(0).get(comboUser.valueField));
+            storeCases.setBaseParam("columnSearch", comboColumnSearch.store.getAt(0).get(comboColumnSearch.valueField));
             storeCases.setBaseParam("search", textSearch.getValue());
             storeCases.setBaseParam("dateFrom", dateFrom.getValue());
             storeCases.setBaseParam("dateTo", dateTo.getValue());
@@ -2466,6 +2491,7 @@ Ext.onReady ( function() {
     comboCategory.setValue("");
     suggestProcess.setValue("");
     comboStatus.setValue("");
+    comboColumnSearch.setValue("APP_TITLE");
     /*----------------------------------********---------------------------------*/
     if(typeof(comboUser) != 'undefined'){
         comboUser.setValue("");

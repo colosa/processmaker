@@ -1,5 +1,14 @@
 <?php
+
+//Check guest user
+if (isset($_GET['USR_UID']) && RBAC::isGuestUserUid($_GET['USR_UID'])) {
+    throw new Exception(G::LoadTranslation("ID_USER_CAN_NOT_UPDATE", array($_GET['USR_UID'])));
+    return;
+}
+
 //calculating the max upload file size;
+use ProcessMaker\Core\System;
+
 $POST_MAX_SIZE = ini_get( 'post_max_size' );
 $mul = substr( $POST_MAX_SIZE, - 1 );
 $mul = ($mul == 'M' ? 1048576 : ($mul == 'K' ? 1024 : ($mul == 'G' ? 1073741824 : 1)));

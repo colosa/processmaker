@@ -442,15 +442,6 @@ stepsTask.prototype.createAccordionItem = function (data) {
             var receiveData = item.getData();
             that.sortableRowHandler(receiveData, this, index);
             that.updateIndexToGrid(this);
-        },
-        onDragStart: function (grid, row) {
-            var items;
-            items = grid.getItems();
-            if (jQuery.isArray(items)) {
-                if (items.length === 1) {
-                    grid.showEmptyCell();
-                }
-            }
         }
     });
     if (data.st_type !== "ROUTING" && data.st_type !== "ASSIGNMENT") {
@@ -561,15 +552,6 @@ stepsTask.prototype.createAccordionItem = function (data) {
             var receiveData = item.getData();
             that.sortableRowHandler(receiveData, this, index);
             that.updateIndexToGrid(this);
-        },
-        onDragStart: function (grid, row) {
-            var items;
-            items = grid.getItems();
-            if (jQuery.isArray(items)) {
-                if (items.length === 1) {
-                    grid.showEmptyCell();
-                }
-            }
         }
     });
     if (data.st_type !== "ROUTING" && data.st_type !== "ASSIGNMENT") {

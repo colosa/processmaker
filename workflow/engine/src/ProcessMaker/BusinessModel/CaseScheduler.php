@@ -2,6 +2,8 @@
 namespace ProcessMaker\BusinessModel;
 
 use \G;
+use ProcessMaker\Plugins\Interfaces\CaseSchedulerPlugin;
+use ProcessMaker\Plugins\PluginRegistry;
 
 class CaseScheduler
 {
@@ -1115,13 +1117,13 @@ class CaseScheduler
 
             //Plugin
             if (isset($arrayData["CASE_SH_PLUGIN_UID"]) && $arrayData["CASE_SH_PLUGIN_UID"] != "") {
-                $oPluginRegistry = &\PMPluginRegistry::getSingleton();
+                $oPluginRegistry = PluginRegistry::loadSingleton();
                 $activePluginsForCaseScheduler = $oPluginRegistry->getCaseSchedulerPlugins();
 
                 $params = explode("--", $arrayData["CASE_SH_PLUGIN_UID"]);
-
-                foreach ($activePluginsForCaseScheduler as $key => $caseSchedulerPluginDetail) {
-                    if ($caseSchedulerPluginDetail->sNamespace == $params[0] && $caseSchedulerPluginDetail->sActionId == $params[1]) {
+                /** @var CaseSchedulerPlugin $caseSchedulerPluginDetail */
+                foreach ($activePluginsForCaseScheduler as $caseSchedulerPluginDetail) {
+                    if ($caseSchedulerPluginDetail->equalNamespaceTo($params[0]) && $caseSchedulerPluginDetail->equalActionIdTo($params[1])) {
                         $caseSchedulerSelected = $caseSchedulerPluginDetail;
                     }
                 }
@@ -1129,7 +1131,7 @@ class CaseScheduler
                 if (isset($caseSchedulerSelected) && is_object($caseSchedulerSelected)) {
                     //Save the form
                     $arrayDataPlugin["SCH_UID"] = $arrayCaseSchedulerData["SCH_UID"];
-                    $oPluginRegistry->executeMethod($caseSchedulerPluginDetail->sNamespace, $caseSchedulerPluginDetail->sActionSave, $arrayDataPlugin);
+                    $oPluginRegistry->executeMethod($caseSchedulerPluginDetail->getNamespace(), $caseSchedulerPluginDetail->getActionSave(), $arrayDataPlugin);
                 }
             }
         } catch (\Exception $e) {

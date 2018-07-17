@@ -31,10 +31,9 @@ foreach ($items as $item) {
 
 $casesReassignedCount = 0;
 $serverResponse = array ();
-G::LoadClass( 'case' );
+
 $oCases = new Cases();
-require_once ('classes/model/Task.php');
-require_once ('classes/model/AppCacheView.php');
+
 $oAppCacheView = new AppCacheView();
 $oAppDel = new AppDelegation();
 $oCasesReassignList = $oAppCacheView->getToReassignListCriteria(null);

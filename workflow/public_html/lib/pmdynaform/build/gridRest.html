@@ -92,7 +92,7 @@
         <% if(group === "form") {%>
         	<div class="col-sm-<%-colSpanLabel%>  col-md-<%-colSpanLabel%> col-lg-<%-colSpanLabel%>">
 	            <label for="form[<%-id%>]" class="control-label pmdynaform-label">
-	            	<span data-toggle="tooltip" data-placement="bottom" title="<%-tooltipLabel%>" class="textlabel"><%-label%></span>
+	            	<span data-toggle="tooltip" data-placement="bottom" title="<%-tooltipLabel%>" class="textlabel"><%=label%></span>
 		            <%if(required){%>
 			  			<span class="pmdynaform-field-required">*</span>
 			  		<%}%>
@@ -174,7 +174,7 @@
 		<% if(group === "form") {%>
         	<div class="col-sm-<%-colSpanLabel%>  col-md-<%-colSpanLabel%> col-lg-<%-colSpanLabel%>">
 				<label for="form[<%-id%>]" class="control-label pmdynaform-label">
-					<span class="textlabel"><%-label%></span>
+					<span class="textlabel"><%=label%></span>
 					<%if(required){%>
 			  			<span class="pmdynaform-field-required">*</span>
 			  		<%}%>
@@ -233,7 +233,7 @@
     	<% if(group === "form") {%>
 			<div class="col-sm-<%-colSpanLabel%>  col-md-<%-colSpanLabel%> col-lg-<%-colSpanLabel%>">
 		    	<label for="form[<%-id%>]" class="control-label pmdynaform-label">
-		    		<span class="textlabel"><%- label %></span>
+		    		<span class="textlabel"><%= label %></span>
 		    		<%if(required){%>
 			  			<span class="pmdynaform-field-required">*</span>
 			  		<%}%>
@@ -306,7 +306,7 @@
 		<% if(group === "form") {%>
 		<div class="col-sm-<%-colSpanLabel%>  col-md-<%-colSpanLabel%> col-lg-<%-colSpanLabel%>">
 			<label for="form[<%-id%>]" class="control-label pmdynaform-label">
-				<span class="textlabel"><%- label %></span>
+				<span class="textlabel"><%= label %></span>
 				<%if(required){%>
 				<span class="pmdynaform-field-required">*</span>
 				<%}%>
@@ -314,7 +314,7 @@
 		</div>
 		<%} else if((group !== "form") && (layout === "form")){%>
 		<label for="<%-name%>" class="hidden-lg hidden-md hidden-sm visible-xs control-label pmdynaform-label col-xs-<%-colSpanLabel%>">
-			<span class="textlabel"><%- label %></span>
+			<span class="textlabel"><%= label %></span>
 		</label>
 		<%}%>
 		<div <%if (group === 'form'){ %>
@@ -373,7 +373,7 @@
 		<% if(group === "form") {%>
 		<div class="col-sm-<%-colSpanLabel%>  col-md-<%-colSpanLabel%> col-lg-<%-colSpanLabel%>">
 			<label for="form[<%-name%>]" class="control-label pmdynaform-label">
-				<span class="textlabel"><%- label %></span>
+				<span class="textlabel"><%= label %></span>
 				<%if(required){%>
 				<span class="pmdynaform-field-required">*</span>
 				<%}%>
@@ -436,7 +436,7 @@
 		<% if(group === "form") {%>
 		<div class="col-sm-<%-colSpanLabel%>  col-md-<%-colSpanLabel%> col-lg-<%-colSpanLabel%>">
 			<label for="form[<%-id%>]" class="control-label pmdynaform-label">
-				<span class="textlabel"><%-label%></span>
+				<span class="textlabel"><%=label%></span>
 				<%if(required && enableValidate){%>
 				<span class="pmdynaform-field-required">*</span>
 				<%}%>
@@ -493,7 +493,7 @@
 	<div id="<%-id%>" class="<%-namespace%>-field-<%-type%> form-group col-sm-<%-colSpan%> col-md-<%-colSpan%> col-lg-<%-colSpan%> text-center">
 		<button id="form[<%-id%>]" type=<%-type%> class="btn btn-primary"
 			<% if(disabled === true){%>disabled<%}%>>
-			<span> <%-label%> </span>
+			<span><%=label%></span>
 		</button>
 	</div>
 </script>
@@ -502,7 +502,7 @@
 	<div id="<%-id%>" class="<%-namespace%>-field-<%-type%> form-group col-sm-<%-colSpan%> col-md-<%-colSpan%> col-lg-<%-colSpan%> text-center">
 		<button id="form[<%-id%>]" type=<%-type%> class="btn btn-default"
 			<% if(disabled === true){%>disabled<%}%>>
-			<span> <%-label%> </span>
+			<span> <%=label%> </span>
 		</button>
 	</div>
 </script>
@@ -512,7 +512,7 @@
 		<% if(group === "form") {%>
 			<div class="col-sm-<%-colSpanLabel%> col-md-<%-colSpanLabel%> col-lg-<%-colSpanLabel%>">
 				<label for="form[<%-name%>]" class="control-label pmdynaform-label">
-					<span class="textlabel"><%- label %></span>
+					<span class="textlabel"><%= label %></span>
 					<%if(required){%>
 					<span class="pmdynaform-field-required">*</span>
 					<%}%>
@@ -585,7 +585,7 @@
         <% if(group === "form") {%>
         	<div class="col-sm-<%-colSpanLabel%> col-md-<%-colSpanLabel%> col-lg-<%-colSpanLabel%>">
 	            <label for="form[<%-id%>]" class="control-label pmdynaform-label">
-	            	<span class="textlabel"><%-label%></span>
+	            	<span class="textlabel"><%=label%></span>
 		            <%if(required){%>
 			  			<span class="pmdynaform-field-required">*</span>
 			  		<%}%>
@@ -629,7 +629,7 @@
 	<div id="<%-id%>" class="<%-namespace%>-field-<%-type%> form-group col-sm-<%-colSpan%> col-md-<%-colSpan%> col-lg-<%-colSpan%> pmdynaform-field">
 		<h4 id="form[<%-id%>]">
 			<p class="<%-className[type]%>">
-				<span class="textlabel"><%- label %></span>
+				<span class="textlabel"><%=label%></span>
 			</p>
 		</h4>
 	</div>
@@ -639,7 +639,7 @@
 	<div id="<%-id%>" class="<%-namespace%>-field-<%-type%> form-group col-sm-<%-colSpan%> col-md-<%-colSpan%> col-lg-<%-colSpan%> pmdynaform-field">
 		<h5 id="form[<%-id%>]">
 			<p class="<%-className[type]%>">
-				<span class="textlabel"><%-label%></span>
+				<span class="textlabel"><%=label%></span>
 			</p>
 		</h5>
 	</div>
@@ -650,7 +650,7 @@
 		<% if(group === "form") {%>
 			<div class="col-sm-<%-colSpanLabel%>  col-md-<%-colSpanLabel%> col-lg-<%-colSpanLabel%>">
 				<label class="control-label pmdynaform-label">
-					<span class="textlabel"><%-label %></span>
+					<span class="textlabel"><%=label %></span>
 					<%if(required){%>
 					<span class="pmdynaform-field-required">*</span>
 					<%}%>
@@ -658,11 +658,11 @@
 			</div>
 		<%} else if((group !== "form") && (layout === "form")){%>
 		<label class="hidden-lg hidden-md hidden-sm visible-xs control-label pmdynaform-label col-xs-<%-colSpanLabel%>">
-			<span class="textlabel"><%-label %></span>
+			<span class="textlabel"><%=label %></span>
 		</label>
 		<%}%>
 		<div <%if (group === 'form'){ %>
-		class="col-md-<%-colSpanControl%> col-lg-<%-colSpanControl%> pmdynaform-field-control"
+		class="col-sm-<%-colSpanControl%> col-md-<%-colSpanControl%> col-lg-<%-colSpanControl%> pmdynaform-field-control"
 		<%} else if (layout === "form"){ %>
 		class="col-xs-<%-colSpanControl%> col-sm-12 col-md-12 col-lg-12"
 		<%} else if (layout === "responsive") {%>
@@ -744,7 +744,7 @@
 	<div id="<%-id%>" class="<%-namespace%>-field-<%-type%> form-group col-sm-<%-colSpan%> col-md-<%-colSpan%> col-lg-<%-colSpan%> <%-namespace%>-<%-mode%>-<%-type%> pmdynaform-field">
         <div class="col-sm-<%-colSpanLabel%> col-md-<%-colSpanLabel%> col-lg-<%-colSpanLabel%>">
 	        <label class="control-label pmdynaform-label">
-	        	<span class="textlabel"><%-label %></span>
+	        	<span class="textlabel"><%=label %></span>
 	        </label>
         </div>
         <div class="<%-namespace%>-control-<%-type%> col-sm-<%-colSpanControl%> col-md-<%-colSpanControl%> col-lg-<%-colSpanControl%> pmdynaform-field-control">
@@ -795,7 +795,7 @@
 		<% if(group === 'form') {%>
 			<div class="col-sm-<%-colSpanLabel%> col-md-<%-colSpanLabel%> col-lg-<%-colSpanLabel%>">
 	            <label for='form[<%-name%>]' class='control-label pmdynaform-label'>
-					<span data-toggle='tooltip' data-placement='bottom' class="textlabel"><%-label%></span>
+					<span data-toggle='tooltip' data-placement='bottom' class="textlabel"><%=label%></span>
 		            <%if(required){%>
 			  			<span class='pmdynaform-field-required'>*</span>
 			  		<%}%>
@@ -1031,7 +1031,7 @@ is called to PMDynaform.view.Radio method "_setOptions()"
 <script type="text/template" id="tpl-map">
 	<div id="<%=id%>" name="<%=name%>" class="pmdynaform-field-geomap <%=namespace%>-<%=mode%>-<%=type%> form-group col-sm-<%=colSpan%> col-md-<%=colSpan%> col-lg-<%=colSpan%> pmdynaform-field">
 		<label class="col-sm-<%=colSpanLabel%> col-md-<%=colSpanLabel%> col-lg-<%=colSpanLabel%> control-label pmdynaform-label">
-        	<span data-toggle="tooltip" data-placement="bottom" class="textlabel"><%-label%></span>
+        	<span data-toggle="tooltip" data-placement="bottom" class="textlabel"><%=label%></span>
             <%if(required){%>
 	  			<span class="pmdynaform-field-required">*</span>
 	  		<%}%>
@@ -1048,11 +1048,12 @@ is called to PMDynaform.view.Radio method "_setOptions()"
         </div>
 	</div>
 </script>
+
 <script type="text/template" id="tpl-annotation">
 	<div id="<%-id%>" class="<%-namespace%>-field-<%-type%> form-group col-sm-<%-colSpan%> col-md-<%-colSpan%> col-lg-<%-colSpan%> pmdynaform-field" role="alert">
 		<span>
 			<p class="<%-namespace%>-control-<%-type%>">
-				<span><%-label%></span>
+				<span><%=label%></span>
 			</p>
 		</span>				
 	</div>
@@ -1060,60 +1061,36 @@ is called to PMDynaform.view.Radio method "_setOptions()"
 
 
 
-<script type="text/template" id="tpl-Audio_mobile">
-	<div id="<%-id%>" name="field-<%-name%>" class="<%-namespace%>-field-<%-type%> form-group col-sm-<%-colSpan%> col-md-<%-colSpan%> col-lg-<%-colSpan%> alert alert-warning" role="alert">
-		<span>
-			<p class="<%-namespace%>-control-<%-type%>">
-				<span><%- label %></span>
-			</p>
-		</span>				
-	</div>
-</script>
 <script type="text/template" id="tpl-Geomap_mobile">
 	<div id="<%-id%>" name="field-<%-name%>" class="<%=namespace%>-field-<%=type%> form-group col-sm-<%=colSpan%> col-md-<%-colSpan%> col-lg-<%=colSpan%> alert alert-warning" role="alert">
 		<span>
 			<p class="<%-namespace%>-control-<%-type%>">
-				<span><%-label%></span>
+				<span><%=label%></span>
 			</p>
 		</span>				
 	</div>
 </script>
-<script type="text/template" id="tpl-Image_mobile">
-	<div id="<%-id%>" name="field-<%-name%>" class="<%-namespace%>-field-<%-type%> form-group col-sm-<%-colSpan%> col-md-<%-colSpan%> col-lg-<%-colSpan%> alert alert-warning" role="alert">
-		<span>
-			<p class="<%-namespace%>-control-<%-type%>">
-				<span><%-label%></span>
-			</p>
-		</span>				
-	</div>
-</script>
+
 <script type="text/template" id="tpl-Qrcode_mobile">
 	<div id="<%-id%>" name="field-<%-name%>" class="<%-namespace%>-field-<%-type%> form-group col-sm-<%-colSpan%> col-md-<%-colSpan%> col-lg-<%-colSpan%> alert alert-warning" role="alert">
 		<span>
 			<p class="<%-namespace%>-control-<%-type%>">
-				<span><%- label %></span>
+				<span><%= label %></span>
 			</p>
 		</span>				
 	</div>
 </script>
+
 <script type="text/template" id="tpl-Signature_mobile">
 	<div id="<%-id%>" name="field-<%-name%>" class="<%-namespace%>-field-<%-type%> form-group col-sm-<%-colSpan%> col-md-<%-colSpan%> col-lg-<%-colSpan%> alert alert-warning" role="alert">
 		<span>
 			<p class="<%-namespace%>-control-<%-type%>">
-				<span><%- label %></span>
+				<span><%= label %></span>
 			</p>
 		</span>				
 	</div>
 </script>
-<script type="text/template" id="tpl-Video_mobile">
-	<div id="<%-id%>" name="field-<%-name%>" class="<%-namespace%>-field-<%-type%> form-group col-sm-<%-colSpan%> col-md-<%-colSpan%> col-lg-<%-colSpan%> alert alert-warning" role="alert">
-		<span>
-			<p class="<%-namespace%>-control-<%-type%>">
-				<span><%- label %></span>
-			</p>
-		</span>				
-	</div>
-</script>
+
 <script type="text/template" id="tpl-panelField">
 	<div id=<%-id%> class="panel panel-<%-typePanel%> <%-namespace%>-<%-type%>  <%-namespace%>-field-<%-type%> form-group col-sm-<%-colSpan%> col-md-<%-colSpan%> col-lg-<%-colSpan%> pmdynaform-field" <% if (border) { %> style="border-width:<%-border%>" <%} %>>
 		<div class="panel-heading" style="<%if(!showHeader){%>display:none;<%}%>">
@@ -1140,7 +1117,7 @@ is called to PMDynaform.view.Radio method "_setOptions()"
 		<% if(group === "form") {%>
 			<div class="col-sm-<%-colSpanLabel%> col-md-<%-colSpanLabel%> col-lg-<%-colSpanLabel%>">
 				<label class="control-label pmdynaform-label">
-		        	<span class="textlabel"><%- label %></span>
+		        	<span class="textlabel"><%= label %></span>
 		            <%if(required){%>
 			  			<span class="pmdynaform-field-required">*</span>
 			  		<%}%>
@@ -1182,7 +1159,7 @@ is called to PMDynaform.view.Radio method "_setOptions()"
 
 <script type="text/template" id="tpl-ext-scanner-code">
 	<span>
-		<%-label%>
+		<%=label%>
 	</span>
 </script>
 
@@ -1191,7 +1168,7 @@ is called to PMDynaform.view.Radio method "_setOptions()"
 	    <% if(group === "form") {%>
 	    	<div class="col-sm-<%-colSpanLabel%> col-md-<%-colSpanLabel%> col-lg-<%-colSpanLabel%>">
 			    <label class=" control-label pmdynaform-label">
-			    	<span class="textlabel"><%- label %></span>
+			    	<span class="textlabel"><%= label %></span>
 			        <%if(required){%>
 			  			<span class="pmdynaform-field-required">*</span>
 			  		<%}%>
@@ -1200,7 +1177,7 @@ is called to PMDynaform.view.Radio method "_setOptions()"
 		<%}%>
 		<div <%if(group === 'form'){ %>
 			class="pmdynaform-file-control col-sm-<%-colSpanControl%> col-md-<%-colSpanControl%> col-lg-<%-colSpanControl%> pmdynaform-field-control"
-		<%}%> >
+			<%}%> >
 			<div class="pmdynaform-file-container pmdynaform-<%-type%>-container">
 				<button type="button" class="<%-namespace%>-control-<%-type%> form-control" style="display:none"><%-labelButton%></button>
 				<input type="file" style="display:none;"
@@ -1213,47 +1190,40 @@ is called to PMDynaform.view.Radio method "_setOptions()"
 				<% if(dnd) {%>
 					<p style="float:left;" class="help-block"><%-dndMessage%></p>
 				<%}%>
-					<div class="pmdynaform-file-droparea-ext"></div>
+				<div class="pmdynaform-file-droparea-ext"></div>
 			</div>
 		</div>
 	</div>
 </script>
-
 
 <script type="text/template" id="tpl-extvideo">
 	<div class="pmdynaform-file-containervideo">
 		<div class ="pmdynaform-file-nameaudio">
 			<span><%-name%></span>
 		</div>
-	<span class="pmdynaform-file-preview" style="float: left;">
-    	<div class="pmdynaform-file-resizevideo">
-		</div>
-	</span>
-</div>
+		<span class="pmdynaform-file-preview" style="float: left;">
+			<div class="pmdynaform-file-resizevideo"></div>
+		</span>
+	</div>
 </script>
-
-
 
 <script type="text/template" id="tpl-extaudio">
 	<div  class="pmdynaform-file-containeraudio">
 		<div class ="pmdynaform-file-nameaudio">
 			<span><%-name%></span>
 		</div>
-    	<div class="pmdynaform-file-resizevideo">
-		</div>
-</div>
+    	<div class="pmdynaform-file-resizevideo"></div>
+	</div>
 </script>
-
-
 
 <script type="text/template" id="tpl-extfile-plus-audio">	
 	<div class="pmdynaform-file-containerimage">
 		<buttonImage>	
-		<span class= "pmdynaform-file-preview">
-			<div class = "pmdynaform-file-resizeaudio-plus">
-			<span class="glyphicon glyphicon-play-circle" style="margin:5px"></span>
-			</div>
-		</span>
+			<span class= "pmdynaform-file-preview">
+				<div class = "pmdynaform-file-resizeaudio-plus">
+					<span class="glyphicon glyphicon-play-circle" style="margin:5px"></span>
+				</div>
+			</span>
 		</buttonImage>	
 	</div>	
 </script>
@@ -1261,11 +1231,11 @@ is called to PMDynaform.view.Radio method "_setOptions()"
 <script type="text/template" id="tpl-extfile-plus-video">	
 	<div class="pmdynaform-file-containerimage">
 		<buttonImage>	
-		<span class= "pmdynaform-file-preview">
-			<div class = "pmdynaform-file-resizeaudio-plus">
-			<span class="glyphicon glyphicon-film" style="margin:5px"></span>
-			</div>
-		</span>
+			<span class= "pmdynaform-file-preview">
+				<div class = "pmdynaform-file-resizeaudio-plus">
+					<span class="glyphicon glyphicon-film" style="margin:5px"></span>
+				</div>
+			</span>
 		</buttonImage>	
 	</div>	
 </script>
@@ -1273,15 +1243,14 @@ is called to PMDynaform.view.Radio method "_setOptions()"
 <script type="text/template" id="tpl-extfile-plus-image">	
 	<div class="pmdynaform-file-containerimage">
 		<buttonImage>	
-		<span class= "pmdynaform-file-preview">
-			<div class = "pmdynaform-file-resizeaudio-plus">
-			<span class="glyphicon glyphicon-picture" style="margin:5px"></span>
-			</div>
-		</span>
+			<span class= "pmdynaform-file-preview">
+				<div class = "pmdynaform-file-resizeaudio-plus">
+					<span class="glyphicon glyphicon-picture" style="margin:5px"></span>
+				</div>
+			</span>
 		</buttonImage>	
 	</div>	
 </script>
-
 
 <script type="text/template" id="tpl-media-video">
 	<div class="pmdynaform-media-videoContainer">
@@ -1315,8 +1284,6 @@ is called to PMDynaform.view.Radio method "_setOptions()"
 		</div>
 </script>
 
-
-
 <script type="text/template" id="tpl-media-audio">
 	<div class="pmdynaform-media-audioContainer">
 	    <audio preload="auto" src="<%-src%>">
@@ -1349,7 +1316,6 @@ is called to PMDynaform.view.Radio method "_setOptions()"
 			</div>
 		</div>
 </script>
-
 
 <script type="text/template" id="tpl-multimedia-renderingWeb">
 	<%for(var i=0; i < elements.length; i+=1){%>
@@ -1397,25 +1363,26 @@ is called to PMDynaform.view.Radio method "_setOptions()"
 		<%}%>
 		<div <%if(group === 'form'){ %> class="pmdynaform-file-control col-lg-<%=colSpanControl%>" <%}%> >
 			<div class="pmdynaform-geo-container">
-				<button type="button" class="btn btn-default btn-md">
-				  	<span class="glyphicon glyphicon-map-marker"></span> <%=labelButton%>
-				</button>				
-				<%if (hint !== "" && hint !== null){%>
-					<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="<%=hint%>"></span>
-				<%}%>								
-				<%if(preview) {%>
-					<div class="pmdynaform-ext-geo" style="height:<%=height%>;"></div>
-				<% } %> 
 			</div>
+			<button type="button" class="btn btn-default btn-md">
+				<span class="glyphicon glyphicon-map-marker"></span> <%=labelButton%>
+			</button>
+			<%if (hint){%>
+			<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="<%=hint%>"></span>
+			<%}%>
+			<%if(preview) {%>
+			<div class="pmdynaform-ext-geo" style="height:<%=height%>;"></div>
+			<% } %>
 		</div>
 	</div>
 </script>
+
 <script type="text/template" id="tpl-ext-scannercode">
 	<div id="<%-id%>" class="<%-namespace%>-field-<%-type%> <%if (group === 'form'){%> form-group col-sm-<%-colSpan%> col-md-<%-colSpan%> col-lg-<%-colSpan%> <%}%> <%-namespace%>-<%-mode%>-<%-type%> pmdynaform-field">
 		<% if(group === "form") {%>
 			<div class="col-sm-<%-colSpanLabel%> col-md-<%-colSpanLabel%> col-lg-<%-colSpanLabel%>">
 				<label class="control-label pmdynaform-label">
-		        	<span class="textlabel"><%- label %></span>
+		        	<span class="textlabel"><%= label %></span>
 		            <%if(required){%>
 			  			<span class="pmdynaform-field-required">*</span>
 			  		<%}%>
@@ -1457,7 +1424,7 @@ is called to PMDynaform.view.Radio method "_setOptions()"
 
 <script type="text/template" id="tpl-ext-scanner-code">
 	<span>
-		<%-label%>
+		<%=label%>
 	</span>
 </script>
 
@@ -1466,7 +1433,7 @@ is called to PMDynaform.view.Radio method "_setOptions()"
 	    <% if(group === "form") {%>
 	    	<div class="col-sm-<%-colSpanLabel%> col-md-<%-colSpanLabel%> col-lg-<%-colSpanLabel%>">
 			    <label class="control-label pmdynaform-label">
-			    	<span class="textlabel"><%- label %></span>
+			    	<span class="textlabel"><%= label %></span>
 			        <%if(required){%>
 			  			<span class="pmdynaform-field-required">*</span>
 			  		<%}%>
@@ -1487,6 +1454,7 @@ is called to PMDynaform.view.Radio method "_setOptions()"
 		</div>
 	</div>
 </script>
+
 <script type="text/template" id="tpl-field-container">
     <div
             id="<%-id%>"
@@ -1498,7 +1466,7 @@ is called to PMDynaform.view.Radio method "_setOptions()"
             class="col-md-<%-colSpanLabel%> col-lg-<%-colSpanLabel%> control-label pmdynaform-label">
             <span
                 class="textlabel">
-                    <%-label%>
+                    <%=label%>
             </span>
             <%if(required){%>
             <span
@@ -1513,7 +1481,7 @@ is called to PMDynaform.view.Radio method "_setOptions()"
                 class="hidden-lg hidden-md hidden-sm visible-xs control-label pmdynaform-label col-xs-<%-colSpanLabel%>">
             <span
                     class="textlabel">
-                <%-label%>
+                <%=label%>
             </span>
         </label>
         <%}%>
@@ -1548,6 +1516,7 @@ is called to PMDynaform.view.Radio method "_setOptions()"
     </div>
     </div>
 </script>
+
 <script type="text/template" id="tpl-checkbox_boolean">
     <input
         type ="<%-type%>"
@@ -1565,7 +1534,12 @@ is called to PMDynaform.view.Radio method "_setOptions()"
     <span class="cloneUnchecked-container"></span>
 </script>
 <script type="text/template" id="tpl-flashMessage">
-	<div class='alert alert-<%-type%> fade in'>
+	<div class='alert alert-<%-type%> <%=(duration === 0) ? 'alert-dismissible' : ''%> fade in'>
+		<% if (duration === 0) {%>
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		<% } %>
 		<%if(closable){%>
 			<a href='#' class='close' data-dismiss='alert'></a>
 		<%}%>
@@ -1613,7 +1587,7 @@ is called to PMDynaform.view.Radio method "_setOptions()"
         <div class="row">
             <div class="col-sm-<%-colSpanLabel%> col-md-<%-colSpanLabel%> col-lg-<%-colSpanLabel%>">
                 <label for="<%-name%>" class="control-label pmdynaform-label">
-                    <span data-toggle="tooltip" data-placement="bottom" class="textlabel"><%- label %></span>
+                    <span data-toggle="tooltip" data-placement="bottom" class="textlabel"><%= label %></span>
                     <%if(required){%>
                     <span class="pmdynaform-field-required">*</span>
                     <%}%>
@@ -1635,46 +1609,47 @@ is called to PMDynaform.view.Radio method "_setOptions()"
             <ul class="content-print"></ul>
         </div>
     </div>
-    <div class="pmdynaform-multiplefile-box"></div>
-    </div>
+    <ul class="pmdynaform-multiplefile-box">
+    </ul>
 </script>
 
 <script type="text/template" id="tpl-multiplefile-file">
-    <div class="multiplefile-row row">
-        <div class="multiplefile-container col-xs-<%-col%>">
-
+    <li class="pmdynaform-mfile-wrapper">
+        <div class="pmdynaform-mfile">
+            <ul class="pmdynaform-mfile-actions">
+                <li class="pmdynaform-mfile-action-item" data-action="download">
+                    <a href="<%=downloadLink%>" class="fa fa-download" title="Download the file"></a>
+                </li>
+                <li class="pmdynaform-mfile-action-item" data-action="upload">
+                    <a href="#" class="fa fa-pencil" title="Upload a new version"></a>
+                </li>
+                <li class="pmdynaform-mfile-action-item" data-action="delete">
+                    <a href="#" class="fa fa-trash" title="Delete file and all its versions"></a>
+                </li>
+                <li class="pmdynaform-mfile-action-item" data-action="list">
+                    <a href="#" class="fa fa-chevron-circle-down" title="Show versions"></a>
+                </li>
+                <li class="pmdynaform-mfile-action-item" data-action="abort">
+                    <a href="#" class="fa fa-times" title="Cancel upload"></a>
+                </li>
+            </ul>
+            <span class="pmdynaform-mfile-title" title="<%-filename%>">
+                <div class="pmdynaform-mfile-icon fa fa-<%-iconClass%>"></div>
+                <div class="pmdynaform-mfile-info">
+                    <div class="pmdynaform-mfile-header">
+                        <span class="pmdynaform-mfile-name"><%=filename%></span>
+                        <span class="pmdynaform-mfile-version">
+                            <% fileversion ? print('Version ' + fileversion) : print('')%>
+                        </span>
+                    </div>
+                    <div class="pmdynaform-mfile-details"><%=details%></div>
+                </div>
+            </span>
+            <%if (mode === "edit" && versionable) {%>
+            <input type="file" class="pmdynaform-mfile-input" id="pmdynaform-input-<%-viewid%>" accept="<%-extensions%>"/>
+            <%}%>
         </div>
-    </div>
-</script>
-
-<script type="text/template" id="tpl-multiplefile-icon">
-    <div class="multiplefile-icon col-xs-<%-col%>">
-        <span class="multiplefile-icon">
-            <i class="fa fa-<%-icon%>" aria-hidden="true"></i>
-        </span>
-    </div>
-</script>
-
-<script type="text/template" id="tpl-multiplefile-buttons">
-    <div class="multiplefile-buttons col-xs-<%-col%>">
-        <div class="multiplefile-button-delete col-xs-<%-colButton%>">
-            <i class="fa fa-trash" aria-hidden="true"></i>
-        </div>
-        <div class="multiplefile-button-download col-xs-<%-colButton%>">
-            <a href="<%-href%>"><i class="fa fa-download" aria-hidden="true"></i><a>
-        </div>
-        <div class="multiplefile-button-pencil col-xs-<%-colButton%>" style="display: none">
-            <i class="fa fa-pencil" aria-hidden="true"></i>
-        </div>
-    </div>
-</script>
-
-<script type="text/template" id="tpl-multiplefile-download">
-    <div class="pm-multiplefile-download col-xs-<%-col%>">
-        <div class="multiplefile-title">
-            <div> <%-title%></div>
-        </div>
-    </div>
+    </li>
 </script>
 
 <script type="text/template" id="tpl-multiplefile-grid">
@@ -1706,6 +1681,11 @@ is called to PMDynaform.view.Radio method "_setOptions()"
         <a class="pm-multiplefile-upload"><i class="fa fa-upload" aria-hidden="true"></i></a>
     </div>
 </script>
+
+<script type="text/template" id="tpl-multiplefile-version-loader">
+    <li class="pmdynaform-mfile pmdynaform-mfile-loading-message"></li>
+</script>
+
 <script type="text/template" id="tpl-upload-modal">
     <div class="modal fade" id="modalUpload" tabindex="-1" role="dialog">
         <div class="modal-dialog">
@@ -1728,7 +1708,7 @@ is called to PMDynaform.view.Radio method "_setOptions()"
                         </div>
                     </div>
                     <div class="row">
-                        <div class="pmdynaform-file-box"></div>
+                        <ul class="pmdynaform-multiplefile-box"></ul>
                     </div>
                 </div>
                 <div class="modal-footer">

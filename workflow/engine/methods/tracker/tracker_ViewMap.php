@@ -65,8 +65,7 @@ switch (($aCaseTracker['CT_MAP_TYPE'])) {
         //Nothing
         break;
     case 'PROCESSMAP':
-        G::LoadClass( 'case' );
-        G::LoadClass( 'processMap' );
+
         $oCase = new Cases();
         $aFields = $oCase->loadCase( $_SESSION['APPLICATION'] );
         if (in_array($aFields['PRO_UID'], $bpmnProjects)) {
@@ -132,7 +131,7 @@ switch (($aCaseTracker['CT_MAP_TYPE'])) {
         $G_PUBLISH->AddContent( 'template', '', '', '', $oTemplatePower );
         $oHeadPublisher = & headPublisher::getSingleton();
         $oHeadPublisher->addScriptCode( '
-        var maximunX = ' . processMap::getMaximunTaskX( $_SESSION['PROCESS'] ) . ';
+        var maximunX = ' . ProcessMap::getMaximunTaskX( $_SESSION['PROCESS'] ) . ';
         leimnud.event.add(window,"load",function(){
           var pb = leimnud.dom.capture("tag.body 0");
           pm = new processmap();
@@ -196,7 +195,7 @@ switch (($aCaseTracker['CT_MAP_TYPE'])) {
         G::RenderPage( 'publish' );
         break;
     case 'STAGES':
-        G::LoadClass( 'case' );
+
         $oCase = new Cases();
         $aFields = $oCase->loadCase( $_SESSION['APPLICATION'] );
         if (in_array($aFields['PRO_UID'], $bpmnProjects)) {

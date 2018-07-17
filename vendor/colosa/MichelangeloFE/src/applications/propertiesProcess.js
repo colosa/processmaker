@@ -6,6 +6,7 @@
                 isDirtyFormProcess,
                 saveProperties,
                 propertiesWindow,
+                processUID,
                 textTitle,
                 textDescription,
                 dropCalendar,
@@ -126,7 +127,6 @@
 
                         PMDesigner.project.setProjectName(data.pro_title);
                         PMDesigner.project.setDescription(data.pro_description);
-                        PMDesigner.project.dirty = true;
                     },
                     functionFailure: function (xhr, response) {
                         PMDesigner.msgWinError(response.error.message);
@@ -184,6 +184,15 @@
                         }
                     }
                 ]
+            });
+
+            processUID = new PMUI.field.TextField({
+                label: "UID".translate(),
+                id: "process_uid",
+                name: "pro_uid",
+                labelWidth: "35%",
+                controlsWidth: "300px",
+                disabled: true
             });
 
             textTitle = new PMUI.field.TextField({
@@ -431,6 +440,7 @@
                 title: "Process Information".translate(),
                 width: DEFAULT_WINDOW_WIDTH - DEFAULT_WINDOW_WIDTH * 0.10,
                 items: [
+                    processUID,
                     textTitle,
                     textDescription,
                     dropCalendar,
@@ -624,6 +634,7 @@
                 formEditProcess.getField("pro_type_process").hideColon();
                 formEditProcess.reset();
                 responseProperties = response;
+                processUID.setValue(response.pro_uid);
                 textTitle.setValue(response.pro_title);
                 textDescription.setValue(response.pro_description);
                 dropDynaform.setValue(response.pro_summary_dynaform);

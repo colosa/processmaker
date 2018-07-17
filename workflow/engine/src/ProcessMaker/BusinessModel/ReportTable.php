@@ -251,7 +251,7 @@ class ReportTable
             $arrayError = [];
 
             //Ask for all Process
-            $processMap = new \processMap();
+            $processMap = new \ProcessMap();
             $arrayProcessUid = [];
 
             foreach (\G::json_decode($processMap->getAllProcesses()) as $value) {

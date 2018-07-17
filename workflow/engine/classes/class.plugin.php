@@ -1,52 +1,6 @@
 <?php
-/**
- * class.plugin.php
- * @package workflow.engine.classes
- *
- * ProcessMaker Open Source Edition
- * Copyright (C) 2004 - 2011 Colosa Inc.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
- * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- */
 
-require_once 'class.pluginRegistry.php';
-
-define('G_PLUGIN_CLASS',             1);
-define('PM_CREATE_CASE',             1001);
-define('PM_UPLOAD_DOCUMENT',         1002);
-define('PM_CASE_DOCUMENT_LIST',      1003);
-define('PM_BROWSE_CASE',             1004);
-define('PM_NEW_PROCESS_LIST',        1005);
-define('PM_NEW_PROCESS_SAVE',        1006);
-define('PM_NEW_DYNAFORM_LIST',       1007);
-define('PM_NEW_DYNAFORM_SAVE',       1008);
-define('PM_EXTERNAL_STEP',           1009);
-define('PM_CASE_DOCUMENT_LIST_ARR',  1010);
-define('PM_LOGIN',                   1011);
-define('PM_UPLOAD_DOCUMENT_BEFORE',  1012);
-define('PM_CREATE_NEW_DELEGATION',   1013);
-define('PM_SINGLE_SIGN_ON',          1014);
-define('PM_GET_CASES_AJAX_LISTENER', 1015);
-define('PM_BEFORE_CREATE_USER',      1016);
-define('PM_AFTER_LOGIN',             1017);
-define('PM_HASH_PASSWORD',           1018);
-define('PM_SCHEDULER_CREATE_CASE_BEFORE',   1019);
-define('PM_SCHEDULER_CREATE_CASE_AFTER',    1020);
-
+use ProcessMaker\Plugins\PluginRegistry;
 
 /**
  * @package workflow.engine.classes
@@ -70,10 +24,10 @@ class PMPlugin
      */
     public function PMPlugin($sNamespace, $sFilename = null)
     {
-        $this->sNamespace    = $sNamespace;
-        $this->sClassName    = $sNamespace . 'Plugin';
+        $this->sNamespace = $sNamespace;
+        $this->sClassName = $sNamespace . 'Plugin';
         $this->sPluginFolder = $sNamespace;
-        $this->sFilename     = $sFilename;
+        $this->sFilename = $sFilename;
     }
 
     /**
@@ -84,9 +38,8 @@ class PMPlugin
      */
     public function registerMenu($menuId, $menuFilename)
     {
-        $oPluginRegistry =& PMPluginRegistry::getSingleton();
-        $sMenuFilename   = ($this->sClassName == 'enterprisePlugin') ? PATH_CORE . 'methods' . PATH_SEP . 'enterprise' . PATH_SEP . $menuFilename : PATH_PLUGINS . $this->sPluginFolder . PATH_SEP . $menuFilename;
-        $oPluginRegistry->registerMenu($this->sNamespace, $menuId, $sMenuFilename);
+        $sMenuFilename = ($this->sClassName == 'enterprisePlugin') ? PATH_CORE . 'methods' . PATH_SEP . 'enterprise' . PATH_SEP . $menuFilename : PATH_PLUGINS . $this->sPluginFolder . PATH_SEP . $menuFilename;
+        PluginRegistry::loadSingleton()->registerMenu($this->sNamespace, $menuId, $sMenuFilename);
     }
 
     /**
@@ -96,8 +49,7 @@ class PMPlugin
      */
     public function registerDashlets()
     {
-        $oPluginRegistry =& PMPluginRegistry::getSingleton();
-        $oPluginRegistry->registerDashlets($this->sNamespace);
+        PluginRegistry::loadSingleton()->registerDashlets($this->sNamespace);
     }
 
     /**
@@ -107,8 +59,7 @@ class PMPlugin
      */
     public function registerReport()
     {
-        $oPluginRegistry =& PMPluginRegistry::getSingleton();
-        $oPluginRegistry->registerReport($this->sNamespace);
+        PluginRegistry::loadSingleton()->registerReport($this->sNamespace);
     }
 
     /**
@@ -118,8 +69,7 @@ class PMPlugin
      */
     public function registerPmFunction()
     {
-        $oPluginRegistry =& PMPluginRegistry::getSingleton();
-        $oPluginRegistry->registerPmFunction($this->sNamespace);
+        PluginRegistry::loadSingleton()->registerPmFunction($this->sNamespace);
     }
 
     /**
@@ -129,8 +79,7 @@ class PMPlugin
      */
     public function setCompanyLogo($filename)
     {
-        $oPluginRegistry =& PMPluginRegistry::getSingleton();
-        $oPluginRegistry->setCompanyLogo($this->sNamespace, $filename);
+        PluginRegistry::loadSingleton()->setCompanyLogo($this->sNamespace, $filename);
     }
 
     /**
@@ -140,8 +89,7 @@ class PMPlugin
      */
     public function redirectLogin($role, $pathMethod)
     {
-        $oPluginRegistry =& PMPluginRegistry::getSingleton();
-        $oPluginRegistry->registerRedirectLogin($this->sNamespace, $role, $pathMethod);
+        PluginRegistry::loadSingleton()->registerRedirectLogin($this->sNamespace, $role, $pathMethod);
     }
 
     /**
@@ -151,8 +99,7 @@ class PMPlugin
      */
     public function registerFolder($sFolderId, $sFolderName)
     {
-        $oPluginRegistry =& PMPluginRegistry::getSingleton();
-        $oPluginRegistry->registerFolder($this->sNamespace, $sFolderId, $sFolderName);
+        PluginRegistry::loadSingleton()->registerFolder($this->sNamespace, $sFolderId, $sFolderName);
     }
 
     /**
@@ -160,10 +107,9 @@ class PMPlugin
      * param
      * @return void
      */
-    public function registerStep($sStepId, $sStepName, $sStepTitle, $sSetupStepPage  = '')
+    public function registerStep($sStepId, $sStepName, $sStepTitle, $sSetupStepPage = '')
     {
-        $oPluginRegistry =& PMPluginRegistry::getSingleton();
-        $oPluginRegistry->registerStep( $this->sNamespace, $sStepId, $sStepName, $sStepTitle, $sSetupStepPage );
+        PluginRegistry::loadSingleton()->registerStep($this->sNamespace, $sStepId, $sStepName, $sStepTitle, $sSetupStepPage);
     }
 
     /**
@@ -174,8 +120,7 @@ class PMPlugin
      */
     public function registerTrigger($sTriggerId, $sTriggerName)
     {
-        $oPluginRegistry =& PMPluginRegistry::getSingleton();
-        $oPluginRegistry->registerTrigger($this->sNamespace, $sTriggerId, $sTriggerName);
+        PluginRegistry::loadSingleton()->registerTrigger($this->sNamespace, $sTriggerId, $sTriggerName);
     }
 
     /**
@@ -243,9 +188,8 @@ class PMPlugin
      */
     public function registerBreakPageTemplate($pageId, $templateFilename)
     {
-        $oPluginRegistry =& PMPluginRegistry::getSingleton();
         $sPageFilename = PATH_PLUGINS . $this->sPluginFolder . PATH_SEP . $templateFilename;
-        $oPluginRegistry->registerBreakPageTemplate ($this->sNamespace, $pageId, $sPageFilename);
+        PluginRegistry::loadSingleton()->registerBreakPageTemplate($this->sNamespace, $pageId, $sPageFilename);
     }
 
     /**
@@ -255,8 +199,7 @@ class PMPlugin
      */
     public function registerCss($sCssFile)
     {
-        $oPluginRegistry =& PMPluginRegistry::getSingleton();
-        $oPluginRegistry->registerCss($this->sNamespace, $sCssFile);
+        PluginRegistry::loadSingleton()->registerCss($this->sNamespace, $sCssFile);
     }
 
     /**
@@ -267,9 +210,8 @@ class PMPlugin
      */
     public function registerToolbarFile($sToolbarId, $filename)
     {
-        $oPluginRegistry =& PMPluginRegistry::getSingleton();
-        $sFilename   = PATH_PLUGINS . $this->sPluginFolder . PATH_SEP . $filename;
-        $oPluginRegistry->registerToolbarFile($this->sNamespace, $sToolbarId, $sFilename);
+        $sFilename = PATH_PLUGINS . $this->sPluginFolder . PATH_SEP . $filename;
+        PluginRegistry::loadSingleton()->registerToolbarFile($this->sNamespace, $sToolbarId, $sFilename);
     }
 
     /**
@@ -277,16 +219,10 @@ class PMPlugin
      * param
      * @return void
      */
-    public function registerCaseSchedulerPlugin(
-        $sActionId,
-        $sActionForm,
-        $sActionSave,
-        $sActionExecute,
-        $sActionGetFields
-    ) {
-        $oPluginRegistry =& PMPluginRegistry::getSingleton();
-        $oPluginRegistry->registerCaseSchedulerPlugin(
-            $this->sNamespace, $sActionId, $sActionForm, $sActionSave, $sActionExecute, $sActionGetFields
+    public function registerCaseSchedulerPlugin($sActionId, $sActionForm, $sActionSave, $sActionExecute, $sActionGetFields)
+    {
+        PluginRegistry::loadSingleton()->registerCaseSchedulerPlugin(
+                $this->sNamespace, $sActionId, $sActionForm, $sActionSave, $sActionExecute, $sActionGetFields
         );
     }
 
@@ -295,10 +231,9 @@ class PMPlugin
      * @param string $sPage
      * @return void
      */
-    public function registerTaskExtendedProperty($sPage, $sName, $sIcon="")
+    public function registerTaskExtendedProperty($sPage, $sName, $sIcon = "")
     {
-        $oPluginRegistry =& PMPluginRegistry::getSingleton();
-        $oPluginRegistry->registerTaskExtendedProperty ( $this->sNamespace, $sPage, $sName, $sIcon );
+        PluginRegistry::loadSingleton()->registerTaskExtendedProperty($this->sNamespace, $sPage, $sName, $sIcon);
     }
 
     /**
@@ -307,10 +242,9 @@ class PMPlugin
      * @param array/string $pluginJsFile
      * @return void
      */
-    function registerJavascript($sCoreJsFile, $pluginJsFile)
+    public function registerJavascript($sCoreJsFile, $pluginJsFile)
     {
-        $oPluginRegistry =& PMPluginRegistry::getSingleton();
-        $oPluginRegistry->registerJavascript($this->sNamespace, $sCoreJsFile, $pluginJsFile);
+        PluginRegistry::loadSingleton()->registerJavascript($this->sNamespace, $sCoreJsFile, $pluginJsFile);
     }
 
     /**
@@ -321,8 +255,7 @@ class PMPlugin
      */
     public function unregisterJavascript($sCoreJsFile, $pluginJsFile)
     {
-        $oPluginRegistry =& PMPluginRegistry::getSingleton();
-        $oPluginRegistry->unregisterJavascript($this->sNamespace, $sCoreJsFile, $pluginJsFile);
+        PluginRegistry::loadSingleton()->unregisterJavascript($this->sNamespace, $sCoreJsFile, $pluginJsFile);
     }
 
     public function registerDashboard()
@@ -331,8 +264,7 @@ class PMPlugin
 
     public function getExternalStepAction()
     {
-        $oPluginRegistry =& PMPluginRegistry::getSingleton();
-        return $oPluginRegistry->getSteps();
+        return PluginRegistry::loadSingleton()->getSteps();
     }
 
     /**
@@ -343,10 +275,9 @@ class PMPlugin
      * @param array/string $pluginJsFile
      * @return void
      */
-    function registerRestService()
+    public function registerRestService()
     {
-        $oPluginRegistry =& PMPluginRegistry::getSingleton();
-        $oPluginRegistry->registerRestService($this->sNamespace);
+        PluginRegistry::loadSingleton()->registerRestService($this->sNamespace);
     }
 
     /**
@@ -354,10 +285,9 @@ class PMPlugin
      *
      * @param string $className that is name class to extends
      */
-    function registerExtendsRestService($className)
+    public function registerExtendsRestService($className)
     {
-        $oPluginRegistry =& PMPluginRegistry::getSingleton();
-        $oPluginRegistry->registerExtendsRestService($this->sNamespace, $className);
+        PluginRegistry::loadSingleton()->registerExtendsRestService($this->sNamespace, $className);
     }
 
     /**
@@ -365,10 +295,9 @@ class PMPlugin
      *
      * @param string $className that is name class to extends
      */
-    function disableExtendsRestService($className)
+    public function disableExtendsRestService($className)
     {
-        $oPluginRegistry =& PMPluginRegistry::getSingleton();
-        $oPluginRegistry->disableExtendsRestService($this->sNamespace, $className);
+        PluginRegistry::loadSingleton()->disableExtendsRestService($this->sNamespace, $className);
     }
 
     /**
@@ -379,10 +308,9 @@ class PMPlugin
      * @param array/string $pluginJsFile
      * @return void
      */
-    function unregisterRestService($classname, $path)
+    public function unregisterRestService($classname, $path)
     {
-        $oPluginRegistry =& PMPluginRegistry::getSingleton();
-        $oPluginRegistry->unregisterRestService($this->sNamespace, $classname, $path);
+        PluginRegistry::loadSingleton()->unregisterRestService($this->sNamespace, $classname, $path);
     }
 
     /**
@@ -392,14 +320,12 @@ class PMPlugin
      */
     public function registerCronFile($cronFile)
     {
-        $oPluginRegistry =& PMPluginRegistry::getSingleton();
-        $oPluginRegistry->registerCronFile($this->sNamespace, $cronFile);
+        PluginRegistry::loadSingleton()->registerCronFile($this->sNamespace, $cronFile);
     }
 
-    function enableRestService($enable)
+    public function enableRestService($enable)
     {
-        $oPluginRegistry =& PMPluginRegistry::getSingleton();
-        $oPluginRegistry->enableRestService($this->sNamespace, $enable);
+        PluginRegistry::loadSingleton()->enableRestService($this->sNamespace, $enable);
     }
 
     /**
@@ -412,8 +338,7 @@ class PMPlugin
     public function registerDesignerMenu($file)
     {
         try {
-            $pluginRegistry = &PMPluginRegistry::getSingleton();
-            $pluginRegistry->registerDesignerMenu($this->sNamespace, $file);
+            PluginRegistry::loadSingleton()->registerDesignerMenu($this->sNamespace, $file);
         } catch (Exception $e) {
             throw $e;
         }
@@ -431,8 +356,7 @@ class PMPlugin
     public function registerMenuOptionsToReplace($from = array(), $options = array())
     {
         try {
-            $oPluginRegistry =& PMPluginRegistry::getSingleton();
-            $oPluginRegistry->registerMenuOptionsToReplace($this->sNamespace, $from, $options);
+            PluginRegistry::loadSingleton()->registerMenuOptionsToReplace($this->sNamespace, $from, $options);
         } catch (Exception $e) {
             throw $e;
         }
@@ -448,8 +372,7 @@ class PMPlugin
     public function registerImportProcessCallback($callBackFile = '')
     {
         try {
-            $oPluginRegistry =& PMPluginRegistry::getSingleton();
-            $oPluginRegistry->registerImportProcessCallback($this->sNamespace, $callBackFile);
+            PluginRegistry::loadSingleton()->registerImportProcessCallback($this->sNamespace, $callBackFile);
         } catch (Exception $e) {
             throw $e;
         }
@@ -465,8 +388,7 @@ class PMPlugin
     public function registerOpenReassignCallback($callBackFile = '')
     {
         try {
-            $oPluginRegistry =& PMPluginRegistry::getSingleton();
-            $oPluginRegistry->registerOpenReassignCallback($callBackFile);
+            PluginRegistry::loadSingleton()->registerOpenReassignCallback($callBackFile);
         } catch (Exception $e) {
             throw $e;
         }
@@ -484,8 +406,7 @@ class PMPlugin
             $scope = '/plugin/' . $this->sNamespace . '/';
         }
         try {
-            $pluginRegistry = &PMPluginRegistry::getSingleton();
-            $pluginRegistry->registerDesignerSourcePath($this->sNamespace, $scope . $pathFile);
+            PluginRegistry::loadSingleton()->registerDesignerSourcePath($this->sNamespace, $scope . $pathFile);
         } catch (Exception $e) {
             throw $e;
         }
@@ -515,6 +436,94 @@ class PMPlugin
         }
     }
 
+    /**
+     * Gets an array of plugins that are in the processmaker plugin directory.
+     * @param string $workspace
+     * @return array
+     */
+    public static function getListPluginsManager($workspace)
+    {
+        $items = array();
+        $aPluginsPP = array();
+        if (is_file(PATH_PLUGINS . 'enterprise/data/data')) {
+            $aPlugins = unserialize(trim(file_get_contents(PATH_PLUGINS . 'enterprise/data/data')));
+            foreach ($aPlugins as $aPlugin) {
+                $aPluginsPP[] = substr($aPlugin['sFilename'], 0, strpos($aPlugin['sFilename'], '-')) . '.php';
+            }
+        }
+        $oPluginRegistry = PluginRegistry::loadSingleton();
+        if ($handle = opendir(PATH_PLUGINS)) {
+            while (false !== ($file = readdir($handle))) {
+                if (in_array($file, $aPluginsPP)) {
+                    continue;
+                }
+                if (strpos($file, '.php', 1) && is_file(PATH_PLUGINS . $file)) {
+                    include_once(PATH_PLUGINS . $file);
+                    /** @var \ProcessMaker\Plugins\Interfaces\PluginDetail $pluginDetail */
+                    $pluginDetail = $oPluginRegistry->getPluginDetails($file);
+                    if ($pluginDetail === null) {
+                        continue;
+                    }
+                    $status_label = $pluginDetail->isEnabled() ? G::LoadTranslation('ID_ENABLED') : G::LoadTranslation('ID_DISABLED');
+                    $status = $pluginDetail->isEnabled() ? 1 : 0;
+                    if ($pluginDetail->getWorkspaces()) {
+                        if (!is_array($pluginDetail->getWorkspaces())) {
+                            $pluginDetail->setWorkspaces(array());
+                        }
+                        if (!in_array($workspace, $pluginDetail->getWorkspaces())) {
+                            continue;
+                        }
+                    }
+                    $setup = $pluginDetail->getSetupPage() != '' && $pluginDetail->isEnabled() ? '1' : '0';
+
+                    if (isset($pluginDetail) && !$pluginDetail->isPrivate()) {
+                        $items[] = [
+                            'id' => (count($items) + 1),
+                            'namespace' => $pluginDetail->sNamespace,
+                            'title' => $pluginDetail->sFriendlyName . "\n(" . $pluginDetail->sNamespace . '.php)',
+                            'className' => $pluginDetail->sNamespace,
+                            'description' => $pluginDetail->sDescription,
+                            'version' => $pluginDetail->iVersion,
+                            'setupPage' => $pluginDetail->sSetupPage,
+                            'status_label' => $status_label,
+                            'status' => $status,
+                            'setup' => $setup,
+                            'sFile' => $file,
+                            'sStatusFile' => $pluginDetail->enabled
+                        ];
+                    }
+                }
+            }
+            closedir($handle);
+        }
+        return $items;
+    }
+
+    /**
+     * Gets a general list of all plugins within processmaker per workspace.
+     *
+     * @param string $workspace
+     * @return array
+     */
+    public static function getListAllPlugins($workspace)
+    {
+        $oPluginRegistry = PluginRegistry::loadSingleton();
+        $items = [];
+        if ($handle = opendir(PATH_PLUGINS)) {
+            while (false !== ($file = readdir($handle))) {
+                if (strpos($file, '.php', 1) && is_file(PATH_PLUGINS . $file)) {
+                    include_once(PATH_PLUGINS . $file);
+                    /** @var \ProcessMaker\Plugins\Interfaces\PluginDetail $detail */
+                    $detail = $oPluginRegistry->getPluginDetails($file);
+                    if ($detail !== null) {
+                        $items[] = $detail;
+                    }
+                }
+            }
+            closedir($handle);
+        }
+        return $items;
+    }
 }
 
 class menuDetail
@@ -533,11 +542,10 @@ class menuDetail
     public function __construct($sNamespace, $sMenuId, $sFilename)
     {
         $this->sNamespace = $sNamespace;
-        $this->sMenuId    = $sMenuId;
-        $this->sFilename  = $sFilename;
+        $this->sMenuId = $sMenuId;
+        $this->sFilename = $sFilename;
     }
 }
-
 
 class toolbarDetail
 {
@@ -555,8 +563,8 @@ class toolbarDetail
     public function __construct($sNamespace, $sToolbarId, $sFilename)
     {
         $this->sNamespace = $sNamespace;
-        $this->sToolbarId    = $sToolbarId;
-        $this->sFilename  = $sFilename;
+        $this->sToolbarId = $sToolbarId;
+        $this->sFilename = $sFilename;
     }
 }
 
@@ -574,7 +582,7 @@ class cssFile
     public function __construct($sNamespace, $sCssFile)
     {
         $this->sNamespace = $sNamespace;
-        $this->sCssFile    = $sCssFile;
+        $this->sCssFile = $sCssFile;
     }
 }
 
@@ -593,8 +601,8 @@ class triggerDetail
      */
     public function __construct($sNamespace, $sTriggerId, $sTriggerName)
     {
-        $this->sNamespace   = $sNamespace;
-        $this->sTriggerId   = $sTriggerId;
+        $this->sNamespace = $sNamespace;
+        $this->sTriggerId = $sTriggerId;
         $this->sTriggerName = $sTriggerName;
     }
 }
@@ -614,8 +622,8 @@ class folderDetail
      */
     public function __construct($sNamespace, $sFolderId, $sFolderName)
     {
-        $this->sNamespace  = $sNamespace;
-        $this->sFolderId   = $sFolderId;
+        $this->sNamespace = $sNamespace;
+        $this->sFolderId = $sFolderId;
         $this->sFolderName = $sFolderName;
     }
 }
@@ -639,10 +647,10 @@ class stepDetail
      */
     public function __construct($sNamespace, $sStepId, $sStepName, $sStepTitle, $sSetupStepPage)
     {
-        $this->sNamespace     = $sNamespace;
-        $this->sStepId        = $sStepId;
-        $this->sStepName      = $sStepName;
-        $this->sStepTitle     = $sStepTitle;
+        $this->sNamespace = $sNamespace;
+        $this->sStepId = $sStepId;
+        $this->sStepName = $sStepName;
+        $this->sStepTitle = $sStepTitle;
         $this->sSetupStepPage = $sSetupStepPage;
     }
 }
@@ -662,8 +670,8 @@ class redirectDetail
      */
     public function __construct($sNamespace, $sRoleCode, $sPathMethod)
     {
-        $this->sNamespace  = $sNamespace;
-        $this->sRoleCode   = $sRoleCode;
+        $this->sNamespace = $sNamespace;
+        $this->sRoleCode = $sRoleCode;
         $this->sPathMethod = $sPathMethod;
     }
 }
@@ -689,22 +697,15 @@ class folderData
      * param string $sUserFullName
      * @return void
      */
-    public function __construct(
-        $sProcessUid,
-        $sProcessTitle,
-        $sApplicationUid,
-        $sApplicationTitle,
-        $sUserUid,
-        $sUserLogin = '',
-        $sUserFullName =''
-    ) {
-        $this->sProcessUid       = $sProcessUid;
-        $this->sProcessTitle     = $sProcessTitle;
-        $this->sApplicationUid   = $sApplicationUid;
+    public function __construct($sProcessUid, $sProcessTitle, $sApplicationUid, $sApplicationTitle, $sUserUid, $sUserLogin = '', $sUserFullName = '')
+    {
+        $this->sProcessUid = $sProcessUid;
+        $this->sProcessTitle = $sProcessTitle;
+        $this->sApplicationUid = $sApplicationUid;
         $this->sApplicationTitle = $sApplicationTitle;
-        $this->sUserUid          = $sUserUid;
-        $this->sUserLogin        = $sUserLogin;
-        $this->sUserFullName     = $sUserFullName;
+        $this->sUserUid = $sUserUid;
+        $this->sUserLogin = $sUserLogin;
+        $this->sUserFullName = $sUserFullName;
     }
 }
 
@@ -731,12 +732,12 @@ class uploadDocumentData
     public function __construct($sApplicationUid, $sUserUid, $sFilename, $sFileTitle, $sDocumentUid, $iVersion = 1)
     {
         $this->sApplicationUid = $sApplicationUid;
-        $this->sUserUid        = $sUserUid;
-        $this->sFilename       = $sFilename;
-        $this->sFileTitle      = $sFileTitle;
-        $this->sDocumentUid    = $sDocumentUid;
+        $this->sUserUid = $sUserUid;
+        $this->sFilename = $sFilename;
+        $this->sFileTitle = $sFileTitle;
+        $this->sDocumentUid = $sDocumentUid;
         $this->bUseOutputFolder = false;
-        $this->iVersion    = $iVersion;
+        $this->iVersion = $iVersion;
     }
 }
 
@@ -756,8 +757,8 @@ class loginInfo
     public function __construct($lName, $lPassword, $lSession)
     {
         $this->lName = $lName;
-        $this->lPassword    = $lPassword;
-        $this->lSession  = $lSession;
+        $this->lPassword = $lPassword;
+        $this->lSession = $lSession;
     }
 }
 
@@ -782,11 +783,11 @@ class caseSchedulerPlugin
      */
     public function __construct($sNamespace, $sActionId, $sActionForm, $sActionSave, $sActionExecute, $sActionGetFields)
     {
-        $this->sNamespace       = $sNamespace;
-        $this->sActionId        = $sActionId;
-        $this->sActionForm      = $sActionForm;
-        $this->sActionSave      = $sActionSave;
-        $this->sActionExecute   = $sActionExecute;
+        $this->sNamespace = $sNamespace;
+        $this->sActionId = $sActionId;
+        $this->sActionForm = $sActionForm;
+        $this->sActionSave = $sActionSave;
+        $this->sActionExecute = $sActionExecute;
         $this->sActionGetFields = $sActionGetFields;
     }
 }
@@ -809,9 +810,9 @@ class taskExtendedProperty
     public function __construct($sNamespace, $sPage, $sName, $sIcon)
     {
         $this->sNamespace = $sNamespace;
-        $this->sPage    = $sPage;
-        $this->sName    = $sName;
-        $this->sIcon    = $sIcon;
+        $this->sPage = $sPage;
+        $this->sName = $sName;
+        $this->sIcon = $sIcon;
     }
 }
 
@@ -831,9 +832,9 @@ class dashboardPage
     public function __construct($sNamespace, $sPage, $sName, $sIcon)
     {
         $this->sNamespace = $sNamespace;
-        $this->sPage    = $sPage;
-        $this->sName    = $sName;
-        $this->sIcon    = $sIcon;
+        $this->sPage = $sPage;
+        $this->sName = $sName;
+        $this->sIcon = $sIcon;
     }
 }
 
@@ -851,7 +852,7 @@ class cronFile
     public function __construct($namespace, $cronFile)
     {
         $this->namespace = $namespace;
-        $this->cronFile  = $cronFile;
+        $this->cronFile = $cronFile;
     }
 }
 
@@ -869,7 +870,7 @@ class importCallBack
     public function __construct($namespace, $callBackFile)
     {
         $this->namespace = $namespace;
-        $this->callBackFile  = $callBackFile;
+        $this->callBackFile = $callBackFile;
     }
 }
 
@@ -885,6 +886,7 @@ class OpenReassignCallback
      */
     public function __construct($callBackFile)
     {
-        $this->callBackFile  = $callBackFile;
+        $this->callBackFile = $callBackFile;
     }
 }
+

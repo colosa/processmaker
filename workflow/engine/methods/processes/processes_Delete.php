@@ -38,8 +38,6 @@ if ($access != 1) {
             break;
     }
 }
-//G::LoadClass( 'processMap' );
-//$oProcessMap = new ProcessMap();
 
 $uids = explode(',', $_POST['PRO_UIDS']);
 try {

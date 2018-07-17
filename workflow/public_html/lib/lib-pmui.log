@@ -1,30 +1,30 @@
-[9 weeks ago] 1db5a6b  FBI-1513 Grammar mistakes found in the Create a Variable window <Marco A. Nina Mena>
-[10 weeks ago] 7e5e9d3  FBI-1008 <alex_santos>
-[3 months ago] 73fa18e  FBI-1415: The lasso does not work when we move the process flow <Rodrigo Quelca>
-[6 months ago] e1d0f9a  FBI-1237: [PMUI] No es posible adicionar una nueva opcin en un checkgroupField <richardnoel>
-[7 months ago] f8386bc  FBI-1074 <alex_santos>
-[8 months ago] 6813490  FBI-1041: Cost&Units: Al hacer click en SAVE después de dejar vacíos estos elementos, no es posible editarlos <alex_santos>
-[8 months ago] 612abd3  FBI-1009 <duhnnie>
-[8 months ago] de682c1  FBI-961: [Process Designer] Error guardar la fecha del datepicker de PMUI <richardnoel>
-[8 months ago] 1d06ba1  FBI-898 <jonathan>
-[8 months ago] f8b8c64  FBI-847: Variable no permite editar el Name en IE 11 <Daniel>
-[8 months ago] 3951a24  FBI-801: Fixes <duhnnie>
-[8 months ago] 2eaddf4  FBI-789 <jonathan>
-[9 months ago] 5e3e5f0  FBI-393: Fix connection decorator positioning <Daniel>
-[9 months ago] c482452  FBI-670:(Custom Trigger) No se actualizan las listas de los triggers <richardnoel>
-[9 months ago] 01c03b5  FBI-570:Action takes too much time when trying to assign  steps in the task. <richardnoel>
-[9 months ago] 6a183ce  FBI-597: Modify the PMUI's Rakefile in order to get along with new ProcessMaker's gulp implementation <Daniel>
-[10 months ago] 96817b3  FBI-581: InputDocument> El ordenamiento de la grilla no esta siguiendo el estandar de las demas ventanas <alex_santos>
-[10 months ago] 85ec15c  FBI-533:Solo se muestran 5 variables en las propiedades de los eventos en 'message types' <richardnoel>
-[11 months ago] 00b74b4  FBI-183: Routing Screen Templateis misplaced in the Edit Process dialog box in Firefox in Debian 8.4 <alex_santos>
-[12 months ago] c3faea6  OM-624: Updates Rakefile for Ruby 2 <duhnnie>
-[12 months ago] 1be96de  OM-674: [Code Style] apply code style to pmUI libary <alex_santos>
-[1 year ago] 20b8cf2d  OM-639: Properties>Case Labels>Title. Error al apretar Enter <duhnnie>
-[1 year ago] 7c1adf3  OM-598: Mensaje de campo requerido, innecesario. <duhnnie>
-[1 year ago] ee8f77b  OM-576 <jonathan>
-[1 year ago] ad2904e  OM-546: [Process Designer] Al poner y sacar un elemento del pool las flechas que unen los elementos BPMN se ven mal <Rodrigo Quelca>
-[1 year ago] 883372f  OM-277: Process designer >> Look at the text anotation on top - the lines of the text anotation symbol cross over the words themselves <alex_santos>
-[1 year, 1 month ago] 48071dd  OM-523: <alex_santos>
-[1 year, 1 month ago] 110797f  OM-493:Redireccion diferente al refrescar la pagina del diseñador <richardnoel>
-[1 year, 1 month ago] 8465420  OM-503: Variable>Uncaught TypeError: PMUI.activeCanvas.getCurrentSelection is not a function <Rodrigo Quelca>
-[1 year, 1 month ago] 6e4a182  OM-407: Al mover un tarea con el curso fuera de un Pool, se desconfigura el diseño del proceso. <alex_santos>
+[6 months ago] 0aad8c9  (origin/improvement/FBI-2144, composer/improvement/FBI-2144) FBI-2144 <Daniel>
+[8 months ago] f78ce30  FBI-636 <duhnnie>
+[8 months ago] 9c30bd3  FBI-1140 (Task Steps) Label "No Records Found" even if there is a trigger assigned <dheeyi william>
+[8 months ago] 809acfe  FBI-1464: Improved solution <duhnnie>
+[11 months ago] 31cf982  FBI-927: Add validation to avoid duplicated items in canvas <duhnnie>
+[11 months ago] 85b88ac  FBI-1781 <duhnnie>
+[1 year, 1 month ago] d347bbe  FBI-992: Fix "Required field" to be permanently visible <duhnnie>
+[1 year, 1 month ago] 1db5a6b  FBI-1513 Grammar mistakes found in the Create a Variable window <Marco A. Nina Mena>
+[1 year, 1 month ago] 7e5e9d3  FBI-1008 <alex_santos>
+[1 year, 2 months ago] 73fa18e  FBI-1415: The lasso does not work when we move the process flow <Rodrigo Quelca>
+[1 year, 5 months ago] e1d0f9a  FBI-1237: [PMUI] No es posible adicionar una nueva opcin en un checkgroupField <richardnoel>
+[1 year, 7 months ago] f8386bc  FBI-1074 <alex_santos>
+[1 year, 7 months ago] 6813490  FBI-1041: Cost&Units: Al hacer click en SAVE después de dejar vacíos estos elementos, no es posible editarlos <alex_santos>
+[1 year, 7 months ago] 612abd3  FBI-1009 <duhnnie>
+[1 year, 7 months ago] de682c1  FBI-961: [Process Designer] Error guardar la fecha del datepicker de PMUI <richardnoel>
+[1 year, 7 months ago] 1d06ba1  FBI-898 <jonathan>
+[1 year, 7 months ago] f8b8c64  FBI-847: Variable no permite editar el Name en IE 11 <Daniel>
+[1 year, 8 months ago] 3951a24  FBI-801: Fixes <duhnnie>
+[1 year, 8 months ago] 2eaddf4  FBI-789 <jonathan>
+[1 year, 8 months ago] 5e3e5f0  FBI-393: Fix connection decorator positioning <Daniel>
+[1 year, 8 months ago] c482452  FBI-670:(Custom Trigger) No se actualizan las listas de los triggers <richardnoel>
+[1 year, 9 months ago] 01c03b5  FBI-570:Action takes too much time when trying to assign  steps in the task. <richardnoel>
+[1 year, 9 months ago] 6a183ce  FBI-597: Modify the PMUI's Rakefile in order to get along with new ProcessMaker's gulp implementation <Daniel>
+[1 year, 9 months ago] 96817b3  FBI-581: InputDocument> El ordenamiento de la grilla no esta siguiendo el estandar de las demas ventanas <alex_santos>
+[1 year, 9 months ago] 85ec15c  FBI-533:Solo se muestran 5 variables en las propiedades de los eventos en 'message types' <richardnoel>
+[1 year, 10 months ago] 00b74b4  FBI-183: Routing Screen Templateis misplaced in the Edit Process dialog box in Firefox in Debian 8.4 <alex_santos>
+[1 year, 11 months ago] c3faea6  OM-624: Updates Rakefile for Ruby 2 <duhnnie>
+[1 year, 11 months ago] 1be96de  OM-674: [Code Style] apply code style to pmUI libary <alex_santos>
+[1 year, 11 months ago] 20b8cf2d  OM-639: Properties>Case Labels>Title. Error al apretar Enter <duhnnie>
+[1 year, 11 months ago] 7c1adf3  OM-598: Mensaje de campo requerido, innecesario. <duhnnie>

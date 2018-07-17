@@ -147,7 +147,7 @@
     }
 
     function PostByForum( ) {
-      G::LoadThirdParty("libchart/classes", "libchart" );
+
       $chart = new VerticalBarChart(430, 220);
 
       $dataSet = $this->getPostByForum();
@@ -223,7 +223,7 @@
     }
 
     function ForumWeek( ) {
-      G::LoadThirdParty("libchart/classes", "libchart" );
+
       $chart = new VerticalBarChart(430, 220);
 
       $dataSet = $this->getForumWeek();
@@ -290,7 +290,7 @@
     }
 
     function PostByUser ( ) {
-      G::LoadThirdParty("libchart/classes", "libchart" );
+
       $chart = new VerticalBarChart(430, 220);
 
       $dataSet = $this->getPostByUser();
@@ -378,7 +378,7 @@
     }
 
     function BugsByStatus ( ) {
-      G::LoadThirdParty("libchart/classes", "libchart" );
+
       $chart = new VerticalBarChart(430, 220);
 
       $dataSet = $this->getBugsByStatus();
@@ -433,7 +433,7 @@
     }
 
     function BugsOpenByUser ( ) {
-      G::LoadThirdParty("libchart/classes", "libchart" );
+
       $chart = new VerticalBarChart(430, 220);
 
       $dataSet = $this->getBugsOpenByUser();

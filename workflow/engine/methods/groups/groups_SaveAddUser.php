@@ -25,7 +25,6 @@ if (($RBAC_Response = $RBAC->userCanAccess( "PM_USERS" )) != 1) {
     return $RBAC_Response;
 }
 
-G::LoadClass( 'groups' );
 $groups = new Groups();
 $groups->addUserToGroup( $_GET['GRP_UID'], $_POST['form']['USR_UID'] );
 

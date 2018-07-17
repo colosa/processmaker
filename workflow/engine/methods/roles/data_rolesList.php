@@ -22,9 +22,6 @@
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
 
-require_once (PATH_RBAC . "model/RolesPeer.php");
-G::LoadClass( 'ArrayPeer' );
-G::LoadSystem('inputfilter');
 $filter = new InputFilter();
 $_POST = $filter->xssFilterHard($_POST);
 

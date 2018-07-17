@@ -31,7 +31,7 @@
  *
  */
 
-G::LoadSystem( 'database_base' );
+
 
 class database extends database_base
 {
@@ -909,7 +909,6 @@ class database extends database_base
      */
     public function reportTableExist ()
     {
-        G::LoadSystem('inputfilter');
         $filter = new InputFilter();
         $DB_NAME = $filter->validateInput(DB_NAME);
         $bExists = true;

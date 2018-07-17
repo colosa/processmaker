@@ -48,7 +48,7 @@ function createDWS ($sharepointServer, $auth, $name = "", $users = "", $title = 
 {
     //print "Trigger: createDWS";
     require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $pmTrSharepoint = new PmTrSharepointClass( $sharepointServer, $auth );
     $beforeResult = $pmTrSharepoint->createDWS( $name, $users, $title, $documents );
     return $beforeResult;
 }
@@ -72,7 +72,7 @@ function createDWS ($sharepointServer, $auth, $name = "", $users = "", $title = 
 function deleteDWS ($sharepointServer, $auth, $dwsname)
 {
     require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $pmTrSharepoint = new PmTrSharepointClass( $sharepointServer, $auth );
     $beforeResult = $pmTrSharepoint->deleteDWS( $dwsname );
     $newResult = $beforeResult->DeleteDwsResult;
     if ($newResult == '<Result/>') {
@@ -103,7 +103,7 @@ function deleteDWS ($sharepointServer, $auth, $dwsname)
 function createFolderDWS ($sharepointServer, $auth, $dwsname, $dwsFolderName)
 {
     require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $pmTrSharepoint = new PmTrSharepointClass( $sharepointServer, $auth );
     $result = $pmTrSharepoint->createFolderDWS( $dwsname, $dwsFolderName );
     var_dump( $result );
     $newResult = $result->CreateFolderResult;
@@ -138,7 +138,7 @@ function createFolderDWS ($sharepointServer, $auth, $dwsname, $dwsFolderName)
 function deleteFolderDWS ($sharepointServer, $auth, $dwsname, $folderName)
 {
     require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $pmTrSharepoint = new PmTrSharepointClass( $sharepointServer, $auth );
     $result = $pmTrSharepoint->deleteFolderDWS( $dwsname, $folderName );
     $newResult = $result->DeleteFolderResult;
     if (isset( $newResult )) {
@@ -171,7 +171,7 @@ function deleteFolderDWS ($sharepointServer, $auth, $dwsname, $folderName)
 function getDWSData ($sharepointServer, $auth, $newFileName, $dwsname, $lastUpdate)
 {
     require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $pmTrSharepoint = new PmTrSharepointClass( $sharepointServer, $auth );
     $resultDWSData = $pmTrSharepoint->getDWSData( $newFileName, $dwsname, $lastUpdate );
     if ($resultDWSData) {
         return $resultDWSData;
@@ -202,7 +202,7 @@ function getDWSData ($sharepointServer, $auth, $newFileName, $dwsname, $lastUpda
 function getDWSMetaData ($sharepointServer, $auth, $newFileName, $dwsname, $id)
 {
     require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $pmTrSharepoint = new PmTrSharepointClass( $sharepointServer, $auth );
     $result = $pmTrSharepoint->getDWSMetaData( $newFileName, $dwsname, $id );
     //$newResult = $result->GetDwsMetaDataResult;
     if (isset( $result )) {
@@ -235,7 +235,7 @@ function getDWSMetaData ($sharepointServer, $auth, $newFileName, $dwsname, $id)
 function uploadDocumentDWS ($sharepointServer, $auth, $dwsname, $folderName, $sourceUrl, $filename)
 {
     require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $pmTrSharepoint = new PmTrSharepointClass( $sharepointServer, $auth );
     $beforeResult = $pmTrSharepoint->uploadDocumentDWS( $dwsname, $folderName, $sourceUrl, $filename );
 
     return $beforeResult;
@@ -262,7 +262,7 @@ function uploadDocumentDWS ($sharepointServer, $auth, $dwsname, $folderName, $so
 function downloadDocumentDWS ($sharepointServer, $auth, $dwsname, $fileName, $fileLocation)
 {
     require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $pmTrSharepoint = new PmTrSharepointClass( $sharepointServer, $auth );
     $result = $pmTrSharepoint->downloadDocumentDWS( $dwsname, $fileName, $fileLocation );
     if (isset( $result )) {
         return "Document downloaded";
@@ -291,7 +291,7 @@ function downloadDocumentDWS ($sharepointServer, $auth, $dwsname, $fileName, $fi
 function getDWSFolderItems ($sharepointServer, $auth, $dwsname, $strFolderUrl)
 {
     require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $pmTrSharepoint = new PmTrSharepointClass( $sharepointServer, $auth );
     $result = $pmTrSharepoint->getDWSFolderItems( $dwsname, $strFolderUrl );
     if (isset( $result )) {
         return $result;
@@ -320,7 +320,7 @@ function getDWSFolderItems ($sharepointServer, $auth, $dwsname, $strFolderUrl)
 function getDWSDocumentVersions ($sharepointServer, $auth, $newFileName, $dwsname)
 {
     require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $pmTrSharepoint = new PmTrSharepointClass( $sharepointServer, $auth );
     $result = $pmTrSharepoint->getDWSDocumentVersions( $newFileName, $dwsname );
     if (isset( $result->GetVersionsResult )) {
         /*
@@ -361,7 +361,7 @@ function getDWSDocumentVersions ($sharepointServer, $auth, $newFileName, $dwsnam
 function deleteDWSDocumentVersion ($sharepointServer, $auth, $newFileName, $dwsname, $versionNum)
 {
     require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $pmTrSharepoint = new PmTrSharepointClass( $sharepointServer, $auth );
     $result = $pmTrSharepoint->deleteDWSDocVersion( $newFileName, $dwsname, $versionNum );
     return $result;
 }
@@ -386,7 +386,7 @@ function deleteDWSDocumentVersion ($sharepointServer, $auth, $newFileName, $dwsn
 function deleteDWSAllDocumentVersion ($sharepointServer, $auth, $newFileName, $dwsname)
 {
     require_once (PATH_CORE . 'classes' . PATH_SEP . 'triggers' . PATH_SEP . 'class.pmTrSharepoint.php');
-    $pmTrSharepoint = new pmTrSharepointClass( $sharepointServer, $auth );
+    $pmTrSharepoint = new PmTrSharepointClass( $sharepointServer, $auth );
     $result = $pmTrSharepoint->deleteAllDWSDocVersion( $newFileName, $dwsname );
     return $result;
 }

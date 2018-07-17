@@ -8,7 +8,7 @@
    }
   </style>
   <body onresize="autoResizeScreen()" onload="autoResizeScreen()">
-  <iframe name="casesFrame" id="casesFrame" src ="../dashboard" width="99%" height="768" frameborder="0">
+  <iframe name="casesFrame" id="casesFrame" src ="../DashboardModule" width="99%" height="768" frameborder="0">
     <p>Your browser does not support iframes.</p>
   </iframe>
   </body>

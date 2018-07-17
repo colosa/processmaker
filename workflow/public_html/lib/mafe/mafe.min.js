@@ -9648,7 +9648,7 @@ XMLReader.prototype.fromXML = function(xml, rootHandler, done) {
     var context = new Context(rootHandler);
 
     var parser = sax.parser(true, { xmlns: true, trim: true });
-        stackInstance =  stack();
+    var stackInstance =  stack();
 
     var model = this.model,
         self = this;
@@ -16183,7 +16183,13 @@ PMShape.prototype.getExtendedObject = function () {
 PMShape.prototype.getMarkers = function () {
     return this.markersArray;
 };
-
+/**
+ * Factory method for drop behaviors.
+ * @param {String} type
+ * @param {Array} selectors An array in which each element is a valid JQuery selector to specify the accepted elements by
+ * the drop operation.
+ * @returns {*}
+ */
 PMShape.prototype.dropBehaviorFactory = function (type, selectors) {
     if (type === 'pmconnection') {
         if (!this.pmConnectionDropBehavior) {
@@ -16830,6 +16836,9 @@ PMShape.prototype.updateShapeParent = function (businessObject, parentBusinessOb
     if (parentBusinessObject.elem &&
         parentBusinessObject.elem.$type === 'bpmn:Lane') {
         //text annotation Data store Data object into lane
+        if (!businessObject.elem.$lane && parentBusinessObject.elem) {
+            businessObject.elem.$lane = parentBusinessObject.elem;
+        }
         if (businessObject.elem.$type !== 'bpmn:TextAnnotation'
             && businessObject.elem.$type !== 'bpmn:DataStoreReference'
             && businessObject.elem.$type !== 'bpmn:DataObjectReference') {
@@ -17297,23 +17306,31 @@ PMShape.prototype.removeIncomingConnection = function(element){
 };
 /**
  * Return the list of incoming connections.
- * @param {String} [type] Optional, returns only the connections of the specified type.
+ * @param {...String} [types] Optional, returns only the connections of the specified types.
  * @returns {Array}
  */
-PMShape.prototype.getIncomingConnections = function(type){
-    if (type) {
+PMShape.prototype.getIncomingConnections = function(){
+    var validTypes = [],
+        i;
+
+    if (arguments.length) {
+        for (i = 0; i < arguments.length; i += 1) {
+            validTypes.push(arguments[i]);
+        }
+
         return this.incomingConnections.asArray().filter(function (i) {
-            return i.flo_type === type;
+            return validTypes.indexOf(i.flo_type) >= 0;
         });
     }
     return this.incomingConnections.asArray().slice(0);
 };
 /**
  * Returns the list of the elements connected to this element's incoming connections.
+ * @param {...String} [connection_types] The incoming elements whose connections are of this specified type, optional.
  * @returns {Array|*|{applyDefaultStyles, childOptions, initChildLayout, destroyChildLayout, resizeChildLayout, resizeNestedLayout, resizeWhileDragging, resizeContentWhileDragging, triggerEventsWhileDragging, maskIframesOnResize, useStateCookie, [cookie.autoLoad], [cookie.autoSave], [cookie.keys], [cookie.name], [cookie.domain], [cookie.path], [cookie.expires], [cookie.secure], noRoomToOpenTip, togglerTip_open, togglerTip_closed, resizerTip, sliderTip}}
  */
-PMShape.prototype.getIncomingElements = function (type) {
-    return this.getIncomingConnections(type).map(function (i) {
+PMShape.prototype.getIncomingElements = function () {
+    return this.getIncomingConnections.apply(this, arguments).map(function (i) {
         return i.getSrcPort().getParent();
     });
 };
@@ -17352,24 +17369,32 @@ PMShape.prototype.removeOutgoingConnection = function(element){
 };
 /**
  * Return the list of outgoing connections.
- * @param {String} [type] Optional, returns only the connections of the specified type.
+ * @param {...String} [types] Optional, returns only the connections of the specified types.
  * @returns {Array}
  */
-PMShape.prototype.getOutgoingConnections = function(type){
-    if (type) {
+PMShape.prototype.getOutgoingConnections = function(){
+    var validTypes = [],
+        i;
+
+    if (arguments.length) {
+        for (i = 0; i < arguments.length; i += 1) {
+            validTypes.push(arguments[i]);
+        }
+
         return this.outgoingConnections.asArray().filter(function (i) {
-            return i.flo_type === type;
+            return validTypes.indexOf(i.flo_type) >= 0;
         });
     }
+
     return this.outgoingConnections.asArray().slice(0);
 };
 /**
  * Returns a list of the elements connected to the element's outgoing connections.
- * @param {String} [type] Optional, returns only the connections of the specified type.
+ * @param {...String} [type] Optional, returns only the connections of the specified type.
  * @returns {Array}
  */
 PMShape.prototype.getOutgoingElements = function (type) {
-    return this.getOutgoingConnections(type).map(function (i) {
+    return this.getOutgoingConnections.apply(this, arguments).map(function (i) {
         return i.getDestPort().getParent();
     });
 };
@@ -17404,7 +17429,6 @@ PMShape.prototype.getEspecificType = function (object) {
     }
     return especificType;
 };
-
 /**
  * @class PMFlow
  * Handle the designer flows
@@ -17912,16 +17936,22 @@ PMFlow.prototype.showMoveHandlers = function () {
  * @returns {Number}
  */
 PMFlow.prototype.getSegmentHeight = function (index) {
-    return Math.abs(this.lineSegments.get(index).endPoint.y
-        - this.lineSegments.get(index).startPoint.y);
+    if (this.lineSegments.getSize()) {
+        return Math.abs(this.lineSegments.get(index).endPoint.y
+            - this.lineSegments.get(index).startPoint.y);
+    }
+    return 0;
 };
 /**
  * Get Segment Width
  * @returns {Number}
  */
 PMFlow.prototype.getSegmentWidth = function (index) {
-    return Math.abs(this.lineSegments.get(index).endPoint.x
-        - this.lineSegments.get(index).startPoint.x);
+    if (this.lineSegments.getSize()) {
+        return Math.abs(this.lineSegments.get(index).endPoint.x
+            - this.lineSegments.get(index).startPoint.x);
+    }
+    return 0;
 };
 /**
  * Get Label Coordinates
@@ -17929,26 +17959,33 @@ PMFlow.prototype.getSegmentWidth = function (index) {
  */
 PMFlow.prototype.getLabelCoordinates = function () {
     var x, y, index = 0, diffX, diffY, i, max;
-    max = (this.getSegmentWidth(0) > this.getSegmentHeight(0)) ?
-        this.getSegmentWidth(0) : this.getSegmentHeight(0);
 
-    for (i = 1; i < this.lineSegments.getSize(); i += 1) {
-        diffX = this.getSegmentWidth(i);
-        diffY = this.getSegmentHeight(i);
-        if (diffX > max + 1) {
-            max = diffX;
-            index = i;
-        } else if (diffY > max + 1) {
-            max = diffY;
-            index = i;
+    if (this.lineSegments.getSize()) {
+        max = (this.getSegmentWidth(0) > this.getSegmentHeight(0)) ?
+            this.getSegmentWidth(0) : this.getSegmentHeight(0);
+
+        for (i = 1; i < this.lineSegments.getSize(); i += 1) {
+            diffX = this.getSegmentWidth(i);
+            diffY = this.getSegmentHeight(i);
+            if (diffX > max + 1) {
+                max = diffX;
+                index = i;
+            } else if (diffY > max + 1) {
+                max = diffY;
+                index = i;
+            }
         }
+        diffX = (this.lineSegments.get(index).endPoint.x
+            - this.lineSegments.get(index).startPoint.x) / 2;
+        diffY = (this.lineSegments.get(index).endPoint.y
+            - this.lineSegments.get(index).startPoint.y) / 2;
+        x = this.lineSegments.get(index).startPoint.x + diffX;
+        y = this.lineSegments.get(index).startPoint.y + diffY;
+    } else {
+        x = this.srcPort.getAbsoluteX();
+        y = this.srcPort.getAbsoluteY();
     }
-    diffX = (this.lineSegments.get(index).endPoint.x
-        - this.lineSegments.get(index).startPoint.x) / 2;
-    diffY = (this.lineSegments.get(index).endPoint.y
-        - this.lineSegments.get(index).startPoint.y) / 2;
-    x = this.lineSegments.get(index).startPoint.x + diffX;
-    y = this.lineSegments.get(index).startPoint.y + diffY;
+
     return new PMUI.util.Point(x, y);
 };
 /**
@@ -19421,7 +19458,8 @@ PMProject = function (options) {
     this.isSave = false;
     this.XMLSupported = true;
     this.isClose = false;
-
+    this.userSettings = null;
+    this.definitions = null;
     this.dirtyElements = [
         {
             laneset: {},
@@ -19520,6 +19558,15 @@ PMProject.prototype.setProjectName = function (name) {
     }
     return this;
 };
+/**
+ * Sets the user settings to the local property
+ * @param settings
+ * @returns {PMProject}
+ */
+PMProject.prototype.setUserSettings= function (settings) {
+    this.userSettings = settings;
+    return this;
+};
 
 PMProject.prototype.setDescription = function (description) {
     this.description = description;
@@ -19595,7 +19642,9 @@ PMProject.prototype.buildCanvas = function (selectors, options) {
     canvas.createConnectHandlers('', '');
     var menuCanvas = PMDesigner.getMenuFactory("CANVAS");
     canvas.setContextMenu(menuCanvas);
-
+    //enable gridLines
+    options.userSettings && options.userSettings.enabled_grid ?
+        canvas.enableGridLine(): canvas.disableGridLine();
     PMDesigner.canvasList.addOption(
         {
             label: options.name,
@@ -19647,14 +19696,15 @@ PMProject.prototype.loadProject = function (project) {
     var that = this,
         i,
         j,
-        moddle,
-        imported = false,
+        diagram,
+        canvas,
         sidebarCanvas = [];
     if (project) {
         this.loadingProcess = true;
         this.setProjectId(project.prj_uid);
         this.setProjectName(project.prj_name);
         this.setDescription(project.prj_description);
+        this.setUserSettings(project.usr_setting_designer);
         if (project.prj_bpmn_file_upload) {
             that.importDiagram(project.prj_bpmn_file_upload);
         } else {
@@ -19664,7 +19714,11 @@ PMProject.prototype.loadProject = function (project) {
                     sidebarCanvas = sidebarCanvas.concat(PMDesigner.sidebar[j].getSelectors());
                     jQuery(".bpmn_shapes").append(PMDesigner.sidebar[j].getHTML());
                 }
+                //Remove Lane
                 sidebarCanvas.splice(15, 1);
+                //Remove Lasso and Validator
+                sidebarCanvas.splice(17, 2);
+                
                 sidebarCanvas = sidebarCanvas.concat('.mafe-event-start');
                 sidebarCanvas = sidebarCanvas.concat('.mafe-event-intermediate');
                 sidebarCanvas = sidebarCanvas.concat('.mafe-event-end');
@@ -19677,7 +19731,11 @@ PMProject.prototype.loadProject = function (project) {
                 sidebarCanvas = sidebarCanvas.concat('.mafe_participant');
 
 
-                var canvas = PMDesigner.project.buildCanvas(sidebarCanvas, {name: 'Main'});
+                canvas = PMDesigner.project.buildCanvas(sidebarCanvas, {
+                    name: 'Main',
+                    userSettings: this.userSettings
+                });
+
                 PMUI.setActiveCanvas(canvas);
                 jQuery("#p-center-layout").scroll(canvas.onScroll(canvas, jQuery("#p-center-layout")));
 
@@ -19707,14 +19765,18 @@ PMProject.prototype.loadProject = function (project) {
     }
 
 };
+/**
+ * Imports a Diagram if this is a valid .bpmn file
+ * @param data
+ */
 
 PMProject.prototype.importDiagram = function (data) {
-    var that = this;
     this.isSave = true;
     PMDesigner.moddle.fromXML(data, function (err, definitions) {
         if (err) {
             PMDesigner.msgFlash('Import Error: '.translate() + err.message, document.body, 'error', 5000, 5);
         } else {
+            PMDesigner.definitions = definitions;
             var imp = new importBpmnDiagram(definitions);
             if (PMDesigner.project.XMLSupported) {
                 PMDesigner.businessObject = definitions;
@@ -19857,7 +19919,7 @@ PMProject.prototype.getDirtyObject = function () {
     var that = this,
         diaArray = [],
         shape,
-        i,
+        isGridEnabled = false,
         diagram,
         lastDiagram;
 
@@ -19877,10 +19939,12 @@ PMProject.prototype.getDirtyObject = function () {
         data: shape.data,
         participants: shape.participants
     });
+    isGridEnabled = PMUI.getActiveCanvas().isGridLine &&  PMUI.getActiveCanvas().isGridLine? true: false;
     return {
         prj_uid: that.id,
         prj_name: that.projectName,
         prj_description: that.description,
+        usr_setting_designer: {enabled_grid : isGridEnabled},
         diagrams: diaArray
     };
 };
@@ -20815,11 +20879,11 @@ PMCanvas.prototype.onRemoveElementHandler = function (elements) {
                     element = elements[i];
                     element.updateIncomingAndOutgoingConnections("remove");
                     shapeElement = element.destPort.getParent();
-                    if(shapeElement instanceof PMGateway){
+                    if (shapeElement instanceof PMGateway) {
                         shapeElement.evaluateGatewayDirection();
                     }
                     shapeElement = element.srcPort.getParent();
-                    if(shapeElement instanceof PMGateway){
+                    if (shapeElement instanceof PMGateway) {
                         shapeElement.evaluateGatewayDirection();
                     }
                     PMDesigner.project.updateElement([]);
@@ -21435,6 +21499,7 @@ PMCanvas.prototype.hideAllCoronas = function () {
             shape.corona.hide();
         }
     }
+    return this;
 };
 /**
  * cancel connection action
@@ -22013,11 +22078,11 @@ PMCanvas.prototype.addConnection = function (conn) {
     }
     conn.updateIncomingAndOutgoingConnections("create");
     shapeElement = conn.destPort.getParent();
-    if(shapeElement instanceof PMGateway){
+    if (shapeElement instanceof PMGateway) {
         shapeElement.evaluateGatewayDirection();
     }
     shapeElement = conn.srcPort.getParent();
-    if(shapeElement instanceof PMGateway){
+    if (shapeElement instanceof PMGateway) {
         shapeElement.evaluateGatewayDirection();
     }
     PMDesigner.project.updateElement([]);
@@ -22217,8 +22282,15 @@ PMCanvas.prototype.propertiesReview = function (type, currenShape) {
     }
     return true;
 };
+/**
+ * Loads the shape provided by the shape factory.
+ * @param type
+ * @param shape
+ * @param fireTrigger
+ * @param businessObject
+ */
 
-PMCanvas.prototype.loadShape = function (type, shape, fireTrigger) {
+PMCanvas.prototype.loadShape = function (type, shape, fireTrigger, businessObject) {
     var customShape,
         command,
         transformShape,
@@ -22228,6 +22300,10 @@ PMCanvas.prototype.loadShape = function (type, shape, fireTrigger) {
     customShape = this.shapeFactory(type, transformShape);
 
     if (customShape) {
+        //to import .bpmn diagram
+        if (businessObject) {
+            customShape.businessObject = businessObject;
+        }
         customShape.extendedType = type;
         if (shape.bou_container === 'bpmnDiagram') {
             this.addElement(customShape, parseInt(shape.bou_x, 10), parseInt(shape.bou_y, 10), true);
@@ -22533,20 +22609,48 @@ PMCanvas.prototype.removeBPMNDiagram = function () {
 };
 PMCanvas.prototype.toogleGridLine = function () {
     if (this.isGridLine === true) {
-        this.isGridLine = false;
-        this.html.classList.remove("pmui-pmcanvas");
-
+        this.disableGridLine();
     } else {
-        this.isGridLine = true;
-        this.html.classList.add("pmui-pmcanvas");
+        this.enableGridLine();
     }
+    //force to update the designer
+    PMDesigner.project.updateElement([]);
+    return this.isGridLine;
+};
+/**
+ * Disable grid lines, removing the class pmui-pmcanvas
+ * @returns {PMCanvas}
+ */
+PMCanvas.prototype.disableGridLine = function () {
+    this.html.classList.remove("pmui-pmcanvas");
+    this.isGridLine = false;
+
+    return this;
+};
+
+/**
+ * Enable grid lines, adding the class pmui-pmcanvas
+ * @returns {PMCanvas}
+ */
+PMCanvas.prototype.enableGridLine = function () {
+    this.html.classList.add("pmui-pmcanvas");
+    this.isGridLine = true;
+    return this;
+};
+
+
+/**
+ * Return GridLine boolean property
+ * @returns {PMCanvas}
+ */
+PMCanvas.prototype.getGridLine = function () {
     return this.isGridLine;
 };
 
 /**
  * Override method "fixSnapData" of PUI.draw.Canvas
  */
-PMCanvas.prototype.fixSnapData = function(){
+PMCanvas.prototype.fixSnapData = function () {
     //TODO complete fixSnapData function
 };
 /**
@@ -22555,7 +22659,7 @@ PMCanvas.prototype.fixSnapData = function(){
  * @returns {PMCanvas}
  */
 PMCanvas.prototype.setLassoLimits = function () {
-    var  minXObj = {
+    var minXObj = {
             "limit": 99999,
             "shape": null
         },
@@ -22565,12 +22669,12 @@ PMCanvas.prototype.setLassoLimits = function () {
         },
         shape,
         i;
-    for (i = 0; i < this.currentSelection.getSize(); i +=1) {
-        shape =  this.currentSelection.get(i);
+    for (i = 0; i < this.currentSelection.getSize(); i += 1) {
+        shape = this.currentSelection.get(i);
         if (shape.getX() < minXObj.limit) {
             minXObj = {
-                "limit" : shape.getX(),
-                "shape" : shape
+                "limit": shape.getX(),
+                "shape": shape
             }
         }
         if (shape.getY() < minYObj.limit) {
@@ -25148,8 +25252,8 @@ PMGateway.prototype.isSupported = function () {
  * @returns {PMGateway}
  */
 PMGateway.prototype.evaluateGatewayDirection = function(){
-    var incomings = this.getIncomingConnections('SEQUENCE') || [],
-        outgoings = this.getOutgoingConnections('SEQUENCE') || [],
+    var incomings = this.getIncomingConnections('SEQUENCE', 'DEFAULT') || [],
+        outgoings = this.getOutgoingConnections('SEQUENCE', 'DEFAULT') || [],
         direction = "DIVERGING";
     if (outgoings.length < incomings.length) {
         if (incomings.length === 1 && outgoings.length === 0){
@@ -25682,7 +25786,7 @@ var IncrementNameCanvas = function (pmCanvas) {
             INTERMEDIATE_RECEIVEMESSAGE: "Intermediate Receive Message Event".translate(),
             LANE: "Lane".translate(),
             GROUP: "Group".translate(),
-            BOUNDARY_EVENT: " ".translate(),
+            BOUNDARY_EVENT: ' ',
             END_EMAIL: "End Email Event".translate(),
             INTERMEDIATE_EMAIL: "Intermediate Email Event".translate()
         },
@@ -27788,15 +27892,22 @@ CriteriaField.prototype.setControls = function () {
 };
 
 CriteriaField.prototype.createCallBack = function () {
-    var that = this, oldValue, newValue, init = 0;
+    var that = this,
+        newValue,
+        init = 0,
+        index = 0;
     return {
         success: function (variable) {
-            init = that.controls[0].html.selectionStart;
-            prevText = that.controls[0].html.value.substr(0, init);
-            lastText = that.controls[0].html.value.substr(that.controls[0].html.selectionEnd, that.controls[0].html.value.length);
+            var prevText,
+                lastText,
+                htmlControl = that.controls[index].html;
+            init = htmlControl.selectionStart;
+            prevText = htmlControl.value.substr(index, init);
+            lastText = htmlControl.value.substr(htmlControl.selectionEnd, htmlControl.value.length);
             newValue = prevText + variable + lastText;
             that.setValue(newValue);
-            that.controls[0].html.selectionEnd = init + variable.length;
+            that.isValid();
+            htmlControl.selectionEnd = init + variable.length;
         }
     };
 };
@@ -27827,7 +27938,7 @@ CriteriaField.prototype.createHTML = function () {
     });
 
     this.buttonHTML = button;
-    $(this.helper.html).before(button.getHTML())
+    $(this.helper.html).before(button.getHTML());
     this.buttonHTML.style.addProperties({"margin-left": "10px"});
     this.buttonHTML.html.tabIndex = -1;
 
@@ -29458,6 +29569,51 @@ ConnectValidator.prototype.canAcceptOutgoingConnection = function (shape, connec
     }
     return true;
 };
+/**
+ * Validate if PMActivity/PMEvent onDrop is correct
+ * @param {PMUI.draw.Shape} shape
+ * @param {PMUI.draw.Shape} customShape
+ * @returns {boolean}
+ */
+ConnectValidator.prototype.onDropMovementIsAllowed = function (shape, customShape) {
+    var result = true,
+        i,
+        connection,
+        ports,
+        len,
+        sourceShape,
+        targetShape,
+        elemShape,
+        flowType,
+        oldParent = customShape.getOldParent().getParent();
+
+    if (shape.getID() !== customShape.getParent().getID()) {
+        ports = customShape.getPorts();
+        len = ports.getSize();
+        for (i = 0; i < len; i += 1) {
+            //Get sourceShape and targetShape (PMevent/PMactivity)
+            connection = ports.get(i).getConnection();
+            sourceShape = connection.getSrcPort().getParent();
+            targetShape = connection.getDestPort().getParent();
+            elemShape = shape.businessObject.elem;
+            elemShape = (elemShape && elemShape.$parent && elemShape.$parent.$parent) ? elemShape : false;
+            flowType = (connection.getFlowType() === 'MESSAGE') ? true : false;
+
+            if (flowType &&
+                (sourceShape.getParent().getID() === shape.getID()
+                    || targetShape.getParent().getID() === shape.getID())) {
+                result = false;
+                break;
+            } else if (elemShape && flowType &&
+                (elemShape.$parent.$parent.id === sourceShape.businessObject.elem.$parent.id ||
+                    elemShape.$parent.$parent.id === targetShape.businessObject.elem.$parent.id)) {
+                result = (oldParent) ? (oldParent.getID() !== shape.getParent().getID()) ? false : true : false;
+                break;
+            }
+        }
+    }
+    return result;
+};
 
 var CommandChangeGatewayType = function (receiver, options) {
     PMUI.command.Command.call(this, receiver);
@@ -30265,9 +30421,7 @@ PMData.prototype.getDataType = function () {
 };
 
 PMData.prototype.createDataIOEspecification = function (element) {
-    var ioEspecification,
-        dataInput = {};
-    ioEspecification = PMDesigner.bpmnFactory.create('bpmn:IiSpecification', {
+    var ioEspecification = PMDesigner.bpmnFactory.create('bpmn:InputOutputSpecification', {
         id: this.id + '_ioEspecification',
         name: this.getName() + '_ioEspecification'
     });
@@ -30276,11 +30430,7 @@ PMData.prototype.createDataIOEspecification = function (element) {
 };
 
 PMData.prototype.verifyDataIOEspecification = function () {
-    var ioEspecification,
-        dataInput = {};
-    if (this.parent.businessObject.elem && this.parent.businessObject.elem.get('ioSpecification')) {
-
-    } else {
+    if (!this.parent.businessObject.elem || !this.parent.businessObject.elem.get('ioSpecification')) {
         this.createDataIOEspecification(this.parent.businessObject);
     }
 };
@@ -30542,11 +30692,12 @@ PMParticipant.prototype.createBpmn = function (type) {
     } else {
         bpmnCollaboration = _.findWhere(PMDesigner.businessObject.get('rootElements'), {$type: "bpmn:Collaboration"});
     }
-
-    this.createWithBpmn(type, 'participantObject');
-    this.updateBounds(this.participantObject.di);
-    this.updateSemanticParent(this.participantObject, {elem: bpmnCollaboration});
-    this.updateDiParent(this.participantObject.di, this.parent.businessObject.di);
+    if (!this.businessObject.elem) {
+        this.createWithBpmn(type, 'participantObject');
+        this.updateBounds(this.participantObject.di);
+        this.updateSemanticParent(this.participantObject, {elem: bpmnCollaboration});
+        this.updateDiParent(this.participantObject.di, this.parent.businessObject.di);
+    }
 };
 PMParticipant.prototype.updateSemanticParent = function (businessObject, newParent) {
     var children;
@@ -30811,6 +30962,143 @@ PMPoolResizeBehavior.prototype.updateResizeMinimums = function (shape) {
     $shape.resizable('option', 'minWidth', minW);
     $shape.resizable('option', 'minHeight', minH);
     return this;
+};
+/**
+ * @class PMPoolDropBehavior
+ * The {@link PMUI.behavior.DropBehavior DropBehavior} for PMPool class.
+ * @extend PMUI.behavior.DropBehavior
+ * @param {Object} [options] css selectors that the drop behavior
+ * will accept
+ * @constructor
+ */
+var PMPoolDropBehavior = function (options) {
+    PMUI.behavior.DropBehavior.call(this, options);
+};
+
+PMPoolDropBehavior.prototype = new PMUI.behavior.DropBehavior();
+
+PMPoolDropBehavior.prototype.constructor = PMPoolDropBehavior;
+/**
+ * Type for the instance
+ * @property {string}
+ */
+PMPoolDropBehavior.prototype.type = 'PMPoolDropBehavior';
+/**
+ * @inheritDoc
+ */
+PMPoolDropBehavior.prototype.onDrop = function (shape) {
+    return function (e, ui) {
+        var canvas = shape.getCanvas(),
+            id = ui.draggable.attr('id'),
+            shapesAdded = [],
+            selection,
+            position,
+            droppedShape,
+            command;
+
+        if (canvas.readOnly) {
+            return false;
+        }
+
+        droppedShape = canvas.shapeFactory(id);
+
+        if (!droppedShape) {
+            droppedShape = canvas.customShapes.find("id", id);
+            if (!droppedShape || !shape.dropBehavior.dropHook(shape, droppedShape, e, ui)) {
+                PMDesigner.msgFlash('Invalid operation.'.translate(), document.body, 'error', 5000, 5);
+                droppedShape.setPosition(droppedShape.getOldX(), droppedShape.getOldY());
+                return false;
+            }
+            if (droppedShape.parent.id !== shape.id) {
+
+                selection = canvas.currentSelection;
+                selection.asArray().forEach(function (item) {
+                    var coordinates = PMUI.getPointRelativeToPage(item);
+
+                    coordinates = PMUI.pageCoordinatesToShapeCoordinates(shape, null,
+                        coordinates.x, coordinates.y, droppedShape);
+                    shapesAdded.push({
+                        shape: item,
+                        container: shape,
+                        x: coordinates.x,
+                        y: coordinates.y,
+                        topLeft: false
+                    });
+                });
+                if (shape.getType() === 'PMLane') {
+                    command = new PMCommandSwitchToLaneContainer(shapesAdded);
+                } else {
+                    command = new PMUI.command.CommandSwitchContainer(shapesAdded);
+                }
+                command.execute();
+                canvas.commandStack.add(command);
+                canvas.multipleDrop = true;
+            }
+
+            canvas.hideAllFocusLabels();
+            shape.updateDimensions(10);
+            canvas.updatedElement = null;
+
+            droppedShape.ports.asArray().forEach(function (item) {
+                var connectionx = item.connection,
+                    result = PMDesigner.connectValidator.isValid(
+                        connectionx.getSrcPort().parent,
+                        connectionx.getDestPort().parent,
+                        connectionx);
+
+                if (result.conf && result.conf.segmentStyle !== connectionx.originalSegmentStyle) {
+                    PMDesigner.msgFlash('Invalid flow between elements. Please delete the flow and reconnect the elements.'.translate(), document.body, 'error', 5000, 5);
+                }
+            });
+
+            return;
+        }
+
+        if (droppedShape instanceof PMLane && _.find(shape.children.asArray(), function (i) { return !(i instanceof PMLane); })) {
+            return PMDesigner.msgFlash('The lane can be dropped only over an empty pool. Please empty the pool before dropping a lane.'.translate(), document.body, 'error', 3000, 5);
+        }
+
+        position = PMUI.pageCoordinatesToShapeCoordinates(shape, e, null, null, droppedShape);
+
+
+        command = new PMCommandCreateLane({
+            pool: shape,
+            lane: droppedShape,
+            x: position.getX(),
+            y: position.getY()
+        });
+
+        if (command) {
+            canvas.hideAllCoronas();
+            canvas.updatedElement = shape;
+            canvas.commandStack.add(command);
+            command.execute();
+
+            canvas.hideAllFocusLabels();
+            if (droppedShape.label && droppedShape.focusLabel) {
+                droppedShape.label.getFocus();
+            }
+        }
+    };
+};
+/**
+ * Hook if PMEvent onDrop is correct
+ * @param {PMUI.draw.Shape} shape
+ * @param {PMUI.draw.Shape} customShape
+ * @param {Object} e jQuery object that contains the properties on the
+ * drop event
+ * @param {Object} ui jQuery object that contains the properties on the
+ * drop event
+ * @returns {boolean}
+ */
+PMPoolDropBehavior.prototype.dropHook = function (shape, customShape, e, ui) {
+    var result = true,
+        shapesTypes = ['PMEvent', 'PMActivity'];
+    if ((shapesTypes.indexOf(customShape.getType()) > -1) &&
+        !PMDesigner.connectValidator.onDropMovementIsAllowed(shape, customShape)) {
+        result = false;
+    }
+    return result;
 };
 var PMPool = function (options) {
     PMShape.call(this, options);
@@ -31686,20 +31974,27 @@ PMPool.prototype.createBpmn = function (type) {
     }
     if (!(_.findWhere(PMDesigner.businessObject.get('rootElements'), {$type: "bpmn:Collaboration"}))) {
         bpmnCollaboration = PMDesigner.moddle.create('bpmn:Collaboration', {id: 'pmui-' + PMUI.generateUniqueId()});
-        PMDesigner.businessObject.get('rootElements').push(bpmnCollaboration);
+        PMDesigner.businessObject.get('rootElements').unshift(bpmnCollaboration);
         this.parent.businessObject.di.bpmnElement = bpmnCollaboration;
         bpmnCollaboration.participants = [];
     } else {
         bpmnCollaboration = _.findWhere(PMDesigner.businessObject.get('rootElements'), {$type: "bpmn:Collaboration"});
     }
-    this.createWithBpmn(type, 'participantObject');
-    this.updateBounds(this.participantObject.di);
-    this.updateSemanticParent(this.participantObject, {elem: bpmnCollaboration});
-    this.updateDiParent(this.participantObject.di, this.parent.businessObject.di);
+    if (!this.businessObject.elem) {
+        this.createWithBpmn(type, 'participantObject');
+        this.updateBounds(this.participantObject.di);
+        this.updateSemanticParent(this.participantObject, {elem: bpmnCollaboration});
+        this.updateDiParent(this.participantObject.di, this.parent.businessObject.di);
+    }
 };
+/**
+ * update participant parent .bpmn file
+ * @param businessObject
+ * @param newParent
+ */
 PMPool.prototype.updateSemanticParent = function (businessObject, newParent) {
     var children;
-    if (businessObject.elem.$parent === newParent.elem) {
+    if (businessObject.elem.$parent && businessObject.elem.$parent === newParent.elem) {
         return;
     }
     if (businessObject.elem.$parent) {
@@ -31764,6 +32059,16 @@ PMPool.prototype.createBusinesObject = function () {
     this.businessObject.di = this.canvas.businessObject.di;
     participant.processRef = bpmnProcess;
 };
+/**
+ * @inheritDoc
+ */
+PMPool.prototype.dropBehaviorFactory = function (type, selectors) {
+    if (type === 'pmcontainer') {
+        this.pmConnectionDropBehavior = this.pmConnectionDropBehavior || new PMPoolDropBehavior(selectors);
+        return this.pmConnectionDropBehavior;
+    }
+    return PMShape.prototype.dropBehaviorFactory.apply(this, arguments);
+};
 
 PMPool.prototype.removeBpmn = function () {
     var coll, children, pros;
@@ -31794,7 +32099,8 @@ PMPool.prototype.removeBpmn = function () {
     this.updateSemanticParent(this.participantObject, {elem: null});
     this.updateDiParent(this.participantObject.di);
     if (this.businessObject.di
-        && this.businessObject.di.planeElement.length == 0) {
+        && this.businessObject.di.planeElement
+        && this.businessObject.di.planeElement.length === 0) {
         this.parent.removeBPMNDiagram();
     }
 };
@@ -32249,15 +32555,16 @@ PMLane.prototype.stringify = function () {
 
 PMLane.prototype.createBpmn = function (type) {
     var bpmnLaneset;
-    if (this.parent.businessObject.elem) {
-    } else {
-        this.parent.createBusinesObject();
+    if (!this.businessObject.elem) {
+        if (!this.parent.businessObject.elem) {
+            this.parent.createBusinesObject();
+        }
+        bpmnLaneset = this.createLaneset();
+        this.createWithBpmn('bpmn:Lane', 'businessObject');
+        this.updateBounds(this.businessObject.di);
+        this.updateSemanticParent(this.businessObject, {elem: bpmnLaneset});
+        this.updateDiParent(this.businessObject.di, this.parent.parent.businessObject.di);
     }
-    bpmnLaneset = this.createLaneset();
-    this.createWithBpmn('bpmn:Lane', 'businessObject');
-    this.updateBounds(this.businessObject.di);
-    this.updateSemanticParent(this.businessObject, {elem: bpmnLaneset});
-    this.updateDiParent(this.businessObject.di, this.parent.parent.businessObject.di);
 };
 
 PMLane.prototype.createLaneset = function () {
@@ -32388,37 +32695,47 @@ PMLane.prototype.onClick = function (customShape) {
  * @class BPMNCommandCreateLane
  * @constructor
  */
-var PMCommandCreateLane = function (receiver) {
-    var NewObj = function (receiver) {
-        PMUI.command.CommandCreate.call(this, receiver);
-    };
+var PMCommandCreateLane = function (settngs) {
+    PMUI.command.Command.call(this, settngs);
+};
 
-    NewObj.prototype = new PMUI.command.CommandCreate(receiver);
-    /**
-     * Type of command of this object
-     * @type {String}
-     */
-    NewObj.prototype.type = 'PMCommandCreateLane';
-    /**
-     * Executes the command
-     */
-    NewObj.prototype.execute = function () {
-        PMUI.command.CommandCreate.prototype.execute.call(this);
-        this.receiver.parent.setLanePositionAndDimension(this.receiver);
-    };
-    /**
-     * Inverse executes the command a.k.a. undo
-     */
-    NewObj.prototype.undo = function () {
-        PMUI.command.CommandCreate.prototype.undo.call(this);
-        this.receiver.parent.bpmnLanes.remove(this.receiver);
-        this.receiver.parent.updateOnRemoveLane(this.receiver);
-    };
-    NewObj.prototype.redo = function () {
-        this.execute();
-        return this;
-    };
-    return new NewObj(receiver);
+PMCommandCreateLane.prototype = new PMUI.command.Command({});
+/**
+ * Type of command of this object
+ * @type {String}
+ */
+PMCommandCreateLane.prototype.type = 'PMCommandCreateLane';
+
+/**
+ * Executes the command
+ */
+PMCommandCreateLane.prototype.execute = function () {
+    var pool = this.receiver.pool,
+        lane = this.receiver.lane;
+
+    pool.addElement(lane, this.receiver.x, this.receiver.y, lane.topLeftOnCreation);
+    lane.showOrHideResizeHandlers(false);
+    lane.canvas.triggerCreateEvent(lane, []);
+    if (lane instanceof PMLane) {
+        pool.setLanePositionAndDimension(lane);
+    }
+};
+/**
+ * Inverse executes the command a.k.a. undo
+ */
+PMCommandCreateLane.prototype.undo = function () {
+    var pool = this.receiver.pool,
+        lane = this.receiver.lane;
+
+    pool.removeElement(lane);
+};
+/**
+ * Re-executes the command.
+ * @returns {BPMNCommandCreateLane}
+ */
+PMCommandCreateLane.prototype.redo = function () {
+    this.execute();
+    return this;
 };
 
 var PMCommandAddToLane = function (receiver, childObject, coordinates) {
@@ -32547,7 +32864,9 @@ PMContainerDropBehavior.prototype.onDrop = function (shape) {
         if (customShape === null) {
 
             customShape = canvas.customShapes.find('id', id);
-            if (!customShape || !shape.dropBehavior.dropHook(shape, e, ui)) {
+            if (!customShape || !shape.dropBehavior.dropHook(shape, customShape, e, ui)) {
+                PMDesigner.msgFlash('Invalid operation.'.translate(), document.body, 'error', 5000, 5);
+                customShape.setPosition(customShape.getOldX(), customShape.getOldY());
                 return false;
             }
             if (customShape.getParent().getType() === 'PMLane'
@@ -32639,6 +32958,25 @@ PMContainerDropBehavior.prototype.setSelectors = function (selectors, overwrite)
     this.selectors.push(".port");
     return this;
 };
+/**
+ * Hook if PMEvent onDrop is correct
+ * @param {PMUI.draw.Shape} shape
+ * @param {PMUI.draw.Shape} customShape
+ * @param {Object} e jQuery object that contains the properties on the
+ * drop event
+ * @param {Object} ui jQuery object that contains the properties on the
+ * drop event
+ * @returns {boolean}
+ */
+PMContainerDropBehavior.prototype.dropHook = function (shape, customShape, e, ui) {
+    var result = true,
+        shapesTypes = ['PMEvent', 'PMActivity'];
+    if ((shapesTypes.indexOf(customShape.getType()) > -1) &&
+        !PMDesigner.connectValidator.onDropMovementIsAllowed(shape, customShape)) {
+        result = false;
+    }
+    return result;
+};
 var PoolContainerBehavior = function () {
     this.addElementLane = false;
 };
@@ -32704,6 +33042,32 @@ PoolContainerBehavior.prototype.addToContainer = function (container,
             this.addToCanvas(container, shape);
         }
     }
+    if (!this.addElementLane) {
+        shape.canvas.triggerCreateEvent(shape, []);
+    }
+};
+/**
+ * @inheritDoc
+ */
+PoolContainerBehavior.prototype.removeFromContainer = function (shape) {
+    var pool = shape.getParent();
+
+    pool.getChildren().remove(shape);
+
+    if (pool.isResizable()) {
+        pool.resizeBehavior.updateResizeMinimums(shape.parent);
+    }
+
+    if (shape instanceof PMLane) {
+        pool.removeLane(shape);
+        pool.updateOnRemoveLane(shape);  
+    }
+
+    shape.saveAndDestroy();
+    shape.canvas.triggerRemoveEvent(shape, []);
+    shape.setParent(null);
+
+    return this;
 };
 /**
  * Force to add a shape to canvas
@@ -32915,6 +33279,14 @@ var LaneContainerBehavior = function () {
 
 LaneContainerBehavior.prototype = new PMUI.behavior.RegularContainerBehavior();
 LaneContainerBehavior.prototype.type = "LaneContainerBehavior";
+/**
+ * @inheritDoc
+ */
+LaneContainerBehavior.prototype.addToContainer = function (container, shape, x, y, topLeftCorner) {
+    PMUI.behavior.RegularContainerBehavior.prototype.addToContainer.call(this, container, shape, x, y, topLeftCorner);
+    shape.getCanvas().triggerCreateEvent(shape, []);
+};
+
 LaneContainerBehavior.prototype.addShape = function (container, shape, x, y) {
     shape.setPosition(x, y);
     //insert the shape HTML to the DOM
@@ -32929,7 +33301,13 @@ LaneContainerBehavior.prototype.addShape = function (container, shape, x, y) {
     shape.attachListeners();
     return this;
 };
-
+/**
+ * @inheritDoc
+ */
+LaneContainerBehavior.prototype.removeFromContainer = function (shape) {
+    shape.getCanvas().triggerRemoveEvent(shape, []);
+    PMUI.behavior.RegularContainerBehavior.prototype.removeFromContainer.call(this, shape);
+};
 /**
  * @class CommandDelete
  * Class CommandDelete determines the actions executed when some shapes are deleted (redo) and the actions
@@ -33149,6 +33527,7 @@ PMCommandDelete.prototype.execute = function () {
 
         currentConnection.saveAndDestroy();
         currentConnection = null;
+        mainShape = currentConnection;
     }
     canvas.triggerRemoveEvent(mainShape, this.relatedElements);
     return this;
@@ -33163,7 +33542,7 @@ PMCommandDelete.prototype.undo = function () {
     // undo recreates the shapes
     var i,
         shape,
-        mainShape = this.currentSelection.getFirst(),
+        mainShape = this.currentSelection.getFirst() || this.currentConnection,
         size,
         haveLanes = false,
         shapeBefore,
@@ -33671,7 +34050,8 @@ CanvasContainerBehavior.prototype.addToContainer = function (container, shape, x
     container.updateDimensions(10);
     // adds the shape to either the customShape arrayList or the regularShapes
     // arrayList if possible
-    canvas.addToList(shape);
+    canvas.addToList(shape); 
+    canvas.triggerCreateEvent(shape, []);
 };
 CanvasContainerBehavior.prototype.addShape = function (container, shape, x, y) {
     shape.setPosition(x, y);
@@ -33686,7 +34066,17 @@ CanvasContainerBehavior.prototype.addShape = function (container, shape, x, y) {
     shape.applyBehaviors();
     shape.attachListeners();
     return this;
-
+};
+/**
+ * Removes shape from its current container
+ * @param {PMUI.draw.Shape} shape shape to be removed
+ * @template
+ * @protected
+ */
+CanvasContainerBehavior.prototype.removeFromContainer = function (shape) {
+    var canvas = shape.getCanvas();
+    canvas.triggerRemoveEvent(shape, []);
+    PMUI.behavior.RegularContainerBehavior.prototype.removeFromContainer.call(this, shape);
 };
 
 /**
@@ -34585,7 +34975,7 @@ var importBpmnDiagram = function (definitions) {
     this.participants = [];
     this.lanes = [];
     this.laneRelPosition = 0;
-    this.flowsArray = [];
+    this.flowsArray = new PMUI.util.ArrayList();
     this.headerHeight = 0;
     this.eventMarkerMap = {
         'CATCH': {
@@ -34643,8 +35033,6 @@ var importBpmnDiagram = function (definitions) {
         error = e;
         PMDesigner.project.setXMLSupported(false);
     }
-    //eventBus.fire(error ? 'import.error' : 'import.success', { error: error, warnings: warnings });
-    //done(error, warnings);
 };
 importBpmnDiagram.prototype.parse = function (definitions) {
     var self =  this, sidebarCanvas = [], i, visitor;
@@ -34652,9 +35040,10 @@ importBpmnDiagram.prototype.parse = function (definitions) {
     visitor = {
 
         root: function(element) {
-            var businessObject = {};
-            //var canvas = PMUI.getActiveCanvas();
-            //
+            var businessObject = {},
+                canvas,
+                project;
+
             if (element.$type === 'bpmn:Collaboration') {
                 // TODO IF THERE IS COLLABORATIONS
                 return self.addParticipant(element);
@@ -34666,6 +35055,8 @@ importBpmnDiagram.prototype.parse = function (definitions) {
                     jQuery(".bpmn_shapes").append(PMDesigner.sidebar[i].getHTML());
                 }
                 sidebarCanvas.splice(15, 1);  //to remove lane selector
+                //Remove Lasso and Validator
+                sidebarCanvas.splice(17, 2);
                 // sidebarCanvas = sidebarCanvas + ',.mafe-event-start';
                 sidebarCanvas = sidebarCanvas.concat('.pmui-pmevent');
                 sidebarCanvas = sidebarCanvas.concat('.pmui-pmactivity');
@@ -34674,8 +35065,12 @@ importBpmnDiagram.prototype.parse = function (definitions) {
                 sidebarCanvas = sidebarCanvas.concat('.mafe-artifact-annotation');
 
 
-                var canvas =  PMDesigner.project.buildCanvas(sidebarCanvas, {name: element.$parent.name});
+                canvas =  PMDesigner.project.buildCanvas(sidebarCanvas, {name: element.$parent.name});
                 PMUI.setActiveCanvas(canvas);
+                project = PMUI.getActiveCanvas().project;
+                project && project.userSettings && project.userSettings.enabled_grid
+                    ? canvas.enableGridLine() : canvas.disableGridLine();
+
                 jQuery("#p-center-layout").scroll(canvas.onScroll(canvas, jQuery("#p-center-layout")));
                 PMDesigner.canvasList.setValue(canvas.getID());
                 element.id = canvas.getID();
@@ -34683,9 +35078,6 @@ importBpmnDiagram.prototype.parse = function (definitions) {
                 canvas.businessObject = businessObject;
 
             }
-
-            //return  importer.add(element);
-
         },
 
         element: function(element, parentShape) {
@@ -34728,7 +35120,7 @@ importBpmnDiagram.prototype.checkXML = function (definitions) {
 };
 
 /**
- *  import bpmn participants
+ *  Adds bpmn participants, that arrives from a .bpmn file as a collaboration node
  * @param element
  * @returns {importBpmnDiagram}
  */
@@ -34738,7 +35130,12 @@ importBpmnDiagram.prototype.addParticipant = function (collaboration) {
         participants,
         participant,
         sidebarCanvas = [],
-        canvas;
+        canvas,
+        rootElements,
+        element,
+        tempIndex = -1,
+        isParticipant,
+        project;
 
     participants = collaboration.participants;
     for (j = 0; j < PMDesigner.sidebar.length; j += 1) {
@@ -34747,7 +35144,8 @@ importBpmnDiagram.prototype.addParticipant = function (collaboration) {
     }
 
     sidebarCanvas.splice(15, 1);  //to remove lane selector
-    // sidebarCanvas = sidebarCanvas + ',.mafe-event-start';
+    //Remove Lasso and Validator
+    sidebarCanvas.splice(17, 2);
     sidebarCanvas = sidebarCanvas.concat('.pmui-pmevent');
     sidebarCanvas = sidebarCanvas.concat('.pmui-pmactivity');
     sidebarCanvas = sidebarCanvas.concat('.pmui-pmgateway');
@@ -34755,23 +35153,38 @@ importBpmnDiagram.prototype.addParticipant = function (collaboration) {
     sidebarCanvas = sidebarCanvas.concat('.mafe-artifact-annotation');
     canvas =  PMDesigner.project.buildCanvas(sidebarCanvas, {name:  collaboration.$parent.name});
     PMUI.setActiveCanvas(canvas);
+    project = PMUI.getActiveCanvas().project;
+    project && project.userSettings && project.userSettings.enabled_grid
+        ? canvas.enableGridLine() : canvas.disableGridLine();
     PMDesigner.canvasList.setValue(canvas.getID());
 
     jQuery("#p-center-layout").scroll(canvas.onScroll(canvas, jQuery("#p-center-layout")));
 
-
+    rootElements = PMDesigner.definitions.rootElements;
     for (i = 0; i < participants.length; i += 1) {
         participant = participants[i];
+        isParticipant = true;
+        for (j = 0; j < rootElements.length; j += 1) {
+            element = rootElements[j];
+
+            if (element.$type === 'bpmn:Process' && participant.processRef && participant.processRef.id !== element.id) {
+                tempIndex = j;
+                isParticipant = false;
+                break;
+            }
+        }
         if( typeof participant.processRef !== 'undefined') {
             this.participants.push(participant);
-            canvas.businessObject = participant.processRef;
+            canvas.businessObject.elem = participant.processRef;
         }
         if (canvas.businessObject && participant.$parent.di) {
             canvas.businessObject.di = participant.$parent.di;
         }
         canvas.buildingDiagram = true;
     }
-
+    if (tempIndex > 0 ) {
+        canvas.businessObject.elem = rootElements[tempIndex];
+    }
     return this;
 };
 
@@ -35331,32 +35744,26 @@ importBpmnDiagram.prototype.addElement = function (element) {
 
         };
         $.extend(true, shape, ownProp.properties);
-        canvas.loadShape(ownProp.type, shape, false);
-
-        canvas.updatedElement = {
-            id : (canvas.updatedElement && canvas.updatedElement.id) || null,
-            type : (canvas.updatedElement && canvas.updatedElement.type) || null,
-            relatedObject : canvas.updatedElement,
-            relatedElements: []
-        };
-        canvas.items.insert(canvas.updatedElement);
-        element.id = canvas.updatedElement.id;
-
-        canvas.updatedElement.relatedObject.businessObject = businessObject;
 
         if (element.$type === 'bpmn:Participant') {
             if (typeof element.processRef !== 'undefined') {
                 this.laneRelPosition = 0;
                 element.processRef.id = 'pmui-' + PMUI.generateUniqueId();
-                canvas.updatedElement.relatedObject.businessObject.elem = element.processRef;
+                businessObject.elem = element.processRef;
             }
-
-            canvas.updatedElement.relatedObject.participantObject = element;
         }
+
+        canvas.loadShape(ownProp.type, shape, false, businessObject);
+
+        if (element.$type === 'bpmn:Participant') {
+            canvas.updatedElement.participantObject = element;
+        }
+        element.id = canvas.updatedElement.id;
+
     }
-    if (conectionMap[element.$type]) {
+    if (conectionMap[element.$type] &&  !this.flowsArray.find('id', element.id)) {
         //here save a connection element because some elements not has ascending order
-        this.flowsArray.push(element);
+        this.flowsArray.insert(element);
     }
 };
 
@@ -35377,9 +35784,11 @@ importBpmnDiagram.prototype.completeImportFlows = function () {
             'bpmn:DataInputAssociation': 'DATAASSOCIATION',
             'bpmn:MessageFlow': 'MESSAGE'
         },
-        element;
-    for (i = 0; i < this.flowsArray.length; i += 1) {
-        element = this.flowsArray[i];
+        element,
+       flowArraySize = this.flowsArray.getSize();
+
+    for (i = 0; i < flowArraySize; i += 1) {
+        element = this.flowsArray.get(i);
         if (element.$type === 'bpmn:DataInputAssociation') {
             //dest = element.targetRef ? element.targetRef.id : element.$parent.id;
             dest = element.$parent.id;
@@ -35628,6 +36037,7 @@ var SuggestField = function (settings) {
     this.value = settings["value"] || "";
     this.form = settings["form"] || null;
     this.required = settings["required"] || null;
+    this.disabled = settings["disabled"] || false;
     this.maxLength = settings["maxLength"] || null;
     this.mode = settings["mode"] || "edit";
     this.options = settings["options"] || [];
@@ -35635,14 +36045,79 @@ var SuggestField = function (settings) {
     this.width = settings.width || "auto";
     this.messageRequired = null;
     this.searchLoad = null;
-    this.helper = settings.helper || null
+    this.helper = settings.helper || null;
     this.html = null;
     this.responseAjax;
     this.data = null;
     this.separatingText = settings.separatingText || null;
     this.setDynamicLoad(settings.dynamicLoad);
+    this.dom = {};
+    this.dom.fieldRequired = null
 
 };
+/**
+ * Disables the field. Notice that when a field is disabled it is not validated and it is not returned when its
+ * form's getData() method is invoked.
+ * @chainable
+ */
+SuggestField.prototype.disable = function () {
+
+    this.disabled = true;
+    this.inputField.prop('disabled', true);
+
+    return this;
+};
+/**
+ * Enables the field. Notice that when a field is disabled it is not validated and it is not returned when its
+ * form's getData() method is invoked.
+ * @chainable
+ */
+SuggestField.prototype.enable = function () {
+
+    this.disabled = false;
+    this.inputField[0].disabled = false;
+
+    return this;
+};
+
+SuggestField.prototype.hideRequired = function (){
+    this.dom.fieldRequired.style.display = 'none';
+    return this;
+};
+/**
+ * Disables the field. Notice that when a field is disabled it is not validated and it is not returned when its
+ * form's getData() method is invoked.
+ * @chainable
+ */
+SuggestField.prototype.disable = function () {
+    this.disabled = true;
+    this.inputField[0].disabled = true;
+
+    return this;
+};
+
+SuggestField.prototype.showRequired = function (){
+    this.dom.fieldRequired.style.display = 'inline-block';
+    return this;
+};
+/**
+ * Sets if the fields is required or not.
+ * @param {Boolean} required
+ * @chainable
+ */
+SuggestField.prototype.setRequired = function (required) {
+    this.required = !!required;
+    if (this.dom.fieldRequired) {
+        if (this.required) {
+            this.showRequired();
+        } else {
+            this.hideRequired();
+        }
+    }
+    return this;
+};
+
+
 SuggestField.prototype.setDynamicLoad = function (dynamicLoad) {
     this.dynamicLoad = !!dynamicLoad ? dynamicLoad : false;
     if (this.dynamicLoad.hasOwnProperty("keys")) {
@@ -35691,6 +36166,9 @@ SuggestField.prototype.createHTML = function () {
     this.colonTag = $(document.createElement("span"));
 
     this.inputField = $(document.createElement("input"));
+    if (this.disabled) {
+        this.disable();
+    }
     this.inputLabel = $(document.createElement("label"));
 
     this.inputLabel[0].textContent = this.label || "unlabel :";
@@ -35702,6 +36180,7 @@ SuggestField.prototype.createHTML = function () {
     this.containerLabel[0].appendChild(this.inputLabel[0]);
     if (this.required) {
         this.containerLabel[0].appendChild(this.requiredTag[0]);
+        this.dom.fieldRequired = this.requiredTag[0];
     }
     this.containerLabel[0].appendChild(this.colonTag[0]);
     this.html = $(document.createElement("div"));
@@ -35856,9 +36335,11 @@ SuggestField.prototype.createItems = function (items) {
         $(span).css({
             width: "auto",
             display: "block",
-            marginLeft: "20px",
-            height: "100%",
-            padding: "2px"
+            paddingLeft: "10px",
+            paddingTop: "2px",
+            paddingBottom: "2px",
+            paddingRight: "2px",
+            height: "100%"
         });
         span.innerHTML = items[i].label;
         span.setAttribute("data-value", items[i].value);
@@ -35976,7 +36457,7 @@ SuggestField.prototype.hideMessageRequired = function () {
 };
 
 SuggestField.prototype.isValid = function () {
-    if (this.html.find("input").val() == "") {
+    if (this.required && this.html.find("input").val() === "") {
         return false
     }
     return true;
@@ -36743,7 +37224,32 @@ FormDesigner.leftPad = function (string, length, fill) {
                 dialog = new FormDesigner.main.DialogInputDocument(null);
                 dialog.onClick = function (option) {
                     dialog.dialog.dialog("close").remove();
-                    that.setInputDocument(option);
+                    that.setInputDocument({
+                        size: {
+                            value: option.inp_doc_max_filesize,
+                            disabled: true
+                        },
+                        sizeUnity: {
+                            value: option.inp_doc_max_filesize_unit,
+                            disabled: true
+                        },
+                        extensions: {
+                            value: option.inp_doc_type_file,
+                            disabled: true
+                        },
+                        enableVersioning: {
+                            value: (option.inp_doc_versioning) ? true : false,
+                            disabled: true
+                        },
+                        inp_doc_uid: {
+                            value: option.inp_doc_uid,
+                            disabled: true
+                        },
+                        inputDocument: {
+                            value: option.inp_doc_title,
+                            disabled: false
+                        }
+                    });
                 };
                 return false;
             }
@@ -36897,30 +37403,32 @@ FormDesigner.leftPad = function (string, length, fill) {
                     b.node.value = "";
             }
             if (property === "inputDocument") {
-                that.properties.size.disabled = false;
-                prop = that.properties.set("size", 0);
-                if (prop.node) {
-                    prop.node.value = 0;
-                }
-
-                that.properties.sizeUnity.disabled = false;
-                prop = that.properties.set("sizeUnity", "MB");
-                if (prop.node) {
-                    prop.node.value = "MB";
-                }
-
-                that.properties.extensions.disabled = false;
-                prop = that.properties.set("extensions", "*");
-                if (prop.node) {
-                    prop.node.value = "*";
-                }
-
-                that.properties.set("inp_doc_uid", null);
-                that.properties.set("inputDocument", "");
-                prop = that.properties["inputDocument"];
-                if (prop.node) {
-                    prop.node.textContent = "...";
-                }
+                that.setInputDocument({
+                    size: {
+                        value: 0,
+                        disabled: false
+                    },
+                    sizeUnity: {
+                        value: 'MB',
+                        disabled: false
+                    },
+                    extensions: {
+                        value: '*',
+                        disabled: false
+                    },
+                    enableVersioning: {
+                        value: false,
+                        disabled: true
+                    },
+                    inp_doc_uid: {
+                        value: null,
+                        disabled: true
+                    },
+                    inputDocument: {
+                        value: '...',
+                        disabled: false
+                    }
+                });
             }
         };
     };
@@ -36988,7 +37496,10 @@ FormDesigner.leftPad = function (string, length, fill) {
                     if (b.node) {
                         b.node.value = data.inp_doc_max_filesize_unit;
                     }
-
+                    b = that.properties.set("enableVersioning", data.inp_doc_versioning === 1);
+                    if (b.node) {
+                        b.node.enableVersioning = data.inp_doc_versioning === 1;
+                    }
                     that.properties.extensions.disabled = true;
                     b = that.properties.set("extensions", data.inp_doc_type_file);
                     if (b.node) {
@@ -37002,33 +37513,32 @@ FormDesigner.leftPad = function (string, length, fill) {
     };
     /**
      * Set inputDocument properties to a field
-     * @param inputDoc
+     * @param params
      */
-    FormItem.prototype.setInputDocument = function (inputDoc) {
-        var that = this, property;
-        that.properties.size.disabled = true;
-        property = that.properties.set("size", inputDoc.inp_doc_max_filesize);
-        if (property.node) {
-            property.node.value = inputDoc.inp_doc_max_filesize;
-        }
-
-        that.properties.sizeUnity.disabled = true;
-        property = that.properties.set("sizeUnity", inputDoc.inp_doc_max_filesize_unit);
-        if (property.node) {
-            property.node.value = inputDoc.inp_doc_max_filesize_unit;
-        }
-
-        that.properties.extensions.disabled = true;
-        property = that.properties.set("extensions", inputDoc.inp_doc_type_file);
-        if (property.node) {
-            property.node.value = inputDoc.inp_doc_type_file;
-        }
-
-        that.properties.set("inp_doc_uid", inputDoc.inp_doc_uid);
-        that.properties.set("inputDocument", inputDoc.inp_doc_title);
-        property = that.properties["inputDocument"];
-        if (property.node) {
-            property.node.textContent = inputDoc.inp_doc_title;
+    FormItem.prototype.setInputDocument = function (params) {
+        var property,
+            key;
+        for (key in params) {
+            property = this.properties.set(key, params[key].value);
+            switch (key) {
+                case 'inp_doc_uid':
+                    break;
+                case 'inputDocument':
+                    if (property.node) {
+                        property.node.textContent = params[key].value;
+                    }
+                    break;
+                case 'enableVersioning':
+                    if (property.node) {
+                        property.node.textContent = (params[key].value) ? 'Yes' : 'No';
+                    }
+                default:
+                    if (property.node) {
+                        property.node.value = params[key].value;
+                        property.node.disabled = params[key].disabled;
+                    }
+                    break;
+            }
         }
     };
     FormDesigner.extendNamespace('FormDesigner.main.FormItem', FormItem);
@@ -37141,10 +37651,15 @@ FormDesigner.leftPad = function (string, length, fill) {
         this.cameraEnabled = {label: "Enable camera".translate(), value: true, type: "checkbox"};
         this.size = {label: "max file size".translate(), value: 1024, type: "text"};
         this.sizeUnity = {
-            label: "size unity".translate(), value: "KB", type: "select", items: [
+            label: "size unit".translate(), value: "KB", type: "select", items: [
                 {value: "KB", label: "KB".translate()},
                 {value: "MB", label: "MB".translate()}
             ]
+        };
+        this.enableVersioning = {
+            label: "versioning".translate(),
+            value: "",
+            type: "label"
         };
         this.columns = {label: "columns".translate(), value: [], type: "hidden"};
         this.data = {label: "data".translate(), value: [], type: "hidden"};
@@ -37172,6 +37687,12 @@ FormDesigner.leftPad = function (string, length, fill) {
             value: "",
             type: "textarea",
             placeholder: "Error message".translate()
+        };
+        this.requiredFieldErrorMessage = {
+            label: "required field error message".translate(),
+            value: "",
+            type: "textarea",
+            placeholder: "Required field error message".translate()
         };
         this.maxLength = {label: "max length".translate(), value: 1000, type: "text", regExp: /^[0-9]+$/};
         this.formula = {label: "formula".translate(), value: "", type: "button", labelButton: "edit...".translate()};
@@ -37443,7 +37964,8 @@ FormDesigner.leftPad = function (string, length, fill) {
             this.dataType.type = "hidden";
         }
         if (type === FormDesigner.main.TypesControl.form) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "id", "name", "description", "mode", "script", "language", "externalLibs", "printable"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "id", "name", "description", "mode", "script",
+                "language", "externalLibs", "printable"];
             this.id.type = "label";
             this.id.required = false;
             this.name.type = "text";
@@ -37478,7 +38000,9 @@ FormDesigner.leftPad = function (string, length, fill) {
             this.label.type = "text";
         }
         if (type === FormDesigner.main.TypesControl.file) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "hint", "required", "dnd", "extensions", "size", "sizeUnity", "mode", "multiple", "inp_doc_uid"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "hint",
+                "required", "requiredFieldErrorMessage", "dnd", "extensions", "size", "sizeUnity", "mode", "multiple",
+                "inp_doc_uid"];
             this.name.type = "text";
             this.label.type = "text";
             if (this.owner instanceof FormDesigner.main.GridItem) {
@@ -37486,7 +38010,9 @@ FormDesigner.leftPad = function (string, length, fill) {
             }
         }
         if (type === FormDesigner.main.TypesControl.multipleFile) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "inputDocument", "required", "dnd", "extensions", "size", "sizeUnity", "mode", "multiple", "inp_doc_uid"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label",
+                "inputDocument", "required", "requiredFieldErrorMessage", "dnd", "extensions", "size", "sizeUnity",
+                'enableVersioning', "mode", "multiple", "inp_doc_uid"];
             this.name.type = "hidden";
             this.label.type = "text";
             if (this.owner instanceof FormDesigner.main.GridItem) {
@@ -37504,7 +38030,9 @@ FormDesigner.leftPad = function (string, length, fill) {
             this.label.type = "text";
         }
         if (type === FormDesigner.main.TypesControl.grid) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "hint", "required", "columns", "data", "mode", "layout", "pageSize", "addRow", "deleteRow"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "hint",
+                "required", "requiredFieldErrorMessage", "columns", "data", "mode", "layout", "pageSize", "addRow",
+                "deleteRow"];
             this.label.label = "title".translate();
             this.label.type = "text";
         }
@@ -37512,7 +38040,10 @@ FormDesigner.leftPad = function (string, length, fill) {
             this.pf = ["type", "id", "name", "description", "mode"];
         }
         if (type === FormDesigner.main.TypesControl.text) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "defaultValue", "placeholder", "hint", "required", "textTransform", "validate", "validateMessage", "maxLength", "formula", "mode", "operation", "dbConnection", "dbConnectionLabel", "sql"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label",
+                "defaultValue", "placeholder", "hint", "required", "requiredFieldErrorMessage", "textTransform",
+                "validate", "validateMessage", "maxLength", "formula", "mode", "operation", "dbConnection",
+                "dbConnectionLabel", "sql"];
             if (this.owner instanceof FormDesigner.main.FormItem) {
                 this.operation.type = "hidden";
             }
@@ -37521,19 +38052,24 @@ FormDesigner.leftPad = function (string, length, fill) {
             }
         }
         if (type === FormDesigner.main.TypesControl.textarea) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "defaultValue", "placeholder", "hint", "required", "validate", "validateMessage", "mode", "dbConnection", "dbConnectionLabel", "sql", "rows"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label",
+                "defaultValue", "placeholder", "hint", "required", "requiredFieldErrorMessage", "validate",
+                "validateMessage", "mode", "dbConnection", "dbConnectionLabel", "sql", "rows"];
             if (this.owner instanceof FormDesigner.main.GridItem) {
                 this.pf.push("columnWidth");
             }
         }
         if (type === FormDesigner.main.TypesControl.dropdown) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "defaultValue", "placeholder", "hint", "required", "mode", "datasource", "dbConnection", "dbConnectionLabel", "sql", "dataVariable", "options"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label",
+                "defaultValue", "placeholder", "hint", "required", "requiredFieldErrorMessage", "mode", "datasource",
+                "dbConnection", "dbConnectionLabel", "sql", "dataVariable", "options"];
             if (this.owner instanceof FormDesigner.main.GridItem) {
                 this.pf.push("columnWidth");
             }
         }
         if (type === FormDesigner.main.TypesControl.checkbox) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "defaultValue", "hint", "required", "mode", "options"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label",
+                "defaultValue", "hint", "required", "requiredFieldErrorMessage", "mode", "options"];
             this.defaultValue.type = "checkbox";
             if (this.owner instanceof FormDesigner.main.FormItem) {
                 this.options.type = "hidden";
@@ -37547,20 +38083,33 @@ FormDesigner.leftPad = function (string, length, fill) {
             }
         }
         if (type === FormDesigner.main.TypesControl.checkgroup) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "defaultValue", "hint", "required", "mode", "datasource", "dbConnection", "dbConnectionLabel", "sql", "dataVariable", "options"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label",
+                "defaultValue", "hint", "required", "requiredFieldErrorMessage", "mode", "datasource", "dbConnection",
+                "dbConnectionLabel", "sql", "dataVariable", "options"];
         }
         if (type === FormDesigner.main.TypesControl.radio) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "defaultValue", "hint", "required", "mode", "datasource", "dbConnection", "dbConnectionLabel", "sql", "dataVariable", "options"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label",
+                "defaultValue", "hint", "required", "requiredFieldErrorMessage", "mode", "datasource", "dbConnection",
+                "dbConnectionLabel", "sql", "dataVariable", "options"];
         }
         if (type === FormDesigner.main.TypesControl.datetime) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "placeholder", "hint", "required", "mode", "format", "dayViewHeaderFormat", "extraFormats", "stepping", "minDate", "maxDate", "useCurrent", "collapse", "locale", "defaultDate", "disabledDates", "enabledDates", "icons", "useStrict", "sideBySide", "daysOfWeekDisabled", "calendarWeeks", "viewMode", "toolbarPlacement", "showTodayButton", "showClear", "widgetPositioning", "widgetParent", "keepOpen"];
-            this.type.helpButton = "Date/time picker widget based on twitter bootstrap <br><a href='http://eonasdan.github.io/bootstrap-datetimepicker/' target='_blank'>http://eonasdan.github.io/bootstrap-datetimepicker/</a>".translate();
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label",
+                "placeholder", "hint", "required", "requiredFieldErrorMessage", "mode", "format", "dayViewHeaderFormat",
+                "extraFormats", "stepping", "minDate", "maxDate", "useCurrent", "collapse", "locale", "defaultDate",
+                "disabledDates", "enabledDates", "icons", "useStrict", "sideBySide", "daysOfWeekDisabled",
+                "calendarWeeks", "viewMode", "toolbarPlacement", "showTodayButton", "showClear", "widgetPositioning",
+                "widgetParent", "keepOpen"];
+            this.type.helpButton = "Date/time picker widget based on twitter bootstrap <br>" +
+                "<a href='http://eonasdan.github.io/bootstrap-datetimepicker/' target='_blank'>" +
+                "http://eonasdan.github.io/bootstrap-datetimepicker/</a>".translate();
             if (this.owner instanceof FormDesigner.main.GridItem) {
                 this.pf.push("columnWidth");
             }
         }
         if (type === FormDesigner.main.TypesControl.suggest) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "defaultValue", "placeholder", "hint", "required", "mode", "datasource", "dbConnection", "dbConnectionLabel", "sql", "dataVariable", "options", "delay"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label",
+                "defaultValue", "placeholder", "hint", "required", "requiredFieldErrorMessage", "mode", "datasource",
+                "dbConnection", "dbConnectionLabel", "sql", "dataVariable", "options", "delay"];
             if (this.owner instanceof FormDesigner.main.GridItem) {
                 this.pf.push("columnWidth");
             }
@@ -37572,7 +38121,8 @@ FormDesigner.leftPad = function (string, length, fill) {
             this.label.type = "textarea";
         }
         if (type === FormDesigner.main.TypesControl.hidden) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "defaultValue", "dbConnection", "dbConnectionLabel", "sql"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "defaultValue",
+                "dbConnection", "dbConnectionLabel", "sql"];
         }
         if (type === FormDesigner.main.TypesControl.panel) {
             this.pf = ["type", "id", "content", "border"];
@@ -37593,18 +38143,21 @@ FormDesigner.leftPad = function (string, length, fill) {
             this.label.type = "text";
         }
         if (type === FormDesigner.main.TypesControl.imagem) {
-            this.pf = ["type", "id", "name", "label", "inputDocument", "hint", "required", "cameraEnabled", "galleryEnabled", "inp_doc_uid"];
+            this.pf = ["type", "id", "name", "label", "inputDocument", "hint", "required", "requiredFieldErrorMessage",
+                "cameraEnabled", "galleryEnabled", "inp_doc_uid"];
             this.label.type = "text";
             if (this.owner instanceof FormDesigner.main.GridItem) {
                 this.pf.push("columnWidth");
             }
         }
         if (type === FormDesigner.main.TypesControl.audiom) {
-            this.pf = ["type", "id", "name", "label", "inputDocument", "hint", "required", "inp_doc_uid"];
+            this.pf = ["type", "id", "name", "label", "inputDocument", "hint", "required", "requiredFieldErrorMessage",
+                "inp_doc_uid"];
             this.label.type = "text";
         }
         if (type === FormDesigner.main.TypesControl.videom) {
-            this.pf = ["type", "id", "name", "label", "inputDocument", "hint", "required", "inp_doc_uid"];
+            this.pf = ["type", "id", "name", "label", "inputDocument", "hint", "required", "requiredFieldErrorMessage",
+                "inp_doc_uid"];
             this.label.type = "text";
         }
         if (type === FormDesigner.main.TypesControl.cell) {
@@ -38223,6 +38776,7 @@ FormDesigner.leftPad = function (string, length, fill) {
             return false;
         };
         this.form1.onSelect = function (properties) {
+            listProperties.body.find('input').focus();
             listProperties.clear();
             listProperties.load(properties);
             that.areaToolBox.accordion.accordion("option", "active", (window.distribution === "1") ? 2 : 1);
@@ -38445,6 +38999,9 @@ FormDesigner.leftPad = function (string, length, fill) {
                     listProperties.clear();
                     listProperties.load(target.properties);
                 }
+            }
+            if (prop === "required" && target.properties["requiredFieldErrorMessage"].node) {
+                target.properties.requiredFieldErrorMessage.node.disabled = !value;
             }
         };
         this.form1.onSynchronizeVariables = function (variables) {
@@ -40062,6 +40619,16 @@ FormDesigner.leftPad = function (string, length, fill) {
         scope.find("span,img").each(function (i, e) {
             $(e).data("disabled", disabled);
         });
+        if (!propertiesGot[property].disabled && property === "requiredFieldErrorMessage"){
+            scope.find("textarea").prop("disabled", !propertiesGot["required"].value);
+        }
+        if (!propertiesGot[property].disabled && propertiesGot.type.value === 'multipleFile' &&
+            (property === 'extensions' || property === 'size' || property === 'sizeUnity')) {
+            propertiesGot[property].node.disabled = propertiesGot['inputDocument'].value.indexOf("...");
+        }
+        if (property === 'enableVersioning') {
+            propertiesGot[property].node.textContent = (propertiesGot[property].node.textContent === "true") ? 'Yes' : 'No'
+        }
         if (cellValue && propertiesGot[property].disabledTodayOption !== undefined) {
             cellValue.find("input[type='text']").prop("disabled", propertiesGot[property].disabledTodayOption);
             scope.find("span,img").each(function (i, e) {
@@ -40590,7 +41157,32 @@ FormDesigner.leftPad = function (string, length, fill) {
                 dialog = new FormDesigner.main.DialogInputDocument(null);
                 dialog.onClick = function (option) {
                     dialog.dialog.dialog("close").remove();
-                    that.setInputDocument(option);
+                    that.setInputDocument({
+                        size: {
+                            value: option.inp_doc_max_filesize,
+                            disabled: true
+                        },
+                        sizeUnity: {
+                            value: option.inp_doc_max_filesize_unit,
+                            disabled: true
+                        },
+                        extensions: {
+                            value: option.inp_doc_type_file,
+                            disabled: true
+                        },
+                        enableVersioning: {
+                            value: (option.inp_doc_versioning) ? true : false,
+                            disabled: true
+                        },
+                        inp_doc_uid: {
+                            value: option.inp_doc_uid,
+                            disabled: true
+                        },
+                        inputDocument: {
+                            value: option.inp_doc_title,
+                            disabled: false
+                        }
+                    });
                 };
                 return false;
             }
@@ -40673,32 +41265,33 @@ FormDesigner.leftPad = function (string, length, fill) {
         };
         // This section reset properties in clearbutton in grids
         this.properties.onClickClearButton = function (property) {
-            var prop;
             if (property === "inputDocument") {
-                that.properties.size.disabled = false;
-                prop = that.properties.set("size", 0);
-                if (prop.node) {
-                    prop.node.value = 0;
-                }
-
-                that.properties.sizeUnity.disabled = false;
-                prop = that.properties.set("sizeUnity", "MB");
-                if (prop.node) {
-                    prop.node.value = "MB";
-                }
-
-                that.properties.extensions.disabled = false;
-                prop = that.properties.set("extensions", "*");
-                if (prop.node) {
-                    prop.node.value = "*";
-                }
-
-                that.properties.set("inp_doc_uid", null);
-                that.properties.set("inputDocument", "");
-                prop = that.properties["inputDocument"];
-                if (prop.node) {
-                    prop.node.textContent = "...";
-                }
+                that.setInputDocument({
+                    size: {
+                        value: 0,
+                        disabled: false
+                    },
+                    sizeUnity: {
+                        value: 'MB',
+                        disabled: false
+                    },
+                    extensions: {
+                        value: '*',
+                        disabled: false
+                    },
+                    enableVersioning: {
+                        value: false,
+                        disabled: true
+                    },
+                    inp_doc_uid: {
+                        value: null,
+                        disabled: true
+                    },
+                    inputDocument: {
+                        value: '...',
+                        disabled: false
+                    }
+                });
             }
         };
     };
@@ -40721,33 +41314,32 @@ FormDesigner.leftPad = function (string, length, fill) {
     };
     /**
      * Set properties for input document
-     * @param inputDoc
+     * @param params
      */
-    GridItem.prototype.setInputDocument = function (inputDoc) {
-        var that = this, property;
-        that.properties.size.disabled = true;
-        property = that.properties.set("size", inputDoc.inp_doc_max_filesize);
-        if (property.node) {
-            property.node.value = inputDoc.inp_doc_max_filesize;
-        }
-
-        that.properties.sizeUnity.disabled = true;
-        property = that.properties.set("sizeUnity", inputDoc.inp_doc_max_filesize_unit);
-        if (property.node) {
-            property.node.value = inputDoc.inp_doc_max_filesize_unit;
-        }
-
-        that.properties.extensions.disabled = true;
-        property = that.properties.set("extensions", inputDoc.inp_doc_type_file);
-        if (property.node) {
-            property.node.value = inputDoc.inp_doc_type_file;
-        }
-
-        that.properties.set("inp_doc_uid", inputDoc.inp_doc_uid);
-        that.properties.set("inputDocument", inputDoc.inp_doc_title);
-        property = that.properties["inputDocument"];
-        if (property.node) {
-            property.node.textContent = inputDoc.inp_doc_title;
+    GridItem.prototype.setInputDocument = function (params) {
+        var property,
+            key;
+        for (key in params) {
+            property = this.properties.set(key, params[key].value);
+            switch (key) {
+                case 'inp_doc_uid':
+                    break;
+                case 'inputDocument':
+                    if (property.node) {
+                        property.node.textContent = params[key].value;
+                    }
+                    break;
+                case 'enableVersioning':
+                    if (property.node) {
+                        property.node.textContent = (params[key].value) ? 'Yes' : 'No';
+                    }
+                default:
+                    if (property.node) {
+                        property.node.value = params[key].value;
+                        property.node.disabled = params[key].disabled;
+                    }
+                    break;
+            }
         }
     };
     FormDesigner.extendNamespace('FormDesigner.main.GridItem', GridItem);
@@ -43388,9 +43980,11 @@ Corona.prototype.init = function (options) {
         this.setParent(options.parent);
         this.setParentType(options.parentType);
         config = this.getConfigItems(options.parentType);
-        this.populateItemsCrown(config);
-        this.setRows(config.rows);
-        this.setCols(config.cols);
+        if (config) {
+            this.populateItemsCrown(config);
+            this.setRows(config.rows);
+            this.setCols(config.cols);
+        }
     }
     return this;
 };
@@ -43508,7 +44102,7 @@ Corona.prototype.getConfigItems = function (especificType) {
  * @returns {Corona}
  */
 Corona.prototype.populateItemsCrown = function (config) {
-    var order = config.order,
+    var order = (config && config.order) || [],
         itemsDefault = PMDesigner.modelCrown.getItemsDefault(),
         itemCrownDefault,
         itemCrown,
@@ -44053,3 +44647,4 @@ ModelCrown.prototype.removeItemFromCrown = function (idItem) {
     }
     return this;
 };
+var __env = __env || {};__env.USER_GUEST = {"uid":"00000000000000000000000000000002","firstname":"Guest","lastname":"Guest","username":"guest"};

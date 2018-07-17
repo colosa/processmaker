@@ -50,10 +50,15 @@
         this.cameraEnabled = {label: "Enable camera".translate(), value: true, type: "checkbox"};
         this.size = {label: "max file size".translate(), value: 1024, type: "text"};
         this.sizeUnity = {
-            label: "size unity".translate(), value: "KB", type: "select", items: [
+            label: "size unit".translate(), value: "KB", type: "select", items: [
                 {value: "KB", label: "KB".translate()},
                 {value: "MB", label: "MB".translate()}
             ]
+        };
+        this.enableVersioning = {
+            label: "versioning".translate(),
+            value: "",
+            type: "label"
         };
         this.columns = {label: "columns".translate(), value: [], type: "hidden"};
         this.data = {label: "data".translate(), value: [], type: "hidden"};
@@ -81,6 +86,12 @@
             value: "",
             type: "textarea",
             placeholder: "Error message".translate()
+        };
+        this.requiredFieldErrorMessage = {
+            label: "required field error message".translate(),
+            value: "",
+            type: "textarea",
+            placeholder: "Required field error message".translate()
         };
         this.maxLength = {label: "max length".translate(), value: 1000, type: "text", regExp: /^[0-9]+$/};
         this.formula = {label: "formula".translate(), value: "", type: "button", labelButton: "edit...".translate()};
@@ -352,7 +363,8 @@
             this.dataType.type = "hidden";
         }
         if (type === FormDesigner.main.TypesControl.form) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "id", "name", "description", "mode", "script", "language", "externalLibs", "printable"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "id", "name", "description", "mode", "script",
+                "language", "externalLibs", "printable"];
             this.id.type = "label";
             this.id.required = false;
             this.name.type = "text";
@@ -387,7 +399,9 @@
             this.label.type = "text";
         }
         if (type === FormDesigner.main.TypesControl.file) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "hint", "required", "dnd", "extensions", "size", "sizeUnity", "mode", "multiple", "inp_doc_uid"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "hint",
+                "required", "requiredFieldErrorMessage", "dnd", "extensions", "size", "sizeUnity", "mode", "multiple",
+                "inp_doc_uid"];
             this.name.type = "text";
             this.label.type = "text";
             if (this.owner instanceof FormDesigner.main.GridItem) {
@@ -395,7 +409,9 @@
             }
         }
         if (type === FormDesigner.main.TypesControl.multipleFile) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "inputDocument", "required", "dnd", "extensions", "size", "sizeUnity", "mode", "multiple", "inp_doc_uid"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label",
+                "inputDocument", "required", "requiredFieldErrorMessage", "dnd", "extensions", "size", "sizeUnity",
+                'enableVersioning', "mode", "multiple", "inp_doc_uid"];
             this.name.type = "hidden";
             this.label.type = "text";
             if (this.owner instanceof FormDesigner.main.GridItem) {
@@ -413,7 +429,9 @@
             this.label.type = "text";
         }
         if (type === FormDesigner.main.TypesControl.grid) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "hint", "required", "columns", "data", "mode", "layout", "pageSize", "addRow", "deleteRow"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "hint",
+                "required", "requiredFieldErrorMessage", "columns", "data", "mode", "layout", "pageSize", "addRow",
+                "deleteRow"];
             this.label.label = "title".translate();
             this.label.type = "text";
         }
@@ -421,7 +439,10 @@
             this.pf = ["type", "id", "name", "description", "mode"];
         }
         if (type === FormDesigner.main.TypesControl.text) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "defaultValue", "placeholder", "hint", "required", "textTransform", "validate", "validateMessage", "maxLength", "formula", "mode", "operation", "dbConnection", "dbConnectionLabel", "sql"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label",
+                "defaultValue", "placeholder", "hint", "required", "requiredFieldErrorMessage", "textTransform",
+                "validate", "validateMessage", "maxLength", "formula", "mode", "operation", "dbConnection",
+                "dbConnectionLabel", "sql"];
             if (this.owner instanceof FormDesigner.main.FormItem) {
                 this.operation.type = "hidden";
             }
@@ -430,19 +451,24 @@
             }
         }
         if (type === FormDesigner.main.TypesControl.textarea) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "defaultValue", "placeholder", "hint", "required", "validate", "validateMessage", "mode", "dbConnection", "dbConnectionLabel", "sql", "rows"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label",
+                "defaultValue", "placeholder", "hint", "required", "requiredFieldErrorMessage", "validate",
+                "validateMessage", "mode", "dbConnection", "dbConnectionLabel", "sql", "rows"];
             if (this.owner instanceof FormDesigner.main.GridItem) {
                 this.pf.push("columnWidth");
             }
         }
         if (type === FormDesigner.main.TypesControl.dropdown) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "defaultValue", "placeholder", "hint", "required", "mode", "datasource", "dbConnection", "dbConnectionLabel", "sql", "dataVariable", "options"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label",
+                "defaultValue", "placeholder", "hint", "required", "requiredFieldErrorMessage", "mode", "datasource",
+                "dbConnection", "dbConnectionLabel", "sql", "dataVariable", "options"];
             if (this.owner instanceof FormDesigner.main.GridItem) {
                 this.pf.push("columnWidth");
             }
         }
         if (type === FormDesigner.main.TypesControl.checkbox) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "defaultValue", "hint", "required", "mode", "options"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label",
+                "defaultValue", "hint", "required", "requiredFieldErrorMessage", "mode", "options"];
             this.defaultValue.type = "checkbox";
             if (this.owner instanceof FormDesigner.main.FormItem) {
                 this.options.type = "hidden";
@@ -456,20 +482,33 @@
             }
         }
         if (type === FormDesigner.main.TypesControl.checkgroup) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "defaultValue", "hint", "required", "mode", "datasource", "dbConnection", "dbConnectionLabel", "sql", "dataVariable", "options"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label",
+                "defaultValue", "hint", "required", "requiredFieldErrorMessage", "mode", "datasource", "dbConnection",
+                "dbConnectionLabel", "sql", "dataVariable", "options"];
         }
         if (type === FormDesigner.main.TypesControl.radio) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "defaultValue", "hint", "required", "mode", "datasource", "dbConnection", "dbConnectionLabel", "sql", "dataVariable", "options"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label",
+                "defaultValue", "hint", "required", "requiredFieldErrorMessage", "mode", "datasource", "dbConnection",
+                "dbConnectionLabel", "sql", "dataVariable", "options"];
         }
         if (type === FormDesigner.main.TypesControl.datetime) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "placeholder", "hint", "required", "mode", "format", "dayViewHeaderFormat", "extraFormats", "stepping", "minDate", "maxDate", "useCurrent", "collapse", "locale", "defaultDate", "disabledDates", "enabledDates", "icons", "useStrict", "sideBySide", "daysOfWeekDisabled", "calendarWeeks", "viewMode", "toolbarPlacement", "showTodayButton", "showClear", "widgetPositioning", "widgetParent", "keepOpen"];
-            this.type.helpButton = "Date/time picker widget based on twitter bootstrap <br><a href='http://eonasdan.github.io/bootstrap-datetimepicker/' target='_blank'>http://eonasdan.github.io/bootstrap-datetimepicker/</a>".translate();
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label",
+                "placeholder", "hint", "required", "requiredFieldErrorMessage", "mode", "format", "dayViewHeaderFormat",
+                "extraFormats", "stepping", "minDate", "maxDate", "useCurrent", "collapse", "locale", "defaultDate",
+                "disabledDates", "enabledDates", "icons", "useStrict", "sideBySide", "daysOfWeekDisabled",
+                "calendarWeeks", "viewMode", "toolbarPlacement", "showTodayButton", "showClear", "widgetPositioning",
+                "widgetParent", "keepOpen"];
+            this.type.helpButton = "Date/time picker widget based on twitter bootstrap <br>" +
+                "<a href='http://eonasdan.github.io/bootstrap-datetimepicker/' target='_blank'>" +
+                "http://eonasdan.github.io/bootstrap-datetimepicker/</a>".translate();
             if (this.owner instanceof FormDesigner.main.GridItem) {
                 this.pf.push("columnWidth");
             }
         }
         if (type === FormDesigner.main.TypesControl.suggest) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label", "defaultValue", "placeholder", "hint", "required", "mode", "datasource", "dbConnection", "dbConnectionLabel", "sql", "dataVariable", "options", "delay"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "label",
+                "defaultValue", "placeholder", "hint", "required", "requiredFieldErrorMessage", "mode", "datasource",
+                "dbConnection", "dbConnectionLabel", "sql", "dataVariable", "options", "delay"];
             if (this.owner instanceof FormDesigner.main.GridItem) {
                 this.pf.push("columnWidth");
             }
@@ -481,7 +520,8 @@
             this.label.type = "textarea";
         }
         if (type === FormDesigner.main.TypesControl.hidden) {
-            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "defaultValue", "dbConnection", "dbConnectionLabel", "sql"];
+            this.pf = ["type", "variable", "var_uid", "dataType", "protectedValue", "id", "name", "defaultValue",
+                "dbConnection", "dbConnectionLabel", "sql"];
         }
         if (type === FormDesigner.main.TypesControl.panel) {
             this.pf = ["type", "id", "content", "border"];
@@ -502,18 +542,21 @@
             this.label.type = "text";
         }
         if (type === FormDesigner.main.TypesControl.imagem) {
-            this.pf = ["type", "id", "name", "label", "inputDocument", "hint", "required", "cameraEnabled", "galleryEnabled", "inp_doc_uid"];
+            this.pf = ["type", "id", "name", "label", "inputDocument", "hint", "required", "requiredFieldErrorMessage",
+                "cameraEnabled", "galleryEnabled", "inp_doc_uid"];
             this.label.type = "text";
             if (this.owner instanceof FormDesigner.main.GridItem) {
                 this.pf.push("columnWidth");
             }
         }
         if (type === FormDesigner.main.TypesControl.audiom) {
-            this.pf = ["type", "id", "name", "label", "inputDocument", "hint", "required", "inp_doc_uid"];
+            this.pf = ["type", "id", "name", "label", "inputDocument", "hint", "required", "requiredFieldErrorMessage",
+                "inp_doc_uid"];
             this.label.type = "text";
         }
         if (type === FormDesigner.main.TypesControl.videom) {
-            this.pf = ["type", "id", "name", "label", "inputDocument", "hint", "required", "inp_doc_uid"];
+            this.pf = ["type", "id", "name", "label", "inputDocument", "hint", "required", "requiredFieldErrorMessage",
+                "inp_doc_uid"];
             this.label.type = "text";
         }
         if (type === FormDesigner.main.TypesControl.cell) {

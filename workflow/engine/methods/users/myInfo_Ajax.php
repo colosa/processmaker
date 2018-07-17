@@ -23,7 +23,7 @@
  */
 if (($RBAC_Response = $RBAC->userCanAccess( "PM_LOGIN" )) != 1)
     return $RBAC_Response;
-G::LoadClass( "xmlMenu" );
+
 $form = new Form( 'myInfo/myInfoAEdit.xml', PATH_XMLFORM );
 $form->action = urlencode( G::encrypt( '', URL_KEY ) );
 $form->ajaxServer = urlencode( G::encrypt( SYS_URI . '/gulliver/defaultAjax', URL_KEY ) );

@@ -1,0 +1,1 @@
+var __env = __env || {};__env.USER_GUEST = {"uid":"00000000000000000000000000000002","firstname":"Guest","lastname":"Guest","username":"guest"};

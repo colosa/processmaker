@@ -50,7 +50,6 @@ while ($aRow = $oDataset->getRow()) {
     $oDataset->next();
 }
 
-G::LoadClass( 'case' );
 $oCases = new Cases();
 
 if (isset( $_POST['form'] )) {

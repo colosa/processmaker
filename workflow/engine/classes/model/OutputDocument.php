@@ -885,7 +885,7 @@ class OutputDocument extends BaseOutputDocument
         $pdf->SetRightMargin($margins['right']);
         $pdf->SetAutoPageBreak(true, $margins['bottom']);
 
-        $oServerConf = &serverConf::getSingleton();
+        $oServerConf = &ServerConf::getSingleton();
 
         // set some language dependent data:
         $lg = array();

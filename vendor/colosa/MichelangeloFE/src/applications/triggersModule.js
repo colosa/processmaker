@@ -297,7 +297,7 @@
                             formEditTriggerCustom.getItems()[1].setValue(data.tri_webbot);
 
                             codeMirrorControl.setValue(data.tri_webbot);
-
+                            codeMirrorControl.refresh();
                         } else {
                             openFormWizardEditMode();
 
@@ -677,8 +677,8 @@
                 var codeMirrorControl, cmControlCopyTrigger;
                 codeMirrorControl = formEditTriggerCustom.getItems()[1].controls[0].cm;
                 formEditTriggerCustom.getItems()[1].html.style.padding = "10px";
-                if (codeMirrorControl != undefined) {
-                    codeMirrorControl.setSize(580, 150); //CodeMirror Size
+                if (codeMirrorControl !== undefined) {
+                    codeMirrorControl.setSize(580, 150);
                 }
                 formEditTriggerCustom.getItems()[1].setHeight(170);
 
@@ -690,6 +690,7 @@
                 fields.getItems()[2].setValue("");
                 formEditTriggerCustom.getItems()[1].setValue("");
                 formEditTriggerCustom.getItems()[1].controls[0].cm.setValue("");
+                codeMirrorControl.refresh();
             },
             style: {
                 cssClasses: [
@@ -708,14 +709,15 @@
                 getListProjects();
                 openFormCopy();
                 formCopyTrigger.getFields()[1].clearOptions();
-                $($('#Code .CodeMirror.cm-s-default.CodeMirror-wrap')[1]).css({'border': '1px solid #c0c0c0'});
+                $("#Code .CodeMirror.cm-s-default.CodeMirror-wrap").css({'border': '1px solid #c0c0c0'});
                 formCopyTrigger.getItems()[4].setHeight(160);
 
                 var cmControlCopyTrigger = formCopyTrigger.getFields()[4].controls[0].cm;
                 cmControlCopyTrigger.setValue("");
-                if (cmControlCopyTrigger != undefined) {
-                    cmControlCopyTrigger.setSize(650, 140); //CodeMirror in formCopyTrigger Size
+                if (cmControlCopyTrigger !== undefined) {
+                    cmControlCopyTrigger.setSize(650, 140);
                 }
+                cmControlCopyTrigger.refresh();
             },
             style: {
                 cssClasses: [
@@ -1640,8 +1642,8 @@
                 var codeMirrorControl;
                 codeMirrorControl = formEditTriggerCustom.getItems()[1].controls[0].cm;
 
-                if (codeMirrorControl != undefined) {
-                    codeMirrorControl.setSize(650, 300); //CodeMirror Size
+                if (codeMirrorControl !== undefined) {
+                    codeMirrorControl.setSize(650, 280);
                 }
                 formEditTriggerCustom.getItems()[1].setHeight(170);
 
@@ -1661,6 +1663,7 @@
                 formEditTriggerCustom.footer.getItems()[1].setVisible(false);
                 formEditTriggerCustom.footer.getItems()[0].style.addProperties({'margin-right': "10px"});
                 formEditTriggerCustom.footer.style.addProperties({width: '880px'});
+                codeMirrorControl.refresh();
             }
         });
 
@@ -1791,7 +1794,7 @@
                             'height': '360px'
                         });
                         $('#triggerWindow .pmui-window-body').css('overflow', 'hidden');
-
+                        codeMirrorCopy.refresh();
                     },
                     style: {
                         cssProperties: {

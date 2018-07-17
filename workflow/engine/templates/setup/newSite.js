@@ -100,7 +100,11 @@ Ext.onReady(function(){
         inputType:'password',
         value:'admin',
         width: 200,
-        allowBlank: false
+        allowBlank: false,
+          validator: function (v) {
+              v = v.trim();
+              return !/^\s+$/.test(v);
+          }
       },
       {
         id: 'NW_PASSWORD2',
@@ -109,7 +113,11 @@ Ext.onReady(function(){
         inputType:'password',
         value:'admin',
         width: 200,
-        allowBlank: false
+        allowBlank: false,
+          validator: function (v) {
+              v = v.trim();
+              return !/^\s+$/.test(v);
+          }
       }
       ]
   });
@@ -173,11 +181,9 @@ Ext.onReady(function(){
                              aoDbRb     =aoDbWf;
                              aoDbRp     =aoDbWf;
                              nwUsername =formNewSite.getForm().findField('NW_USERNAME').getValue();
-                             nwPassword =formNewSite.getForm().findField('NW_PASSWORD').getValue();
-                             nwPassword2=formNewSite.getForm().findField('NW_PASSWORD2').getValue();
+                             nwPassword = formNewSite.getForm().findField('NW_PASSWORD').getValue().trim();
+                             nwPassword2 = formNewSite.getForm().findField('NW_PASSWORD2').getValue().trim();
                              aoDbDrop=formNewSite.getForm().findField('AO_DB_DROP').getValue();
-                             //Ext.getCmp('NW_TITLE').disable()=true;
-                             //Ext.getCmp('NW_TITLE').readOnly = true;
                              createNW(nwTitle, aoDbWf, aoDbRb, aoDbRp, nwUsername, nwPassword, nwPassword2);
                             },
                             failure: function(f,a){

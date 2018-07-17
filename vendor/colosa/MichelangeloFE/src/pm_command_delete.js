@@ -217,6 +217,7 @@ PMCommandDelete.prototype.execute = function () {
 
         currentConnection.saveAndDestroy();
         currentConnection = null;
+        mainShape = currentConnection;
     }
     canvas.triggerRemoveEvent(mainShape, this.relatedElements);
     return this;
@@ -231,7 +232,7 @@ PMCommandDelete.prototype.undo = function () {
     // undo recreates the shapes
     var i,
         shape,
-        mainShape = this.currentSelection.getFirst(),
+        mainShape = this.currentSelection.getFirst() || this.currentConnection,
         size,
         haveLanes = false,
         shapeBefore,

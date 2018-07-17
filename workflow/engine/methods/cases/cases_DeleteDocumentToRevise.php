@@ -35,10 +35,6 @@ switch ($RBAC->userCanAccess( 'PM_CASES' )) {
         break;
 }
 
-/* Includes */
-require_once ("classes/model/AppDocumentPeer.php");
-G::LoadClass( 'case' );
-
 /* GET , POST & $_SESSION Vars */
 
 /* Process the info */

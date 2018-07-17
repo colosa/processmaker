@@ -36,7 +36,7 @@ try {
     $G_MAIN_MENU = 'caseTracker';
     $G_ID_MENU_SELECTED = 'DYNADOC';
     global $G_PUBLISH;
-    G::LoadClass( 'case' );
+
     $oCase = new Cases();
     $Fields = $oCase->loadCase( $_SESSION['APPLICATION'] );
 

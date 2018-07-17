@@ -418,7 +418,6 @@ class InputFilter
       */
     function xssFilterHard($input, $type = "")
     { 
-        require_once (PATH_THIRDPARTY . 'HTMLPurifier/HTMLPurifier.auto.php'); 
         $config = HTMLPurifier_Config::createDefault();
         $purifier = new HTMLPurifier($config);
         if(is_array($input)) {

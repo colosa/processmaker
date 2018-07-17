@@ -10,7 +10,6 @@ try {
     $G_PUBLISH = new Publisher();
 
     if ((isset( $_POST['form']['FOLDER_UID'] )) && (isset( $_POST['form']['MOVE_FOLDER_PATH'] ))) {
-        require_once ("classes/model/AppDocument.php");
         $oAppDocument = new AppDocument();
 
         //Move files to another FOLDER_UID'

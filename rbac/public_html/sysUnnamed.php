@@ -5,7 +5,7 @@
 //  define("URL_KEY", 'c0l0s40pt1mu59r1m3' );
 //  define("ENABLE_ENCRYPT", 'yes' );
 
-  G::LoadSystem('inputfilter');
+
   $filter = new InputFilter();
   $COMPLETE_URI = $filter->xssFilterHard($_SERVER["REQUEST_URI"]);
 

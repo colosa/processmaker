@@ -264,7 +264,7 @@ Ext.onReady(function(){
       fields : [
                 {name : 'GRP_UID'},
                 {name : 'GRP_STATUS'},
-                {name : 'CON_VALUE'},
+                {name : 'GRP_TITLE'},
                 {name : 'GRP_TASKS', type: 'int'},
                 {name : 'GRP_USERS', type: 'int'}
                 ]
@@ -284,7 +284,7 @@ Ext.onReady(function(){
     ,
     columns: [
               {id:'GRP_UID', dataIndex: 'USR_UID', hidden:true, hideable:false},
-              {header: _('ID_GROUP_NAME'), dataIndex: 'CON_VALUE', width: 400, align:'left'},
+              {header: _('ID_GROUP_NAME'), dataIndex: 'GRP_TITLE', width: 400, align:'left'},
               {header: _('ID_STATUS'), dataIndex: 'GRP_STATUS', width: 130, align:'center', renderer: render_status},
               {header: _("ID_USERS"), dataIndex: "GRP_USERS", sortable: false, width: 100, align:"center"},
               {header: _("ID_TASKS"), dataIndex: "GRP_TASKS", sortable: false, width: 100, align:"center"}
@@ -486,7 +486,7 @@ SaveNewGroup = function(){
 //Open Edit Group Form
 EditGroupWindow = function(){
   var rowSelected = infoGrid.getSelectionModel().getSelected();
-  var strName = stringReplace("&lt;", "<", rowSelected.data.CON_VALUE);
+  var strName = stringReplace("&lt;", "<", rowSelected.data.GRP_TITLE);
   strName = stringReplace("&gt;", ">", strName);
 
   editForm.getForm().findField('grp_uid').setValue(rowSelected.data.GRP_UID);
@@ -514,7 +514,7 @@ SaveEditGroupAction = function(){
   group = group.trim();
   rowSelected = infoGrid.getSelectionModel().getSelected();
   if (group != ''){
-    if (rowSelected.data.CON_VALUE.toUpperCase() == group.toUpperCase()){
+    if (rowSelected.data.GRP_TITLE.toUpperCase() == group.toUpperCase()){
       SaveEditGroup();
     }else{
       CheckGroupName(group, SaveEditGroup, DuplicateGroupName);
@@ -570,7 +570,7 @@ DeleteButtonAction = function() {
                                     params: {
                                         action: "deleteGroup",
                                         GRP_UID: rowSelected.data.GRP_UID,
-                                        GRP_NAME: rowSelected.data.CON_VALUE
+                                        GRP_NAME: rowSelected.data.GRP_TITLE
                                     },
 
                                     success: function(r,o) {

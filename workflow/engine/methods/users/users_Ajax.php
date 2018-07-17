@@ -1,34 +1,6 @@
 <?php
 
-/**
- * users_Ajax.php
- *
- * ProcessMaker Open Source Edition
- * Copyright (C) 2004 - 2008 Colosa Inc.23
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
- * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- */
 try {
-    G::LoadSystem('inputfilter');
-    $filter = new InputFilter();
-    $_GET = $filter->xssFilterHard($_GET);
-    $_POST = $filter->xssFilterHard($_POST);
-    $_REQUEST = $filter->xssFilterHard($_REQUEST);
-
     global $RBAC;
     switch ($RBAC->userCanAccess('PM_LOGIN')) {
         case - 2:
@@ -42,44 +14,19 @@ try {
             die();
             break;
     }
-    G::LoadInclude('ajax');
     if (isset($_POST['form'])) {
         $_POST = $_POST['form'];
     }
     if (isset($_REQUEST['function'])) {
-        //$value= $_POST['function'];
         $value = get_ajax_value('function');
     } else {
-        //$value= $_POST['functions'];
         $value = get_ajax_value('functions');
     }
+
+    $RBAC->allows(basename(__FILE__), $value);
     switch ($value) {
-        case 'verifyUsername':
-            //print_r($_POST); die;
-            $_POST['sOriginalUsername'] = get_ajax_value('sOriginalUsername');
-            $_POST['sUsername'] = get_ajax_value('sUsername');
-            if ($_POST['sOriginalUsername'] == $_POST['sUsername']) {
-                echo '0';
-            } else {
-                require_once 'classes/model/Users.php';
-                G::LoadClass('Users');
-                $oUser = new Users();
-                $oCriteria = $oUser->loadByUsername($_POST['sUsername']);
-                $oDataset = UsersPeer::doSelectRs($oCriteria, Propel::getDbConnection('workflow_ro'));
-                $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-                $oDataset->next();
-                $aRow = $oDataset->getRow();
-                //print_r($aRow); die;
-                //if (!$aRow)
-                if (!is_array($aRow)) {
-                    echo '0';
-                } else {
-                    echo '1';
-                }
-            }
-            break;
         case 'availableUsers':
-            G::LoadClass('processMap');
+            //Classic process: list of users to assign in the task
             $oProcessMap = new ProcessMap();
             global $G_PUBLISH;
             $G_PUBLISH = new Publisher();
@@ -87,7 +34,7 @@ try {
             G::RenderPage('publish', 'raw');
             break;
         case 'assign':
-            G::LoadClass('tasks');
+            //Classic process: assign users and groups in the task
             $oTasks = new Tasks();
             switch ((int) $_POST['TU_RELATION']) {
                 case 1:
@@ -103,7 +50,7 @@ try {
             }
             break;
         case 'ofToAssign':
-            G::LoadClass('tasks');
+            //Classic process: remove users and groups related a task
             $oTasks = new Tasks();
             switch ((int) $_POST['TU_RELATION']) {
                 case 1:
@@ -117,79 +64,42 @@ try {
             }
             break;
         case 'changeView':
+            //Classic process: set variable for users and groups Ad hoc
             $_SESSION['iType'] = $_POST['TU_TYPE'];
             break;
-        case 'deleteGroup':
-            G::LoadClass('groups');
-            $oGroup = new Groups();
-            $oGroup->removeUserOfGroup($_POST['GRP_UID'], $_POST['USR_UID']);
-            $_GET['sUserUID'] = $_POST['USR_UID'];
-            $G_PUBLISH = new Publisher();
-            $G_PUBLISH->AddContent('view', 'users/users_Tree');
-            G::RenderPage('publish', 'raw');
-            break;
-        case 'showUserGroupInterface':
-            $_GET['sUserUID'] = $_POST['sUserUID'];
-            $G_PUBLISH = new Publisher();
-            $G_PUBLISH->AddContent('view', 'users/users_AssignGroup');
-            G::RenderPage('publish', 'raw');
-            break;
-        case 'showUserGroups':
-            $_GET['sUserUID'] = $_POST['sUserUID'];
-            $G_PUBLISH = new Publisher();
-            $G_PUBLISH->AddContent('view', 'users/users_Tree');
-            G::RenderPage('publish', 'raw');
-            break;
-        case 'assignUserToGroup':
-            G::LoadClass('groups');
-            $oGroup = new Groups();
-            $oGroup->addUserToGroup($_POST['GRP_UID'], $_POST['USR_UID']);
-            echo '<div align="center"><h2><font color="blue">' . G::LoadTranslation('ID_MSG_ASSIGN_DONE') . '</font></h2></div>';
-            break;
         case 'usersGroup':
-            G::LoadClass('groups');
+            //Classic process: list of users in a group related a task
             $oGroup = new Groups();
             $aGroup = $oGroup->getUsersOfGroup($_POST['GRP_UID']);
             foreach ($aGroup as $iIndex => $aValues) {
                 echo $aValues['USR_FIRSTNAME'] . ' ' . $aValues['USR_LASTNAME'] . '<br>';
             }
             break;
-
-        //This case is used to check if any of the user group has as role 'PROCESSMAKER_ADMIN',
-        case 'usersAdminGroupExtJS':
-            G::LoadClass('groups');
-            $oGroup = new Groups();
-            $aGroup = $oGroup->getUsersOfGroup($_POST['GRP_UID']);
-            $responseUser = 'false';
-            $usersAdmin = '';
-            foreach ($aGroup as $iIndex => $aValues) {
-                if ($aValues['USR_ROLE'] == 'PROCESSMAKER_ADMIN') {
-                    $responseUser = 'true';
-                    $usersAdmin .= $aValues['USR_FIRSTNAME'] . ' ' . $aValues['USR_LASTNAME'] . ', ';
-                }
-            }
-            $usersAdmin = substr($usersAdmin, 0, - 2);
-
-            $result = new stdClass();
-            $result->reponse = $responseUser;
-            $result->users = $usersAdmin;
-
-            echo G::json_encode($result);
-            break;
         case 'canDeleteUser':
-            G::LoadClass('case');
+            //Check before delete a user
             $oProcessMap = new Cases();
-            $USR_UID = $_POST['uUID'];
+            $userUid = $_POST['uUID'];
             $total = 0;
             $history = 0;
-            $c = $oProcessMap->getCriteriaUsersCases('TO_DO', $USR_UID);
+            $c = $oProcessMap->getCriteriaUsersCases('TO_DO', $userUid);
             $total += ApplicationPeer::doCount($c);
-            $c = $oProcessMap->getCriteriaUsersCases('DRAFT', $USR_UID);
+            $c = $oProcessMap->getCriteriaUsersCases('DRAFT', $userUid);
             $total += ApplicationPeer::doCount($c);
-            $c = $oProcessMap->getCriteriaUsersCases('COMPLETED', $USR_UID);
+            $c = $oProcessMap->getCriteriaUsersCases('COMPLETED', $userUid);
             $history += ApplicationPeer::doCount($c);
-            $c = $oProcessMap->getCriteriaUsersCases('CANCELLED', $USR_UID);
+            $c = $oProcessMap->getCriteriaUsersCases('CANCELLED', $userUid);
             $history += ApplicationPeer::doCount($c);
+            //Check if the user is configured in Web Entry
+            if ($total === 0) {
+                $webEntry = new \ProcessMaker\BusinessModel\WebEntryEvent();
+                $total = $webEntry->getWebEntryRelatedToUser($userUid);
+            }
+
+            //check user guest
+            if (RBAC::isGuestUserUid($userUid)) {
+                $total++;
+            }
+
             $response = '{success: true, candelete: ';
             $response .= ($total > 0) ? 'false' : 'true';
             $response .= ', hashistory: ';
@@ -198,71 +108,54 @@ try {
             echo $response;
             break;
         case 'deleteUser':
-            $UID = $_POST['USR_UID'];
-
-            //process permissions
-            $criteria = new Criteria("workflow");
-            $criteria->addSelectColumn(ObjectPermissionPeer::USR_UID);
-            $criteria->addSelectColumn(ObjectPermissionPeer::PRO_UID);
-            $criteria->add(ObjectPermissionPeer::OP_USER_RELATION, 1, Criteria::EQUAL);
-            $criteria->add(ObjectPermissionPeer::USR_UID, $UID, Criteria::EQUAL);
-            $doSelectRS = DynaformPeer::doSelectRS($criteria);
-            $doSelectRS->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-            $doSelectRS->next();
-            $objectPermision = $doSelectRS->getRow();
-            if (isset($objectPermision["USR_UID"])) {
-                $criteria = new Criteria("workflow");
-                $criteria->addSelectColumn(ProcessPeer::PRO_TITLE);
-                $criteria->add(ProcessPeer::PRO_UID, $objectPermision["PRO_UID"], Criteria::EQUAL);
-                $doSelectRS = ProcessPeer::doSelectRS($criteria);
-                $doSelectRS->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-                $doSelectRS->next();
-                $content = $doSelectRS->getRow();
+            $usrUid = $_POST['USR_UID'];
+            //Check if the user was defined in a process permissions
+            $oObjectPermission = new ObjectPermission();
+            $aProcess = $oObjectPermission->objectPermissionPerUser($usrUid, 1);
+            if (count($aProcess) > 0) {
                 echo G::json_encode(array(
                     "status" => 'ERROR',
-                    "message" => G::LoadTranslation('ID_USER_CANT_BE_DELETED_FOR_THE_PROCESS', array('processTitle' => isset($content["PRO_TITLE"]) ? $content["PRO_TITLE"] : $objectPermision['PRO_UID']))
+                    "message" => G::LoadTranslation('ID_USER_CANT_BE_DELETED_FOR_THE_PROCESS', array('processTitle' => isset($aProcess["PRO_TITLE"]) ? $aProcess["PRO_TITLE"] : $aProcess['PRO_UID']))
                 ));
                 break;
             }
 
-            G::LoadClass('tasks');
+            //Remove from tasks
             $oTasks = new Tasks();
-            $oTasks->ofToAssignUserOfAllTasks($UID);
-            G::LoadClass('groups');
+            $oTasks->ofToAssignUserOfAllTasks($usrUid);
+
+            //Remove from groups
             $oGroups = new Groups();
-            $oGroups->removeUserOfAllGroups($UID);
-            $RBAC->changeUserStatus($UID, 'CLOSED');
-            $_GET['USR_USERNAME'] = '';
-            $RBAC->updateUser(array('USR_UID' => $UID, 'USR_USERNAME' => $_GET['USR_USERNAME']
-                    ), '');
-            require_once 'classes/model/Users.php';
+            $oGroups->removeUserOfAllGroups($usrUid);
+
+            //Update the table Users
+            $RBAC->changeUserStatus($usrUid, 'CLOSED');
+            $RBAC->updateUser(array('USR_UID' => $usrUid,'USR_USERNAME' => ''), '');
             $oUser = new Users();
-            $aFields = $oUser->load($UID);
+            $aFields = $oUser->load($usrUid);
             $aFields['USR_STATUS'] = 'CLOSED';
             $userName = $aFields['USR_USERNAME'];
             $aFields['USR_USERNAME'] = '';
             $oUser->update($aFields);
 
             //Delete Dashboard
-            require_once 'classes/model/DashletInstance.php';
             $criteria = new Criteria( 'workflow' );
-            $criteria->add( DashletInstancePeer::DAS_INS_OWNER_UID, $UID );
+            $criteria->add( DashletInstancePeer::DAS_INS_OWNER_UID, $usrUid );
             $criteria->add( DashletInstancePeer::DAS_INS_OWNER_TYPE , 'USER');
             DashletInstancePeer::doDelete( $criteria );
 
             //Delete users as supervisor
             $criteria = new Criteria("workflow");
-
-            $criteria->add(ProcessUserPeer::USR_UID, $UID, Criteria::EQUAL);
+            $criteria->add(ProcessUserPeer::USR_UID, $usrUid, Criteria::EQUAL);
             $criteria->add(ProcessUserPeer::PU_TYPE, "SUPERVISOR", Criteria::EQUAL);
             ProcessUserPeer::doDelete($criteria);
-            G::auditLog("DeleteUser", "User Name: ". $userName." User ID: (".$UID.") ");
+            G::auditLog("DeleteUser", "User Name: ". $userName." User ID: (".$usrUid.") ");
             break;
         case 'changeUserStatus':
+            //When the user change the status: ACTIVE, INACTIVE, VACATION
             $response = new stdclass();
             if (isset($_REQUEST['USR_UID']) && isset($_REQUEST['NEW_USR_STATUS'])) {
                 $RBAC->changeUserStatus($_REQUEST['USR_UID'], ($_REQUEST['NEW_USR_STATUS'] == 'ACTIVE' ? 1 : 0));
-                require_once 'classes/model/Users.php';
                 $userInstance = new Users();
                 $userData = $userInstance->load($_REQUEST['USR_UID']);
                 $userData['USR_STATUS'] = $_REQUEST['NEW_USR_STATUS'];
@@ -278,7 +171,7 @@ try {
             die(G::json_encode($response));
             break;
         case 'availableGroups':
-            G::LoadClass('groups');
+            //Get the available groups for assign to user
             $filter = (isset($_POST['textFilter'])) ? $_POST['textFilter'] : '';
             $groups = new Groups();
             $criteria = $groups->getAvailableGroupsCriteria($_REQUEST['uUID'], $filter);
@@ -291,7 +184,7 @@ try {
             echo '{groups: ' . G::json_encode($arr) . '}';
             break;
         case 'assignedGroups':
-            G::LoadClass('groups');
+            //Get the groups related to user
             $filter = (isset($_POST['textFilter'])) ? $_POST['textFilter'] : '';
             $groups = new Groups();
             $criteria = $groups->getAssignedGroupsCriteria($_REQUEST['uUID'], $filter);
@@ -304,24 +197,25 @@ try {
             echo '{groups: ' . G::json_encode($arr) . '}';
             break;
         case 'assignGroupsToUserMultiple':
+            //Assign user in a group
             $USR_UID = $_POST['USR_UID'];
             $gUIDs = explode(',', $_POST['GRP_UID']);
-            G::LoadClass('groups');
             $oGroup = new Groups();
             foreach ($gUIDs as $GRP_UID) {
                 $oGroup->addUserToGroup($GRP_UID, $USR_UID);
             }
             break;
         case 'deleteGroupsToUserMultiple':
+            //Remove a user from a group
             $USR_UID = $_POST['USR_UID'];
             $gUIDs = explode(',', $_POST['GRP_UID']);
-            G::LoadClass('groups');
             $oGroup = new Groups();
             foreach ($gUIDs as $GRP_UID) {
                 $oGroup->removeUserOfGroup($GRP_UID, $USR_UID);
             }
             break;
         case 'authSources':
+            //Get the authentication information
             $criteria = $RBAC->getAllAuthSources();
             $objects = AuthenticationSourcePeer::doSelectRS($criteria);
             $objects->setFetchmode(ResultSet::FETCHMODE_ASSOC);
@@ -336,23 +230,19 @@ try {
             }
             $started = Array();
             $started['AUTH_SOURCE_UID'] = '00000000000000000000000000000000';
-            //$started['AUTH_SOURCE_NAME'] = 'ProcessMaker';
-            //$started['AUTH_SOURCE_TYPE'] = 'MYSQL';
             $started['AUTH_SOURCE_SHOW'] = 'ProcessMaker (MYSQL)';
             $arr[] = $started;
             while ($objects->next()) {
                 $row = $objects->getRow();
                 $aux = Array();
                 $aux['AUTH_SOURCE_UID'] = $row['AUTH_SOURCE_UID'];
-                //$aux['AUTH_SOURCE_NAME'] =  $row['AUTH_SOURCE_NAME'];
-                //$aux['AUTH_SOURCE_TYPE'] =  $row['AUTH_SOURCE_TYPE'];
                 $aux['AUTH_SOURCE_SHOW'] = $row['AUTH_SOURCE_NAME'] . ' (' . $row['AUTH_SOURCE_PROVIDER'] . ')';
                 $arr[] = $aux;
             }
             echo '{sources: ' . G::json_encode($arr) . '}';
             break;
         case 'loadAuthSourceByUID':
-            require_once 'classes/model/Users.php';
+            //Get the authentication source assignment
             $oCriteria = $RBAC->load($_POST['uUID']);
             $UID_AUTH = $oCriteria['UID_AUTH_SOURCE'];
             if (($UID_AUTH != '00000000000000000000000000000000') && ($UID_AUTH != '')) {
@@ -373,6 +263,7 @@ try {
             echo G::json_encode($res);
             break;
         case 'updateAuthServices':
+            //Update the information related to user's autentication
             $aData = $RBAC->load($_POST['usr_uid']);
             unset($aData['USR_ROLE']);
             $auth_uid = $_POST['auth_source'];
@@ -393,130 +284,32 @@ try {
                 $aData['USR_AUTH_USER_DN'] = $auth_dn;
             }
             $RBAC->updateUser($aData);
-            G::auditLog("AssignAuthenticationSource", "User Name: ".$aData['USR_USERNAME'].' User ID: ('.$aData['USR_UID'].') assign to '.$aData['USR_AUTH_TYPE']);
+            G::auditLog(
+                "AssignAuthenticationSource",
+                "User Name: ".$aData['USR_USERNAME'].' User ID: ('.$aData['USR_UID'].') assign to '.$aData['USR_AUTH_TYPE']
+            );
             echo '{success: true}';
             break;
         case 'usersList':
-            require_once 'classes/model/Users.php';
-            require_once 'classes/model/LoginLog.php';
-            require_once 'classes/model/Department.php';
-            require_once 'classes/model/AppCacheView.php';
-            require_once PATH_RBAC . 'model/Roles.php';
-            global $RBAC;
-            G::LoadClass('configuration');
+            //Get the list of users
+            //Read the configurations related to enviroments
             $co = new Configurations();
             $config = $co->getConfiguration('usersList', 'pageSize', '', $_SESSION['USER_LOGGED']);
             $limit_size = isset($config['pageSize']) ? $config['pageSize'] : 20;
-            $start = isset($_REQUEST['start']) ? $_REQUEST['start'] : 0;
             $limit = isset($_REQUEST['limit']) ? $_REQUEST['limit'] : $limit_size;
+            $start = isset($_REQUEST['start']) ? $_REQUEST['start'] : 0;
             $filter = isset($_REQUEST['textFilter']) ? $_REQUEST['textFilter'] : '';
-            $auths = isset($_REQUEST['auths']) ? $_REQUEST['auths'] : '';
+            $authSource = isset($_REQUEST['auths']) ? $_REQUEST['auths'] : '';
             $sort = isset($_REQUEST['sort']) ? $_REQUEST['sort'] : '';
             $dir = isset($_REQUEST['dir']) ? $_REQUEST['dir'] : 'ASC';
-            $aUsers = Array();
-            if ($auths != '') {
-                $aUsers = $RBAC->getListUsersByAuthSource($auths);
-            }
-            $oCriteria = new Criteria('workflow');
-            $oCriteria->addSelectColumn('COUNT(*) AS CNT');
-            if ($filter != '') {
-                $cc = $oCriteria->getNewCriterion(UsersPeer::USR_USERNAME, '%' . $filter . '%', Criteria::LIKE)->addOr($oCriteria->getNewCriterion(UsersPeer::USR_FIRSTNAME, '%' . $filter . '%', Criteria::LIKE)->addOr($oCriteria->getNewCriterion(UsersPeer::USR_LASTNAME, '%' . $filter . '%', Criteria::LIKE)->addOr($oCriteria->getNewCriterion(UsersPeer::USR_EMAIL, '%' . $filter . '%', Criteria::LIKE))));
-                $oCriteria->add($cc);
-            }
-            $oCriteria->add(UsersPeer::USR_STATUS, array('CLOSED'), Criteria::NOT_IN);
-            if ($auths != '') {
-                $totalRows = sizeof($aUsers);
-            } else {
-                $oDataset = UsersPeer::DoSelectRs($oCriteria);
-                $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-                $oDataset->next();
-                $row = $oDataset->getRow();
-                $totalRows = $row['CNT'];
-            }
-            $oCriteria->clearSelectColumns();
-            $oCriteria->addSelectColumn(UsersPeer::USR_UID);
-            $oCriteria->addSelectColumn(UsersPeer::USR_USERNAME);
-            $oCriteria->addSelectColumn(UsersPeer::USR_FIRSTNAME);
-            $oCriteria->addSelectColumn(UsersPeer::USR_LASTNAME);
-            $oCriteria->addSelectColumn(UsersPeer::USR_EMAIL);
-            $oCriteria->addSelectColumn(UsersPeer::USR_ROLE);
-            $oCriteria->addSelectColumn(UsersPeer::USR_DUE_DATE);
-            $oCriteria->addSelectColumn(UsersPeer::USR_STATUS);
-            $oCriteria->addSelectColumn(UsersPeer::USR_UX);
-            $oCriteria->addSelectColumn(UsersPeer::DEP_UID);
-            $oCriteria->addSelectColumn(UsersPeer::USR_LAST_LOGIN);
-            $oCriteria->addAsColumn('LAST_LOGIN', 0);
-            $oCriteria->addAsColumn('DEP_TITLE', 0);
-            $oCriteria->addAsColumn('TOTAL_CASES', 0);
-            $oCriteria->addAsColumn('DUE_DATE_OK', 1);
-            $sep = "'";
-            $oCriteria->add(UsersPeer::USR_STATUS, array('CLOSED'), Criteria::NOT_IN);
-            if ($filter != '') {
-                $cc = $oCriteria->getNewCriterion(UsersPeer::USR_USERNAME, '%' . $filter . '%', Criteria::LIKE)->addOr($oCriteria->getNewCriterion(UsersPeer::USR_FIRSTNAME, '%' . $filter . '%', Criteria::LIKE)->addOr($oCriteria->getNewCriterion(UsersPeer::USR_LASTNAME, '%' . $filter . '%', Criteria::LIKE)->addOr($oCriteria->getNewCriterion(UsersPeer::USR_EMAIL, '%' . $filter . '%', Criteria::LIKE))));
-                $oCriteria->add($cc);
-            }
-            if (sizeof($aUsers) > 0) {
-                $oCriteria->add(UsersPeer::USR_UID, $aUsers, Criteria::IN);
-            } elseif ($totalRows == 0 && $auths != '') {
-                $oCriteria->add(UsersPeer::USR_UID, '', Criteria::IN);
-            }
-            if ($sort != '') {
-                if ($dir == 'ASC') {
-                    $oCriteria->addAscendingOrderByColumn($sort);
-                } else {
-                    $oCriteria->addDescendingOrderByColumn($sort);
-                }
-            }
-            $oCriteria->setOffset($start);
-            $oCriteria->setLimit($limit);
-            $oDataset = UsersPeer::DoSelectRs($oCriteria);
-            $oDataset->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-            $Department = new Department();
-            $aDepart = $Department->getAllDepartmentsByUser();
-            $aAuthSources = $RBAC->getAllAuthSourcesByUser();
 
-            require_once PATH_CONTROLLERS . 'adminProxy.php';
-            $uxList = adminProxy::getUxTypesList();
-
-            $oRoles = new Roles();
-            $oParticipated = new ListParticipatedLast();
-            $oAppCache = new AppCacheView();
-            $rows = Array();
-            $uRole = Array();
-            while ($oDataset->next()) {
-                $row = $oDataset->getRow();
-
-                try {
-                    $uRole = $oRoles->loadByCode($row['USR_ROLE']);
-                } catch (exception $oError) {
-                    $uRole['ROL_NAME'] = G::loadTranslation('ID_DELETED');
-                }
-                /*----------------------------------********---------------------------------*/
-                if (true) {
-                    $total = $oParticipated->getCountList($row['USR_UID']);
-                } else {
-                /*----------------------------------********---------------------------------*/
-                    $total = $oAppCache->getListCounters('sent', $row['USR_UID'], false);
-                /*----------------------------------********---------------------------------*/
-                }
-                /*----------------------------------********---------------------------------*/
-                $row['USR_ROLE_ID'] = $row['USR_ROLE'];
-                $row['USR_ROLE'] = isset($uRole['ROL_NAME']) ? ($uRole['ROL_NAME'] != '' ? $uRole['ROL_NAME'] : $uRole['ROL_CODE']) : $uRole['ROL_CODE'];
-
-                $row['DUE_DATE_OK'] = (date('Y-m-d') > date('Y-m-d', strtotime($row['USR_DUE_DATE']))) ? 0 : 1;
-                $row['LAST_LOGIN'] = isset($row['USR_LAST_LOGIN']) ? \ProcessMaker\Util\DateTime::convertUtcToTimeZone($row['USR_LAST_LOGIN']) : '';
-                $row['TOTAL_CASES'] = $total;
-                $row['DEP_TITLE'] = isset($aDepart[$row['USR_UID']]) ? $aDepart[$row['USR_UID']] : '';
-                $row['USR_UX'] = isset($uxList[$row['USR_UX']]) ? $uxList[$row['USR_UX']] : $uxList['NORMAL'];
-                $row['USR_AUTH_SOURCE'] = isset($aAuthSources[$row['USR_UID']]) ? $aAuthSources[$row['USR_UID']] : 'ProcessMaker (MYSQL)';
-
-                $rows[] = $row;
-            }
-
-            echo '{users: ' . G::json_encode($rows) . ', total_users: ' . $totalRows . '}';
+            //Get all list of users with the additional information related to department, role, authentication, cases
+            $oUser = new \ProcessMaker\BusinessModel\User();
+            $oDatasetUsers = $oUser->getAllUsersWithAuthSource($authSource, $filter, $sort, $start, $limit, $dir);
+            $rows = $oUser->getAdditionalInfoFromUsers($oDatasetUsers["data"]);
+            echo '{users: ' . G::json_encode($rows['data']) . ', total_users: ' . $oDatasetUsers["totalRows"] . '}';
             break;
         case 'updatePageSize':
-            G::LoadClass('configuration');
             $c = new Configurations();
             $arr['pageSize'] = $_REQUEST['size'];
             $arr['dateSave'] = date('Y-m-d H:i:s');
@@ -527,10 +320,7 @@ try {
             echo '{success: true}';
             break;
         case 'summaryUserData':
-            require_once 'classes/model/Users.php';
-            require_once 'classes/model/Department.php';
-            require_once 'classes/model/AppCacheView.php';
-            G::LoadClass('configuration');
+            //Get all information for the summary
             $oUser = new Users();
             $data = $oUser->loadDetailed($_REQUEST['USR_UID']);
             $data['USR_STATUS'] = G::LoadTranslation('ID_' . $data['USR_STATUS']);
@@ -568,25 +358,16 @@ try {
             break;
 
         case "verifyIfUserAssignedAsSupervisor":
+            //Before delete we check if is supervisor
+            $supervisor = new \ProcessMaker\BusinessModel\ProcessSupervisor();
+            $isSupervisor = $supervisor->isUserSupervisor($_POST["supervisorUserUid"]);
             $supervisorUserUid = $_POST["supervisorUserUid"];
-            $message = "OK";
-
-            $criteria = new Criteria("workflow");
-
-            $criteria->addSelectColumn(ProcessUserPeer::PU_UID);
-            $criteria->add(ProcessUserPeer::USR_UID, $supervisorUserUid, Criteria::EQUAL);
-            $criteria->add(ProcessUserPeer::PU_TYPE, "SUPERVISOR", Criteria::EQUAL);
-
-            $rsCriteria = ProcessUserPeer::doSelectRS($criteria);
-            $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
-
-            if ($rsCriteria->next()) {
-                $message = "ERROR";
+            $message = 'OK';
+            if ($isSupervisor) {
+                $message = 'ERROR';
             }
-
             $response = array();
             $response["result"] = $message;
-
             echo G::json_encode($response);
             break;
     }

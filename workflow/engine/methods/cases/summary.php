@@ -41,7 +41,6 @@ try {
         throw new Exception( G::LoadTranslation( 'ID_REQUIRED_FIELDS_ERROR' ) . ' (APP_UID, DEL_INDEX, DYN_UID)' );
     }
 
-    G::LoadClass( 'case' );
     $case = new Cases();
     $viewSummaryForm = 0;
     $applicationFields = $case->loadCase( $_REQUEST['APP_UID'], $_REQUEST['DEL_INDEX'] );
@@ -66,16 +65,14 @@ try {
     $result = DynaformPeer::doSelectRS($criteria);
     $result->setFetchmode(ResultSet::FETCHMODE_ASSOC);
     if ($result->next()) {
-        G::LoadClass('pmDynaform');
         $FieldsPmDynaform = $applicationFields;
         $FieldsPmDynaform["CURRENT_DYNAFORM"] = $_REQUEST['DYN_UID'];
-        $a = new pmDynaform(\ProcessMaker\Util\DateTime::convertUtcToTimeZone($FieldsPmDynaform));
+        $a = new PmDynaform(\ProcessMaker\Util\DateTime::convertUtcToTimeZone($FieldsPmDynaform));
         $a->printView();
     }
     if (file_exists( PATH_DYNAFORM . $applicationFields['PRO_UID'] . PATH_SEP . $_REQUEST['DYN_UID'] . '.xml' )) {
-        G::LoadClass( 'dbConnections' );
         $_SESSION['PROCESS'] = $applicationFields['PRO_UID'];
-        $dbConnections = new dbConnections( $_SESSION['PROCESS'] );
+        $dbConnections = new DbConnections( $_SESSION['PROCESS'] );
         $dbConnections->loadAdditionalConnections();
         $_SESSION['CURRENT_DYN_UID'] = $_REQUEST['DYN_UID'];
 

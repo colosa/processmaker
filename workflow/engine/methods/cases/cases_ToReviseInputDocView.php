@@ -41,9 +41,6 @@ if ((int) $_SESSION['INDEX'] < 1) {
     G::header( 'location: ' . $_SERVER['HTTP_REFERER'] );
     die();
 }
-/* Includes */
-G::LoadClass( 'case' );
-G::LoadClass( 'derivation' );
 
 /* GET , POST & $_SESSION Vars */
 //$_SESSION['STEP_POSITION'] = (int)$_GET['POSITION'];

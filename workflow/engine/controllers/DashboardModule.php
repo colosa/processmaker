@@ -1,0 +1,470 @@
+<?php
+
+/**
+ * Dashboard controller
+ * @inherits Controller
+ *
+ * @access public
+ */
+
+class DashboardModule extends Controller
+{
+
+    // Class properties
+    private $pmDashlet;
+
+    // Class constructor
+    public function __construct ()
+    {
+        global $RBAC;
+        if ($RBAC->userCanAccess('PM_DASHBOARD') != 1) {
+            G::SendTemporalMessage('ID_USER_HAVENT_RIGHTS_PAGE', 'error', 'labels');
+            G::header( 'location: login/login' );
+            exit(0);
+        }
+        $this->pmDashlet = new PmDashlet();
+    }
+
+    // Functions for the dashboards users module - Start
+
+
+    public function index ($httpData)
+    {
+        try {
+            $dashletsExist = $this->getDashletsInstancesForCurrentUser();
+            $dashletsHide  = array();
+            $dashletColumns = 2;
+
+            $oConfiguration = new Configurations();
+            $aConfiguration = $oConfiguration->load('Dashboard', '', '', $_SESSION['USER_LOGGED']);
+            if (is_array($aConfiguration) && count($aConfiguration) != 0) {
+                if (isset($aConfiguration["COLUMNS"])) {
+                    $dashletColumns = $aConfiguration["COLUMNS"];
+                }
+
+                if (isset($aConfiguration["ORDER"])) {
+
+                    $listDashletAux = array();
+                    $listDashletAuxShow = array();
+                    foreach ($dashletsExist as $key => $value) {
+                        $listDashletAux[$value['DAS_INS_UID']] = $key;
+                    }
+
+                    $dashletsShow['0'] = array();
+                    foreach ($aConfiguration['ORDER']['0'] as $value) {
+                        if (isset($listDashletAux[$value])) {
+                            $listDashletAuxShow[] = $value;
+                            $dashletsShow['0'][] = $dashletsExist[$listDashletAux[$value]];
+                        }
+                    }
+
+                    $dashletsShow['1'] = array();
+                    foreach ($aConfiguration['ORDER']['1'] as $value) {
+                        if (isset($listDashletAux[$value])) {
+                            $listDashletAuxShow[] = $value;
+                            $dashletsShow['1'][] = $dashletsExist[$listDashletAux[$value]];
+                        }
+                    }
+
+                    $dashletsShow['2'] = array();
+                    foreach ($aConfiguration['ORDER']['2'] as $value) {
+                        if (isset($listDashletAux[$value])) {
+                            $listDashletAuxShow[] = $value;
+                            $dashletsShow['2'][] = $dashletsExist[$listDashletAux[$value]];
+                        }
+                    }
+
+                    $orderCol = 0;
+                    foreach ($listDashletAux as $key => $value) {
+                        if (!(in_array($key, $listDashletAuxShow))) {
+                            $dashletsShow[$orderCol][] = $dashletsExist[$value];
+                            $orderCol++;
+                            if ($orderCol == 3) {
+                                $orderCol = 0;
+                            }
+                        }
+                    }
+                } else {
+                    $col = 0;
+                    foreach ($dashletsExist as $value) {
+                        $dashletsShow[$col][] = $value;
+                        $col++;
+                        if ($col == 3) {
+                            $col = 0;
+                        }
+                    }
+                }
+            } else {
+                $col = 0;
+                foreach ($dashletsExist as $value) {
+                    $dashletsShow[$col][] = $value;
+                    $col++;
+                    if ($col == 3) {
+                        $col = 0;
+                    }
+                }
+            }
+
+            $this->setJSVar( 'dashletsAll', $dashletsExist);
+            $this->setJSVar( 'dashletsInstances', $dashletsShow);
+            $this->setJSVar( 'dashletsColumns', $dashletColumns);
+            $this->includeExtJS( 'dashboard/index' );
+            $this->includeExtJSLib( 'ux/portal' );
+            G::RenderPage( 'publish', 'extJs' );
+        } catch (Exception $error) {
+            //ToDo: Display a error message
+        }
+    }
+
+    public function saveOrderDashlet ($data)
+    {
+        $this->setResponseType( 'json' );
+        try {
+            $orderDashlet[0] = Bootstrap::json_decode($data->positionCol0);
+            $orderDashlet[1] = Bootstrap::json_decode($data->positionCol1);
+            $orderDashlet[2] = Bootstrap::json_decode($data->positionCol2);
+
+            $oConfiguration = new Configurations();
+            $aConfiguration = $oConfiguration->load('Dashboard', '', '', $_SESSION['USER_LOGGED']);
+
+            $dataDashboard = array();
+            if (isset($aConfiguration["CFG_VALUE"])) {
+                $dataDashboard = $aConfiguration["CFG_VALUE"];
+            }
+            $dataNow['ORDER'] = $orderDashlet;
+
+            if (isset($data->columns)) {
+                $dataNow['COLUMNS'] = Bootstrap::json_decode($data->columns);
+            }
+
+            $dataDashboard = array_merge($dataDashboard, $dataNow);
+
+            $oConfiguration->aConfig = $dataDashboard;
+            $oConfiguration->saveConfig('Dashboard', '', '', $_SESSION['USER_LOGGED']);
+
+            $result = new stdClass();
+            $result->success = '1';
+            return $result;
+        } catch (Exception $error) {
+            //ToDo: Display a error message
+        }
+    }
+
+    public function renderDashletInstance ($data)
+    {
+        try {
+            if (! isset( $data->DAS_INS_UID )) {
+                $data->DAS_INS_UID = '';
+            }
+            if ($data->DAS_INS_UID == '') {
+                throw new Exception( 'Parameter "DAS_INS_UID" is empty.' );
+            }
+            $this->pmDashlet->setup( G::sanitizeInput($data->DAS_INS_UID) );
+
+            if (! isset( $_REQUEST['w'] )) {
+                $width = 300;
+            } else {
+                $width = $_REQUEST['w'];
+            }
+            $this->pmDashlet->render( $width );
+            //G::pr($this->pmDashlet->setup( $width ));die;
+        } catch (Exception $error) {
+            //ToDo: Show the error message
+            $token = strtotime("now");
+            PMException::registerErrorLog($error, $token);
+            G::outRes( G::LoadTranslation("ID_EXCEPTION_LOG_INTERFAZ", array($token)) );
+        }
+    }
+
+    private function getDashletsInstancesForCurrentUser ()
+    {
+        try {
+            if (! isset( $_SESSION['USER_LOGGED'] )) {
+                throw new Exception( G::LoadTranslation('ID_SESSION_EXPIRED') );
+            }
+            return $this->pmDashlet->getDashletsInstancesForUser( $_SESSION['USER_LOGGED']);
+        } catch (Exception $error) {
+            throw $error;
+        }
+    }
+
+    // Functions for the dashboards users module - End
+
+
+    // Functions for the dasboards administration module - Start
+
+
+    public function dashletsList ()
+    {
+        try {
+            $this->includeExtJS( 'dashboard/dashletsList' );
+            if (isset( $_SESSION['__DASHBOARD_ERROR__'] )) {
+                $this->setJSVar( '__DASHBOARD_ERROR__', $_SESSION['__DASHBOARD_ERROR__'] );
+                unset( $_SESSION['__DASHBOARD_ERROR__'] );
+            }
+            $this->setView( 'dashboard/dashletsList' );
+            G::RenderPage( 'publish', 'extJs' );
+        } catch (Exception $error) {
+            //ToDo: Display a error message
+        }
+    }
+
+    public function getDashletsInstances ($data)
+    {
+        $this->setResponseType( 'json' );
+        $result = new stdclass();
+        $result->status = 'OK';
+        try {
+            if (! isset( $data->start )) {
+                $data->start = null;
+            }
+            if (! isset( $data->limit )) {
+                $data->limit = null;
+            }
+            $result->dashletsInstances = $this->pmDashlet->getDashletsInstances( $data->start, $data->limit );
+            $result->totalDashletsInstances = count($result->dashletsInstances);
+        } catch (Exception $error) {
+            $result->status = 'ERROR';
+            $result->message = $error->getMessage();
+        }
+        return $result;
+    }
+
+    public function dashletInstanceForm ($data)
+    {
+        try {
+            $this->includeExtJS( 'dashboard/dashletInstanceForm', true, true );
+            $this->setView( 'dashboard/dashletInstanceForm' );
+            if (! isset( $data->DAS_INS_UID )) {
+                $data->DAS_INS_UID = '';
+            }
+            $dashlets = $this->getDashlets();
+            $this->setJSVar( 'storeDasUID', $dashlets );
+
+            if ($data->DAS_INS_UID != '') {
+                $this->pmDashlet->setup( $data->DAS_INS_UID );
+                $this->setJSVar( 'dashletInstance', $this->pmDashlet->getDashletInstance() );
+                $this->setJSVar( 'additionalFields', PmDashlet::getAdditionalFields( get_class( $this->pmDashlet->getDashletObject() ) ) );
+            } else {
+                $dashletInstance = new stdclass();
+                $dashletInstance->DAS_UID = $dashlets[0][0];
+                $dashlet = new Dashlet();
+                $dashletFields = $dashlet->load( $dashletInstance->DAS_UID );
+                $this->setJSVar( 'dashletInstance', $dashletInstance );
+                $this->setJSVar( 'additionalFields', PmDashlet::getAdditionalFields( $dashletFields['DAS_CLASS'] ) );
+            }
+            G::RenderPage( 'publish', 'extJs' );
+            return null;
+        } catch (Exception $error) {
+            $_SESSION['__DASHBOARD_ERROR__'] = $error->getMessage();
+            G::header( 'Location: dashletsList' );
+            die();
+        }
+    }
+
+    public function saveDashletInstance ($data)
+    {
+        $this->setResponseType( 'json' );
+        $result = new stdclass();
+        $result->status = 'OK';
+        try {
+            $this->pmDashlet->saveDashletInstance( get_object_vars( $data ) );
+        } catch (Exception $error) {
+            $result->status = 'ERROR';
+            $result->message = $error->getMessage();
+        }
+        return $result;
+    }
+
+    public function deleteDashletInstance ($data)
+    {
+        $this->setResponseType( 'json' );
+        $result = new stdclass();
+        $result->status = 'OK';
+        try {
+            if (! isset( $data->DAS_INS_UID )) {
+                $data->DAS_INS_UID = '';
+            }
+            if ($data->DAS_INS_UID == '') {
+                throw new Exception( 'Parameter "DAS_INS_UID" is empty.' );
+            }
+            $this->pmDashlet->deleteDashletInstance( $data->DAS_INS_UID );
+        } catch (Exception $error) {
+            $result->status = 'ERROR';
+            $result->message = $error->getMessage();
+        }
+        return $result;
+    }
+
+    public function getAdditionalFields ($data)
+    {
+        $this->setResponseType( 'json' );
+        $result = new stdclass();
+        $result->status = 'OK';
+        try {
+            $dashlet = new Dashlet();
+            $dashletFields = $dashlet->load( $data->DAS_UID );
+            if (! is_null( $dashletFields )) {
+                $result->additionalFields = PmDashlet::getAdditionalFields( $dashletFields['DAS_CLASS'] );
+            } else {
+                throw new Exception( 'Dashlet "' . $data->DAS_UID . '" does not exist.' );
+            }
+        } catch (Exception $error) {
+            $result->status = 'ERROR';
+            $result->message = $error->getMessage();
+        }
+        return $result;
+    }
+
+    public function getOwnersByType ($data)
+    {
+        $this->setResponseType( 'json' );
+        $result = new stdclass();
+        $result->status = 'OK';
+        try {
+            switch ($data->type) {
+                case 'EVERYBODY':
+                    $result->total = 0;
+                    $result->owners = array ();
+                    break;
+                case 'USER':
+                    require_once 'classes/model/Users.php';
+
+                    $users = array ();
+
+                    $usersInstance = new Users();
+                    $allUsers = $usersInstance->getAll();
+                    foreach ($allUsers->data as $user) {
+                        $users[] = array ('OWNER_UID' => $user['USR_UID'],'OWNER_NAME' => $user['USR_FIRSTNAME'] . ' ' . $user['USR_LASTNAME']
+                        );
+                    }
+                    usort($users, function($str1, $str2) {
+                        return strcmp(strtolower($str1["OWNER_NAME"]), strtolower($str2["OWNER_NAME"]));
+                    });
+                    $result->total = $allUsers->totalCount;
+                    $result->owners = $users;
+                    break;
+                case 'DEPARTMENT':
+                    require_once 'classes/model/Department.php';
+                    require_once 'classes/model/Content.php';
+
+                    $departments = array ();
+                    //SELECT
+                    $criteria = new Criteria( 'workflow' );
+                    $criteria->setDistinct();
+                    $criteria->addSelectColumn( DepartmentPeer::DEP_UID );
+                    $criteria->addSelectColumn( DepartmentPeer::DEP_TITLE );
+                    $criteria->add( DepartmentPeer::DEP_STATUS, 'ACTIVE' );
+                    $criteria->addAscendingOrderByColumn( DepartmentPeer::DEP_TITLE );
+                    $dataset = DepartmentPeer::doSelectRS( $criteria );
+                    $dataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+                    $dataset->next();
+                    while ($row = $dataset->getRow()) {
+                        $departments[] = array('OWNER_UID' => $row['DEP_UID'], 'OWNER_NAME' => $row['DEP_TITLE']);
+                        $dataset->next();
+                    }
+
+                    $result->total = DepartmentPeer::doCount( $criteria );
+                    $result->owners = $departments;
+                    break;
+                case 'GROUP':
+                    require_once 'classes/model/Groupwf.php';
+                    require_once 'classes/model/Content.php';
+
+                    $groups = array ();
+                    //SELECT
+                    $criteria = new Criteria( 'workflow' );
+                    $criteria->setDistinct();
+                    $criteria->addSelectColumn( GroupwfPeer::GRP_UID );
+                    $criteria->addSelectColumn( GroupwfPeer::GRP_TITLE );
+                    //WHERE
+                    $criteria->add( GroupwfPeer::GRP_STATUS, 'ACTIVE' );
+                    //ORDER BY
+                    $criteria->addAscendingOrderByColumn( GroupwfPeer::GRP_TITLE );
+
+                    $dataset = GroupwfPeer::doSelectRS( $criteria );
+                    $dataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+                    $dataset->next();
+                    while ($row = $dataset->getRow()) {
+                        $groups[] = array ('OWNER_UID' => $row['GRP_UID'],'OWNER_NAME' => $row['GRP_TITLE']
+                        );
+                        $dataset->next();
+                    }
+
+                    $result->total = GroupwfPeer::doCount( $criteria );
+                    $result->owners = $groups;
+                    break;
+            }
+        } catch (Exception $error) {
+            $result->status = 'ERROR';
+            $result->message = $error->getMessage();
+        }
+        return $result;
+    }
+
+    private function getDashlets ()
+    {
+        try {
+            require_once 'classes/model/Dashlet.php';
+
+            $dashlets = array ();
+
+            //SELECT
+            $criteria = new Criteria( 'workflow' );
+            $criteria->addSelectColumn( DashletPeer::DAS_UID );
+            $criteria->addSelectColumn( DashletPeer::DAS_TITLE );
+            $criteria->addSelectColumn( DashletPeer::DAS_CLASS );
+            //ORDER BY
+            $criteria->addAscendingOrderByColumn( DashletPeer::DAS_TITLE );
+
+            $dataset = DashletPeer::doSelectRS( $criteria );
+            $dataset->setFetchmode( ResultSet::FETCHMODE_ASSOC );
+            $dataset->next();
+            while ($row = $dataset->getRow()) {
+                if (strstr($row['DAS_TITLE'], '*')) {
+                    $row['DAS_TITLE'] = str_replace('*', '', $row['DAS_TITLE']);
+                    $row['DAS_TITLE'] = G::LoadTranslationPlugin('advancedDashboards', $row['DAS_TITLE']);
+                }
+
+                if ($this->pmDashlet->verifyPluginDashlet($row['DAS_CLASS'])) {
+                    $dashlets[] = array ($row['DAS_UID'],$row['DAS_TITLE']);
+
+                }
+                $dataset->next();
+            }
+
+        } catch (Exception $error) {
+            throw $error;
+        }
+        return $dashlets;
+    }
+
+    public function verifyTitleDashlet ($data)
+    {
+        $response = new stdclass();
+        $this->setResponseType("json");
+
+        $response->message = "OK";
+        $criteria = new Criteria("workflow");
+
+        $criteria->addSelectColumn(DashletInstancePeer::DAS_INS_UID);
+        $criteria->addSelectColumn(DashletInstancePeer::DAS_INS_ADDITIONAL_PROPERTIES);
+        $rsCriteria = DashletInstancePeer::doSelectRS($criteria);
+        $rsCriteria->setFetchmode(ResultSet::FETCHMODE_ASSOC);
+
+        while ($rsCriteria->next()) {
+            $row = $rsCriteria->getRow();
+            $arrayField = unserialize($row["DAS_INS_ADDITIONAL_PROPERTIES"]);
+
+            if (isset($arrayField["DAS_INS_TITLE"]) && $arrayField["DAS_INS_TITLE"] != "" && ($data->DAS_INS_UID != $row["DAS_INS_UID"])) {
+                if ($data->DAS_INS_TITLE == $arrayField["DAS_INS_TITLE"]) {
+                    $response->message = "ERROR";
+                }
+            }
+        }
+
+        return $response;
+    }
+
+    // Functions for the dasboards administration module - End
+}

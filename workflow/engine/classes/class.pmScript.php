@@ -33,6 +33,7 @@
 // License: LGPL, see LICENSE
 ////////////////////////////////////////////////////
 
+use ProcessMaker\Plugins\PluginRegistry;
 
 /**
  * PMScript - PMScript class
@@ -56,22 +57,6 @@ if (defined('SYS_SYS') && (!defined('PATH_DATA_SITE') || !defined('PATH_WORKSPAC
     Bootstrap::setConstantsRelatedWs(SYS_SYS);
 }
 
-//Start - Custom functions
-G::LoadClass( 'pmFunctions' );
-//End - Custom functions
-//call plugin
-if (class_exists( 'folderData' )) {
-    //$folderData = new folderData($sProUid, $proFields['PRO_TITLE'], $sAppUid, $Fields['APP_TITLE'], $sUsrUid);
-    $oPluginRegistry = &PMPluginRegistry::getSingleton();
-    $aAvailablePmFunctions = $oPluginRegistry->getPmFunctions();
-    foreach ($aAvailablePmFunctions as $key => $class) {
-        $filePlugin = PATH_PLUGINS . $class . PATH_SEP . 'classes' . PATH_SEP . 'class.pmFunctions.php';
-        if (file_exists( $filePlugin )) {
-            include_once ($filePlugin);
-        }
-    }
-}
-//end plugin
 //Add External Triggers
 $dir = G::ExpandPath( "classes" ) . 'triggers';
 $filesArray = array ();
@@ -97,6 +82,10 @@ if (file_exists( $dir )) {
  */
 class PMScript
 {
+    /**
+     * @var array $dataTrigger
+     */
+    public $dataTrigger = array();
 
     /**
      * Original fields
@@ -121,7 +110,7 @@ class PMScript
     /**
      * Affected fields
      */
-    public $affected_fields;
+    public $affected_fields = [];
 
     public $scriptExecutionTime = 0;
 
@@ -208,15 +197,35 @@ class PMScript
         return true;
     }
 
-    public function executeAndCatchErrors ($sScript, $sCode)
+    /**
+     * @param $dataTrigger
+     */
+    public function setDataTrigger($dataTrigger)
     {
-        ob_start( 'handleFatalErrors' );
-        set_error_handler( 'handleErrors' );
+        $this->dataTrigger = is_array($dataTrigger) ? $dataTrigger : array();
+    }
+
+    /**
+     * @param $sScript
+     * @param $sCode
+     */
+    public function executeAndCatchErrors($sScript, $sCode)
+    {
+        ob_start('handleFatalErrors');
+        set_error_handler('handleErrors');
         $_SESSION['_CODE_'] = $sCode;
-        eval( $sScript );
+        $_SESSION['_DATA_TRIGGER_'] = $this->dataTrigger;
+        $_SESSION['_DATA_TRIGGER_']['_EXECUTION_TIME_'] = microtime(true);
+        eval($sScript);
+        $this->scriptExecutionTime = round(microtime(true) -
+            $_SESSION['_DATA_TRIGGER_']['_EXECUTION_TIME_'], 5);
         $this->evaluateVariable();
-        unset( $_SESSION['_CODE_'] );
         ob_end_flush();
+
+        //log trigger execution in processmaker.log
+        G::logTriggerExecution($_SESSION, '', '', $this->scriptExecutionTime);
+        unset($_SESSION['_CODE_']);
+        unset($_SESSION['_DATA_TRIGGER_']);
     }
 
     /**
@@ -363,13 +372,7 @@ class PMScript
         $sScript = "try {\n" . $sScript . "\n} catch (Exception \$oException) {\n " . " \$this->aFields['__ERROR__'] = utf8_encode(\$oException->getMessage());\n}";
         //echo '<pre>-->'; print_r($this->aFields); echo '<---</pre>';
 
-        $timeStart = microtime(true);
-
         $this->executeAndCatchErrors($sScript, $this->sScript);
-
-        $timeEnd = microtime(true);
-
-        $this->scriptExecutionTime = round($timeEnd - $timeStart, 5);
 
         $this->aFields["__VAR_CHANGED__"] = implode(",", $this->affected_fields);
         for ($i = 0; $i < count( $this->affected_fields ); $i ++) {
@@ -623,284 +626,5 @@ class PMScript
                 }
             }
         }
-    }
-}
-
-//Start - Private functions
-
-
-/**
- * Convert to string
- *
- * @param variant $vValue
- * @return string
- */
-function pmToString ($vValue)
-{
-    return (string) $vValue;
-}
-
-/**
- * Convert to integer
- *
- * @param variant $vValue
- * @return integer
- */
-function pmToInteger ($vValue)
-{
-    return (int) $vValue;
-}
-
-/**
- * Convert to float
- *
- * @param variant $vValue
- * @return float
- */
-function pmToFloat ($vValue)
-{
-    return (float) $vValue;
-}
-
-/**
- * Convert to Url
- *
- * @param variant $vValue
- * @return url
- */
-function pmToUrl ($vValue)
-{
-    return urlencode( $vValue );
-}
-
-/**
- * Convert to data base escaped string
- *
- * @param variant $vValue
- * @return string
- */
-function pmSqlEscape ($vValue)
-{
-    return G::sqlEscape( $vValue );
-}
-
-//End - Private functions
-
-
-/* * *************************************************************************
- * Error handler
- * author: Julio Cesar Laura Avenda�o <juliocesar@colosa.com>
- * date: 2009-10-01
- * ************************************************************************* */
-/*
- * Convert to data base escaped string
- * @param string $errno
- * @param string $errstr
- * @param string $errfile
- * @param string $errline
- * @return void
- */
-function handleErrors ($errno, $errstr, $errfile, $errline)
-{
-    if ($errno != '' && ($errno != 8) && ($errno != 2048)) {
-        if (isset( $_SESSION['_CODE_'] )) {
-            $sCode = $_SESSION['_CODE_'];
-            unset( $_SESSION['_CODE_'] );
-            global $oPMScript;
-            if (isset($oPMScript) && isset($_SESSION['APPLICATION'])) {
-                G::LoadClass( 'case' );
-                $oCase = new Cases();
-                $oPMScript->aFields['__ERROR__'] = $errstr;
-                $oCase->updateCase($_SESSION['APPLICATION'], array('APP_DATA' => $oPMScript->aFields));
-            }
-            registerError( 1, $errstr, $errline - 1, $sCode );
-        }
-    }
-}
-
-/*
- * Handle Fatal Errors
- * @param variant $buffer
- * @return buffer
- */
-
-function handleFatalErrors ($buffer)
-{
-    G::LoadClass( 'case' );
-    $oCase = new Cases();
-    if (preg_match( '/(error<\/b>:)(.+)(<br)/', $buffer, $regs )) {
-        $err = preg_replace( '/<.*?>/', '', $regs[2] );
-        $aAux = explode( ' in ', $err );
-        $sCode = isset($_SESSION['_CODE_']) ? $_SESSION['_CODE_'] : null;
-        unset( $_SESSION['_CODE_'] );
-        registerError( 2, $aAux[0], 0, $sCode );
-        if (strpos( $_SERVER['REQUEST_URI'], '/cases/cases_Step' ) !== false) {
-            if (strpos( $_SERVER['REQUEST_URI'], '&ACTION=GENERATE' ) !== false) {
-                $aNextStep = $oCase->getNextStep( $_SESSION['PROCESS'], $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['STEP_POSITION'] );
-                if ($_SESSION['TRIGGER_DEBUG']['ISSET']) {
-                    $_SESSION['TRIGGER_DEBUG']['TIME'] = G::toUpper(G::loadTranslation('ID_AFTER'));
-                    $_SESSION['TRIGGER_DEBUG']['BREAKPAGE'] = $aNextStep['PAGE'];
-                    $aNextStep['PAGE'] = $aNextStep['PAGE'] . '&breakpoint=triggerdebug';
-                }
-                global $oPMScript;
-                if (isset($oPMScript) && isset($_SESSION['APPLICATION'])) {
-                    $oPMScript->aFields['__ERROR__'] = $aAux[0];
-                    $oCase->updateCase($_SESSION['APPLICATION'], array('APP_DATA' => $oPMScript->aFields));
-                }
-                G::header( 'Location: ' . $aNextStep['PAGE'] );
-                die();
-            }
-            $_SESSION['_NO_EXECUTE_TRIGGERS_'] = 1;
-            global $oPMScript;
-            if (isset($oPMScript) && isset($_SESSION['APPLICATION'])) {
-                $oPMScript->aFields['__ERROR__'] = $aAux[0];
-                $oCase->updateCase($_SESSION['APPLICATION'], array('APP_DATA' => $oPMScript->aFields));
-            }
-            G::header( 'Location: ' . $_SERVER['REQUEST_URI'] );
-            die();
-        } else {
-            $aNextStep = $oCase->getNextStep( $_SESSION['PROCESS'], $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['STEP_POSITION'] );
-            if (isset($_SESSION['TRIGGER_DEBUG']['ISSET']) && $_SESSION['TRIGGER_DEBUG']['ISSET']) {
-                $_SESSION['TRIGGER_DEBUG']['TIME'] = G::toUpper(G::loadTranslation('ID_AFTER'));
-                $_SESSION['TRIGGER_DEBUG']['BREAKPAGE'] = $aNextStep['PAGE'];
-                $aNextStep['PAGE'] = $aNextStep['PAGE'] . '&breakpoint=triggerdebug';
-            }
-            if (strpos( $aNextStep['PAGE'], 'TYPE=ASSIGN_TASK&UID=-1' ) !== false) {
-                G::SendMessageText( 'Fatal error in trigger', 'error' );
-            }
-            global $oPMScript;
-            if (isset($oPMScript) && isset($_SESSION['APPLICATION'])) {
-                $oPMScript->aFields['__ERROR__'] = $aAux[0];
-                $oCase->updateCase($_SESSION['APPLICATION'], array('APP_DATA' => $oPMScript->aFields));
-            }
-            G::header( 'Location: ' . $aNextStep['PAGE'] );
-            die();
-        }
-    }
-    return $buffer;
-}
-
-/*
- * Register Error
- * @param string $iType
- * @param string $sError
- * @param string $iLine
- * @param string $sCode
- * @return void
- */
-
-function registerError ($iType, $sError, $iLine, $sCode)
-{
-    $sType = ($iType == 1 ? 'ERROR' : 'FATAL');
-    $_SESSION['TRIGGER_DEBUG']['ERRORS'][][$sType] = $sError . ($iLine > 0 ? ' (line ' . $iLine . ')' : '') . ':<br /><br />' . $sCode;
-}
-
-/**
- * Obtain engine Data Base name
- *
- * @param type $connection
- * @return type
- */
-function getEngineDataBaseName ($connection)
-{
-    $aDNS = $connection->getDSN();
-    return $aDNS["phptype"];
-}
-
-/**
- * Execute Queries for Oracle Database
- *
- * @param type $sql
- * @param type $connection
- */
-function executeQueryOci ($sql, $connection, $aParameter = array(), $dbsEncode = "")
-{
-    $aDNS = $connection->getDSN();
-
-    $sUsername = $aDNS["username"];
-    $sPassword = $aDNS["password"];
-    $sHostspec = $aDNS["hostspec"];
-    $sDatabse = $aDNS["database"];
-    $sPort = $aDNS["port"];
-
-    if ($sPort != "1521") {
-        $flagTns = ($sDatabse == "" && ($sPort . "" == "" || $sPort . "" == "0"))? 1 : 0;
-
-        if ($flagTns == 0) {
-            // if not default port
-            $conn = oci_connect($sUsername, $sPassword, $sHostspec . ":" . $sPort . "/" . $sDatabse, $dbsEncode);
-        } else {
-            $conn = oci_connect($sUsername, $sPassword, $sHostspec, $dbsEncode);
-        }
-    } else {
-        $conn = oci_connect( $sUsername, $sPassword, $sHostspec . "/" . $sDatabse, $dbsEncode);
-    }
-
-    if (! $conn) {
-        $e = oci_error();
-        trigger_error( htmlentities( $e['message'], ENT_QUOTES ), E_USER_ERROR );
-        return $e;
-    }
-
-    switch (true) {
-        case preg_match( "/^(SELECT|SHOW|DESCRIBE|DESC|WITH)\s/i", $sql ):
-            $stid = oci_parse( $conn, $sql );
-
-            if (count( $aParameter ) > 0) {
-                foreach ($aParameter as $key => $val) {
-                    oci_bind_by_name( $stid, $key, $val );
-                }
-            }
-            oci_execute( $stid, OCI_DEFAULT );
-
-            $result = Array ();
-            $i = 1;
-            while ($row = oci_fetch_array( $stid, OCI_ASSOC + OCI_RETURN_NULLS )) {
-                $result[$i ++] = $row;
-            }
-            oci_free_statement( $stid );
-            oci_close( $conn );
-            return $result;
-            break;
-        case preg_match( "/^(INSERT|UPDATE|DELETE)\s/i", $sql ):
-            $stid = oci_parse( $conn, $sql );
-            $isValid = true;
-            if (count( $aParameter ) > 0) {
-                foreach ($aParameter as $key => $val) {
-                    oci_bind_by_name( $stid, $key, $val );
-                }
-            }
-            $objExecute = oci_execute( $stid, OCI_DEFAULT );
-            $result = oci_num_rows ($stid);
-            if ($objExecute) {
-                oci_commit( $conn );
-            } else {
-                oci_rollback( $conn );
-                $isValid = false;
-            }
-            oci_free_statement( $stid );
-            oci_close( $conn );
-            if ($isValid) {
-                return $result;
-            } else {
-                return oci_error();
-            }
-            break;
-        default:
-            // Stored procedures
-            $stid = oci_parse( $conn, $sql );
-            $aParameterRet = array ();
-            if (count( $aParameter ) > 0) {
-                foreach ($aParameter as $key => $val) {
-                    $aParameterRet[$key] = $val;
-                    // The third parameter ($aParameterRet[$key]) returned a value by reference.
-                    oci_bind_by_name( $stid, $key, $aParameterRet[$key] );
-                }
-            }
-            $objExecute = oci_execute( $stid, OCI_DEFAULT );
-            oci_free_statement( $stid );
-            oci_close( $conn );
-            return $aParameterRet;
-            break;
     }
 }

@@ -27,7 +27,7 @@
   require_once ( "class.charts.php" );
 
 
-  G::LoadThirdParty("libchart/classes", "libchart" );
+
 
   header("Content-type: image/png");
   //type of chart, pie, vertical bar, horizontal, etc.

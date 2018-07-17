@@ -1,5 +1,4 @@
-<?php 
-  G::LoadClass( "plugin");
+<?php
   
  class openFlashPlugin extends PMPlugin 
  {

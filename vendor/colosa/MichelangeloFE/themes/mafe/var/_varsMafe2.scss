@@ -214,6 +214,13 @@ a.mafe-button-create:hover{
   background-color: #1ba385;
   opacity : 1;
 }
+.mafe-webentry-link{
+  width: 485px;
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+  text-overflow: ellipsis;
+}
 /*
 a.mafe-button-create:hover{
   background: #1ba385 url(../img/ico_mor2.png) no-repeat 95% center;

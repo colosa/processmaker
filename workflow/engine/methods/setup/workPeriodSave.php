@@ -23,7 +23,6 @@
  */
 if (($RBAC_Response = $RBAC->userCanAccess( "PM_SETUP" )) != 1)
     return $RBAC_Response;
-G::LoadClass( "workPeriod" );
 
 $frm = $_POST['form'];
 $noWorkingDays[0] = isset( $frm['SUNDAY'] ) && $frm['SUNDAY'] != '';

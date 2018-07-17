@@ -88,7 +88,6 @@ $xmldoc->children[0]->children = $newOrder;
 
 $xmldoc->save( $file );
 
-G::LoadClass( 'xmlDb' );
 $i = 0;
 $aFields = array ();
 $aFields[] = array ('XMLNODE_NAME' => 'char','TYPE' => 'char','UP' => 'char','DOWN' => 'char','row__' => 'integer');

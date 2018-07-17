@@ -3,6 +3,12 @@
 class ProcessProxy extends HttpProxyController
 {
 
+    public function call ($name)
+    {
+        global $RBAC;
+        $RBAC->allows(basename(__FILE__), $name);
+        parent::call($name);
+    }
     /**
      * get Process Categories List with defailt value (empty option) and -All- aoption
      */
@@ -51,52 +57,6 @@ class ProcessProxy extends HttpProxyController
 
             $sProUid = $project->getUid();
 
-
-//        require_once 'classes/model/Task.php';
-//        G::LoadClass( 'processMap' );
-//        $oProcessMap = new ProcessMap();
-//
-//        $httpData->PRO_TITLE = trim( $httpData->PRO_TITLE );
-//
-//        try {
-//            if (! isset( $httpData->PRO_UID )) {
-//                if (Process::existsByProTitle( $httpData->PRO_TITLE )) {
-//                    $result = array ('success' => false,'msg' => G::LoadTranslation( 'ID_SAVE_PROCESS_ERROR' ),'errors' => array ('PRO_TITLE' => G::LoadTranslation( 'ID_PROCESSTITLE_ALREADY_EXISTS', SYS_LANG, Array ('PRO_TITLE' => $httpData->PRO_TITLE
-//                    ) )
-//                    )
-//                    );
-//                    print G::json_encode( $result );
-//                    exit( 0 );
-//                }
-//
-//                $processData['USR_UID'] = $_SESSION['USER_LOGGED'];
-//                $processData['PRO_TITLE'] = $httpData->PRO_TITLE;
-//                $processData['PRO_DESCRIPTION'] = $httpData->PRO_DESCRIPTION;
-//                $processData['PRO_CATEGORY'] = $httpData->PRO_CATEGORY;
-//
-//                $sProUid = $oProcessMap->createProcess( $processData );
-//
-//                //call pluginsx
-//                $oData['PRO_UID'] = $sProUid;
-//                $oData['PRO_TEMPLATE'] = isset( $httpData->PRO_TEMPLATE ) && $httpData->PRO_TEMPLATE != '' ? $httpData->PRO_TEMPLATE : '';
-//                $oData['PROCESSMAP'] = $oProcessMap;
-//
-//                $oPluginRegistry = & PMPluginRegistry::getSingleton();
-//                $oPluginRegistry->executeTriggers( PM_NEW_PROCESS_SAVE, $oData );
-//
-//            } else {
-//                //$oProcessMap->updateProcess($_POST['form']);
-//                $sProUid = $httpData->PRO_UID;
-//            }
-//
-//            //Save Calendar ID for this process
-//            if (isset( $httpData->PRO_CALENDAR )) {
-//                G::LoadClass( "calendar" );
-//                $calendarObj = new Calendar();
-//                $calendarObj->assignCalendarTo( $sProUid, $httpData->PRO_CALENDAR, 'PROCESS' );
-//            }
-//
-
             $this->success = true;
             $this->PRO_UID = $sProUid;
             $this->msg = G::LoadTranslation( 'ID_CREATE_PROCESS_SUCCESS' );
@@ -114,7 +74,6 @@ class ProcessProxy extends HttpProxyController
     {
         $ids = explode( ',', $_REQUEST['UIDS'] );
 
-        G::LoadClass( 'processes' );
         $oProcess = new Processes();
         if (count( $ids ) > 0) {
             foreach ($ids as $id) {
@@ -130,7 +89,6 @@ class ProcessProxy extends HttpProxyController
     {
         $ids = explode( ',', $_REQUEST['UIDS'] );
 
-        G::LoadClass( 'processes' );
         $oProcess = new Processes();
         if (count( $ids ) > 0) {
             foreach ($ids as $id) {
@@ -189,15 +147,15 @@ class ProcessProxy extends HttpProxyController
         $this->success = true;
         if (! in_array( '-1', $res )) {
             if (count( $UIDS ) == 1) {
-                $this->msg = __( 'ID_ACTOR_ASSIGNED_SUCESSFULLY', SYS_LANG, Array ('tas_title' => $task->getTasTitle()) );
+                $this->msg = G::LoadTranslation( 'ID_ACTOR_ASSIGNED_SUCESSFULLY', SYS_LANG, Array ('tas_title' => $task->getTasTitle()) );
             } else {
-                $this->msg = __( 'ID_ACTORS_ASSIGNED_SUCESSFULLY', SYS_LANG, Array (count( $UIDS ),$task->getTasTitle()) );
+                $this->msg = G::LoadTranslation( 'ID_ACTORS_ASSIGNED_SUCESSFULLY', SYS_LANG, Array (count( $UIDS ),$task->getTasTitle()) );
             }
         } else {
             if (count( $UIDS ) == 1) {
-                $this->msg = __( 'ID_ACTOR_ALREADY_ASSIGNED', SYS_LANG, Array ($task->getTasTitle()) );
+                $this->msg = G::LoadTranslation( 'ID_ACTOR_ALREADY_ASSIGNED', SYS_LANG, Array ($task->getTasTitle()) );
             } else {
-                $this->msg = __( 'ID_SOME_ACTORS_ALREADY_ASSIGNED', SYS_LANG, Array ($task->getTasTitle()) );
+                $this->msg = G::LoadTranslation( 'ID_SOME_ACTORS_ALREADY_ASSIGNED', SYS_LANG, Array ($task->getTasTitle()) );
             }
         }
     }
@@ -267,8 +225,6 @@ class ProcessProxy extends HttpProxyController
      */
     public function getProcessDetail ($httpData)
     {
-        require_once 'classes/model/Process.php';
-        G::loadClass( 'tasks' );
         $tasks = new Tasks();
         $PRO_UID = $httpData->PRO_UID;
         $process = ProcessPeer::retrieveByPk( $PRO_UID );
@@ -306,11 +262,8 @@ class ProcessProxy extends HttpProxyController
     {
         switch ($httpData->type) {
             case 'process':
-                require_once 'classes/model/ProcessCategory.php';
-                require_once 'classes/model/CalendarDefinition.php';
 
-                G::LoadClass( 'processMap' );
-                $oProcessMap = new processMap( new DBConnection() );
+                $oProcessMap = new ProcessMap( new DBConnection() );
                 $process = $oProcessMap->editProcessNew( $httpData->UID );
                 $category = ProcessCategoryPeer::retrieveByPk( $process['PRO_CATEGORY'] );
                 $categoryName = is_object( $category ) ? $category->getCategoryName() : '';
@@ -351,9 +304,7 @@ class ProcessProxy extends HttpProxyController
     {
         switch ($httpData->type) {
             case 'process':
-                require_once 'classes/model/ProcessCategory.php';
-                require_once 'classes/model/CalendarDefinition.php';
-                G::LoadClass( 'processMap' );
+
                 $oProcessMap = new ProcessMap();
                 $process['PRO_UID'] = $httpData->UID;
 
@@ -377,7 +328,6 @@ class ProcessProxy extends HttpProxyController
                         $fieldName = 'PRO_CALENDAR';
                         $calendar = CalendarDefinition::loadByCalendarName( $httpData->value );
 
-                        G::LoadClass( "calendar" );
                         $calendarObj = new Calendar();
                         $calendarObj->assignCalendarTo( $process['PRO_UID'], $calendar['CALENDAR_UID'], 'PROCESS' );
                         break;
@@ -423,7 +373,6 @@ class ProcessProxy extends HttpProxyController
      */
     public function getCaledarList ()
     {
-        G::LoadClass( 'calendar' );
         $calendar = new CalendarDefinition();
         $calendarObj = $calendar->getCalendarList( true, true );
         $calendarObj['array'][0] = Array ('CALENDAR_UID' => '','CALENDAR_NAME' => ''
@@ -439,8 +388,7 @@ class ProcessProxy extends HttpProxyController
      */
     public function getPMVariables ($param)
     {
-        G::LoadClass( 'processMap' );
-        $oProcessMap = new processMap( new DBConnection() );
+        $oProcessMap = new ProcessMap( new DBConnection() );
         $rows = getDynaformsVars( $param->PRO_UID );
         foreach ($rows as $i => $var) {
             $rows[$i]['sName'] = "@@{$var['sName']}";

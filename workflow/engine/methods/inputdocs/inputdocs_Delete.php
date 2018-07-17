@@ -36,13 +36,6 @@ try {
             break;
     }
 
-    require_once 'classes/model/StepSupervisor.php';
-    require_once 'classes/model/ObjectPermission.php';
-    require_once 'classes/model/InputDocument.php';
-    require_once 'classes/model/Step.php';
-    require_once 'classes/model/ObjectPermission.php';
-    G::LoadClass( 'processMap' );
-
     if (isset( $_POST['function'] )) {
         $sfunction = $_POST['function'];
     } else {
@@ -91,7 +84,7 @@ try {
                 $oOP->removeByObject( 'INPUT', $_POST['INP_DOC_UID'] );
 
                 //refresh dbarray with the last change in inputDocument
-                $oMap = new processMap();
+                $oMap = new ProcessMap();
                 $oCriteria = $oMap->getInputDocumentsCriteria( $fields['PRO_UID'] );
 
                 $result->success = true;

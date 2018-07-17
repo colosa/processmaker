@@ -71,6 +71,8 @@ class AppDelayMapBuilder
 
         $tMap->addColumn('APP_UID', 'AppUid', 'string', CreoleTypes::VARCHAR, true, 32);
 
+        $tMap->addColumn('APP_NUMBER', 'AppNumber', 'int', CreoleTypes::INTEGER, false, null);
+
         $tMap->addColumn('APP_THREAD_INDEX', 'AppThreadIndex', 'int', CreoleTypes::INTEGER, true, null);
 
         $tMap->addColumn('APP_DEL_INDEX', 'AppDelIndex', 'int', CreoleTypes::INTEGER, true, null);
@@ -92,6 +94,10 @@ class AppDelayMapBuilder
         $tMap->addColumn('APP_DISABLE_ACTION_DATE', 'AppDisableActionDate', 'int', CreoleTypes::TIMESTAMP, false, null);
 
         $tMap->addColumn('APP_AUTOMATIC_DISABLED_DATE', 'AppAutomaticDisabledDate', 'int', CreoleTypes::TIMESTAMP, false, null);
+
+        $tMap->addColumn('APP_DELEGATION_USER_ID', 'AppDelegationUserId', 'int', CreoleTypes::INTEGER, false, null);
+
+        $tMap->addColumn('PRO_ID', 'ProId', 'int', CreoleTypes::INTEGER, false, null);
 
     } // doBuild()
 

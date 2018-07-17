@@ -17,7 +17,7 @@ abstract class Api
     const STAT_CREATED = 201;
     const STAT_APP_EXCEPTION = 400;
 
-    public function __costruct()
+    public function __construct()
     {
         self::$workspace = null;
     }

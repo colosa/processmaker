@@ -23,7 +23,7 @@
  */
 if (($RBAC_Response = $RBAC->userCanAccess( "PM_LOGIN" )) != 1)
     return $RBAC_Response;
-G::LoadClass( "user" );
+
 
 $uid = (isset( $_SESSION['CURRENT_USER'] ) ? $_SESSION['CURRENT_USER'] : $_SESSION['USER_LOGGED']);
 require_once 'classes/model/Users.php';

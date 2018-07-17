@@ -1,7 +1,5 @@
 <?php
 
-G::LoadSystem('helper');
-
 $helper = new Helper();
 $type = $_GET['t'];
 

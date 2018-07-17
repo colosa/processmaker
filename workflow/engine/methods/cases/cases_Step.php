@@ -1,9 +1,10 @@
 <?php
+
+use ProcessMaker\Plugins\PluginRegistry;
+
 $filter = new InputFilter();
 
-list($_GET['UID'], $_GET['TYPE'], $_GET['POSITION'], $_GET['ACTION']) = $filter->xssRegexFilter(
-    [$_GET['UID'], $_GET['TYPE'], $_GET['POSITION'], $_GET['ACTION']], '/[\-\w]/'
-);
+$_GET = $filter->xssRegexFilter($_GET, '/[\-\w]/');
 
 if (!isset($_SESSION['USER_LOGGED'])) {
     if(!strpos($_SERVER['REQUEST_URI'], 'gmail')) {
@@ -121,10 +122,6 @@ if (! isset( $_DBArray )) {
     $_DBArray = array ();
 }
 
-/* Includes */
-G::LoadClass( 'case' );
-G::LoadClass( 'derivation' );
-
 /* GET , POST & $_SESSION Vars */
 if (isset( $_GET['POSITION'] )) {
     $_SESSION['STEP_POSITION'] = (int) $_GET['POSITION'];
@@ -161,6 +158,7 @@ $G_PUBLISH->AddContent( 'template', '', '', '', $oTemplatePower );
 
 $oCase = new Cases();
 $oStep = new Step();
+$bmWebEntry = new \ProcessMaker\BusinessModel\WebEntry;
 
 $Fields = $oCase->loadCase( $_SESSION['APPLICATION'] );
 $Fields['APP_DATA'] = array_merge( $Fields['APP_DATA'], G::getSystemConstants() );
@@ -219,16 +217,7 @@ if ($flagExecuteBeforeTriggers) {
         //Execute before triggers - End
 
         $_SESSION['TRIGGER_DEBUG']['TRIGGERS_EXECUTION_TIME'] = $oCase->arrayTriggerExecutionTime;
-        $arrayInfoTriggerExecutionTime = [];
 
-        foreach ($_SESSION['TRIGGER_DEBUG']['TRIGGERS_EXECUTION_TIME'] as $key => $value) {
-            $arrayInfoTriggerExecutionTime[] = ['triUid' => $key, 'triExecutionTime' => $value];
-        }
-
-        //Log
-        if(sizeof($arrayInfoTriggerExecutionTime)>0){
-            Bootstrap::registerMonolog('triggerExecutionTime', 200, 'Trigger execution time', ['proUid' => $Fields['APP_DATA']['PROCESS'], 'tasUid' => $Fields['APP_DATA']['TASK'], 'appUid' => $Fields['APP_DATA']['APPLICATION'], 'before' => $_GET['TYPE'], 'triggerInfo' => $arrayInfoTriggerExecutionTime], SYS_SYS, 'processmaker.log');
-        }
     } else {
         unset( $_SESSION['_NO_EXECUTE_TRIGGERS_'] );
     }
@@ -278,6 +267,7 @@ try {
     $aNextStep = $oCase->getNextStep( $_SESSION['PROCESS'], $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['STEP_POSITION'] );
     $aPreviousStep = $oCase->getPreviousStep( $_SESSION['PROCESS'], $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_SESSION['STEP_POSITION'] );
 } catch (Exception $e) {
+    throw $e;
 }
 //Obtain previous and next step - End
 
@@ -302,6 +292,9 @@ try {
     $noShowTitle = 0;
     if (isset( $oProcessFieds['PRO_SHOW_MESSAGE'] )) {
         $noShowTitle = $oProcessFieds['PRO_SHOW_MESSAGE'];
+    }
+    if ($bmWebEntry->isTaskAWebEntry($_SESSION['TASK'])) {
+        $noShowTitle = 1;
     }
 
     switch ($_GET['TYPE']) {
@@ -337,18 +330,16 @@ try {
              * Added By erik 16-05-08
              * Description: this was added for the additional database connections
              */
-            G::LoadClass( 'dbConnections' );
-            $oDbConnections = new dbConnections( $_SESSION['PROCESS'] );
+            $oDbConnections = new DbConnections( $_SESSION['PROCESS'] );
             $oDbConnections->loadAdditionalConnections();
             $_SESSION['CURRENT_DYN_UID'] = $_GET['UID'];
 
-            G::LoadClass('pmDynaform');
             $FieldsPmDynaform = $Fields;
             $FieldsPmDynaform["PM_RUN_OUTSIDE_MAIN_APP"] = (!isset($_SESSION["PM_RUN_OUTSIDE_MAIN_APP"])) ? "true" : "false";
             $FieldsPmDynaform["STEP_MODE"] = $oStep->getStepMode();
             $FieldsPmDynaform["PRO_SHOW_MESSAGE"] = $noShowTitle;
             $FieldsPmDynaform["TRIGGER_DEBUG"] = $_SESSION['TRIGGER_DEBUG']['ISSET'];
-            $a = new pmDynaform(\ProcessMaker\Util\DateTime::convertUtcToTimeZone($FieldsPmDynaform));
+            $a = new PmDynaform(\ProcessMaker\Util\DateTime::convertUtcToTimeZone($FieldsPmDynaform));
             if ($a->isResponsive()) {
                 $a->printEdit();
             } else {
@@ -396,7 +387,7 @@ try {
                     $Fields['MESSAGE1'] = G::LoadTranslation( 'ID_PLEASE_ENTER_COMMENTS' );
                     $Fields['MESSAGE2'] = G::LoadTranslation( 'ID_PLEASE_SELECT_FILE' );
                     //START: If there is a Break Step registered from Plugin Similar as a Trigger debug
-                    $oPluginRegistry = & PMPluginRegistry::getSingleton();
+                    $oPluginRegistry = PluginRegistry::loadSingleton();
                     if ($oPluginRegistry->existsTrigger( PM_UPLOAD_DOCUMENT_BEFORE )) {
                         //If a Plugin has registered a Break Page Evaluator
                         $oPluginRegistry->executeTriggers( PM_UPLOAD_DOCUMENT_BEFORE, array ('USR_UID' => $_SESSION['USER_LOGGED']) );
@@ -404,18 +395,6 @@ try {
                     //END: If there is a Break Step registered from Plugin
                     $G_PUBLISH->AddContent( 'propeltable', 'cases/paged-table-inputDocuments', 'cases/cases_InputdocsList', $oCase->getInputDocumentsCriteria( $_SESSION['APPLICATION'], $_SESSION['INDEX'], $_GET['UID'] ), array_merge( array ('DOC_UID' => $_GET['UID']
                     ), $Fields ) ); //$aFields
-
-
-                    //call plugin
-                    //if ( $oPluginRegistry->existsTrigger ( PM_CASE_DOCUMENT_LIST ) ) {
-                    //  $folderData = new folderData (null, null, $_SESSION['APPLICATION'], null, $_SESSION['USER_LOGGED'] );
-                    //  $oPluginRegistry =& PMPluginRegistry::getSingleton();
-                    //  $oPluginRegistry->executeTriggers ( PM_CASE_DOCUMENT_LIST , $folderData );
-                    //  //end plugin
-                    //}
-                    //else
-                    //  $G_PUBLISH->AddContent('propeltable', 'cases/paged-table-inputDocuments', 'cases/cases_InputdocsList', $oCase->getInputDocumentsCriteria($_SESSION['APPLICATION'], $_SESSION['INDEX'], $_GET['UID']), array_merge(array('DOC_UID'=>$_GET['UID']),$Fields));//$aFields
-
 
                     $oHeadPublisher = & headPublisher::getSingleton();
                     $titleDocument = "<h3>" . htmlspecialchars($Fields['INP_DOC_TITLE'], ENT_QUOTES) . "<br><small>" . G::LoadTranslation('ID_INPUT_DOCUMENT') . "</small></h3>";
@@ -468,7 +447,7 @@ try {
             switch ($_GET['ACTION']) {
                 case 'GENERATE':
                     //START: If there is a Break Step registered from Plugin Similar as a Trigger debug
-                    $oPluginRegistry = & PMPluginRegistry::getSingleton();
+                    $oPluginRegistry = PluginRegistry::loadSingleton();
                     if ($oPluginRegistry->existsTrigger( PM_UPLOAD_DOCUMENT_BEFORE )) {
                         //If a Plugin has registered a Break Page Evaluator
                         $oPluginRegistry->executeTriggers( PM_UPLOAD_DOCUMENT_BEFORE, array ('USR_UID' => $_SESSION['USER_LOGGED']) );
@@ -583,7 +562,6 @@ try {
                             $xmlData .= "</dynaform>\n";
                             $iSize = file_put_contents( $javaOutput . 'addressBook.xml', $xmlData );
 
-                            G::LoadClass( 'javaBridgePM' );
                             $JBPM = new JavaBridgePM();
                             $JBPM->checkJavaExtension();
 
@@ -591,7 +569,7 @@ try {
                             $util->setInputPath( $javaInput );
                             $util->setOutputPath( $javaOutput );
 
-                            G::LoadSystem('inputfilter');
+
                             $filter = new InputFilter();
 
                             //$content = file_get_contents ( PATH_DYNAFORM . $aOD['PRO_UID'] . PATH_SEP . $aOD['OUT_DOC_UID'] . '.jrxml' );
@@ -618,7 +596,6 @@ try {
                             $xmlData .= "</dynaform>\n";
                             //$iSize = file_put_contents ( $javaOutput .  'addressBook.xml' , $xmlData );
 
-                            G::LoadClass( 'javaBridgePM' );
                             $JBPM = new JavaBridgePM();
                             $JBPM->checkJavaExtension();
 
@@ -626,7 +603,7 @@ try {
                             $util->setInputPath( $javaInput );
                             $util->setOutputPath( $javaOutput );
 
-                            G::LoadSystem('inputfilter');
+
                             $filter = new InputFilter();
 
                             $locationFrom = PATH_DYNAFORM . $aOD['PRO_UID'] . PATH_SEP . $aOD['OUT_DOC_UID'] . '.pdf';
@@ -662,7 +639,7 @@ try {
                     //Save data - End
 
                     //Plugin Hook PM_UPLOAD_DOCUMENT for upload document
-                    $oPluginRegistry = & PMPluginRegistry::getSingleton();
+                    $oPluginRegistry = PluginRegistry::loadSingleton();
                     if ($oPluginRegistry->existsTrigger( PM_UPLOAD_DOCUMENT ) && class_exists( 'uploadDocumentData' )) {
                         $triggerDetail = $oPluginRegistry->getTriggerInfo( PM_UPLOAD_DOCUMENT );
 
@@ -679,7 +656,7 @@ try {
                                 $uploadReturn = $oPluginRegistry->executeTriggers( PM_UPLOAD_DOCUMENT, $documentData );
                                 if ($uploadReturn) {
                                     //Only delete if the file was saved correctly
-                                    $aFields['APP_DOC_PLUGIN'] = $triggerDetail->sNamespace;
+                                    $aFields['APP_DOC_PLUGIN'] = $triggerDetail->getNamespace();
                                     //$oAppDocument = new AppDocument();
                                     //$oAppDocument->update($aFields);
                                     unlink( $pathOutput . $sFilename . '.pdf' );
@@ -734,7 +711,7 @@ try {
                     $lastVersion = $oAppDocument->getLastAppDocVersion( $_GET['DOC'], $_SESSION['APPLICATION'] );
                     $aFields = $oAppDocument->load( $_GET['DOC'], $lastVersion );
                     $listing = false;
-                    $oPluginRegistry = & PMPluginRegistry::getSingleton();
+                    $oPluginRegistry = PluginRegistry::loadSingleton();
                     if ($oPluginRegistry->existsTrigger( PM_CASE_DOCUMENT_LIST )) {
                         $folderData = new folderData( null, null, $_SESSION['APPLICATION'], null, $_SESSION['USER_LOGGED'] );
                         $folderData->PMType = "OUTPUT";
@@ -1040,7 +1017,7 @@ try {
                         $aFields['TASK'][$sKey]['NEXT_TASK']['TAS_TYPE_DAY'] = $sAux;
 
                         //Check for
-                        G::LoadClass( 'calendar' );
+
                         $calendar = new Calendar();
                         $calendarObj = $calendar->getCalendarList( true, true );
                         $availableCalendar = $calendarObj['array'];
@@ -1113,29 +1090,35 @@ try {
                 $aFields["TASK"][$sKey]["NEXT_TASK"]["TAS_TITLE"] = G::LoadTranslation("ID_ROUTE_TO_TASK_INTERMEDIATE_CATCH_MESSAGE_EVENT");
             }
 
+            //SKIP ASSIGN SCREEN
+            if (!empty($aFields['TASK'][1])) {
+                $currentTask = $aFields['TASK'][1];
+                $isWebEntry = $bmWebEntry->isTaskAWebEntry($currentTask['TAS_UID']);
+                if ($isWebEntry) {
+                    $webEntryUrlEvaluated = '';
+                    $tplFile = 'webentry/cases_ScreenDerivation';
+                    $caseId = $currentTask['APP_UID'];
+                    $delIndex = $currentTask['DEL_INDEX'];
+                    $derivationResponse = PMFDerivateCase($caseId, $delIndex, true);
+                    if ($derivationResponse) {
+                        $webEntryUrl = $bmWebEntry->getCallbackUrlByTask($currentTask['TAS_UID']);
+                        $delegationData = $Fields['APP_DATA'];
+                        $delegationData['_DELEGATION_DATA'] = $aFields['TASK'];
+                        $delegationData['_DELEGATION_MESSAGE'] = $bmWebEntry->getDelegationMessage($delegationData);
+                        $webEntryUrlEvaluated = \G::replaceDataField($webEntryUrl, $delegationData);
+                    }
+                    $aFields['derivationResponse'] = $derivationResponse;
+                    $aFields['webEntryUrlEvaluated'] = $webEntryUrlEvaluated;
+                }
+            }
+
             $G_PUBLISH->AddContent( 'smarty', $tplFile, '', '', $aFields );
-            /*
-            if (isset( $aFields['TASK'][1]['NEXT_TASK']['USER_ASSIGNED'])){
-                if($aFields['TASK'][1]['NEXT_TASK']['USER_ASSIGNED']!="ERROR" && is_array($aFields['TASK'][1]['NEXT_TASK']['USER_ASSIGNED'])){
-                $G_PUBLISH->AddContent('smarty', 'cases/cases_ScreenDerivation', '', '', $aFields);
-            } else {
-                $sMessageError = "The current user does not have a valid Reports To user.  Please contact administrator.";
-                //$aFields['TASK'][$sKey]['NEXT_TASK']['USR_HIDDEN_FIELD'] = '<input type="hidden" name="' . $hiddenName . '" id="' . $hiddenName . '" value="' . $sMessageError . '">';
-                G::SendTemporalMessage ('UID_UNDEFINED_USER', "Error");
-                $aFields['ERROR_REPORTSTO']= "Error";
-                $aFields['MESSAGE_ERROR_REPORTSTO']=G::loadTranslation("ID_MSJ_REPORSTO");;
-                $G_PUBLISH->AddContent('smarty', 'cases/cases_ShowE_Reportsto', '', '', $aFields);
-            }
-            } else {
-                $G_PUBLISH->AddContent('smarty', 'cases/cases_ScreenDerivation', '', '', $aFields);
-            }
-            */
             break;
         case 'EXTERNAL':
             if ($noShowTitle == 0) {
                 $G_PUBLISH->AddContent( 'smarty', 'cases/cases_title', '', '', $array );
             }
-            $oPluginRegistry = &PMPluginRegistry::getSingleton();
+            $oPluginRegistry = PluginRegistry::loadSingleton();
             $externalSteps = $oPluginRegistry->getSteps();
 
             $sNamespace = '';
@@ -1161,8 +1144,8 @@ try {
                  * Added By erik date: 16-05-08
                  * Description: this was added for the additional database connections
                  */
-                G::LoadClass( 'dbConnections' );
-                $oDbConnections = new dbConnections( $_SESSION['PROCESS'] );
+
+                $oDbConnections = new DbConnections( $_SESSION['PROCESS'] );
                 $oDbConnections->loadAdditionalConnections();
                 $stepFilename = "$sNamespace/$sStepName";
                 G::evalJScript( "

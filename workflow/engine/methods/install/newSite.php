@@ -1,31 +1,13 @@
 <?php
-/**
- * installServer.php
- *
- * ProcessMaker Open Source Edition
- * Copyright (C) 2004 - 2008 Colosa Inc.23
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
- * Coral Gables, FL, 33134, USA, or email info@colosa.com.
- */
+
+use ProcessMaker\Core\Installer;
+
+global $RBAC;
+
+$RBAC->allows(basename(__FILE__), basename(__FILE__));
 
 if (isset( $_POST['form']['NW_TITLE'] )) {
     $action = (isset( $_POST['form']['ACTION'] )) ? trim( $_POST['form']['ACTION'] ) : 'test';
-    G::LoadClass( 'Installer' );
-    G::LoadClass( 'json' );
     $name = trim( $_POST['form']['NW_TITLE'] );
     $inst = new Installer();
 
@@ -71,7 +53,6 @@ if (isset( $_POST['form']['NW_TITLE'] )) {
     }
     $G_PUBLISH = new Publisher();
 
-    G::LoadClass( 'configuration' );
     $c = new Configurations();
     $configPage = $c->getConfiguration( 'usersList', 'pageSize', '', $_SESSION['USER_LOGGED'] );
     $Config['pageSize'] = isset( $configPage['pageSize'] ) ? $configPage['pageSize'] : 20;

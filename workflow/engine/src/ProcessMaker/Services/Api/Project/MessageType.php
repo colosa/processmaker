@@ -65,12 +65,19 @@ class MessageType extends Api
     }
 
     /**
+     * Create message type
+     * 
      * @url POST /:prj_uid/message-type
-     *
+     * @status 201
+     * 
      * @param string $prj_uid      {@min 32}{@max 32}
      * @param array  $request_data
-     *
-     * @status 201
+     * 
+     * @return array
+     * @throws RestException
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPostMessageType($prj_uid, array $request_data)
     {
@@ -86,11 +93,18 @@ class MessageType extends Api
     }
 
     /**
+     * Update message type.
+     *
      * @url PUT /:prj_uid/message-type/:msgt_uid
      *
      * @param string $prj_uid      {@min 32}{@max 32}
      * @param string $msgt_uid     {@min 32}{@max 32}
      * @param array  $request_data
+     *
+     * @throws RestException
+     *
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPutMessageType($prj_uid, $msgt_uid, array $request_data)
     {
@@ -103,6 +117,8 @@ class MessageType extends Api
 
     /**
      * @url DELETE /:prj_uid/message-type/:msgt_uid
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      *
      * @param string $prj_uid  {@min 32}{@max 32}
      * @param string $msgt_uid {@min 32}{@max 32}

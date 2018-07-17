@@ -44,7 +44,7 @@
             "eventMessages.js",
             "pm_user_picker.js",
             "pm_criteria_user_field.js",
-            "pm_web_entry.js",
+            "webEntry.js",
             "messageType.js",
             "messageEventDefinition.js",
             "featuresHandler.js",

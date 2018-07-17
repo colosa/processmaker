@@ -293,7 +293,7 @@ INPUT {
   background-color: black;
   left: 0px;
   top: 0px;
-  height:100% !important;
+  height:auto% !important;
 }
 .panel_iframe___processmaker {
   width: 100%;

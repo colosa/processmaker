@@ -21,8 +21,8 @@
  * For more information, contact Colosa Inc, 2566 Le Jeune Rd.,
  * Coral Gables, FL, 33134, USA, or email info@colosa.com.
  */
+ 
 
-G::LoadSystem('inputfilter');
 $filter = new InputFilter();
 $_GET = $filter->xssFilterHard($_GET);
 $_POST = $filter->xssFilterHard($_POST);
@@ -33,7 +33,7 @@ $actionAjax = isset( $_REQUEST['actionAjax'] ) ? $_REQUEST['actionAjax'] : null;
 if ($actionAjax == "historyDynaformPage") {
     global $G_PUBLISH;
     $oHeadPublisher = & headPublisher::getSingleton();
-    G::loadClass( 'configuration' );
+
     $conf = new Configurations();
     $oHeadPublisher->addExtJsScript( 'cases/caseHistoryDynaformPage', true ); //adding a javascript file .js
     $oHeadPublisher->addContent( 'cases/caseHistoryDynaformPage' ); //adding a html file  .html.
@@ -41,8 +41,6 @@ if ($actionAjax == "historyDynaformPage") {
     G::RenderPage( 'publish', 'extJs' );
 }
 if ($actionAjax == 'historyDynaformGrid_Ajax') {
-    G::LoadClass( 'case' );
-    G::LoadClass( "BasePeer" );
 
     global $G_PUBLISH;
     $oCase = new Cases();
@@ -104,7 +102,6 @@ if ($actionAjax == 'showHistoryMessage') {
     </script>
     <?php
 
-    G::LoadClass( 'case' );
     $oCase = new Cases();
 
     $_POST["APP_UID"] = $_REQUEST["APP_UID"];
@@ -389,11 +386,11 @@ if ($actionAjax == 'dynaformChangeLogViewHistory') {
     $Fields['APP_DATA']['__DYNAFORM_OPTIONS']['NEXT_STEP_LABEL'] = '';
     $Fields['APP_DATA']['__DYNAFORM_OPTIONS']['NEXT_STEP'] = '#';
     $Fields['APP_DATA']['__DYNAFORM_OPTIONS']['NEXT_ACTION'] = 'return false;';
-    G::LoadClass('pmDynaform');
+
     $FieldsPmDynaform = $Fields;
     $FieldsPmDynaform["PRO_UID"] = $_SESSION['PROCESS'];
     $FieldsPmDynaform["CURRENT_DYNAFORM"] = $_GET['DYN_UID'];
-    $a = new pmDynaform(\ProcessMaker\Util\DateTime::convertUtcToTimeZone($FieldsPmDynaform));
+    $a = new PmDynaform(\ProcessMaker\Util\DateTime::convertUtcToTimeZone($FieldsPmDynaform));
     if ($a->isResponsive()) {
         $a->printView();
     } else {
@@ -454,8 +451,6 @@ if ($actionAjax == 'historyDynaformGridPreview') {
     //!dataIndex
     $_POST["DYN_UID"] = $_REQUEST["DYN_UID"];
 
-    G::LoadClass( 'case' );
-
     $G_PUBLISH = new Publisher();
     $oCase = new Cases();
     $Fields = $oCase->loadCase( $_SESSION['APPLICATION'] );
@@ -481,10 +476,10 @@ if ($actionAjax == 'historyDynaformGridPreview') {
 
     $_SESSION['CURRENT_DYN_UID'] = $_POST['DYN_UID'];
     $_SESSION['DYN_UID_PRINT'] = $_POST['DYN_UID'];
-    G::LoadClass('pmDynaform');
+
     $FieldsPmDynaform = $Fields;
     $FieldsPmDynaform["CURRENT_DYNAFORM"] = $_GET['DYN_UID'];
-    $a = new pmDynaform(\ProcessMaker\Util\DateTime::convertUtcToTimeZone($FieldsPmDynaform));
+    $a = new PmDynaform(\ProcessMaker\Util\DateTime::convertUtcToTimeZone($FieldsPmDynaform));
     if ($a->isResponsive()) {
         $a->printView();
     } else {

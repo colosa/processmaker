@@ -112,7 +112,32 @@
                 dialog = new FormDesigner.main.DialogInputDocument(null);
                 dialog.onClick = function (option) {
                     dialog.dialog.dialog("close").remove();
-                    that.setInputDocument(option);
+                    that.setInputDocument({
+                        size: {
+                            value: option.inp_doc_max_filesize,
+                            disabled: true
+                        },
+                        sizeUnity: {
+                            value: option.inp_doc_max_filesize_unit,
+                            disabled: true
+                        },
+                        extensions: {
+                            value: option.inp_doc_type_file,
+                            disabled: true
+                        },
+                        enableVersioning: {
+                            value: (option.inp_doc_versioning) ? true : false,
+                            disabled: true
+                        },
+                        inp_doc_uid: {
+                            value: option.inp_doc_uid,
+                            disabled: true
+                        },
+                        inputDocument: {
+                            value: option.inp_doc_title,
+                            disabled: false
+                        }
+                    });
                 };
                 return false;
             }
@@ -195,32 +220,33 @@
         };
         // This section reset properties in clearbutton in grids
         this.properties.onClickClearButton = function (property) {
-            var prop;
             if (property === "inputDocument") {
-                that.properties.size.disabled = false;
-                prop = that.properties.set("size", 0);
-                if (prop.node) {
-                    prop.node.value = 0;
-                }
-
-                that.properties.sizeUnity.disabled = false;
-                prop = that.properties.set("sizeUnity", "MB");
-                if (prop.node) {
-                    prop.node.value = "MB";
-                }
-
-                that.properties.extensions.disabled = false;
-                prop = that.properties.set("extensions", "*");
-                if (prop.node) {
-                    prop.node.value = "*";
-                }
-
-                that.properties.set("inp_doc_uid", null);
-                that.properties.set("inputDocument", "");
-                prop = that.properties["inputDocument"];
-                if (prop.node) {
-                    prop.node.textContent = "...";
-                }
+                that.setInputDocument({
+                    size: {
+                        value: 0,
+                        disabled: false
+                    },
+                    sizeUnity: {
+                        value: 'MB',
+                        disabled: false
+                    },
+                    extensions: {
+                        value: '*',
+                        disabled: false
+                    },
+                    enableVersioning: {
+                        value: false,
+                        disabled: true
+                    },
+                    inp_doc_uid: {
+                        value: null,
+                        disabled: true
+                    },
+                    inputDocument: {
+                        value: '...',
+                        disabled: false
+                    }
+                });
             }
         };
     };
@@ -243,33 +269,32 @@
     };
     /**
      * Set properties for input document
-     * @param inputDoc
+     * @param params
      */
-    GridItem.prototype.setInputDocument = function (inputDoc) {
-        var that = this, property;
-        that.properties.size.disabled = true;
-        property = that.properties.set("size", inputDoc.inp_doc_max_filesize);
-        if (property.node) {
-            property.node.value = inputDoc.inp_doc_max_filesize;
-        }
-
-        that.properties.sizeUnity.disabled = true;
-        property = that.properties.set("sizeUnity", inputDoc.inp_doc_max_filesize_unit);
-        if (property.node) {
-            property.node.value = inputDoc.inp_doc_max_filesize_unit;
-        }
-
-        that.properties.extensions.disabled = true;
-        property = that.properties.set("extensions", inputDoc.inp_doc_type_file);
-        if (property.node) {
-            property.node.value = inputDoc.inp_doc_type_file;
-        }
-
-        that.properties.set("inp_doc_uid", inputDoc.inp_doc_uid);
-        that.properties.set("inputDocument", inputDoc.inp_doc_title);
-        property = that.properties["inputDocument"];
-        if (property.node) {
-            property.node.textContent = inputDoc.inp_doc_title;
+    GridItem.prototype.setInputDocument = function (params) {
+        var property,
+            key;
+        for (key in params) {
+            property = this.properties.set(key, params[key].value);
+            switch (key) {
+                case 'inp_doc_uid':
+                    break;
+                case 'inputDocument':
+                    if (property.node) {
+                        property.node.textContent = params[key].value;
+                    }
+                    break;
+                case 'enableVersioning':
+                    if (property.node) {
+                        property.node.textContent = (params[key].value) ? 'Yes' : 'No';
+                    }
+                default:
+                    if (property.node) {
+                        property.node.value = params[key].value;
+                        property.node.disabled = params[key].disabled;
+                    }
+                    break;
+            }
         }
     };
     FormDesigner.extendNamespace('FormDesigner.main.GridItem', GridItem);

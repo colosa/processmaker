@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Regression tests</title>
+    <style type="text/css">
+table { border-collapse: collapse; }
+td, th { border: 1px solid black; }
+    </style>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <th width="100">Comment</th>
+        <th>Actual</th>
+        <th>Expected</th>
+      </tr>
+      <tr>
+        <td>Custom label generator 1</td>
+        <td><img src="actual/customlabelgenerator1.php"/></td>
+        <td><img src="expected/customlabelgenerator1.png"/></td>
+      </tr>
+      <tr>
+        <td>Custom label generator 2</td>
+        <td><img src="actual/customlabelgenerator2.php"/></td>
+        <td><img src="expected/customlabelgenerator2.png"/></td>
+      </tr>
+      <tr>
+        <td>Custom label generator 3</td>
+        <td><img src="actual/customlabelgenerator3.php"/></td>
+        <td><img src="expected/customlabelgenerator3.png"/></td>
+      </tr>
+      <tr>
+        <td>Website example 1</td>
+        <td><img src="actual/example1.php"/></td>
+        <td><img src="expected/example1.png"/></td>
+      </tr>
+      <tr>
+        <td>Website example 2</td>
+        <td><img src="actual/example2.php"/></td>
+        <td><img src="expected/example2.png"/></td>
+      </tr>
+      <tr>
+        <td>Website example 3</td>
+        <td><img src="actual/example3.php"/></td>
+        <td><img src="expected/example3.png"/></td>
+      </tr>
+      <tr>
+        <td>Website example 4</td>
+        <td><img src="actual/example4.php"/></td>
+        <td><img src="expected/example4.png"/></td>
+      </tr>
+      <tr>
+        <td>Remove logo</td>
+        <td><img src="actual/nologo.php"/></td>
+        <td><img src="expected/nologo.png"/></td>
+      </tr>
+      <tr>
+        <td>Decimal values</td>
+        <td><img src="actual/decimal.php"/></td>
+        <td><img src="expected/decimal.png"/></td>
+      </tr>
+      <tr>
+        <td>Divide by 0 (pie)</td>
+        <td><img src="actual/divby0.php"/></td>
+        <td><img src="expected/divby0.png"/></td>
+      </tr>
+      <tr>
+        <td>Divide by 0 (vbar)</td>
+        <td><img src="actual/divby1.php"/></td>
+        <td><img src="expected/divby1.png"/></td>
+      </tr>
+      <tr>
+        <td>Divide by 0 (hbar)</td>
+        <td><img src="actual/divby2.php"/></td>
+        <td><img src="expected/divby2.png"/></td>
+      </tr>
+      <tr>
+        <td>Divide by 0 (line)</td>
+        <td><img src="actual/divby3.php"/></td>
+        <td><img src="expected/divby3.png"/></td>
+      </tr>
+      <tr>
+        <td>No value (hbar)</td>
+        <td><img src="actual/novalue1.php"/></td>
+        <td><img src="expected/novalue1.png"/></td>
+      </tr>
+      <tr>
+        <td>No value (vbar)</td>
+        <td><img src="actual/novalue2.php"/></td>
+        <td><img src="expected/novalue2.png"/></td>
+      </tr>
+      <tr>
+        <td>No value (line)</td>
+        <td><img src="actual/novalue3.php"/></td>
+        <td><img src="expected/novalue3.png"/></td>
+      </tr>
+      <tr>
+        <td>Issue #0001 (1)</td>
+        <td><img src="actual/issue0001.1.php"/></td>
+        <td><img src="expected/issue0001.1.png"/></td>
+      </tr>
+      <tr>
+        <td>Issue #0001 (2)</td>
+        <td><img src="actual/issue0001.2.php"/></td>
+        <td><img src="expected/issue0001.2.png"/></td>
+      </tr>
+      <tr>
+        <td>Customized palette (Pie chart)</td>
+        <td><img src="actual/palette1.php"/></td>
+        <td><img src="expected/palette1.png"/></td>
+      </tr>
+      <tr>
+        <td>Customized palette (Horizontal Bar chart)</td>
+        <td><img src="actual/palette2.php"/></td>
+        <td><img src="expected/palette2.png"/></td>
+      </tr>
+      <tr>
+        <td>Customized palette (Vertical Bar chart)</td>
+        <td><img src="actual/palette3.php"/></td>
+        <td><img src="expected/palette3.png"/></td>
+      </tr>
+      <tr>
+        <td>Hide point caption (Pie chart)</td>
+        <td><img src="actual/hidepointcaption1.php"/></td>
+        <td><img src="expected/hidepointcaption1.png"/></td>
+      </tr>
+      <tr>
+        <td>Hide point caption (Horizontal Bar chart)</td>
+        <td><img src="actual/hidepointcaption2.php"/></td>
+        <td><img src="expected/hidepointcaption2.png"/></td>
+      </tr>
+      <tr>
+        <td>Hide point caption (Vertical Bar chart)</td>
+        <td><img src="actual/hidepointcaption3.php"/></td>
+        <td><img src="expected/hidepointcaption3.png"/></td>
+      </tr>
+      <tr>
+        <td>Disable sorting (Pie chart)</td>
+        <td><img src="actual/piedisablesort1.php"/></td>
+        <td><img src="expected/piedisablesort1.png"/></td>
+      </tr>
+      <tr>
+        <td>Disable sorting, null value (Pie chart)</td>
+        <td><img src="actual/piedisablesort2.php"/></td>
+        <td><img src="expected/piedisablesort2.png"/></td>
+      </tr>
+      <tr>
+        <td>Negative values (Line chart)</td>
+        <td><img src="actual/linenegative.php"/></td>
+        <td><img src="expected/linenegative.png"/></td>
+      </tr>
+      <tr>
+        <td>Negative values (Vertical Bar chart)</td>
+        <td><img src="actual/verticalbarnegative.php"/></td>
+        <td><img src="expected/verticalbarnegative.png"/></td>
+      </tr>
+      <tr>
+        <td>Negative values (Horizontal Bar chart)</td>
+        <td><img src="actual/horizontalbarnegative.php"/></td>
+        <td><img src="expected/horizontalbarnegative.png"/></td>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -25,13 +25,8 @@ try {
     global $RBAC;
     $RBAC->requirePermissions( 'PM_LOGIN' );
 
-    // deprecated the class XmlForm_Field_Image is currently part of the class.xmlform.php package
+    // deprecated the class XmlFormFieldImage is currently part of the class.xmlform.php package
     // the use of the external xmlfield_Image is highly discouraged
-    if (! class_exists( 'XmlForm_Field_Image' )) {
-        G::LoadClass( 'xmlfield_Image' );
-    }
-    require_once 'classes/model/Users.php';
-    require_once 'classes/model/Department.php';
 
     unset( $_SESSION['CURRENT_USER'] );
     $oUser = new Users();
@@ -81,7 +76,7 @@ try {
 
 
     #verifying if it has any preferences on the configurations table
-    G::loadClass( 'configuration' );
+
     $oConf = new Configurations();
     $oConf->loadConfig( $x, 'USER_PREFERENCES', '', '', $_SESSION['USER_LOGGED'], '' );
 
@@ -148,7 +143,6 @@ try {
     $_DBArray['CASES_MENU'] = $rowsCasesMenu;
     $_SESSION['_DBArray'] = $_DBArray;
 
-    G::LoadClass( 'ArrayPeer' );
     $oCriteria = new Criteria( 'dbarray' );
     $oCriteria->setDBArrayTable( 'menutab' );
 

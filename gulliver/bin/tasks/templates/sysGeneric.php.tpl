@@ -124,28 +124,6 @@ $docuroot = explode ( PATH_SEP , $_SERVER['DOCUMENT_ROOT'] );
 
 //***************** Call Gulliver Classes **************************
 
-  G::LoadThirdParty('pear/json','class.json');
-  G::LoadThirdParty('smarty/libs','Smarty.class');
-
-  G::LoadSystem('error');
-  G::LoadSystem('dbconnection');
-  G::LoadSystem('dbsession');
-  G::LoadSystem('dbrecordset');
-  G::LoadSystem('dbtable');
-  G::LoadSystem('rbac' );
-  G::LoadSystem('publisher');
-  G::LoadSystem('templatePower');
-  G::LoadSystem('headPublisher');
-  G::LoadSystem('xmlDocument');
-  G::LoadSystem('xmlform');
-  G::LoadSystem('xmlformExtension');
-  G::LoadSystem('form');
-  G::LoadSystem('menu');
-  G::LoadSystem("xmlMenu");
-  G::LoadSystem('table');
-  G::LoadSystem('pagedTable');
-  G::LoadSystem('tree');
-
   $oHeadPublisher =& headPublisher::getSingleton();
 
   //***************** database and workspace definition  ************************
@@ -220,7 +198,7 @@ $docuroot = explode ( PATH_SEP , $_SERVER['DOCUMENT_ROOT'] );
 
 
 //***************** Plugins **************************
-	G::LoadClass('plugin');
+
 //  //here we are loading all plugins registered
 //  //the singleton has a list of enabled plugins
 

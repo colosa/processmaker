@@ -76,7 +76,6 @@ for ($j = 0; $j < count( $aRows ); $j ++) {
 global $_DBArray;
 $_DBArray['cases_scheduler'] = $aRows;
 $_SESSION['_DBArray'] = $_DBArray;
-G::LoadClass( 'ArrayPeer' );
 $oCriteria = new Criteria( 'dbarray' );
 $oCriteria->setDBArrayTable( 'cases_scheduler' );
 //krumo ($oCriteria);

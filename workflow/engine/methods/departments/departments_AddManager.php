@@ -26,8 +26,6 @@ if (($RBAC_Response = $RBAC->userCanAccess( "PM_USERS" )) != 1) {
     return $RBAC_Response;
 }
 
-G::LoadClass( 'departos' );
-
 $dbc = new DBConnection();
 $ses = new DBSession( $dbc );
 
@@ -40,15 +38,6 @@ $aUser[] = Array ('USR_UID' => 'char','USR_FIRSTNAME' => 'char','USR_LASTNAME' =
 $aUserManagers = $oDpto->getUsersManagers();
 $aUser_Manager = array_merge( $aUser, $aUserManagers );
 //print_r($aUser_Manager);
-/*
-   global $_DBArray;
-   $_DBArray['aManager']   = $aUser_Manager;
-   $_SESSION['_DBArray'] = $_DBArray;
-   G::LoadClass('ArrayPeer');
-   $oCriteria = new Criteria('dbarray');
-   $oCriteria->setDBArrayTable('aManager');
-
-   */
 
 $aFields = array ();
 $aFields['DEP_UID'] = $_GET['SUID'];

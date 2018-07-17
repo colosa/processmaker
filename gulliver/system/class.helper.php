@@ -83,7 +83,7 @@ class Helper
     public function minify()
     {
         if ($this->contentType != 'text/css') {
-            G::LoadThirdParty('jsmin', 'jsmin');
+
             $this->content = JSMin::minify($this->content);
         }
     }

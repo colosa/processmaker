@@ -448,9 +448,14 @@
                 }
             ],
             onShow: function (menu) {
-                if (PMUI.getActiveCanvas().currentConnection) {
-                    PMUI.getActiveCanvas().currentConnection.hidePortsAndHandlers();
+                var canvas = PMUI.getActiveCanvas();
+                if (canvas.currentConnection) {
+                    canvas.currentConnection.hidePortsAndHandlers();
                 }
+                if (canvas.isGridLine) {
+                    menu.items.find('id', 'menuGridLines').setText("Disable Grid Lines".translate());
+                }
+
             }
         },
         task = {
@@ -821,6 +826,7 @@
                                     PMDesigner.project.isSave = false;
                                     //open property form
                                     webEntry = new WebEntry(menuOption.getMenuTargetElement());
+                                    webEntry.render();
                                 },
                                 error: function (xhr, textStatus, errorThrown) {
                                     PMDesigner.project.listeners.failure(that, textStatus, xhr);
@@ -829,6 +835,7 @@
                             });
                         } else {
                             webEntry = new WebEntry(menuOption.getMenuTargetElement());
+                            webEntry.render();
                         }
                     }
                 },

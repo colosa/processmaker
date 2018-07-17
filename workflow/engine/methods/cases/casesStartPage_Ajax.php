@@ -1,5 +1,7 @@
 <?php
-G::LoadSystem('inputfilter');
+
+use ProcessMaker\Plugins\PluginRegistry;
+
 $filter = new InputFilter();
 $_POST = $filter->xssFilterHard($_POST);
 $_REQUEST = $filter->xssFilterHard($_REQUEST);
@@ -32,9 +34,6 @@ $functionName( $functionParams );
 
 function getProcessList ()
 {
-    G::LoadClass( 'case' );
-    G::LoadClass( 'process' );
-    G::LoadClass( 'calendar' );
     $calendar = new Calendar();
     $oProcess = new Process();
     $oCase = new Cases();
@@ -72,71 +71,42 @@ function getProcessList ()
         }
 
         $processListTree = array ();
-        if (1) {
-            foreach ($processList as $key => $processInfo) {
-                $tempTree['text'] = $key;
-                $tempTree['id'] = G::encryptOld($key);
-                $tempTree['cls'] = 'folder';
-                $tempTree['draggable'] = true;
-                $tempTree['optionType'] = "category";
-                //$tempTree['allowDrop']=false;
-                $tempTree['singleClickExpand'] = true;
-                if ($key != "No Category") {
-                    $tempTree['expanded'] = true;
-                } else {
-                    //$tempTree ['expanded'] = false;
-                    $tempTree['expanded'] = true;
-                }
-                $tempTreeChildren = array ();
-                foreach ($processList[$key] as $keyChild => $processInfoChild) {
-                    //print_r($processInfo);
-                    $tempTreeChild['text'] = htmlentities($keyChild, ENT_QUOTES, 'UTF-8'); //ellipsis ( $keyChild, 50 );
-                    //$tempTree['text']=$key;
-                    $tempTreeChild['id'] = G::encryptOld($keyChild);
-                    $tempTreeChild['draggable'] = true;
-                    $tempTreeChild['leaf'] = true;
-                    $tempTreeChild['icon'] = '/images/icon.trigger.png';
-                    $tempTreeChild['allowChildren'] = false;
-                    $tempTreeChild['optionType'] = "startProcess";
-                    $tempTreeChild['pro_uid'] = $processInfoChild['pro_uid'];
-                    $tempTreeChild['tas_uid'] = $processInfoChild['uid'];
-                    $processInfoChild['myInbox'] = 0;
-                    $processInfoChild['totalInbox'] = 0;
-                    if (isset( $proData[$processInfoChild['pro_uid']] )) {
-                        $tempTreeChild['otherAttributes'] = array_merge( $processInfoChild, $proData[$processInfoChild['pro_uid']], $calendar->getCalendarFor( $_SESSION['USER_LOGGED'], $processInfoChild['pro_uid'], $processInfoChild['uid'] ) );
-                        $tempTreeChild['otherAttributes']['PRO_TAS_TITLE'] = str_replace( ")", "", str_replace( "(", "", trim( str_replace( $tempTreeChild['otherAttributes']['PRO_TITLE'], "", $tempTreeChild['otherAttributes']["value"] ) ) ) );
-                        $tempTreeChild['qtip'] = $tempTreeChild['otherAttributes']['PRO_DESCRIPTION'];
-                        //$tempTree['cls']='file';
-                        $tempTreeChildren[] = $tempTreeChild;
-                    }
-                }
-
-                $tempTree['children'] = $tempTreeChildren;
-
-                $processListTree[] = $tempTree;
+        foreach ($processList as $key => $processInfo) {
+            $tempTree['text'] = $key;
+            $tempTree['id'] = G::encryptOld($key);
+            $tempTree['cls'] = 'folder';
+            $tempTree['draggable'] = true;
+            $tempTree['optionType'] = "category";
+            $tempTree['singleClickExpand'] = true;
+            if ($key != "No Category") {
+                $tempTree['expanded'] = true;
+            } else {
+                $tempTree['expanded'] = true;
             }
-        } else {
-            foreach ($processList[$node] as $key => $processInfo) {
-                //print_r($processInfo);
-                $tempTree['text'] = $key; //ellipsis ( $key, 50 );
-                //$tempTree['text']=$key;
-                $tempTree['id'] = $key;
-                $tempTree['draggable'] = true;
-                $tempTree['leaf'] = true;
-                $tempTree['icon'] = '/images/icon.trigger.png';
-                $tempTree['allowChildren'] = false;
-                $tempTree['optionType'] = "startProcess";
-                $tempTree['pro_uid'] = $processInfo['pro_uid'];
-                $tempTree['tas_uid'] = $processInfo['uid'];
-                $processInfo['myInbox'] = 0;
-                $processInfo['totalInbox'] = 0;
-                $tempTree['otherAttributes'] = array_merge( $processInfo, $proData[$processInfo['pro_uid']], $calendar->getCalendarFor( $processInfo['uid'], $processInfo['uid'], $processInfo['uid'] ) );
-                $tempTree['otherAttributes']['PRO_TAS_TITLE'] = str_replace( ")", "", str_replace( "(", "", trim( str_replace( $tempTree['otherAttributes']['PRO_TITLE'], "", $tempTree['otherAttributes']["value"] ) ) ) );
-                $tempTree['qtip'] = $tempTree['otherAttributes']['PRO_DESCRIPTION'];
-                //$tempTree['cls']='file';
-                $processListTree[] = $tempTree;
+            $tempTreeChildren = array();
+            foreach ($processList[$key] as $keyChild => $processInfoChild) {
+                $tempTreeChild['text'] = $keyChild;
+                $tempTreeChild['id'] = G::encryptOld($keyChild);
+                $tempTreeChild['draggable'] = true;
+                $tempTreeChild['leaf'] = true;
+                $tempTreeChild['icon'] = '/images/icon.trigger.png';
+                $tempTreeChild['allowChildren'] = false;
+                $tempTreeChild['optionType'] = "startProcess";
+                $tempTreeChild['pro_uid'] = $processInfoChild['pro_uid'];
+                $tempTreeChild['tas_uid'] = $processInfoChild['uid'];
+                $processInfoChild['myInbox'] = 0;
+                $processInfoChild['totalInbox'] = 0;
+                if (isset($proData[$processInfoChild['pro_uid']])) {
+                    $tempTreeChild['otherAttributes'] = array_merge($processInfoChild, $proData[$processInfoChild['pro_uid']], $calendar->getCalendarFor($_SESSION['USER_LOGGED'], $processInfoChild['pro_uid'], $processInfoChild['uid']));
+                    $tempTreeChild['otherAttributes']['PRO_TAS_TITLE'] = str_replace(")", "", str_replace("(", "", trim(str_replace($tempTreeChild['otherAttributes']['PRO_TITLE'], "", $tempTreeChild['otherAttributes']["value"]))));
+                    $tempTreeChild['qtip'] = $tempTreeChild['otherAttributes']['PRO_DESCRIPTION'];
+                    $tempTreeChildren[] = $tempTreeChild;
+                }
             }
+            $tempTree['children'] = $tempTreeChildren;
+            $processListTree[] = $tempTree;
         }
+
         $processList = $processListTree;
     } else {
         $processList['success'] = 'failure';
@@ -165,10 +135,6 @@ function ellipsis ($text, $numb)
 
 function lookinginforContentProcess ($sproUid)
 {
-    require_once 'classes/model/Content.php';
-    require_once 'classes/model/Task.php';
-    require_once 'classes/model/Content.php';
-
     $oContent = new Content();
     ///we are looking for a pro title for this process $sproUid
     $oCriteria = new Criteria( 'workflow' );
@@ -208,8 +174,6 @@ function lookinginforContentProcess ($sproUid)
 
 function startCase ()
 {
-    G::LoadClass( 'case' );
-    G::LoadSystem('inputfilter');
     $filter = new InputFilter();
     $_POST = $filter->xssFilterHard($_POST);
     $_REQUEST = $filter->xssFilterHard($_REQUEST);
@@ -268,9 +232,6 @@ function startCase ()
 
 function getSimpleDashboardData ()
 {
-    G::LoadClass( "BasePeer" );
-    require_once ("classes/model/AppCacheView.php");
-    require_once 'classes/model/Process.php';
     $sUIDUserLogged = $_SESSION['USER_LOGGED'];
 
     $Criteria = new Criteria( 'workflow' );
@@ -347,7 +308,7 @@ function getSimpleDashboardData ()
 
 function getRegisteredDashboards ()
 {
-    $oPluginRegistry = & PMPluginRegistry::getSingleton();
+    $oPluginRegistry = PluginRegistry::loadSingleton();
     $dashBoardPages = $oPluginRegistry->getDashboardPages();
     print_r( G::json_encode( $dashBoardPages ) );
 }

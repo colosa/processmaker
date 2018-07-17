@@ -4,7 +4,7 @@
  *
  */
 
-	require_once ( PATH_RBAC . "model/RolesPeer.php");
+
 	$oCriteria = $RBAC->listAllRoles( '{rbacProjectName}');
   $G_MAIN_MENU            = '{projectName}';
   $G_SUB_MENU             = 'users';

@@ -20,8 +20,6 @@ $aFields['ACTION'] = $_POST['ACTION'];
 $aFields['DYN_DESCRIPTION'] = $_POST['DYN_DESCRIPTION'];
 $aFields['VALIDATION_MESSAGE'] = G::LoadTranslation( 'ID_FILL_PRIMARY_KEYS' );
 
-G::LoadClass( 'xmlfield_InputPM' );
-
 $G_PUBLISH = new Publisher();
 $G_PUBLISH->AddContent( 'xmlform', 'xmlform', 'dynaforms/dynaforms_AssignVariables', '', $aFields, SYS_URI . 'dynaforms/dynaforms_Save' );
 

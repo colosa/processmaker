@@ -36,7 +36,7 @@ class Bootstrap
         define('PATH_TRUNK',    $config['path_trunk']);
 
         // Including these files we get the PM paths and definitions (that should be just one file.
-        require_once PATH_TRUNK . 'gulliver/core/Autoloader.php';
+
 
         $this->autoloader = Autoloader::getInstance();
     }

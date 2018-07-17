@@ -40,7 +40,6 @@ try {
     $oDynaform = new Dynaform();
     $aDyn = $oDynaform->load( $currentDynUid );
 
-    G::LoadClass( 'case' );
     $oCase = new Cases();
 
     if (isset( $_SESSION['APPLICATION'] )) {

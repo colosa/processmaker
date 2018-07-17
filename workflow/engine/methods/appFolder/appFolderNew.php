@@ -1,9 +1,5 @@
 <?php
 
-
-  require_once ( "classes/model/AppFolder.php" );
-
-
   $fields['FOLDER_UID'] = G::GenerateUniqueID();;
 
   $fields['FOLDER_PARENT_UID'] = '';

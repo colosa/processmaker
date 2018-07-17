@@ -43,8 +43,6 @@ $realm = 'ProcessMaker Filesystem for Workspace ' . SYS_SYS;
 //AuthenticationDigestHTTP($realm, $users, $phpcgi);
 AuthenticationBasicHTTP( $realm );
 
-G::LoadClass( "webdav" );
-
 $server = new ProcessMakerWebDav();
 
 # Real path of your site

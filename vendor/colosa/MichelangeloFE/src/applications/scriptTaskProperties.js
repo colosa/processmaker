@@ -338,7 +338,7 @@
             width: '900px',
             height: "300px",
             name: "formScriptTask",
-            title: "".translate(),
+            title: '',
             items: [
                 {
                     id: "panelDetailsCustom",

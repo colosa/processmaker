@@ -30,7 +30,6 @@ if (!$resultRbac) {
     die();
 }
 
-G::LoadClass('configuration');
 $c = new Configurations();
 $configPage = $c->getConfiguration('eventList', 'pageSize', '', $_SESSION['USER_LOGGED']);
 $Config['pageSize'] = isset($configPage['pageSize']) ? $configPage['pageSize'] : 20;

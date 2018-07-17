@@ -11,6 +11,9 @@ use \Luracast\Restler\RestException;
  */
 class WebEntryEvent extends Api
 {
+    /**
+     * @var \ProcessMaker\BusinessModel\WebEntryEvent $webEntryEvent
+     */
     private $webEntryEvent;
 
     /**
@@ -32,6 +35,8 @@ class WebEntryEvent extends Api
 
     /**
      * @url GET /:prj_uid/web-entry-events
+     * @access protected
+     * @class  AccessControl {@permission PM_FACTORY}
      *
      * @param string $prj_uid {@min 32}{@max 32}
      */
@@ -48,6 +53,7 @@ class WebEntryEvent extends Api
 
     /**
      * @url GET /:prj_uid/web-entry-event/:wee_uid
+     * @class  AccessControl {@permission PM_FACTORY}
      *
      * @param string $prj_uid {@min 32}{@max 32}
      * @param string $wee_uid {@min 32}{@max 32}
@@ -65,6 +71,7 @@ class WebEntryEvent extends Api
 
     /**
      * @url GET /:prj_uid/web-entry-event/event/:evn_uid
+     * @class  AccessControl {@permission PM_FACTORY}
      *
      * @param string $prj_uid {@min 32}{@max 32}
      * @param string $evn_uid {@min 32}{@max 32}
@@ -81,12 +88,19 @@ class WebEntryEvent extends Api
     }
 
     /**
+     * Create web entry event for a project.
+     * 
      * @url POST /:prj_uid/web-entry-event
-     *
+     * @status 201
+     * 
      * @param string $prj_uid      {@min 32}{@max 32}
      * @param array  $request_data
-     *
-     * @status 201
+     * 
+     * @return array
+     * @throws RestException
+     * 
+     * @access protected
+     * @class AccessControl {@permission PM_FACTORY}
      */
     public function doPostWebEntryEvent($prj_uid, array $request_data)
     {
@@ -102,16 +116,25 @@ class WebEntryEvent extends Api
     }
 
     /**
+     * Update web-entry event.
+     *
      * @url PUT /:prj_uid/web-entry-event/:wee_uid
      *
      * @param string $prj_uid      {@min 32}{@max 32}
      * @param string $wee_uid      {@min 32}{@max 32}
      * @param array  $request_data
+     *
+     * @return mixed
+     * @throws RestException
+     *
+     * @access protected
+     * @class  AccessControl {@permission PM_FACTORY}
      */
     public function doPutWebEntryEvent($prj_uid, $wee_uid, array $request_data)
     {
         try {
             $arrayData = $this->webEntryEvent->update($wee_uid, $this->getUserId(), $request_data);
+            return $this->webEntryEvent->getWebEntryEvent($wee_uid);
         } catch (\Exception $e) {
             throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
         }
@@ -119,6 +142,8 @@ class WebEntryEvent extends Api
 
     /**
      * @url DELETE /:prj_uid/web-entry-event/:wee_uid
+     * @access protected
+     * @class  AccessControl {@permission PM_FACTORY}
      *
      * @param string $prj_uid {@min 32}{@max 32}
      * @param string $wee_uid {@min 32}{@max 32}
@@ -127,6 +152,24 @@ class WebEntryEvent extends Api
     {
         try {
             $this->webEntryEvent->delete($wee_uid);
+            return ['success' => true];
+        } catch (\Exception $e) {
+            throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
+        }
+    }
+
+    /**
+     * Get the web entry URL.
+     *
+     * @url GET /:prj_uid/web-entry-event/:wee_uid/generate-link
+     * @access protected
+     * @class  AccessControl {@permission PM_FACTORY}
+     */
+    public function generateLink($prj_uid, $wee_uid)
+    {
+        try {
+            $link = $this->webEntryEvent->generateLink($prj_uid, $wee_uid);
+            return ["link" => $link];
         } catch (\Exception $e) {
             throw new RestException(Api::STAT_APP_EXCEPTION, $e->getMessage());
         }

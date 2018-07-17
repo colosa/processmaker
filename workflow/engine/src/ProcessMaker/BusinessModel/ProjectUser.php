@@ -135,7 +135,6 @@ class ProjectUser
             }
 
             foreach($usersIds as $value) {
-                \G::LoadClass( 'case' );
                 $oCase = new \Cases();
                 $startTasks = $oCase->getStartCases( $value );
                 foreach ($startTasks as $task) {
@@ -178,7 +177,6 @@ class ProjectUser
             Validator::proUid($sProcessUID, '$prj_uid');
             Validator::usrUid($sUserUID, '$usr_uid');
             $aUsers = array();
-            \G::LoadClass( 'case' );
             $oCase = new \Cases();
             $startTasks = $oCase->getStartCases($sUserUID);
             if (sizeof($startTasks) > 1) {
@@ -240,10 +238,7 @@ class ProjectUser
             $fields['version'] = $result->version;
             $fields['time_stamp'] = $result->timestamp;
             $messageCode = 1;
-            \G::LoadClass( 'Task' );
-            \G::LoadClass( 'User' );
-            \G::LoadClass( 'TaskUser' );
-            \G::LoadClass( 'Groupwf' );
+
             /**
              * note added by gustavo cruz gustavo-at-colosa-dot-com
              * This is a little check to see if the GroupUser class has been declared or not.
@@ -252,9 +247,7 @@ class ProjectUser
              * I recomend that in some way check already if a imported class is declared
              * somewhere else or maybe delegate the task to the G Class LoadClass method.
              */
-            if (! class_exists( 'GroupUser' )) {
-                \G::LoadClass( 'GroupUser' );
-            }
+
             // if the user has been authenticated, then check if has the rights or
             // permissions to create the webentry
             if ($result->status_code == 0) {
