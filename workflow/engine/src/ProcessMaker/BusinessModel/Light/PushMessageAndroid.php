@@ -81,9 +81,9 @@ class PushMessageAndroid
             $fields = [
                 'registration_ids' => $this->devices,
                 'notification' => [
-                    "body" => $message,
-                    "data" => $data,
+                    'body' => $message,
                 ],
+                'data' => $data,
             ];
         } else {
             $fields = [
