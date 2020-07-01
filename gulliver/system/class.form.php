@@ -767,7 +767,7 @@ class Form extends XmlForm
      */
     public static function createXMLFileIfNotExists($filepath)
     {
-        if (file_exists($filepath)) {
+        if (file_exists($filepath) && filesize($filepath) > 0) {
             return;
         }
         $pathParts = pathinfo($filepath);
