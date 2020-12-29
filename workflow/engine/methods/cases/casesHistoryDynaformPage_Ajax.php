@@ -74,7 +74,9 @@ if ($actionAjax == 'historyDynaformGrid_Ajax') {
 
     $r = new stdclass();
     $r->data = $aProcesses;
-    $r->totalCount = 2;
+    //$r->totalCount = 2;
+    // hoangvn fix
+    $r->totalCount = $rs->getRecordCount();
 
     echo G::json_encode($r);
 }
